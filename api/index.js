@@ -244,7 +244,10 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
 .info-card{background:#0d0f12;border:1px solid #23262c;border-radius:16px;padding:15px}
 .info-card h3{font-size:13px;margin:0 0 9px;color:#f4f4f2}.info-card p,.info-card li{font-size:12px;color:#aeb2b7;line-height:1.58}.info-card li+li{margin-top:5px}
-.info-card ul{margin:0;padding-left:18px}.booklet-wrap{margin-top:18px}.booklet-title{font-size:21px;font-weight:900;margin:0 0 4px}.booklet-sub{font-size:12px;color:#9ca1a7;margin-bottom:12px}.booklet-row{border:1px solid #292d34;background:#0b0d10;border-radius:16px;padding:15px;margin-top:10px}.booklet-row h4{margin:0 0 10px;font-size:15px}.booklet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}.booklet-field{background:#101216;border-radius:11px;padding:10px}.booklet-field b{display:block;font-size:11px;margin-bottom:5px;color:#f2f2ef}.booklet-field span{font-size:11px;line-height:1.5;color:#aeb2b7}.info-card a{color:#f0f0ed;text-decoration:underline;text-underline-offset:3px}
+.info-card ul{margin:0;padding-left:18px}.booklet-wrap{margin-top:18px}.booklet-title{font-size:21px;font-weight:900;margin:0 0 4px}.booklet-sub{font-size:12px;color:#9ca1a7;margin-bottom:12px}.booklet-row{border:1px solid #292d34;background:#0b0d10;border-radius:16px;padding:15px;margin-top:10px}.booklet-row h4{margin:0 0 10px;font-size:15px}.booklet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}.booklet-field{background:#101216;border-radius:11px;padding:10px}.booklet-field b{display:block;font-size:11px;margin-bottom:5px;color:#f2f2ef}.booklet-field span{font-size:11px;line-height:1.5;color:#aeb2b7}
+.category-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}.category-tab{border:1px solid #2b2f36;background:#101216;color:#d9dce0;border-radius:999px;padding:9px 13px;cursor:pointer;font-size:12px}.category-tab.active{background:#f1f1ed;color:#090909;border-color:#f1f1ed;font-weight:800}
+.category-section{margin-top:22px}.category-section h3{font-size:22px;margin:0 0 12px}.table-wrap{overflow-x:auto;border:1px solid #23262c;border-radius:16px;background:#0b0d10}.admission-table{width:100%;border-collapse:collapse;min-width:1050px}.admission-table th,.admission-table td{padding:12px 10px;border-bottom:1px solid #20242a;border-right:1px solid #1a1d22;vertical-align:top;text-align:left}.admission-table th:last-child,.admission-table td:last-child{border-right:0}.admission-table tr:last-child td{border-bottom:0}.admission-table th{position:sticky;top:0;background:#12151a;color:#f4f4f2;font-size:11px;z-index:1}.admission-table td{font-size:11px;color:#adb1b7;line-height:1.52}.admission-table td:first-child{font-weight:800;color:#f2f2ee;min-width:190px}.cat-count{font-size:11px;color:#8f949a;font-weight:500;margin-left:8px}
+@media(max-width:700px){.category-tabs{display:grid;grid-template-columns:1fr 1fr}.category-tab{border-radius:12px}.category-section h3{font-size:18px}.admission-table{min-width:900px}.admission-table th,.admission-table td{padding:9px 8px;font-size:10px}}.info-card a{color:#f0f0ed;text-decoration:underline;text-underline-offset:3px}
 .info-title{font-size:28px;margin:0}.info-name{font-size:20px;font-weight:800;margin:8px 0 2px}.info-status{font-size:11px;color:#9ca1a7}
 .eligibility-box{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:8px;margin-top:10px}.eligibility-box input{width:100%;min-width:0}
 .eligibility-result{margin-top:10px;font-size:12px;color:#cdd0d4}
@@ -260,13 +263,9 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 <div class="upcoming"><div class="head"><div><h2 style="font-size:22px">Upcoming exams</h2><div class="sub">Tap any calendar item or source link to verify details.</div></div></div><div class="cards" id="cards"></div></div>
 <div class="footer">Schedules are aggregated from third-party sources and may change. Always verify critical dates from the official university notice.</div></section>
 <section class="info-center" id="infoCenter">
-  <div class="head"><div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্য কণিকা</h2><div class="sub">বিশ্ববিদ্যালয়ের নাম লিখে শুধু আপনার দেওয়া তথ্য কণিকার চার্টের তথ্য দেখুন — আসন, আবেদন যোগ্যতা, পরীক্ষার ধরন, নম্বরবণ্টন ও ফলাফল নির্ণয়।</div></div></div>
-  <div class="info-search">
-    <input id="uniSearch" list="uniList" placeholder="বিশ্ববিদ্যালয়ের নাম লিখুন — যেমন DU, BUET, RUET, BUP…">
-    <datalist id="uniList"></datalist>
-    <button class="btn" id="uniFind">তথ্য দেখুন</button>
-  </div>
-  <div id="uniResult"><div class="empty">বিশ্ববিদ্যালয়ের নাম লিখে বিস্তারিত ভর্তি তথ্য দেখুন।</div></div>
+  <div class="head"><div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্য কণিকা</h2><div class="sub">আপনার দেওয়া তথ্য কণিকার চার্টগুলো ক্যাটাগরি অনুযায়ী সাজানো হয়েছে।</div></div></div>
+  <div class="category-tabs" id="categoryTabs"></div>
+  <div id="categoryCharts"></div>
 </section></div>
 <script>
 const TARGET=new Date('2026-11-30T00:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
@@ -710,36 +709,61 @@ const BOOKLET_ROWS = [
   {p:"হাজী মোহাম্মদ দানেশ বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়",cat:"ভার্সিটি ‘খ’/মানবিক",unit:"HSTU ‘D’ Unit",seats:"২৪০ টি",elig:"SSC ও HSC ৪র্থ বিষয়সহ পৃথকভাবে GPA ৩ এবং মোট GPA ৬।",exam:"১০০ নম্বর MCQ, ১ ঘণ্টা।",marks:"বাংলা ২৫, English ৫০, General Knowledge ২৫।",result:"ভর্তি পরীক্ষার নম্বর + SSC ৪০% + HSC ৬০%।"}
 ];
 
-const uniList=document.getElementById('uniList');
-Object.keys(UNIVERSITY_INFO).sort().forEach(name=>{const o=document.createElement('option');o.value=name;uniList.appendChild(o)});
 
-function matchUniversity(q){
-  q=q.trim().toLowerCase();
-  if(!q) return null;
-  for(const [name,info] of Object.entries(UNIVERSITY_INFO)){
-    if(name.toLowerCase()===q || info.aliases.some(a=>a.toLowerCase()===q)) return [name,info];
-  }
-  for(const [name,info] of Object.entries(UNIVERSITY_INFO)){
-    if(name.toLowerCase().includes(q) || info.aliases.some(a=>a.toLowerCase().includes(q)||q.includes(a.toLowerCase()))) return [name,info];
-  }
-  return null;
+const CATEGORY_ORDER = [
+  "মেডিকেল ও ডেন্টাল",
+  "ইঞ্জিনিয়ারিং",
+  "ভার্সিটি ‘ক’/বিজ্ঞান",
+  "ভার্সিটি ‘খ’/মানবিক"
+];
+
+const CATEGORY_LABELS = {
+  "মেডিকেল ও ডেন্টাল":"মেডিকেল ও ডেন্টাল",
+  "ইঞ্জিনিয়ারিং":"ইঞ্জিনিয়ারিং বিশ্ববিদ্যালয়সমূহ",
+  "ভার্সিটি ‘ক’/বিজ্ঞান":"ভার্সিটি ‘ক’ ইউনিট — বিজ্ঞান শাখা",
+  "ভার্সিটি ‘খ’/মানবিক":"ভার্সিটি ‘খ’ ইউনিট — মানবিক/অন্যান্য শাখা"
+};
+
+function renderCategoryTable(cat){
+  const rows=BOOKLET_ROWS.filter(r=>r.cat===cat);
+  return '<section class="category-section" data-cat="'+esc(cat)+'">'+
+    '<h3>'+esc(CATEGORY_LABELS[cat]||cat)+' <span class="cat-count">'+rows.length+'টি তথ্য</span></h3>'+
+    '<div class="table-wrap"><table class="admission-table">'+
+      '<thead><tr>'+
+        '<th>বিশ্ববিদ্যালয় / ইউনিট</th>'+
+        '<th>আসন সংখ্যা</th>'+
+        '<th>আবেদন যোগ্যতা</th>'+
+        '<th>পরীক্ষার ধরন</th>'+
+        '<th>বিষয়ভিত্তিক নম্বর / প্রশ্ন</th>'+
+        '<th>ফলাফল নির্ণয় পদ্ধতি</th>'+
+      '</tr></thead><tbody>'+
+      rows.map(r=>'<tr>'+
+        '<td>'+esc(r.unit)+'</td>'+
+        '<td>'+esc(r.seats)+'</td>'+
+        '<td>'+esc(r.elig)+'</td>'+
+        '<td>'+esc(r.exam)+'</td>'+
+        '<td>'+esc(r.marks)+'</td>'+
+        '<td>'+esc(r.result)+'</td>'+
+      '</tr>').join('')+
+      '</tbody></table></div></section>';
 }
-function listHtml(items){
-  if(!items||!items.length) return '<p>তথ্য এখনো প্রকাশিত/যাচাইকৃত নয়।</p>';
-  return '<ul>'+items.map(v=>'<li>'+esc(v)+'</li>').join('')+'</ul>';
+
+function renderAllCategories(){
+  const tabs=document.getElementById('categoryTabs');
+  const host=document.getElementById('categoryCharts');
+  tabs.innerHTML=CATEGORY_ORDER.map((cat,i)=>'<button class="category-tab'+(i===0?' active':'')+'" data-cat="'+esc(cat)+'">'+esc(CATEGORY_LABELS[cat]||cat)+'</button>').join('');
+  host.innerHTML=CATEGORY_ORDER.map(cat=>renderCategoryTable(cat)).join('');
+
+  tabs.querySelectorAll('.category-tab').forEach(btn=>{
+    btn.onclick=()=>{
+      tabs.querySelectorAll('.category-tab').forEach(x=>x.classList.remove('active'));
+      btn.classList.add('active');
+      const sec=[...host.querySelectorAll('.category-section')].find(x=>x.dataset.cat===btn.dataset.cat);
+      if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+  });
 }
-function renderUniversity(){
-  const found=matchUniversity(uniSearch.value);
-  if(!found){
-    uniResult.innerHTML='<div class="empty">এই নামে তথ্য পাওয়া যায়নি। DU, BUET, RUET, KUET, CUET, BUTEX, IUT, MIST, SUST, JU, JnU, RU, CU, BUP, GST, খুলনা বিশ্ববিদ্যালয়, কুমিল্লা বিশ্ববিদ্যালয়, কৃষি গুচ্ছ, HSTU, মেডিকেল বা AFMC লিখে দেখুন।</div>';
-    return;
-  }
-  const [name]=found;
-  const html=renderBookletRows(name);
-  uniResult.innerHTML=html || '<div class="empty">এই বিশ্ববিদ্যালয়ের জন্য তথ্য কণিকার চার্টে কোনো তথ্য পাওয়া যায়নি।</div>';
-}
-uniFind.onclick=renderUniversity;
-uniSearch.addEventListener('keydown',e=>{if(e.key==='Enter')renderUniversity()});
+renderAllCategories();
 
 const cv=document.getElementById('stars'),cx=cv.getContext('2d');let stars=[];function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);stars=Array.from({length:Math.min(180,innerWidth/5)},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.1+.2,a:Math.random()*.7+.15,p:Math.random()*6.28}))}addEventListener('resize',resize);resize();function draw(t){cx.clearRect(0,0,innerWidth,innerHeight);for(const s of stars){cx.globalAlpha=s.a*(.65+.35*Math.sin(t/900+s.p));cx.fillStyle='#fff';cx.beginPath();cx.arc(s.x,s.y,s.r,0,6.28);cx.fill()}requestAnimationFrame(draw)}requestAnimationFrame(draw);
 </script></body></html>`;
