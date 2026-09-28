@@ -243,10 +243,10 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 .info-search{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 18px}.info-search input{flex:1;min-width:240px}
 .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
 .info-card{background:#0d0f12;border:1px solid #23262c;border-radius:16px;padding:15px}
-.info-card h3{font-size:13px;margin:0 0 9px;color:#f4f4f2}.info-card p,.info-card li{font-size:12px;color:#aeb2b7;line-height:1.55}
+.info-card h3{font-size:13px;margin:0 0 9px;color:#f4f4f2}.info-card p,.info-card li{font-size:12px;color:#aeb2b7;line-height:1.58}.info-card li+li{margin-top:5px}
 .info-card ul{margin:0;padding-left:18px}.info-card a{color:#f0f0ed;text-decoration:underline;text-underline-offset:3px}
 .info-title{font-size:28px;margin:0}.info-name{font-size:20px;font-weight:800;margin:8px 0 2px}.info-status{font-size:11px;color:#9ca1a7}
-.eligibility-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.eligibility-box input{width:100%;min-width:0}
+.eligibility-box{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:8px;margin-top:10px}.eligibility-box input{width:100%;min-width:0}
 .eligibility-result{margin-top:10px;font-size:12px;color:#cdd0d4}
 .source-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.source-badge{font-size:10px;border:1px solid #2a2e34;border-radius:999px;padding:5px 8px;color:#aeb2b7}
 @media(max-width:700px){.info-center{padding:14px}.eligibility-box{grid-template-columns:1fr}.info-title{font-size:23px}}
@@ -285,227 +285,487 @@ const UNIVERSITY_INFO = {
   "Dhaka University": {
     aliases:["DU","University of Dhaka","ঢাকা বিশ্ববিদ্যালয়","ঢাবি"],
     official:"https://admission.eis.du.ac.bd/",
-    session:"2026–27",
-    dates:["IBA — 5 Dec 2026","Science (A) — 12 Dec 2026","Arts, Law & Social Science (B) — 19 Dec 2026","Fine Arts — 22 Dec 2026","Business (C) — 26 Dec 2026"],
-    admit:"Use the official DU admission portal. Admit-card dates should be treated as pending until the 2026–27 notice explicitly publishes them.",
-    circular:"Official 2026–27 undergraduate circular/notice should be checked on the DU admission portal.",
-    subjects:["Science","Arts, Law & Social Science","Business Studies","Fine Arts","IBA (separate process)"],
-    format:"DU commonly uses MCQ + written for major units; exact 2026–27 marks, duration and negative marking must follow the current official circular.",
-    seats:"Seat distribution is unit/department specific; show only when the current official circular publishes the final seat table.",
-    eligibility:"Current 2026–27 exact GPA/subject thresholds are not hard-coded until verified from the official circular.",
-    rule:null,
-    sources:["Official DU admission portal","Chorcha","Admission Calendar"]
+    status:"2026–27 official exam schedule and minimum eligibility are already announced by the University of Dhaka.",
+    basis:"Current 2026–27 official DU announcement + admission calendars",
+    application:"Chorcha reports undergraduate application opening from 11 Nov 2026. Closing date, fee and admit-card window should be taken from the official DU admission portal once the application circular is published.",
+    admit:"2026–27 admit-card download dates are not yet visible in the verified official sources used here.",
+    fees:"2026–27 application fee is not yet verified in the current official notice set.",
+    centers:"Exam centre details will follow the unit-wise official admit card/circular.",
+    seats:"2026–27 unit/department seat matrix is not yet included in the current verified source set. Use the official DU portal when the final seat table is released.",
+    programs:["Science Unit","Arts, Law & Social Science Unit","Business Studies Unit","Fine Arts Unit","IBA Unit"],
+    eligibility:[
+      "Passing years: SSC/equivalent from 2021–2024 and HSC/equivalent in 2026.",
+      "Science Unit — Science-group applicants: SSC+HSC GPA total at least 8.0 and at least 3.5 in each.",
+      "Science Unit — Humanities/Business applicants: total at least 7.5 and at least 3.0 in each.",
+      "Arts, Law & Social Science Unit — Humanities/Business: total at least 7.5 and at least 3.0 in each; Science: total at least 8.0 and at least 3.5 in each.",
+      "Business Studies Unit — Business/Humanities: total at least 7.5 and at least 3.0 in each; Science: total at least 8.0 and at least 3.5 in each.",
+      "Fine Arts Unit — total at least 6.5 and at least 3.0 in each."
+    ],
+    format:[
+      "For the major non-IBA units, DU announced a 90-minute test: 45 minutes MCQ + 45 minutes written.",
+      "Admission test contributes 100 marks; SSC/HSC results contribute another 20 marks, for 120 total assessment marks.",
+      "Fine Arts includes General Knowledge and Drawing. IBA follows its own admission process."
+    ],
+    documents:["SSC/HSC academic information","Recent photograph/signature as required by portal","Quota documents if applicable","Printed admit card when released"],
+    previous:"The 2025–26 DU minimum GPA thresholds were the same as the 2026–27 thresholds now announced.",
+    notes:["Classes for the 2026–27 undergraduate intake are planned to start 28 Mar 2027.","English-medium Science Unit candidates will receive a curriculum-appropriate question paper."],
+    checks:[
+      {label:"Science Unit — Science group",ssc:3.5,hsc:3.5,total:8.0},
+      {label:"Science Unit — Humanities/Business",ssc:3.0,hsc:3.0,total:7.5},
+      {label:"Arts Unit — Humanities/Business",ssc:3.0,hsc:3.0,total:7.5},
+      {label:"Arts Unit — Science",ssc:3.5,hsc:3.5,total:8.0},
+      {label:"Business Unit — Business/Humanities",ssc:3.0,hsc:3.0,total:7.5},
+      {label:"Business Unit — Science",ssc:3.5,hsc:3.5,total:8.0},
+      {label:"Fine Arts Unit",ssc:3.0,hsc:3.0,total:6.5}
+    ],
+    links:[
+      ["Official admission portal","https://admission.eis.du.ac.bd/"],
+      ["2026–27 official DU announcement","https://du.edu.bd/public/du_post_details/post/28137"]
+    ]
   },
+
   "BUET": {
     aliases:["Bangladesh University of Engineering and Technology","বুয়েট"],
     official:"https://ugadmission.buet.ac.bd/",
-    session:"2026–27",
-    dates:["Admission test — 16 Jan 2027"],
-    admit:"Admit-card information will be shown when the official undergraduate admission portal publishes it.",
-    circular:"Use BUET's official undergraduate admission portal for the authoritative circular and prospectus.",
-    subjects:["Engineering","Architecture","Urban & Regional Planning"],
-    format:"Engineering admission format may change by session. The current official circular is authoritative.",
-    seats:"Program-wise seats should be taken from the 2026–27 prospectus once officially published.",
-    eligibility:"Eligibility checker remains conservative until BUET's 2026–27 official GPA/subject requirements are published.",
-    rule:null,
-    sources:["Official BUET undergraduate admission portal","Chorcha","Admission Calendar"]
+    status:"2026–27 admission test date is announced for 16 Jan 2027; detailed current circular/prospectus should be treated as pending until visible on BUET's admission portal.",
+    basis:"2026–27 calendar date + official BUET admission portal; prior-cycle reference when current details are absent",
+    application:"2026–27 application window has not yet been verified in the official source set.",
+    admit:"Admit-card dates will be taken from the official BUET undergraduate portal after the circular opens.",
+    fees:"Not yet verified for 2026–27.",
+    centers:"Official seat plan/admit card will determine the venue.",
+    seats:"Department-wise seat counts are not hard-coded until the current BUET prospectus is verified.",
+    programs:["Engineering faculties","Architecture","Urban & Regional Planning"],
+    eligibility:[
+      "Current 2026–27 detailed subject/GPA thresholds are not yet verified here.",
+      "BUET admission is highly competitive and current-session requirements should be read from the official prospectus rather than inferred from older cycles."
+    ],
+    format:["2026–27 exact written-test format and marks distribution are pending current prospectus verification."],
+    documents:["Academic information","Photograph/signature","Required equivalence/quota documents if applicable","Admit card after publication"],
+    previous:"BUET's 2025–26 Level-1 students appear in the university's 2026 undergraduate academic calendar, but the current admission prospectus details should still be verified separately.",
+    notes:["Do not use unofficial GPA/marks tables as final rules if the 2026–27 prospectus differs."],
+    links:[["Official undergraduate admission portal","https://ugadmission.buet.ac.bd/"]]
   },
+
   "RUET": {
     aliases:["Rajshahi University of Engineering and Technology","রুয়েট"],
     official:"https://admission.ruet.ac.bd/",
-    session:"2026–27",
-    dates:["Admission test — 14 Jan 2027"],
-    admit:"Check the official RUET admission portal for admit-card download dates and instructions.",
-    circular:"Official RUET admission portal is the authoritative source for the circular.",
-    subjects:["Engineering","Architecture","Urban & Regional Planning"],
-    format:"Exam format and group structure will be displayed only from the current official notice.",
-    seats:"Department-wise seats should be read from RUET's current prospectus/circular.",
-    eligibility:"Exact 2026–27 GPA and subject thresholds pending verified official publication.",
-    rule:null,
-    sources:["Official RUET admission portal","Chorcha"]
+    status:"2026–27 exam date is listed as 14 Jan 2027 in the admission calendars; the current official prospectus is not yet fully visible in the verified source set.",
+    basis:"2026–27 calendar + official RUET 2025–26 prospectus/schedule fallback",
+    application:"Previous cycle (2025–26): application 2 Dec 2025 10:00 AM to 13 Dec 2025 5:00 PM; fee payment deadline 15 Dec 2025 noon.",
+    admit:"Previous cycle: admit card available from 10 Jan 2026 5:00 PM. For 2026–27, wait for the new RUET notice.",
+    fees:"Current 2026–27 fee pending official circular.",
+    centers:"Current centre/seat plan pending official 2026–27 notice.",
+    seats:"Engineering/URP and Architecture seat allocation is handled separately; use the new prospectus for final department counts.",
+    programs:["Engineering & URP — Group KA","Architecture — Group KHA"],
+    eligibility:["Use the 2026–27 prospectus once published; previous-cycle rules are available in the official RUET prospectus."],
+    format:[
+      "2025–26 reference: Group KA — 400 marks, 2 hours 30 minutes.",
+      "Higher Mathematics 20 questions/120 marks; Physics 20/120; Chemistry 20/120; English 20/40.",
+      "Architecture Group KHA adds 200 marks: Free-hand Drawing 100 + Visual-Spatial Intelligence 100, 1 hour."
+    ],
+    documents:["SSC/HSC information","Photo/signature","Quota certificates where applicable","Admit card"],
+    previous:"2025–26 test was scheduled for 22 Jan 2026; eligible list 3 Jan; seat plan 6 Jan; admit card 10 Jan; result planned 6 Feb.",
+    notes:["RUET officially maintains Bangla and English prospectuses and publishes eligible lists, seat plans, admit cards and results through the admission portal."],
+    links:[
+      ["RUET admission portal","https://admission.ruet.ac.bd/"],
+      ["2025–26 official circular","https://ruet.ac.bd/notice/undergraduate-admission-circular-for-ruet-2025-2026"],
+      ["2025–26 English prospectus","https://admission.ruet.ac.bd/notices/prospectus/en-prospectus-2025-26.pdf"]
+    ]
   },
+
   "KUET": {
     aliases:["Khulna University of Engineering and Technology","কুয়েট"],
     official:"https://admission.kuet.ac.bd/",
-    session:"2026–27",
-    dates:["Admission test — 8 Jan 2027"],
-    admit:"Check KUET's official admission portal for admit-card release and download window.",
-    circular:"Official KUET admission portal is the authoritative source for circular/prospectus.",
-    subjects:["Engineering","Architecture","Urban & Regional Planning"],
-    format:"Use the current KUET circular for marks, duration and subject distribution.",
-    seats:"Program-wise seats will be shown after the 2026–27 official prospectus is verified.",
-    eligibility:"Exact current-session eligibility is not guessed; official circular required.",
-    rule:null,
-    sources:["Official KUET admission portal","Admission Calendar"]
+    status:"2026–27 official KUET admission portal is live. Test: 8 Jan 2027; centres: KUET, DU and RUET; medium shown as MCQ.",
+    basis:"Current 2026–27 KUET official portal + 2025–26 official prospectus fallback",
+    application:"Current detailed opening/closing dates are not yet shown in the verified portal snapshot.",
+    admit:"Current admit-card window not yet visible in the verified source set.",
+    fees:"Current 2026–27 fee pending official circular details.",
+    centers:"KUET, University of Dhaka and RUET — officially shown for 2026–27.",
+    seats:"Use the current prospectus for final program seat counts.",
+    programs:["Engineering programs","Architecture","Urban & Regional Planning"],
+    eligibility:[
+      "2025–26 reference: SSC/equivalent GPA at least 4.00.",
+      "HSC/equivalent Mathematics, Physics and Chemistry each required at least GPA 4.00.",
+      "The four highest HSC subject GPAs were required to total at least 18.00.",
+      "Biomedical Engineering had additional Biology-related requirements in the previous prospectus."
+    ],
+    format:["2026–27 official portal currently identifies the admission test medium as MCQ; full marks distribution is pending the current circular."],
+    documents:["Academic information","Photo/signature","Equivalent certificates where needed","Admit card"],
+    previous:"The 2025–26 KUET prospectus is the fallback source for eligibility until the full 2026–27 circular is published.",
+    notes:["Current portal has an 'Admission Test Circular' notice entry; that notice should override the previous-cycle eligibility when details differ."],
+    links:[
+      ["2026–27 official KUET admission portal","https://admission.kuet.ac.bd/"],
+      ["2025–26 official prospectus","https://admission.kuet.ac.bd/adm/fNotice/2025-2026%20Prospectus-Ban.pdf"]
+    ]
   },
-  "BUP": {
-    aliases:["Bangladesh University of Professionals","বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস"],
-    official:"https://admission.bup.edu.bd/Admission/Home",
-    session:"2026–27",
-    dates:["FBS — 1 Jan 2027 (also appears as 9 Jan on Chorcha)","FASS — 2 Jan 2027","FST — 8 Jan 2027","FET — 8 Jan 2027","FMS — 8 Jan 2027","FSSS — 8 Jan 2027","BBA General — 9 Jan 2027"],
-    admit:"BUP's official portal hosts admission notices and applicant services. Use it for admit-card instructions.",
-    circular:"The official BUP portal currently lists an Admission Notice for session 2026–27.",
-    subjects:["FASS","FSSS","FST","FBS","FET","FMS","BBA General"],
-    format:"Faculty-specific format applies; verify marks, duration and negative marking from the 2026–27 BUP notice.",
-    seats:"Faculty/program seat counts should be taken from the official 2026–27 admission notice.",
-    eligibility:"Faculty-specific GPA/subject rules apply. Checker will activate after those rules are extracted from the official notice.",
-    rule:null,
-    sources:["Official BUP admission portal","Chorcha","Admission Calendar"]
+
+  "CUET": {
+    aliases:["Chittagong University of Engineering and Technology","চুয়েট"],
+    official:"https://admission.cuet.ac.bd/",
+    status:"2026–27 calendar date: 23 Jan 2027. Detailed current official admission circular is pending verification in the source set.",
+    basis:"2026–27 admission calendar + official CUET portal reference",
+    application:"Not yet verified for 2026–27.",
+    admit:"Not yet verified for 2026–27.",
+    fees:"Not yet verified for 2026–27.",
+    centers:"Current official seat plan pending.",
+    seats:"Final department-wise seat counts must follow the current CUET prospectus.",
+    programs:["Engineering","Architecture","Urban & Regional Planning"],
+    eligibility:["Current 2026–27 GPA/subject thresholds are pending the official circular."],
+    format:["Current exam type/marks distribution pending current circular verification."],
+    documents:["Academic information","Photo/signature","Quota/equivalence documents where applicable","Admit card"],
+    previous:"Previous-cycle details are intentionally not converted into numeric rules until the official CUET prospectus is directly verified.",
+    notes:["CUET is shown separately from RUET/KUET in the 2026–27 admission calendar."],
+    links:[["Official CUET admission portal","https://admission.cuet.ac.bd/"]]
   },
-  "University of Rajshahi": {
-    aliases:["Rajshahi University","RU","রাবি"],
-    official:"https://admission.ru.ac.bd/",
-    session:"2026–27",
-    dates:["Unit B / Business — 8 Jan 2027","Unit C / Science — 9 Jan 2027","Unit A / Humanities — 16 Jan 2027"],
-    admit:"Use the official RU admission portal for the 2026–27 admit-card window when published.",
-    circular:"The official RU admission portal is the primary source for notices, guidelines and applicant login.",
-    subjects:["Unit A / Humanities","Unit B / Business","Unit C / Science"],
-    format:"Unit-specific current-session exam pattern should be taken from the official guideline.",
-    seats:"Department/unit seat distribution should be displayed from the current official notice.",
-    eligibility:"Current 2026–27 eligibility thresholds pending verified official notice.",
-    rule:null,
-    sources:["Official RU admission portal","Chorcha","Admission Calendar"]
-  },
-  "University of Chittagong": {
-    aliases:["Chittagong University","CU","চবি"],
-    official:"https://admission.cu.ac.bd/",
-    session:"2026–27",
-    dates:["C / Business — 29 Jan 2027","A / Science — 30 Jan 2027","B1 — 3 Feb 2027","B2 — 4 Feb 2027","B — 5 Feb 2027","D — 6 Feb 2027","D1 — 8 Feb 2027"],
-    admit:"The official CU portal provides unit-wise admit-card pages and exam instructions.",
-    circular:"Official CU portal includes prospectus, admission notice, application process, eligibility, schedule and fee rules.",
-    subjects:["A / Science","B / Arts & Humanities","B1","B2","C / Business","D / Social Science","D1"],
-    format:"Unit-specific format should be read from the current CU prospectus when 2026–27 is published.",
-    seats:"Seat counts are unit/department specific and should be pulled from the current prospectus.",
-    eligibility:"CU publishes a dedicated general eligibility section; exact 2026–27 values should be used once posted.",
-    rule:null,
-    sources:["Official CU admission portal","Chorcha","Admission Calendar"]
-  },
-  "Jagannath University": {
-    aliases:["JnU","জবি"],
-    official:"https://admission.jnu.ac.bd/",
-    session:"2026–27",
-    dates:["A / Science — 1 Jan 2027","E / Fine Arts — 8 Jan 2027","B / Humanities — 15 Jan 2027","C / Business — 22 Jan 2027","D / Social Science — 23 Jan 2027"],
-    admit:"Use the official Jagannath University admission portal for admit-card instructions.",
-    circular:"Official JnU admission portal is the authoritative circular source.",
-    subjects:["A / Science","B / Humanities","C / Business","D / Social Science","E / Fine Arts"],
-    format:"Use the current official circular for unit-wise pattern and marks.",
-    seats:"Seat distribution should be taken from the current official prospectus/circular.",
-    eligibility:"Exact eligibility pending verified 2026–27 official rules.",
-    rule:null,
-    sources:["Official JnU portal","Chorcha","Admission Calendar"]
-  },
-  "SUST": {
-    aliases:["Shahjalal University of Science and Technology","শাবিপ্রবি"],
-    official:"https://admission.sust.edu.bd/",
-    session:"2026–27",
-    dates:["Unit A — 26 Jan 2027","Unit B — 27 Jan 2027"],
-    admit:"Use SUST's official admission portal for admit-card release.",
-    circular:"Official SUST admission portal is the authoritative source.",
-    subjects:["A","B"],
-    format:"Unit-wise current format should be taken from the official circular.",
-    seats:"Seat distribution should be taken from SUST's 2026–27 prospectus.",
-    eligibility:"Exact 2026–27 rules pending verified official publication.",
-    rule:null,
-    sources:["Official SUST portal","Chorcha","Admission Calendar"]
-  },
-  "Comilla University": {
-    aliases:["CoU","কুমিল্লা বিশ্ববিদ্যালয়","কুবি"],
-    official:"https://admission.cou.ac.bd/",
-    session:"2026–27",
-    dates:["A — 5 Feb 2027","B — 6 Feb 2027","C — 7 Feb 2027"],
-    admit:"Check the official CoU admission portal/notices for admit-card dates.",
-    circular:"Official university notice is authoritative; Chorcha reports application period 15 Nov–10 Dec and exam centers in Cumilla, Chattogram and Rajshahi.",
-    subjects:["A / Science","B / Humanities","C / Business"],
-    format:"Use current official circular for marks, duration and negative marking.",
-    seats:"Seat counts should be taken from the current official prospectus.",
-    eligibility:"Exact current-session eligibility should be verified from the official circular.",
-    rule:null,
-    sources:["Official CoU portal","Chorcha","Admission Calendar"]
-  },
-  "GST Cluster": {
-    aliases:["GST","General Science and Technology Cluster","গুচ্ছ"],
-    official:"https://gstadmission.ac.bd/",
-    session:"2026–27",
-    dates:["B / Humanities — 19 Mar 2027","C / Business — 20 Mar 2027","D / Architecture — 20 Mar 2027","A / Science — 27 Mar 2027"],
-    admit:"Use the official GST admission portal for admit-card and center information.",
-    circular:"Official GST portal is the authoritative source for participating universities and rules.",
-    subjects:["A / Science","B / Humanities","C / Business","D / Architecture"],
-    format:"Unit-specific current-session format must follow the official GST circular.",
-    seats:"University/subject seats are distributed across participating institutions; current official seat matrix required.",
-    eligibility:"Group-specific GPA and subject requirements should be loaded from the current GST circular before making an eligibility decision.",
-    rule:null,
-    sources:["Official GST portal","Chorcha","Admission Calendar"]
-  },
-  "Agriculture Cluster": {
-    aliases:["Agri","Agricultural Universities Cluster","কৃষি গুচ্ছ"],
-    official:"https://acas.edu.bd/",
-    session:"2026–27",
-    dates:["Admission test — 2 Jan 2027"],
-    admit:"Use the official Agriculture Cluster admission system for admit-card availability.",
-    circular:"Official cluster portal is the authoritative circular source.",
-    subjects:["Agriculture-related undergraduate programs across participating universities"],
-    format:"Current official cluster circular controls subject distribution, duration and marking.",
-    seats:"Participating-university seat matrix should be read from the current official circular.",
-    eligibility:"Exact HSC subject/GPA eligibility must be checked against the current official circular.",
-    rule:null,
-    sources:["Official Agriculture Cluster portal","Chorcha","Admission Calendar"]
-  },
+
   "MIST": {
     aliases:["Military Institute of Science and Technology"],
     official:"https://admission.mist.ac.bd/",
-    session:"2026–27",
-    dates:["C Unit — 18 Dec 2026","A & B — 19 Dec 2026"],
-    admit:"Use MIST's official admission portal for admit-card and applicant instructions.",
-    circular:"Official MIST admission portal/notice is authoritative.",
-    subjects:["Engineering and Architecture programs"],
-    format:"Unit-wise current format should follow the 2026–27 official notice.",
-    seats:"Program-wise seats should be taken from the official prospectus.",
-    eligibility:"Exact current-session GPA/subject conditions pending verified official circular.",
-    rule:null,
-    sources:["Official MIST portal","Chorcha","Admission Calendar"]
+    status:"MIST official undergraduate information provides detailed Unit A/B/C eligibility, marks and fees; 2026–27 calendar dates are 18–19 Dec 2026.",
+    basis:"Official MIST undergraduate information + 2026–27 admission calendar",
+    application:"Application is through the MIST admission portal; applicants create an account after eligibility check and pay online.",
+    admit:"Eligible applicants can download/print application copy and admit card after successful submission/payment according to portal timing.",
+    fees:"Official undergraduate info: Tk 1,200 Engineering; Tk 1,400 Engineering + Architecture; Tk 1,000 Unit C (Science).",
+    centers:"Current 2026–27 centre list should follow the admit card/official circular.",
+    seats:"Program-wise seats should be taken from the current MIST circular.",
+    programs:["Unit A — Engineering & Architecture","Unit B — Architecture drawing","Unit C — B.Sc. Mathematics & Data Science / B.Sc. Chemistry"],
+    eligibility:[
+      "Unit C official requirement: SSC and HSC/equivalent GPA at least 3.50 in each.",
+      "GCE Unit C: minimum B in five O-Level subjects including Math, Physics, Chemistry; minimum B in Math, Physics, Chemistry at A-Level.",
+      "Biomedical Engineering applicants need Biology with minimum A- at HSC or equivalent C at A-Level."
+    ],
+    format:[
+      "Unit A: 200 marks, 3 hours — Mathematics 80, Physics 60, Chemistry 40, English 20.",
+      "Unit B: Freehand Drawing & Visual-Spatial Intelligence 200 marks, 2 hours.",
+      "Minimum qualifying mark: 40% in Unit A and Unit B separately.",
+      "Unit C: MCQ 80 marks, 60 minutes — Mathematics 25, Chemistry 25, Physics 20, English 10; minimum 32.",
+      "Engineering/Architecture merit reference: written test 60%, HSC Math/Physics/Chemistry 20%, SSC Math/Physics/Chemistry 20%; last-year candidates receive 5% test-mark deduction."
+    ],
+    documents:["SSC/HSC or equivalent details","Photo/signature","GCE transcript/certificate verification where applicable","Admit card"],
+    previous:"MIST's official portal currently shows the prior undergraduate cycle application deadline as 19 Jan 2026; 2026–27 exact application window should follow the new circular.",
+    notes:["Questions are available in both Bangla and English; applicants may answer in either language."],
+    checks:[{label:"Unit C basic GPA gate",ssc:3.5,hsc:3.5,total:7.0}],
+    links:[
+      ["Official MIST admission portal","https://admission.mist.ac.bd/"],
+      ["Official undergraduate information","https://research.mist.ac.bd/study-with-us/undergraduate"]
+    ]
   },
+
+  "BUP": {
+    aliases:["Bangladesh University of Professionals","বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস"],
+    official:"https://admission.bup.edu.bd/Admission/Home",
+    status:"BUP has already posted an official 'Admission Notice (Session: 2026–2027)' dated 1 Sep 2026.",
+    basis:"Current BUP 2026–27 official notice availability + calendar dates; previous undergraduate notice for format fallback",
+    application:"Use the current BUP notice for the exact application window. The official portal is already publishing the 2026–27 notice.",
+    admit:"Current notice/portal will control admit-card download. The site should not infer the window from older cycles.",
+    fees:"Previous undergraduate reference: Tk 1,100 application processing fee per faculty. Confirm against the 2026–27 notice.",
+    centers:"Current notice/admit card will specify centre details.",
+    seats:"Faculty/program seat numbers are current-notice dependent; do not assume prior-cycle counts.",
+    programs:["FASS","FSSS","FST","FBS","FET","FMS","BBA General"],
+    eligibility:["Faculty-specific GPA and subject requirements apply; use the 2026–27 notice for each faculty/program."],
+    format:[
+      "Previous undergraduate reference: MCQ admission test; 0.50 mark deducted for each wrong answer.",
+      "Previous reference required at least 40% in English to qualify.",
+      "Previous assessment reference (except MBA): admission test 55%, HSC/equivalent 25%, SSC/equivalent 20%.",
+      "Calculators were not allowed except in FST, where approved models were printed on the admit card."
+    ],
+    documents:["SSC/HSC information","Photo/signature","Quota/supporting documents where applicable","Equivalence certificate for foreign qualifications","Admit card"],
+    previous:"2024–25 undergraduate admission notice is used only for format/fee reference where the 2026–27 PDF details have not been parsed.",
+    notes:["BUP source calendars show multiple faculty exams on 1, 2, 8 and 9 Jan 2027; FBS appears on both 1 and 9 Jan across sources, so the official notice must resolve that inconsistency."],
+    links:[
+      ["Official BUP admission portal","https://admission.bup.edu.bd/Admission/Home"],
+      ["All official BUP notices","https://admission.bup.edu.bd/Admission/NoticeAll"]
+    ]
+  },
+
+  "University of Rajshahi": {
+    aliases:["Rajshahi University","RU","রাবি"],
+    official:"https://admission.ru.ac.bd/",
+    status:"2026–27 calendar dates are announced/tentative in the source set; official 2025–26 portal remains a strong reference for workflow and timing.",
+    basis:"2026–27 calendar + official RU 2025–26 portal fallback",
+    application:"Chorcha reports a tentative 2026–27 application period of 12–27 Nov 2026. Previous official cycle: 20 Nov–8 Dec 2025.",
+    admit:"Previous official cycle: 17–22 Dec 2025. Current 2026–27 window pending official RU notice.",
+    fees:"Current fee not yet verified.",
+    centers:"Current seat plan/admit card pending.",
+    seats:"RU published an official 'Departments/Institutes Seats' notice on 17 Dec 2025 for the previous cycle; use the equivalent 2026–27 notice when released.",
+    programs:["Unit A — Humanities","Unit B — Business","Unit C — Science"],
+    eligibility:["Unit/department-specific conditions are published by RU in the official admission portal; current 2026–27 conditions are pending."],
+    format:["Current 2026–27 exact marks distribution is pending official notice."],
+    documents:["Academic information","Photo/selfie per RU instructions","Quota documents where applicable","Admit card"],
+    previous:"2025–26 official dates: online application 20 Nov–8 Dec 2025; admit card 17–22 Dec; Unit C test 16 Jan, Unit A 17 Jan, Unit B 24 Jan 2026.",
+    notes:["RU portal provides separate Application Guideline, Payment Instructions, Photo/Selfie Instructions, helpline, FAQ and complaint channels."],
+    links:[
+      ["Official RU admission portal","https://admission.ru.ac.bd/"],
+      ["Official RU notices","https://admission.ru.ac.bd/student/notices"]
+    ]
+  },
+
+  "Jagannath University": {
+    aliases:["JnU","জবি"],
+    official:"https://admission.jnu.ac.bd/",
+    status:"2026–27 unit exam dates are in the calendars; detailed current application/admit-card windows are pending official publication.",
+    basis:"2026–27 calendar + official JnU 2025–26 prospectus fallback",
+    application:"Previous official cycle: 20 Nov–5 Dec 2025.",
+    admit:"Previous cycle unit-wise windows: A 10–21 Dec; C 10–22 Dec; D 25 Dec–4 Jan; E 7–11 Dec; B 15–25 Jan. Use only as planning reference.",
+    fees:"Current 2026–27 fee pending.",
+    centers:"Current seat plan/admit card pending.",
+    seats:"Unit/department seat counts should follow the 2026–27 admission guideline when published.",
+    programs:["A — Science","B — Humanities","C — Business","D — Social Science","E — Fine Arts"],
+    eligibility:["Current unit-wise 2026–27 eligibility is pending the official guideline."],
+    format:["Current unit-wise format/marks pending the official circular."],
+    documents:["Academic information","Photo/signature","Quota/equivalence documents if applicable","Admit card"],
+    previous:"Official 2025–26 prospectus page contains application dates, unit-specific admit-card windows and exam dates; it is used only when the current circular is absent.",
+    notes:["The current calendar places JnU A on 1 Jan, E on 8 Jan, B on 15 Jan, C on 22 Jan and D on 23 Jan 2027."],
+    links:[
+      ["Official JnU admission portal","https://admission.jnu.ac.bd/"],
+      ["2025–26 official prospectus page","https://admission.jnu.ac.bd/preliminary/prospectus/e714b56bd5992f4435b9adc23ac3832ef17073af.jsp"]
+    ]
+  },
+
+  "Khulna University": {
+    aliases:["KU","খুলনা বিশ্ববিদ্যালয়","খুবি"],
+    official:"https://apply.ku.ac.bd/",
+    status:"2026–27 A/B/C/D unit exam dates are in the admission calendars; detailed current circulars are still being assembled.",
+    basis:"2026–27 calendar + official Khulna University 2025–26 unit prospectuses",
+    application:"Current 2026–27 application window pending official unit notices.",
+    admit:"Current admit-card window pending official notices.",
+    fees:"Current fee pending.",
+    centers:"2025–26 D Unit was held in Dhaka and Khulna; 2026–27 centres should follow the new unit circulars.",
+    seats:"2025–26 D Unit: 88 total seats including reserved/BKSP quota; A Unit covered 8 disciplines. Current 2026–27 seat table may change.",
+    programs:["A — Science/Engineering/Technology","B — Life Science","C — Humanities","D — Business"],
+    eligibility:[
+      "2025–26 D Unit: applicants from Science, Business or Humanities could apply.",
+      "D Unit required at least GPA 3.50 separately in SSC and HSC/equivalent and HSC English grade point at least 3.00.",
+      "GCE D Unit reference: at least B in three O-Level subjects and two A-Level subjects."
+    ],
+    format:[
+      "2025–26 D Unit reference: 100 marks total.",
+      "MCQ: English Language & Grammar 20; Mathematics & Analytical Ability 30; General/Business Knowledge 10.",
+      "Written: English Composition 40."
+    ],
+    documents:["Academic information","Photo/signature","Quota supporting documents if applicable","Admit card"],
+    previous:"Current details fall back to the official 2025–26 unit PDFs where the 2026–27 circular is not yet available.",
+    notes:["Current calendar: D and C on 17 Dec 2026; A and B on 18 Dec 2026."],
+    checks:[{label:"D Unit 2025–26 basic GPA reference",ssc:3.5,hsc:3.5,total:7.0}],
+    links:[
+      ["Khulna University application portal","https://apply.ku.ac.bd/"],
+      ["2025–26 A Unit prospectus","https://apply.ku.ac.bd/images/prospectus/A-Unit.pdf"],
+      ["2025–26 D Unit prospectus","https://apply.ku.ac.bd/images/prospectus/D-Unit.pdf"]
+    ]
+  },
+
+  "SUST": {
+    aliases:["Shahjalal University of Science and Technology","শাবিপ্রবি"],
+    official:"https://admission.sust.edu.bd/",
+    status:"2026–27 calendar dates: Unit A 26 Jan 2027; Unit B 27 Jan 2027. Current detailed circular pending.",
+    basis:"2026–27 calendar + official SUST 2025–26 admission/department eligibility information",
+    application:"Current 2026–27 application window pending.",
+    admit:"Current admit-card window pending.",
+    fees:"Current application fee pending.",
+    centers:"Current 2026–27 centre list pending official notice.",
+    seats:"Department-level examples from official SUST pages: Mechanical Engineering 35 seats; Forestry & Environmental Science 55 seats. Use current prospectus for full seat matrix.",
+    programs:["Unit A","Unit B","Architecture","CSE","EEE","IPE","MEE","SWE","Life Sciences","Social Sciences","Business and other departments"],
+    eligibility:[
+      "Official department eligibility reference: relevant HSC-level prerequisite subjects generally require minimum GPA 3.0.",
+      "Examples: CSE/EEE/IPE/MEE/PHY/SWE require Physics and Mathematics; Architecture requires Physics and Mathematics.",
+      "BMB/GEB require Biology, Chemistry and Mathematics; MAT/STA require Mathematics."
+    ],
+    format:["Current 2026–27 unit marks distribution pending official circular."],
+    documents:["SSC/HSC information","Photo/signature","Quota/equivalence documents if applicable","Admit card"],
+    previous:"Official SUST portal is still labeled 2025–26 in the verified source set; it supplies department-level eligibility references until 2026–27 details are published.",
+    notes:["Department eligibility can be stricter than general unit eligibility, so final subject choice must check department prerequisites."],
+    links:[
+      ["Official SUST admission portal","https://admission.sust.edu.bd/"],
+      ["SUST official admission reference","https://www.sust.edu/university-forms-and-downloads"]
+    ]
+  },
+
+  "University of Chittagong": {
+    aliases:["Chittagong University","CU","চবি"],
+    official:"https://admission.cu.ac.bd/",
+    status:"2026–27 unit dates are announced in the calendars; detailed prospectus/eligibility should be taken from the current CU admission portal.",
+    basis:"2026–27 calendar + official CU admission portal",
+    application:"Current window pending verified official circular.",
+    admit:"Current unit-wise admit-card windows pending.",
+    fees:"Current fee pending.",
+    centers:"Current seat plan/admit card pending.",
+    seats:"Unit/department seat matrix pending current prospectus.",
+    programs:["A — Science","B — Arts & Humanities","B1","B2","C — Business","D — Social Science","D1"],
+    eligibility:["Current 2026–27 general and department-specific eligibility should follow the CU prospectus."],
+    format:["Unit-specific marks distribution and negative-marking policy pending current prospectus verification."],
+    documents:["Academic information","Photo/signature","Quota documents if applicable","Admit card"],
+    previous:"The official CU portal typically provides prospectus, eligibility, application process, schedule and fee rules; use last-cycle documents only until the new prospectus appears.",
+    notes:["Current calendar dates: C 29 Jan; A 30 Jan; B1 3 Feb; B2 4 Feb; B 5 Feb; D 6 Feb; D1 8 Feb 2027."],
+    links:[["Official CU admission portal","https://admission.cu.ac.bd/"]]
+  },
+
+  "Comilla University": {
+    aliases:["CoU","কুমিল্লা বিশ্ববিদ্যালয়","কুবি"],
+    official:"https://www.cou.ac.bd/admission",
+    status:"2026–27 application and exam schedule are already published in the admission calendars.",
+    basis:"Current 2026–27 Chorcha/calendar information + official CoU 2025–26 admission archive",
+    application:"Current 2026–27: 15 Nov–10 Dec 2026 (Chorcha).",
+    admit:"Current admit-card window not yet verified in the official source set.",
+    fees:"Current application fee pending official circular.",
+    centers:"Current calendar reports exam centres in Cumilla, Chattogram and Rajshahi.",
+    seats:"Unit/department seat matrix should follow the 2026–27 official circular.",
+    programs:["A — Science","B — Humanities","C — Business"],
+    eligibility:["Current 2026–27 GPA/unit conditions pending official circular."],
+    format:["Current unit-wise marks distribution pending official circular."],
+    documents:["Academic information","Photo/signature","Quota/equivalence documents if applicable","Admit card"],
+    previous:"The official CoU site maintains a 2025–26 undergraduate admission archive with unit results and merit notices; use it only as previous-cycle reference.",
+    notes:["Current exam dates: A 5 Feb 11:00 AM; B 6 Feb (sources differ on time); C 7 Feb (sources differ on time)."],
+    links:[
+      ["Official CoU admission archive","https://www.cou.ac.bd/admission"],
+      ["Official undergraduate program page","https://www.cou.ac.bd/program-category/undergraduate-program"]
+    ]
+  },
+
+  "BUP": null,
+
   "BUTEX": {
-    aliases:["Bangladesh University of Textiles","টেক্সটাইল বিশ্ববিদ্যালয়"],
-    official:"https://butex.edu.bd/",
-    session:"2026–27",
-    dates:["Admission test — 29 Jan 2027"],
-    admit:"Check BUTEX official notices for admit-card instructions.",
-    circular:"Official BUTEX notice/circular is authoritative.",
-    subjects:["Textile Engineering and related undergraduate programs"],
-    format:"Current official admission notice should be used for exam pattern.",
-    seats:"Department-wise seats should be loaded from the official circular.",
-    eligibility:"Exact 2026–27 requirements pending official verification.",
-    rule:null,
-    sources:["Official BUTEX website","Chorcha","Admission Calendar"]
+    aliases:["Bangladesh University of Textiles","বুটেক্স","Textile University"],
+    official:"https://newsite.butex.edu.bd/admission_new/undergraduate-admission",
+    status:"2026–27 calendar date: 29 Jan 2027. Official undergraduate page currently provides detailed 2025–26 admission reference.",
+    basis:"2026–27 calendar + official BUTEX 2025–26 undergraduate admission page",
+    application:"Current 2026–27 application window pending official circular.",
+    admit:"Current admit-card date pending.",
+    fees:"Current application fee pending.",
+    centers:"Current seat plan pending.",
+    seats:"Official previous-cycle reference: about 9,000 candidates were allowed to sit against 640 seats.",
+    programs:["B.Sc. in Textile Engineering programs across BUTEX departments"],
+    eligibility:[
+      "2025–26 reference: SSC/equivalent GPA at least 4.00.",
+      "HSC/equivalent GPA at least 4.00.",
+      "HSC Mathematics + Physics + Chemistry + English grade points total at least 17.50, with each subject at least 3.50.",
+      "Mathematics must be present in HSC at least as optional subject.",
+      "Previous official FAQ says only current-year HSC candidates could apply; second-timers were not eligible."
+    ],
+    format:[
+      "2025–26 reference: written admission test, 200 marks.",
+      "Mathematics 60, Physics 60, Chemistry 60, English 20.",
+      "Selection based on admission-test score."
+    ],
+    documents:["Academic information","Photo/signature","Admit card","Equivalence documents where applicable"],
+    previous:"The official BUTEX page explicitly labels its detailed circular/FAQ as 2025–26; these figures are used only until the 2026–27 circular appears.",
+    notes:["Current calendar sources differ on whether the 29 Jan 2027 exam starts at 10:00 or 11:00; official notice should decide."],
+    checks:[{label:"2025–26 basic SSC/HSC GPA reference",ssc:4.0,hsc:4.0,total:8.0}],
+    links:[["Official BUTEX undergraduate admission page","https://newsite.butex.edu.bd/admission_new/undergraduate-admission"]]
   },
+
   "AAUB": {
-    aliases:["Aviation and Aerospace University Bangladesh","Aviation and Aerospace University, Bangladesh"],
+    aliases:["Aviation and Aerospace University Bangladesh","Aviation and Aerospace University, Bangladesh","এএউবি"],
     official:"https://aaub.edu.bd/",
-    session:"2026–27",
-    dates:["Admission test — 5 Dec 2026"],
-    admit:"Check AAUB's official admission notice for admit-card instructions.",
-    circular:"Official AAUB notice is authoritative.",
-    subjects:["Aviation and aerospace-related undergraduate programs"],
-    format:"Use the 2026–27 official admission notice for the final exam pattern.",
-    seats:"Program-wise seat counts should be taken from the official notice.",
-    eligibility:"Exact current-session eligibility pending official verification.",
-    rule:null,
-    sources:["Official AAUB website","Chorcha","Admission Calendar"]
+    status:"2026–27 admission test date is 5 Dec 2026 in the calendars; detailed current notice should be checked on the university site.",
+    basis:"2026–27 calendar + official AAUB 2025–26 admission guideline fallback",
+    application:"Current 2026–27 window pending detailed official notice.",
+    admit:"Current admit-card window pending.",
+    fees:"Current application fee pending.",
+    centers:"Current exam centre details should follow the 2026–27 AAUB notice.",
+    seats:"Current program-wise seat counts pending official notice.",
+    programs:["B.Sc. Aerospace Engineering","B.Sc. Avionics Engineering","B.Sc. Aircraft Maintenance Engineering (Aerospace)","B.Sc. Aircraft Maintenance Engineering (Avionics)"],
+    eligibility:["Use current 2026–27 official admission instruction when published; previous-cycle official guideline is linked for reference."],
+    format:["Current exam marks distribution pending the 2026–27 notice."],
+    documents:["Academic information","Photo/signature","Admit card","Equivalent certificates if applicable"],
+    previous:"AAUB's official 2025–26 guideline confirms four 4-year undergraduate programs in Aerospace/Avionics/Aircraft Maintenance Engineering.",
+    notes:["Do not confuse AAUB undergraduate programs with its postgraduate aviation/space programs."],
+    links:[
+      ["Official AAUB website","https://aaub.edu.bd/"],
+      ["2025–26 official admission guideline PDF","https://aaub.edu.bd/public/ckfinder/userfiles/files/Admission-Instruction-2025-26%281%29.pdf"]
+    ]
   },
+
+  "GST Cluster": {
+    aliases:["GST","General Science and Technology Cluster","গুচ্ছ","GST Admission"],
+    official:"https://gstadmission.ac.bd/",
+    status:"2026–27 GST dates are announced: B 19 Mar; C & D 20 Mar; A 27 Mar 2027.",
+    basis:"Current 2026–27 calendars + official GST portal",
+    application:"Current 2026–27 application window pending official circular.",
+    admit:"Current admit-card/centre window pending official portal update.",
+    fees:"Current application fee pending official circular.",
+    centers:"Participating university/centre list pending current official notice.",
+    seats:"Seats are distributed across participating GST universities and subjects; use the current official seat matrix when published.",
+    programs:["A — Science","B — Humanities","C — Business","D — Architecture (where separately applied)"],
+    eligibility:["Group-specific GPA and HSC subject requirements are current-circular dependent; do not infer from prior GST cycles."],
+    format:["Current unit marks distribution, duration and negative-marking policy pending current circular."],
+    documents:["Academic information","Photo/signature","Quota/equivalence documents if applicable","Admit card"],
+    previous:"Previous-cycle GST materials may help understand the workflow, but the participating-university list and eligibility can change by session.",
+    notes:["The calendars agree on GST dates but may differ by one hour on unit start times; official notice should control final time."],
+    links:[["Official GST admission portal","https://gstadmission.ac.bd/"]]
+  },
+
+  "Agriculture Cluster": {
+    aliases:["Agri","Agricultural Universities Cluster","কৃষি গুচ্ছ","ACAS"],
+    official:"https://acas.edu.bd/",
+    status:"2026–27 Agriculture Cluster test is scheduled for 2 Jan 2027 in the admission calendars. Sher-e-Bangla Agricultural University is reported as lead coordinator.",
+    basis:"2026–27 calendar + official ACAS 2025–26 notices/seat plan fallback",
+    application:"Current 2026–27 application window pending official ACAS circular.",
+    admit:"Current admit-card window pending.",
+    fees:"Current application fee pending.",
+    centers:"Current centre list pending. Previous official 2025–26 seat plan used many centres/sub-centres nationwide.",
+    seats:"Previous cycle officially covered 9 public universities offering agriculture-related degrees; current participating institutions/seat matrix must be confirmed from the 2026–27 guideline.",
+    programs:["Agriculture","Veterinary/Animal Science","Fisheries","Agricultural Engineering","Forestry/Environment and other agriculture-related programs across participating universities"],
+    eligibility:["Current HSC science-subject/GPA thresholds pending the 2026–27 ACAS guideline."],
+    format:["Current 2026–27 exam marks distribution pending the new ACAS circular."],
+    documents:["Academic information","Photo/signature","Admit card","Quota/equivalence documents if applicable"],
+    previous:"Official ACAS notice archive contains the 2025–26 admission guideline, revised circular, seat plan, results, migration and university/degree allocation notices.",
+    notes:["The prior cycle used a cluster-wide merit/choice process across nine public universities."],
+    links:[
+      ["Official Agriculture Cluster portal","https://acas.edu.bd/"],
+      ["Official ACAS notices","https://acas.edu.bd/notice"]
+    ]
+  },
+
   "Medical & Dental": {
-    aliases:["Medical","Dental","MBBS","BDS"],
+    aliases:["Medical","Dental","MBBS","BDS","মেডিকেল","ডেন্টাল"],
     official:"https://dgme.gov.bd/",
-    session:"2026–27",
-    dates:["Admission test — 4 Dec 2026"],
-    admit:"Admit-card dates and download instructions should be verified from DGME/DGHS official admission notices.",
-    circular:"Use official DGME/DGHS notices for MBBS/BDS admission.",
-    subjects:["MBBS","BDS"],
-    format:"Medical admission test format and marks are governed by the current official circular.",
-    seats:"Government/private seat figures should be taken from the current official circular and college list.",
-    eligibility:"Exact 2026–27 GPA, biology and passing-year rules must be taken from the official circular.",
-    rule:null,
-    sources:["DGME official resources","Admission Calendar"]
+    status:"2026–27 admission calendar lists the combined Medical & Dental test on 4 Dec 2026 at 10:00 AM. Detailed domestic circular should come from DGME/DGHS.",
+    basis:"2026–27 admission calendar + official/reliable 2025–26 medical admission reference",
+    application:"Current 2026–27 application opening/closing dates pending DGME/DGHS domestic circular.",
+    admit:"Current admit-card window pending. Previous cycle required a colour-printed admit card and HSC/equivalent admit/registration card at the exam centre.",
+    fees:"Current application fee pending the 2026–27 circular.",
+    centers:"Previous cycle: 17 centres and 49 venues nationwide. Current 2026–27 centre list may differ.",
+    seats:"2025–26 reference: 13,051 combined government/private MBBS+BDS seats — government 5,645 (MBBS 5,100; BDS 545), private 7,406 (MBBS 6,001; BDS 1,405).",
+    programs:["MBBS","BDS"],
+    eligibility:[
+      "Current 2026–27 domestic GPA/passing-year rules pending the official circular.",
+      "Applicants should have Science background with Biology, Chemistry and Physics; exact GPA and Biology threshold must follow the current DGME/DGHS notice."
+    ],
+    format:[
+      "2025–26 reference: 100 MCQs, 1 hour 15 minutes, pass mark 40.",
+      "Biology 30, Chemistry 25, Physics 15, English 15, General Knowledge/Aptitude/Human Qualities 15.",
+      "0.25 mark deducted for each wrong answer.",
+      "Previous merit calculation added SSC GPA×8 (max 40) + HSC GPA×12 (max 60) to the written-test score."
+    ],
+    documents:["Colour-printed admit card","Transparent black-ink ballpoint pen","HSC/equivalent admit card or registration card","Other documents required by current circular"],
+    previous:"2025–26 domestic MBBS/BDS test was held 12 Dec 2025 at 10:00 AM; DGME/DGHS published results and subsequent admission instructions.",
+    notes:["Previous cycle prohibited mobile phones, calculators, electronic devices and watches in the examination hall.","Current 2026–27 rules may change and must override the previous-cycle reference."],
+    links:[
+      ["DGME official notices","https://dgme.gov.bd/pages/notices"],
+      ["DGHS official notices","https://dghs.gov.bd/pages/notices"]
+    ]
   }
+};
+
+// Re-insert BUP because the object literal above keeps profiles grouped by type.
+UNIVERSITY_INFO["BUP"] = {
+  aliases:["Bangladesh University of Professionals","বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস"],
+  official:"https://admission.bup.edu.bd/Admission/Home",
+  status:"BUP has already posted an official Admission Notice for session 2026–27 (dated 1 Sep 2026).",
+  basis:"Current 2026–27 BUP official notice availability + calendars; previous undergraduate notice for format fallback",
+  application:"Use the current BUP notice for exact application dates.",
+  admit:"Use the 2026–27 BUP portal/notice for admit-card release.",
+  fees:"Previous undergraduate reference: Tk 1,100 application processing fee per faculty; confirm in 2026–27 notice.",
+  centers:"Current notice/admit card will specify centres.",
+  seats:"Faculty/program seat counts must follow the 2026–27 notice.",
+  programs:["FASS","FSSS","FST","FBS","FET","FMS","BBA General"],
+  eligibility:["Faculty-specific GPA and subject rules apply; use the 2026–27 faculty/program notice."],
+  format:["Previous undergraduate reference: MCQ admission test; 0.50 mark deducted per incorrect answer.","Previous reference required at least 40% in English.","Previous assessment weighting (except MBA): test 55%, HSC 25%, SSC 20%.","Calculator was prohibited except FST-approved models listed on the admit card."],
+  documents:["SSC/HSC details","Photo/signature","Quota/supporting documents","Equivalence certificate if needed","Admit card"],
+  previous:"2024–25 undergraduate notice is used only for format/fee reference until the full 2026–27 PDF is parsed.",
+  notes:["Calendar sources disagree on BUP FBS appearing on 1 Jan vs 9 Jan 2027; official BUP notice is authoritative."],
+  links:[["Official BUP admission portal","https://admission.bup.edu.bd/Admission/Home"],["All BUP notices","https://admission.bup.edu.bd/Admission/NoticeAll"]]
 };
 
 const uniList=document.getElementById('uniList');
@@ -515,41 +775,78 @@ function matchUniversity(q){
   q=q.trim().toLowerCase();
   if(!q) return null;
   for(const [name,info] of Object.entries(UNIVERSITY_INFO)){
+    if(!info) continue;
     if(name.toLowerCase()===q || info.aliases.some(a=>a.toLowerCase()===q)) return [name,info];
   }
   for(const [name,info] of Object.entries(UNIVERSITY_INFO)){
+    if(!info) continue;
     if(name.toLowerCase().includes(q) || info.aliases.some(a=>a.toLowerCase().includes(q)||q.includes(a.toLowerCase()))) return [name,info];
   }
   return null;
 }
+
+function listHtml(items){
+  if(!items||!items.length) return '<p>Not published / not verified yet.</p>';
+  return '<ul>'+items.map(v=>'<li>'+esc(v)+'</li>').join('')+'</ul>';
+}
+
 function renderUniversity(){
   const found=matchUniversity(uniSearch.value);
-  if(!found){uniResult.innerHTML='<div class="empty">No exact information profile found yet. Try DU, BUET, RUET, KUET, BUP, Rajshahi University, Chittagong University, Jagannath University, SUST, GST, Agriculture Cluster, MIST, BUTEX, AAUB or Medical.</div>';return;}
+  if(!found){
+    uniResult.innerHTML='<div class="empty">No profile found. Search DU, BUET, RUET, KUET, CUET, MIST, BUP, Rajshahi University, Jagannath University, Khulna University, SUST, Chittagong University, Comilla University, BUTEX, AAUB, GST, Agriculture Cluster or Medical.</div>';
+    return;
+  }
   const [name,x]=found;
   const eventMatches=all.filter(e=>{
     const s=(e.title||'').toLowerCase();
-    return s.includes(name.toLowerCase())||x.aliases.some(a=>a.length>2&&s.includes(a.toLowerCase()));
+    const tokens=[name,...x.aliases].filter(v=>v&&v.length>2).map(v=>v.toLowerCase());
+    return tokens.some(t=>s.includes(t));
   });
-  const liveDates=eventMatches.length?eventMatches.map(e=>new Date(e.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'})+' — '+e.title):x.dates;
-  const official=x.official?'<a href="'+x.official+'" target="_blank" rel="noopener">Open official admission source ↗</a>':'Not available';
+  const liveDates=eventMatches.length
+    ? eventMatches.map(e=>new Date(e.date).toLocaleString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium',timeStyle:'short'})+' — '+e.title)
+    : ['No current calendar event matched this profile yet.'];
+
+  const links=(x.links||[]).map(([label,url])=>'<a href="'+url+'" target="_blank" rel="noopener">'+esc(label)+' ↗</a>').join('<br>');
+  const checkOptions=(x.checks||[]).map((r,i)=>'<option value="'+i+'">'+esc(r.label)+'</option>').join('');
+  const checker=x.checks&&x.checks.length
+    ? '<div class="eligibility-box"><select id="ruleSelect">'+checkOptions+'</select><input id="sscGpa" type="number" min="0" max="5" step=".01" placeholder="SSC GPA"><input id="hscGpa" type="number" min="0" max="5" step=".01" placeholder="HSC GPA"><button class="btn" id="checkEligibility">Check basic GPA</button></div><div class="eligibility-result" id="eligibilityResult">This checker evaluates only the verified GPA gate shown above; subject/year/quota conditions still apply.</div>'
+    : '<div class="eligibility-result">No safe numeric checker is enabled for this profile yet because current-session eligibility includes subject/year rules that should not be guessed.</div>';
+
   uniResult.innerHTML=
-    '<div class="info-name">'+esc(name)+'</div><div class="info-status">Session '+esc(x.session)+' • Official-first information profile</div>'+
+    '<div class="info-name">'+esc(name)+'</div>'+
+    '<div class="info-status">'+esc(x.status)+'</div>'+
+    '<div class="source-badges"><span class="source-badge">'+esc(x.basis)+'</span></div>'+
     '<div class="info-grid">'+
-      '<div class="info-card"><h3>📅 Important dates</h3><ul>'+liveDates.map(v=>'<li>'+esc(v)+'</li>').join('')+'</ul></div>'+
+      '<div class="info-card"><h3>📅 2026–27 exam dates</h3>'+listHtml(liveDates)+'</div>'+
+      '<div class="info-card"><h3>🧾 Application window</h3><p>'+esc(x.application)+'</p></div>'+
       '<div class="info-card"><h3>🎫 Admit card</h3><p>'+esc(x.admit)+'</p></div>'+
-      '<div class="info-card"><h3>📄 Circular & official portal</h3><p>'+esc(x.circular)+'</p><p>'+official+'</p></div>'+
+      '<div class="info-card"><h3>💳 Application fee</h3><p>'+esc(x.fees)+'</p></div>'+
+      '<div class="info-card"><h3>📍 Exam centres / seat plan</h3><p>'+esc(x.centers)+'</p></div>'+
       '<div class="info-card"><h3>🪑 Seats</h3><p>'+esc(x.seats)+'</p></div>'+
-      '<div class="info-card"><h3>📚 Units / subjects</h3><ul>'+x.subjects.map(v=>'<li>'+esc(v)+'</li>').join('')+'</ul></div>'+
-      '<div class="info-card"><h3>📝 Exam format</h3><p>'+esc(x.format)+'</p></div>'+
-      '<div class="info-card"><h3>✅ Eligibility</h3><p>'+esc(x.eligibility)+'</p><div class="eligibility-box"><input id="sscGpa" type="number" min="0" max="5" step=".01" placeholder="SSC GPA"><input id="hscGpa" type="number" min="0" max="5" step=".01" placeholder="HSC GPA"><button class="btn" id="checkEligibility">Check</button></div><div class="eligibility-result" id="eligibilityResult">Checker only gives a result when current official rules are verified; otherwise it will not guess.</div></div>'+
-      '<div class="info-card"><h3>🔎 Source coverage</h3><div class="source-badges">'+x.sources.map(v=>'<span class="source-badge">'+esc(v)+'</span>').join('')+'</div><p>Official notices override third-party calendars if they differ.</p></div>'+
+      '<div class="info-card"><h3>📚 Units / programs / subjects</h3>'+listHtml(x.programs)+'</div>'+
+      '<div class="info-card"><h3>✅ Eligibility</h3>'+listHtml(x.eligibility)+checker+'</div>'+
+      '<div class="info-card"><h3>📝 Exam format & marks</h3>'+listHtml(x.format)+'</div>'+
+      '<div class="info-card"><h3>📎 Typical required documents</h3>'+listHtml(x.documents)+'</div>'+
+      '<div class="info-card"><h3>🕘 Previous-cycle reference</h3><p>'+esc(x.previous)+'</p></div>'+
+      '<div class="info-card"><h3>ℹ️ Important notes</h3>'+listHtml(x.notes)+'</div>'+
+      '<div class="info-card"><h3>🔗 Official circulars / portals</h3><p>'+links+'</p><p>Official sources override calendar aggregators whenever details conflict.</p></div>'+
     '</div>';
-  document.getElementById('checkEligibility').onclick=()=>{
-    const a=parseFloat(document.getElementById('sscGpa').value),b=parseFloat(document.getElementById('hscGpa').value),out=document.getElementById('eligibilityResult');
-    if(!Number.isFinite(a)||!Number.isFinite(b)){out.textContent='Enter both SSC and HSC GPA.';return;}
-    if(!x.rule){out.textContent='No verified 2026–27 numeric rule is loaded for this institution yet, so the checker will not guess. Use the official circular above.';return;}
-    out.textContent=x.rule(a,b)?'Eligible under the currently loaded verified GPA rule.':'Not eligible under the currently loaded verified GPA rule.';
-  };
+
+  const btn=document.getElementById('checkEligibility');
+  if(btn){
+    btn.onclick=()=>{
+      const idx=parseInt(document.getElementById('ruleSelect').value,10);
+      const rule=x.checks[idx];
+      const s=parseFloat(document.getElementById('sscGpa').value);
+      const h=parseFloat(document.getElementById('hscGpa').value);
+      const out=document.getElementById('eligibilityResult');
+      if(!Number.isFinite(s)||!Number.isFinite(h)){out.textContent='Enter both SSC and HSC GPA.';return;}
+      const ok=s>=rule.ssc && h>=rule.hsc && (s+h)>=rule.total;
+      out.textContent=ok
+        ? '✅ Passes this verified basic GPA gate. You still need to satisfy passing-year, subject, quota and program-specific conditions.'
+        : '❌ Does not pass this selected GPA gate.';
+    };
+  }
 }
 uniFind.onclick=renderUniversity;
 uniSearch.addEventListener('keydown',e=>{if(e.key==='Enter')renderUniversity()});
