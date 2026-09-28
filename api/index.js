@@ -260,7 +260,7 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 <div class="upcoming"><div class="head"><div><h2 style="font-size:22px">Upcoming exams</h2><div class="sub">Tap any calendar item or source link to verify details.</div></div></div><div class="cards" id="cards"></div></div>
 <div class="footer">Schedules are aggregated from third-party sources and may change. Always verify critical dates from the official university notice.</div></section>
 <section class="info-center" id="infoCenter">
-  <div class="head"><div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্যকেন্দ্র</h2><div class="sub">বিশ্ববিদ্যালয়ের নাম লিখে বর্তমান ২০২৬–২৭ তথ্য + গত বছরের অফিসিয়াল সার্কুলার + আপনার দেওয়া ‘তথ্য কণিকা’র পূর্ণ আসন, যোগ্যতা, পরীক্ষার ধরন, নম্বরবণ্টন ও মেধা নির্ণয় তথ্য দেখুন।</div></div></div>
+  <div class="head"><div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্য কণিকা</h2><div class="sub">বিশ্ববিদ্যালয়ের নাম লিখে শুধু আপনার দেওয়া তথ্য কণিকার চার্টের তথ্য দেখুন — আসন, আবেদন যোগ্যতা, পরীক্ষার ধরন, নম্বরবণ্টন ও ফলাফল নির্ণয়।</div></div></div>
   <div class="info-search">
     <input id="uniSearch" list="uniList" placeholder="বিশ্ববিদ্যালয়ের নাম লিখুন — যেমন DU, BUET, RUET, BUP…">
     <datalist id="uniList"></datalist>
@@ -731,45 +731,12 @@ function listHtml(items){
 function renderUniversity(){
   const found=matchUniversity(uniSearch.value);
   if(!found){
-    uniResult.innerHTML='<div class="empty">এই নামে প্রোফাইল পাওয়া যায়নি। DU, BUET, RUET, KUET, CUET, MIST, BUP, রাজশাহী বিশ্ববিদ্যালয়, জগন্নাথ বিশ্ববিদ্যালয়, খুলনা বিশ্ববিদ্যালয়, SUST, চট্টগ্রাম বিশ্ববিদ্যালয়, কুমিল্লা বিশ্ববিদ্যালয়, BUTEX, AAUB, GST, কৃষি গুচ্ছ বা মেডিকেল লিখে দেখুন।</div>';
+    uniResult.innerHTML='<div class="empty">এই নামে তথ্য পাওয়া যায়নি। DU, BUET, RUET, KUET, CUET, BUTEX, IUT, MIST, SUST, JU, JnU, RU, CU, BUP, GST, খুলনা বিশ্ববিদ্যালয়, কুমিল্লা বিশ্ববিদ্যালয়, কৃষি গুচ্ছ, HSTU, মেডিকেল বা AFMC লিখে দেখুন।</div>';
     return;
   }
-  const [name,x]=found;
-  const eventMatches=all.filter(e=>{
-    const s=(e.title||'').toLowerCase();
-    return [name,...x.aliases].filter(v=>v&&v.length>2).some(t=>s.includes(t.toLowerCase()));
-  });
-  const dateList=eventMatches.length
-    ? eventMatches.map(e=>new Date(e.date).toLocaleString('bn-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium',timeStyle:'short'})+' — '+e.title)
-    : x.current;
-  const links=(x.links||[]).map(([label,url])=>'<a href="'+url+'" target="_blank" rel="noopener">'+esc(label)+' ↗</a>').join('<br>');
-  uniResult.innerHTML=
-    '<div class="info-name">'+esc(name)+'</div>'+
-    '<div class="info-status">বর্তমান সেশন ২০২৬–২৭ • যেখানে বর্তমান সার্কুলার অসম্পূর্ণ, সেখানে ২০২৫–২৬ অফিসিয়াল সার্কুলারের তথ্য আলাদাভাবে দেখানো হয়েছে</div>'+
-    '<div class="info-grid">'+
-      '<div class="info-card"><h3>📅 ২০২৬–২৭ পরীক্ষার তারিখ</h3>'+listHtml(dateList)+'</div>'+
-      '<div class="info-card"><h3>🆕 বর্তমান ২০২৬–২৭ তথ্য</h3>'+listHtml(x.current)+'</div>'+
-      '<div class="info-card" style="grid-column:span 2"><h3>📜 গত বছরের অফিসিয়াল সার্কুলার — ২০২৫–২৬</h3>'+listHtml(x.previous)+'</div>'+
-      '<div class="info-card"><h3>✅ যোগ্যতা</h3>'+listHtml(x.eligibility)+'</div>'+
-      '<div class="info-card"><h3>📝 পরীক্ষার ধরন ও নম্বরবণ্টন</h3>'+listHtml(x.format)+'</div>'+
-      '<div class="info-card"><h3>🪑 আসন</h3><p>'+esc(x.seats)+'</p></div>'+
-      '<div class="info-card"><h3>💳 আবেদন ফি</h3><p>'+esc(x.fee)+'</p></div>'+
-      '<div class="info-card"><h3>📎 প্রয়োজনীয় কাগজপত্র</h3>'+listHtml(x.documents)+'</div>'+
-      '<div class="info-card"><h3>🔗 অফিসিয়াল সার্কুলার/পোর্টাল</h3><p>'+links+'</p><p>বর্তমান অফিসিয়াল নোটিশের সঙ্গে কোনো অমিল হলে অফিসিয়াল নোটিশই চূড়ান্ত।</p></div>'+
-    '</div>'+
-    renderBookletRows(name);
-}
-function renderBookletRows(name){
-  const rows=BOOKLET_ROWS.filter(r=>r.p===name);
-  if(!rows.length) return '';
-  return '<div class="booklet-wrap"><div class="booklet-title">📘 তথ্য কণিকা — পূর্ণ পূর্ববর্তী ভর্তি তথ্য</div><div class="booklet-sub">আপনার দেওয়া “তথ্য কণিকা” থেকে হুবহু কাঠামো ধরে আসন, যোগ্যতা, পরীক্ষার ধরন, নম্বরবণ্টন ও ফল নির্ণয় পদ্ধতি। এগুলো বর্তমান ২০২৬–২৭ অফিসিয়াল সার্কুলারের বিকল্প নয়।</div>'+
-    rows.map(r=>'<div class="booklet-row"><h4>'+esc(r.unit)+' <span class="source-badge">'+esc(r.cat)+'</span></h4><div class="booklet-grid">'+
-      '<div class="booklet-field"><b>🪑 আসন সংখ্যা</b><span>'+esc(r.seats)+'</span></div>'+
-      '<div class="booklet-field"><b>✅ আবেদন যোগ্যতা</b><span>'+esc(r.elig)+'</span></div>'+
-      '<div class="booklet-field"><b>📝 পরীক্ষার ধরন</b><span>'+esc(r.exam)+'</span></div>'+
-      '<div class="booklet-field"><b>📊 বিষয়ভিত্তিক নম্বর/প্রশ্ন</b><span>'+esc(r.marks)+'</span></div>'+
-      '<div class="booklet-field"><b>🏆 ফলাফল নির্ণয়</b><span>'+esc(r.result)+'</span></div>'+
-    '</div></div>').join('')+'</div>';
+  const [name]=found;
+  const html=renderBookletRows(name);
+  uniResult.innerHTML=html || '<div class="empty">এই বিশ্ববিদ্যালয়ের জন্য তথ্য কণিকার চার্টে কোনো তথ্য পাওয়া যায়নি।</div>';
 }
 uniFind.onclick=renderUniversity;
 uniSearch.addEventListener('keydown',e=>{if(e.key==='Enter')renderUniversity()});
