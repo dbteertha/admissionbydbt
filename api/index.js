@@ -222,7 +222,7 @@ async function sync(force=false){
 }
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ADM Countdown 2026</title>
+<title>Admission by DBT | 2026–27</title>
 <style>
 :root{--bg:#030303;--panel:#0a0b0d;--line:#25282e;--text:#f4f4f2;--muted:#979b9f;--soft:#d9d7cd;--chip:#14161a}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}body{min-height:100vh;overflow-x:hidden}
@@ -238,15 +238,36 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 .day{min-height:112px;border-top:1px solid #1b1e23;border-left:1px solid #15181c;padding:8px;position:relative}.day:nth-child(7n+1){border-left:0}.day.muted{opacity:.25}.num{font-size:12px;color:#b8bbc0}.today .num{background:#eee;color:#090909;border-radius:999px;padding:3px 7px;display:inline-block;font-weight:900}.event{display:block;margin-top:6px;background:#15181d;border:1px solid #292d34;border-radius:9px;padding:6px 7px;font-size:10px;line-height:1.25;white-space:normal;overflow:hidden;cursor:default}.event:hover{background:#20242b}
 .upcoming{margin-top:28px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}.card{border:1px solid #23262c;background:#0d0f12;border-radius:15px;padding:14px}.card h3{font-size:14px;margin:0 0 8px}.meta{font-size:12px;color:#969aa0;line-height:1.6}.source{font-size:10px;color:#c5c8cc;margin-top:8px}.source a{color:#c5c8cc}
 .empty{color:#8a8f95;padding:30px;text-align:center;border:1px dashed #2a2e34;border-radius:14px}.footer{color:#6d7279;font-size:11px;text-align:center;margin-top:22px}
+
+.info-center{margin-top:26px;background:#08090bde;border:1px solid #1e2126;border-radius:24px;padding:22px;backdrop-filter:blur(14px)}
+.info-search{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 18px}.info-search input{flex:1;min-width:240px}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.info-card{background:#0d0f12;border:1px solid #23262c;border-radius:16px;padding:15px}
+.info-card h3{font-size:13px;margin:0 0 9px;color:#f4f4f2}.info-card p,.info-card li{font-size:12px;color:#aeb2b7;line-height:1.55}
+.info-card ul{margin:0;padding-left:18px}.info-card a{color:#f0f0ed;text-decoration:underline;text-underline-offset:3px}
+.info-title{font-size:28px;margin:0}.info-name{font-size:20px;font-weight:800;margin:8px 0 2px}.info-status{font-size:11px;color:#9ca1a7}
+.eligibility-box{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.eligibility-box input{width:100%;min-width:0}
+.eligibility-result{margin-top:10px;font-size:12px;color:#cdd0d4}
+.source-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.source-badge{font-size:10px;border:1px solid #2a2e34;border-radius:999px;padding:5px 8px;color:#aeb2b7}
+@media(max-width:700px){.info-center{padding:14px}.eligibility-box{grid-template-columns:1fr}.info-title{font-size:23px}}
 @media(max-width:700px){.hero{min-height:500px}.section{padding:14px}.day{min-height:78px;padding:5px}.event{font-size:8px;padding:4px}.head h2{font-size:24px}.clock{gap:14px}.passed{font-size:17px}}
-</style></head><body><canvas id="stars"></canvas><div class="app"><nav><div class="brand">ADM • 26/27</div><div id="syncStatus" class="live">● syncing sources…</div></nav>
+</style></head><body><canvas id="stars"></canvas><div class="app"><nav><div class="brand">ADMISSION BY DBT • 26/27</div><div id="syncStatus" class="live">● syncing sources…</div></nav>
 <section class="hero"><div class="hero-inner"><div class="kicker">Admission test begins • 30 November 2026</div><div class="days" id="days">00</div><div class="label">DAYS LEFT</div>
 <div class="clock"><div><b id="weeks">00W</b><span>WEEKS</span></div><div><b id="hours">00H</b><span>HOURS</span></div><div><b id="mins">00M</b><span>MINUTES</span></div><div><b id="secs">00S</b><span>SECONDS</span></div></div>
 <div class="progress"><div class="fill" id="fill"></div></div><div class="pct" id="pct">0%</div><div class="passed"><span id="passed">0 Passed</span><i>|</i><span id="total">0 Total</span></div></div></section>
 <section class="section"><div class="head"><div><h2>Admission Calendar</h2><div class="sub">University admission routine — clean names, dates and exam times.</div></div><div class="controls"><input id="search" placeholder="Search university…"><button class="btn" id="refresh">Refresh</button></div></div>
 <div class="calendar-head"><button class="btn" id="prev">←</button><div class="month" id="month"></div><button class="btn" id="next">→</button></div><div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="grid" id="grid"></div>
 <div class="upcoming"><div class="head"><div><h2 style="font-size:22px">Upcoming exams</h2><div class="sub">Tap any calendar item or source link to verify details.</div></div></div><div class="cards" id="cards"></div></div>
-<div class="footer">Schedules are aggregated from third-party sources and may change. Always verify critical dates from the official university notice.</div></section></div>
+<div class="footer">Schedules are aggregated from third-party sources and may change. Always verify critical dates from the official university notice.</div></section>
+<section class="info-center" id="infoCenter">
+  <div class="head"><div><h2 class="info-title">University Information Center</h2><div class="sub">Search a university to see admission dates, admit-card status, circulars, seats, subjects, eligibility, exam format and verified official resources.</div></div></div>
+  <div class="info-search">
+    <input id="uniSearch" list="uniList" placeholder="Type university name, e.g. DU, BUET, RUET, BUP…">
+    <datalist id="uniList"></datalist>
+    <button class="btn" id="uniFind">Find information</button>
+  </div>
+  <div id="uniResult"><div class="empty">Search for a university to open its admission information dashboard.</div></div>
+</section></div>
 <script>
 const TARGET=new Date('2026-11-30T00:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
 function countdown(){const now=new Date(), diff=Math.max(0,TARGET-now), span=(TARGET-START), total=Math.round(span/86400000)+1, passed=Math.max(0,Math.min(total,Math.floor((now-START)/86400000))); const days=Math.floor(diff/86400000), weeks=Math.floor(days/7), h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60; daysEl.textContent=days; weeksEl.textContent=String(weeks).padStart(2,'0')+'W'; hoursEl.textContent=String(h).padStart(2,'0')+'H'; minsEl.textContent=String(m).padStart(2,'0')+'M'; secsEl.textContent=String(s).padStart(2,'0')+'S'; const p=span>0?Math.max(0,Math.min(100,((now-START)/span)*100)):0; fill.style.width=p+'%'; pct.textContent=p.toFixed(2)+'%'; passedEl.textContent=passed+' Passed'; totalEl.textContent=total+' Total';}
@@ -259,6 +280,280 @@ function renderCards(){const now=new Date();const arr=filtered().filter(e=>new D
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 async function load(force=false){syncStatus.textContent='● syncing sources…';try{const r=await fetch('/api/events'+(force?'?refresh=1':''));const j=await r.json();all=j.events||[];sourceHealth=j.sources||[];syncStatus.textContent='● '+all.length+' exams • updated '+new Date(j.updatedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});render()}catch(e){syncStatus.textContent='● sync unavailable';render()}}
 prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};refresh.onclick=()=>load(true);search.oninput=render;load();
+
+const UNIVERSITY_INFO = {
+  "Dhaka University": {
+    aliases:["DU","University of Dhaka","ঢাকা বিশ্ববিদ্যালয়","ঢাবি"],
+    official:"https://admission.eis.du.ac.bd/",
+    session:"2026–27",
+    dates:["IBA — 5 Dec 2026","Science (A) — 12 Dec 2026","Arts, Law & Social Science (B) — 19 Dec 2026","Fine Arts — 22 Dec 2026","Business (C) — 26 Dec 2026"],
+    admit:"Use the official DU admission portal. Admit-card dates should be treated as pending until the 2026–27 notice explicitly publishes them.",
+    circular:"Official 2026–27 undergraduate circular/notice should be checked on the DU admission portal.",
+    subjects:["Science","Arts, Law & Social Science","Business Studies","Fine Arts","IBA (separate process)"],
+    format:"DU commonly uses MCQ + written for major units; exact 2026–27 marks, duration and negative marking must follow the current official circular.",
+    seats:"Seat distribution is unit/department specific; show only when the current official circular publishes the final seat table.",
+    eligibility:"Current 2026–27 exact GPA/subject thresholds are not hard-coded until verified from the official circular.",
+    rule:null,
+    sources:["Official DU admission portal","Chorcha","Admission Calendar"]
+  },
+  "BUET": {
+    aliases:["Bangladesh University of Engineering and Technology","বুয়েট"],
+    official:"https://ugadmission.buet.ac.bd/",
+    session:"2026–27",
+    dates:["Admission test — 16 Jan 2027"],
+    admit:"Admit-card information will be shown when the official undergraduate admission portal publishes it.",
+    circular:"Use BUET's official undergraduate admission portal for the authoritative circular and prospectus.",
+    subjects:["Engineering","Architecture","Urban & Regional Planning"],
+    format:"Engineering admission format may change by session. The current official circular is authoritative.",
+    seats:"Program-wise seats should be taken from the 2026–27 prospectus once officially published.",
+    eligibility:"Eligibility checker remains conservative until BUET's 2026–27 official GPA/subject requirements are published.",
+    rule:null,
+    sources:["Official BUET undergraduate admission portal","Chorcha","Admission Calendar"]
+  },
+  "RUET": {
+    aliases:["Rajshahi University of Engineering and Technology","রুয়েট"],
+    official:"https://admission.ruet.ac.bd/",
+    session:"2026–27",
+    dates:["Admission test — 14 Jan 2027"],
+    admit:"Check the official RUET admission portal for admit-card download dates and instructions.",
+    circular:"Official RUET admission portal is the authoritative source for the circular.",
+    subjects:["Engineering","Architecture","Urban & Regional Planning"],
+    format:"Exam format and group structure will be displayed only from the current official notice.",
+    seats:"Department-wise seats should be read from RUET's current prospectus/circular.",
+    eligibility:"Exact 2026–27 GPA and subject thresholds pending verified official publication.",
+    rule:null,
+    sources:["Official RUET admission portal","Chorcha"]
+  },
+  "KUET": {
+    aliases:["Khulna University of Engineering and Technology","কুয়েট"],
+    official:"https://admission.kuet.ac.bd/",
+    session:"2026–27",
+    dates:["Admission test — 8 Jan 2027"],
+    admit:"Check KUET's official admission portal for admit-card release and download window.",
+    circular:"Official KUET admission portal is the authoritative source for circular/prospectus.",
+    subjects:["Engineering","Architecture","Urban & Regional Planning"],
+    format:"Use the current KUET circular for marks, duration and subject distribution.",
+    seats:"Program-wise seats will be shown after the 2026–27 official prospectus is verified.",
+    eligibility:"Exact current-session eligibility is not guessed; official circular required.",
+    rule:null,
+    sources:["Official KUET admission portal","Admission Calendar"]
+  },
+  "BUP": {
+    aliases:["Bangladesh University of Professionals","বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস"],
+    official:"https://admission.bup.edu.bd/Admission/Home",
+    session:"2026–27",
+    dates:["FBS — 1 Jan 2027 (also appears as 9 Jan on Chorcha)","FASS — 2 Jan 2027","FST — 8 Jan 2027","FET — 8 Jan 2027","FMS — 8 Jan 2027","FSSS — 8 Jan 2027","BBA General — 9 Jan 2027"],
+    admit:"BUP's official portal hosts admission notices and applicant services. Use it for admit-card instructions.",
+    circular:"The official BUP portal currently lists an Admission Notice for session 2026–27.",
+    subjects:["FASS","FSSS","FST","FBS","FET","FMS","BBA General"],
+    format:"Faculty-specific format applies; verify marks, duration and negative marking from the 2026–27 BUP notice.",
+    seats:"Faculty/program seat counts should be taken from the official 2026–27 admission notice.",
+    eligibility:"Faculty-specific GPA/subject rules apply. Checker will activate after those rules are extracted from the official notice.",
+    rule:null,
+    sources:["Official BUP admission portal","Chorcha","Admission Calendar"]
+  },
+  "University of Rajshahi": {
+    aliases:["Rajshahi University","RU","রাবি"],
+    official:"https://admission.ru.ac.bd/",
+    session:"2026–27",
+    dates:["Unit B / Business — 8 Jan 2027","Unit C / Science — 9 Jan 2027","Unit A / Humanities — 16 Jan 2027"],
+    admit:"Use the official RU admission portal for the 2026–27 admit-card window when published.",
+    circular:"The official RU admission portal is the primary source for notices, guidelines and applicant login.",
+    subjects:["Unit A / Humanities","Unit B / Business","Unit C / Science"],
+    format:"Unit-specific current-session exam pattern should be taken from the official guideline.",
+    seats:"Department/unit seat distribution should be displayed from the current official notice.",
+    eligibility:"Current 2026–27 eligibility thresholds pending verified official notice.",
+    rule:null,
+    sources:["Official RU admission portal","Chorcha","Admission Calendar"]
+  },
+  "University of Chittagong": {
+    aliases:["Chittagong University","CU","চবি"],
+    official:"https://admission.cu.ac.bd/",
+    session:"2026–27",
+    dates:["C / Business — 29 Jan 2027","A / Science — 30 Jan 2027","B1 — 3 Feb 2027","B2 — 4 Feb 2027","B — 5 Feb 2027","D — 6 Feb 2027","D1 — 8 Feb 2027"],
+    admit:"The official CU portal provides unit-wise admit-card pages and exam instructions.",
+    circular:"Official CU portal includes prospectus, admission notice, application process, eligibility, schedule and fee rules.",
+    subjects:["A / Science","B / Arts & Humanities","B1","B2","C / Business","D / Social Science","D1"],
+    format:"Unit-specific format should be read from the current CU prospectus when 2026–27 is published.",
+    seats:"Seat counts are unit/department specific and should be pulled from the current prospectus.",
+    eligibility:"CU publishes a dedicated general eligibility section; exact 2026–27 values should be used once posted.",
+    rule:null,
+    sources:["Official CU admission portal","Chorcha","Admission Calendar"]
+  },
+  "Jagannath University": {
+    aliases:["JnU","জবি"],
+    official:"https://admission.jnu.ac.bd/",
+    session:"2026–27",
+    dates:["A / Science — 1 Jan 2027","E / Fine Arts — 8 Jan 2027","B / Humanities — 15 Jan 2027","C / Business — 22 Jan 2027","D / Social Science — 23 Jan 2027"],
+    admit:"Use the official Jagannath University admission portal for admit-card instructions.",
+    circular:"Official JnU admission portal is the authoritative circular source.",
+    subjects:["A / Science","B / Humanities","C / Business","D / Social Science","E / Fine Arts"],
+    format:"Use the current official circular for unit-wise pattern and marks.",
+    seats:"Seat distribution should be taken from the current official prospectus/circular.",
+    eligibility:"Exact eligibility pending verified 2026–27 official rules.",
+    rule:null,
+    sources:["Official JnU portal","Chorcha","Admission Calendar"]
+  },
+  "SUST": {
+    aliases:["Shahjalal University of Science and Technology","শাবিপ্রবি"],
+    official:"https://admission.sust.edu.bd/",
+    session:"2026–27",
+    dates:["Unit A — 26 Jan 2027","Unit B — 27 Jan 2027"],
+    admit:"Use SUST's official admission portal for admit-card release.",
+    circular:"Official SUST admission portal is the authoritative source.",
+    subjects:["A","B"],
+    format:"Unit-wise current format should be taken from the official circular.",
+    seats:"Seat distribution should be taken from SUST's 2026–27 prospectus.",
+    eligibility:"Exact 2026–27 rules pending verified official publication.",
+    rule:null,
+    sources:["Official SUST portal","Chorcha","Admission Calendar"]
+  },
+  "Comilla University": {
+    aliases:["CoU","কুমিল্লা বিশ্ববিদ্যালয়","কুবি"],
+    official:"https://admission.cou.ac.bd/",
+    session:"2026–27",
+    dates:["A — 5 Feb 2027","B — 6 Feb 2027","C — 7 Feb 2027"],
+    admit:"Check the official CoU admission portal/notices for admit-card dates.",
+    circular:"Official university notice is authoritative; Chorcha reports application period 15 Nov–10 Dec and exam centers in Cumilla, Chattogram and Rajshahi.",
+    subjects:["A / Science","B / Humanities","C / Business"],
+    format:"Use current official circular for marks, duration and negative marking.",
+    seats:"Seat counts should be taken from the current official prospectus.",
+    eligibility:"Exact current-session eligibility should be verified from the official circular.",
+    rule:null,
+    sources:["Official CoU portal","Chorcha","Admission Calendar"]
+  },
+  "GST Cluster": {
+    aliases:["GST","General Science and Technology Cluster","গুচ্ছ"],
+    official:"https://gstadmission.ac.bd/",
+    session:"2026–27",
+    dates:["B / Humanities — 19 Mar 2027","C / Business — 20 Mar 2027","D / Architecture — 20 Mar 2027","A / Science — 27 Mar 2027"],
+    admit:"Use the official GST admission portal for admit-card and center information.",
+    circular:"Official GST portal is the authoritative source for participating universities and rules.",
+    subjects:["A / Science","B / Humanities","C / Business","D / Architecture"],
+    format:"Unit-specific current-session format must follow the official GST circular.",
+    seats:"University/subject seats are distributed across participating institutions; current official seat matrix required.",
+    eligibility:"Group-specific GPA and subject requirements should be loaded from the current GST circular before making an eligibility decision.",
+    rule:null,
+    sources:["Official GST portal","Chorcha","Admission Calendar"]
+  },
+  "Agriculture Cluster": {
+    aliases:["Agri","Agricultural Universities Cluster","কৃষি গুচ্ছ"],
+    official:"https://acas.edu.bd/",
+    session:"2026–27",
+    dates:["Admission test — 2 Jan 2027"],
+    admit:"Use the official Agriculture Cluster admission system for admit-card availability.",
+    circular:"Official cluster portal is the authoritative circular source.",
+    subjects:["Agriculture-related undergraduate programs across participating universities"],
+    format:"Current official cluster circular controls subject distribution, duration and marking.",
+    seats:"Participating-university seat matrix should be read from the current official circular.",
+    eligibility:"Exact HSC subject/GPA eligibility must be checked against the current official circular.",
+    rule:null,
+    sources:["Official Agriculture Cluster portal","Chorcha","Admission Calendar"]
+  },
+  "MIST": {
+    aliases:["Military Institute of Science and Technology"],
+    official:"https://admission.mist.ac.bd/",
+    session:"2026–27",
+    dates:["C Unit — 18 Dec 2026","A & B — 19 Dec 2026"],
+    admit:"Use MIST's official admission portal for admit-card and applicant instructions.",
+    circular:"Official MIST admission portal/notice is authoritative.",
+    subjects:["Engineering and Architecture programs"],
+    format:"Unit-wise current format should follow the 2026–27 official notice.",
+    seats:"Program-wise seats should be taken from the official prospectus.",
+    eligibility:"Exact current-session GPA/subject conditions pending verified official circular.",
+    rule:null,
+    sources:["Official MIST portal","Chorcha","Admission Calendar"]
+  },
+  "BUTEX": {
+    aliases:["Bangladesh University of Textiles","টেক্সটাইল বিশ্ববিদ্যালয়"],
+    official:"https://butex.edu.bd/",
+    session:"2026–27",
+    dates:["Admission test — 29 Jan 2027"],
+    admit:"Check BUTEX official notices for admit-card instructions.",
+    circular:"Official BUTEX notice/circular is authoritative.",
+    subjects:["Textile Engineering and related undergraduate programs"],
+    format:"Current official admission notice should be used for exam pattern.",
+    seats:"Department-wise seats should be loaded from the official circular.",
+    eligibility:"Exact 2026–27 requirements pending official verification.",
+    rule:null,
+    sources:["Official BUTEX website","Chorcha","Admission Calendar"]
+  },
+  "AAUB": {
+    aliases:["Aviation and Aerospace University Bangladesh","Aviation and Aerospace University, Bangladesh"],
+    official:"https://aaub.edu.bd/",
+    session:"2026–27",
+    dates:["Admission test — 5 Dec 2026"],
+    admit:"Check AAUB's official admission notice for admit-card instructions.",
+    circular:"Official AAUB notice is authoritative.",
+    subjects:["Aviation and aerospace-related undergraduate programs"],
+    format:"Use the 2026–27 official admission notice for the final exam pattern.",
+    seats:"Program-wise seat counts should be taken from the official notice.",
+    eligibility:"Exact current-session eligibility pending official verification.",
+    rule:null,
+    sources:["Official AAUB website","Chorcha","Admission Calendar"]
+  },
+  "Medical & Dental": {
+    aliases:["Medical","Dental","MBBS","BDS"],
+    official:"https://dgme.gov.bd/",
+    session:"2026–27",
+    dates:["Admission test — 4 Dec 2026"],
+    admit:"Admit-card dates and download instructions should be verified from DGME/DGHS official admission notices.",
+    circular:"Use official DGME/DGHS notices for MBBS/BDS admission.",
+    subjects:["MBBS","BDS"],
+    format:"Medical admission test format and marks are governed by the current official circular.",
+    seats:"Government/private seat figures should be taken from the current official circular and college list.",
+    eligibility:"Exact 2026–27 GPA, biology and passing-year rules must be taken from the official circular.",
+    rule:null,
+    sources:["DGME official resources","Admission Calendar"]
+  }
+};
+
+const uniList=document.getElementById('uniList');
+Object.keys(UNIVERSITY_INFO).sort().forEach(name=>{const o=document.createElement('option');o.value=name;uniList.appendChild(o)});
+
+function matchUniversity(q){
+  q=q.trim().toLowerCase();
+  if(!q) return null;
+  for(const [name,info] of Object.entries(UNIVERSITY_INFO)){
+    if(name.toLowerCase()===q || info.aliases.some(a=>a.toLowerCase()===q)) return [name,info];
+  }
+  for(const [name,info] of Object.entries(UNIVERSITY_INFO)){
+    if(name.toLowerCase().includes(q) || info.aliases.some(a=>a.toLowerCase().includes(q)||q.includes(a.toLowerCase()))) return [name,info];
+  }
+  return null;
+}
+function renderUniversity(){
+  const found=matchUniversity(uniSearch.value);
+  if(!found){uniResult.innerHTML='<div class="empty">No exact information profile found yet. Try DU, BUET, RUET, KUET, BUP, Rajshahi University, Chittagong University, Jagannath University, SUST, GST, Agriculture Cluster, MIST, BUTEX, AAUB or Medical.</div>';return;}
+  const [name,x]=found;
+  const eventMatches=all.filter(e=>{
+    const s=(e.title||'').toLowerCase();
+    return s.includes(name.toLowerCase())||x.aliases.some(a=>a.length>2&&s.includes(a.toLowerCase()));
+  });
+  const liveDates=eventMatches.length?eventMatches.map(e=>new Date(e.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'})+' — '+e.title):x.dates;
+  const official=x.official?'<a href="'+x.official+'" target="_blank" rel="noopener">Open official admission source ↗</a>':'Not available';
+  uniResult.innerHTML=
+    '<div class="info-name">'+esc(name)+'</div><div class="info-status">Session '+esc(x.session)+' • Official-first information profile</div>'+
+    '<div class="info-grid">'+
+      '<div class="info-card"><h3>📅 Important dates</h3><ul>'+liveDates.map(v=>'<li>'+esc(v)+'</li>').join('')+'</ul></div>'+
+      '<div class="info-card"><h3>🎫 Admit card</h3><p>'+esc(x.admit)+'</p></div>'+
+      '<div class="info-card"><h3>📄 Circular & official portal</h3><p>'+esc(x.circular)+'</p><p>'+official+'</p></div>'+
+      '<div class="info-card"><h3>🪑 Seats</h3><p>'+esc(x.seats)+'</p></div>'+
+      '<div class="info-card"><h3>📚 Units / subjects</h3><ul>'+x.subjects.map(v=>'<li>'+esc(v)+'</li>').join('')+'</ul></div>'+
+      '<div class="info-card"><h3>📝 Exam format</h3><p>'+esc(x.format)+'</p></div>'+
+      '<div class="info-card"><h3>✅ Eligibility</h3><p>'+esc(x.eligibility)+'</p><div class="eligibility-box"><input id="sscGpa" type="number" min="0" max="5" step=".01" placeholder="SSC GPA"><input id="hscGpa" type="number" min="0" max="5" step=".01" placeholder="HSC GPA"><button class="btn" id="checkEligibility">Check</button></div><div class="eligibility-result" id="eligibilityResult">Checker only gives a result when current official rules are verified; otherwise it will not guess.</div></div>'+
+      '<div class="info-card"><h3>🔎 Source coverage</h3><div class="source-badges">'+x.sources.map(v=>'<span class="source-badge">'+esc(v)+'</span>').join('')+'</div><p>Official notices override third-party calendars if they differ.</p></div>'+
+    '</div>';
+  document.getElementById('checkEligibility').onclick=()=>{
+    const a=parseFloat(document.getElementById('sscGpa').value),b=parseFloat(document.getElementById('hscGpa').value),out=document.getElementById('eligibilityResult');
+    if(!Number.isFinite(a)||!Number.isFinite(b)){out.textContent='Enter both SSC and HSC GPA.';return;}
+    if(!x.rule){out.textContent='No verified 2026–27 numeric rule is loaded for this institution yet, so the checker will not guess. Use the official circular above.';return;}
+    out.textContent=x.rule(a,b)?'Eligible under the currently loaded verified GPA rule.':'Not eligible under the currently loaded verified GPA rule.';
+  };
+}
+uniFind.onclick=renderUniversity;
+uniSearch.addEventListener('keydown',e=>{if(e.key==='Enter')renderUniversity()});
+
 const cv=document.getElementById('stars'),cx=cv.getContext('2d');let stars=[];function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);stars=Array.from({length:Math.min(180,innerWidth/5)},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.1+.2,a:Math.random()*.7+.15,p:Math.random()*6.28}))}addEventListener('resize',resize);resize();function draw(t){cx.clearRect(0,0,innerWidth,innerHeight);for(const s of stars){cx.globalAlpha=s.a*(.65+.35*Math.sin(t/900+s.p));cx.fillStyle='#fff';cx.beginPath();cx.arc(s.x,s.y,s.r,0,6.28);cx.fill()}requestAnimationFrame(draw)}requestAnimationFrame(draw);
 </script></body></html>`;
 
