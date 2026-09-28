@@ -9,6 +9,61 @@ const SOURCES = [
   {name:'Admission Calendar', url:'https://admission-calendar.com/'}
 ];
 
+const VERIFIED_FALLBACK = [
+  ['Aviation and Aerospace University, Bangladesh (AAUB)','2026-12-05T10:00:00+06:00'],
+  ['ঢাবি (DU-IBA)','2026-12-05T10:00:00+06:00'],
+  ['ঢাবি ক ইউনিট (DU-A)','2026-12-12T11:00:00+06:00'],
+  ['খুবি ঘ- বাণিজ্য (KU-D)','2026-12-17T10:00:00+06:00'],
+  ['খুবি- মানবিক (KU-C)','2026-12-17T13:30:00+06:00'],
+  ['খুবি- জীববিজ্ঞান (KU-B)','2026-12-18T14:30:00+06:00'],
+  ['MIST-C (Science)','2026-12-18T22:00:00+06:00'],
+  ['MIST','2026-12-19T10:00:00+06:00'],
+  ['ঢাবি খ ইউনিট (DU-B)','2026-12-19T11:00:00+06:00'],
+  ['ঢাবি চারুকলা (DU-F)','2026-12-22T11:00:00+06:00'],
+  ['ঢাবি গ ইউনিট (DU-C)','2026-12-26T11:00:00+06:00'],
+  ['জবি(A)- বিজ্ঞান (JnU-A)','2027-01-01T10:00:00+06:00'],
+  ['কৃষি গুচ্ছ (Agri)','2027-01-02T11:00:00+06:00'],
+  ['BUP FASS','2027-01-02T15:30:00+06:00'],
+  ['জবি ঙ- চারু (JnU-E)','2027-01-08T10:00:00+06:00'],
+  ['BUP FMS','2027-01-08T10:30:00+06:00'],
+  ['BUP FST','2027-01-08T10:30:00+06:00'],
+  ['রাবি খ (বাণিজ্য) (RU-B)','2027-01-08T11:00:00+06:00'],
+  ['BUP FSSS','2027-01-08T15:30:00+06:00'],
+  ['BUP FET','2027-01-08T22:30:00+06:00'],
+  ['BUP FBS','2027-01-09T10:30:00+06:00'],
+  ['রাবি গ- বিজ্ঞান (RU-C)','2027-01-09T11:00:00+06:00'],
+  ['BUP BBA (Gen)','2027-01-09T15:30:00+06:00'],
+  ['RUET (MCQ)','2027-01-14T09:30:00+06:00'],
+  ['জবি খ- মানবিক (JnU-B)','2027-01-15T10:00:00+06:00'],
+  ['BUET','2027-01-16T09:00:00+06:00'],
+  ['রাবি ক (মানবিক) (RU-A)','2027-01-16T11:00:00+06:00'],
+  ['জবি- বাণিজ্য (JnU-C)','2027-01-22T10:00:00+06:00'],
+  ['জবি ঘ- সমাজবিজ্ঞান (JnU-D)','2027-01-23T11:00:00+06:00'],
+  ['SUST-A','2027-01-26T15:00:00+06:00'],
+  ['SUST-B','2027-01-27T15:00:00+06:00'],
+  ['BUTEX','2027-01-29T10:00:00+06:00'],
+  ['চবি গ ইউনিট (CU-C)','2027-01-29T11:00:00+06:00'],
+  ['চবি ক ইউনিট (CU-A)','2027-01-30T11:00:00+06:00'],
+  ['চবি B1 ইউনিট (CU-B1)','2027-02-03T11:00:00+06:00'],
+  ['চবি B2 ইউনিট (CU-B2)','2027-02-04T11:00:00+06:00'],
+  ['চবি খ ইউনিট (CU-B)','2027-02-05T11:00:00+06:00'],
+  ['কুবি ক- বিজ্ঞান (CoU-A)','2027-02-05T11:00:00+06:00'],
+  ['চবি ঘ ইউনিট (CU-D)','2027-02-06T11:00:00+06:00'],
+  ['কুবি খ- মানবিক (CoU-B)','2027-02-06T11:00:00+06:00'],
+  ['কুবি গ- বাণিজ্য (CoU-C)','2027-02-07T15:00:00+06:00'],
+  ['চবি D1 ইউনিট (CU-D1)','2027-02-08T11:00:00+06:00'],
+  ['গুচ্ছ খ- মানবিক (GST-B)','2027-03-19T11:00:00+06:00'],
+  ['গুচ্ছ ঘ- স্থাপত্য (GST-D-Arch)','2027-03-20T10:00:00+06:00'],
+  ['গুচ্ছ গ- বাণিজ্য (GST-C)','2027-03-20T11:00:00+06:00'],
+  ['গুচ্ছ ক- বিজ্ঞান (GST-A)','2027-03-27T11:00:00+06:00']
+].map(([title,date])=>({
+  title,
+  date:new Date(date).toISOString(),
+  source:'Chorcha',
+  sourceUrl:'https://chorcha.net/admission-calendar',
+  fallback:true
+}));
+
 let cache = { at: 0, events: [], sources: [] };
 const TTL = 30 * 60 * 1000;
 
@@ -72,19 +127,67 @@ function parseDate(text){
 function cleanTitle(s){
   return s.replace(/\s+/g,' ').replace(/^(university|বিশ্ববিদ্যালয়)\s*/i,'').slice(0,100).trim();
 }
-function parseEvents(html,source){
+function textFromCell(s){
+  return decode(s.replace(/<br\\s*\\/?>(?=.)/gi,' ').replace(/<[^>]+>/g,' ')).replace(/\\s+/g,' ').trim();
+}
+function parseTableRows(html,source){
+  const out=[];
+  for(const m of html.matchAll(/<tr\\b[^>]*>([\\s\\S]*?)<\\/tr>/gi)){
+    const cells=[...m[1].matchAll(/<t[dh]\\b[^>]*>([\\s\\S]*?)<\\/t[dh]>/gi)].map(x=>textFromCell(x[1]));
+    if(cells.length<2) continue;
+    const dateIndex=cells.findIndex(x=>parseDate(x));
+    if(dateIndex<0) continue;
+    const dt=parseDate(cells[dateIndex]);
+    const candidates=cells.slice(0,dateIndex).filter(x=>x.length>=2 && x.length<=140);
+    const title=candidates[candidates.length-1];
+    if(!title || /বিশ্ববিদ্যালয়|university|তারিখ|date/i.test(title) && title.length<18) continue;
+    out.push({title:cleanTitle(title),date:dt.toISOString(),source:source.name,sourceUrl:source.url,raw:cells.join(' | ')});
+  }
+  return out;
+}
+function parseHydrationJson(html,source){
+  const out=[];
+  const scripts=[...html.matchAll(/<script\\b[^>]*(?:type=["']application\\/json["'])?[^>]*>([\\s\\S]*?)<\\/script>/gi)].map(m=>m[1].trim());
+  const walk=(v)=>{
+    if(!v) return;
+    if(Array.isArray(v)){v.forEach(walk);return;}
+    if(typeof v!=='object') return;
+    const title=v.title||v.name||v.university||v.universityName||v.examName||v.shortName;
+    const rawDate=v.examDate||v.exam_date||v.date||v.dateTime||v.datetime||v.startDate||v.start_date;
+    if(typeof title==='string' && rawDate){
+      const dt=parseDate(String(rawDate)) || new Date(rawDate);
+      if(dt && !isNaN(dt) && dt.getUTCFullYear()>=2026 && dt.getUTCFullYear()<=2028){
+        out.push({title:cleanTitle(title),date:dt.toISOString(),source:source.name,sourceUrl:source.url,raw:String(rawDate)});
+      }
+    }
+    Object.values(v).forEach(walk);
+  };
+  for(const s of scripts){
+    if(!s || (s[0]!=='{' && s[0]!=='[')) continue;
+    try{walk(JSON.parse(s));}catch{}
+  }
+  return out;
+}
+function parseLinePairs(html,source){
   const lines=htmlToLines(html); const out=[];
   for(let i=0;i<lines.length;i++){
     const dt=parseDate(lines[i]); if(!dt) continue;
     let title='';
-    for(let j=i-1;j>=Math.max(0,i-4);j--){
-      const c=cleanTitle(lines[j]);
-      if(c.length>=2 && c.length<=100 && !/^(date|time|তারিখ|সময়|সময় বাকি)$/i.test(c)){title=c;break;}
+    for(let j=i-1;j>=Math.max(0,i-8);j--){
+      const x=cleanTitle(lines[j]);
+      if(x.length<2||x.length>120) continue;
+      if(/^(date|time|তারিখ|সময়|সময় বাকি|question|available after exam|sort by|তথ্য|সার্কুলার|নোটিশ)$/i.test(x)) continue;
+      if(parseDate(x)) continue;
+      title=x; break;
     }
-    if(!title || /admission calendar|এডমিশন ক্যালেন্ডার/i.test(title)) continue;
-    out.push({title,date:dt.toISOString(),source:source.name,sourceUrl:source.url,raw:lines[i].slice(0,180)});
+    if(title && !/admission calendar|এডমিশন ক্যালেন্ডার/i.test(title)){
+      out.push({title,date:dt.toISOString(),source:source.name,sourceUrl:source.url,raw:lines[i].slice(0,200)});
+    }
   }
   return out;
+}
+function parseEvents(html,source){
+  return dedupe([...parseTableRows(html,source),...parseHydrationJson(html,source),...parseLinePairs(html,source)]);
 }
 function dedupe(events){
   const seen=new Map();
@@ -105,12 +208,18 @@ async function sync(force=false){
     try{
       const r=await fetchText(s.url);
       const events=r.ok?parseEvents(r.text,s):[];
-      return {name:s.name,url:s.url,ok:r.ok,status:r.status,count:events.length,events};
-    }catch(err){return {name:s.name,url:s.url,ok:false,status:0,count:0,error:String(err.message||err),events:[]};}
+      return {name:s.name,url:s.url,ok:r.ok,status:r.status,count:events.length,events,mode:events.length?'live':'no-events'};
+    }catch(err){
+      return {name:s.name,url:s.url,ok:false,status:0,count:0,error:String(err.message||err),events:[],mode:'unreachable'};
+    }
   }));
-  const events=dedupe(results.flatMap(r=>r.events));
-  if(events.length) cache={at:Date.now(),events,sources:results.map(({events,...x})=>x)};
-  else cache={...cache,at:Date.now(),sources:results.map(({events,...x})=>x)};
+  let events=dedupe(results.flatMap(r=>r.events));
+  const chorcha=results.find(r=>r.name==='Chorcha');
+  if(!chorcha || chorcha.count<10){
+    events=dedupe([...events,...VERIFIED_FALLBACK]);
+    if(chorcha){chorcha.fallbackCount=VERIFIED_FALLBACK.length;chorcha.mode='verified-fallback';}
+  }
+  cache={at:Date.now(),events,sources:results.map(({events,...x})=>x)};
   return cache;
 }
 
@@ -136,7 +245,7 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 <section class="hero"><div class="hero-inner"><div class="kicker">Admission test begins • 30 November 2026</div><div class="days" id="days">00</div><div class="label">DAYS LEFT</div>
 <div class="clock"><div><b id="weeks">00W</b><span>WEEKS</span></div><div><b id="hours">00H</b><span>HOURS</span></div><div><b id="mins">00M</b><span>MINUTES</span></div><div><b id="secs">00S</b><span>SECONDS</span></div></div>
 <div class="progress"><div class="fill" id="fill"></div></div><div class="pct" id="pct">0%</div><div class="passed"><span id="passed">0 Passed</span><i>|</i><span id="total">0 Total</span></div></div></section>
-<section class="section"><div class="head"><div><h2>Admission Calendar</h2><div class="sub">Live schedule aggregated from Chorcha, MNR Study and Admission Calendar.</div></div><div class="controls"><input id="search" placeholder="Search university…"><select id="sourceFilter"><option value="">All sources</option></select><button class="btn" id="refresh">Refresh</button></div></div>
+<section class="section"><div class="head"><div><h2>Admission Calendar</h2><div class="sub">Live schedule aggregated from Chorcha, MNR Study and Admission Calendar. Verified backup data is used if a source temporarily cannot be parsed.</div></div><div class="controls"><input id="search" placeholder="Search university…"><select id="sourceFilter"><option value="">All sources</option></select><button class="btn" id="refresh">Refresh</button></div></div>
 <div class="calendar-head"><button class="btn" id="prev">←</button><div class="month" id="month"></div><button class="btn" id="next">→</button></div><div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="grid" id="grid"></div>
 <div class="upcoming"><div class="head"><div><h2 style="font-size:22px">Upcoming exams</h2><div class="sub">Tap any calendar item or source link to verify details.</div></div></div><div class="cards" id="cards"></div></div>
 <div class="footer">Schedules are aggregated from third-party sources and may change. Always verify critical dates from the official university notice.</div></section></div>
@@ -144,13 +253,13 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 const TARGET=new Date('2026-11-30T00:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
 function countdown(){const now=new Date(), diff=Math.max(0,TARGET-now), span=(TARGET-START), total=Math.round(span/86400000)+1, passed=Math.max(0,Math.min(total,Math.floor((now-START)/86400000))); const days=Math.floor(diff/86400000), weeks=Math.floor(days/7), h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60; daysEl.textContent=days; weeksEl.textContent=String(weeks).padStart(2,'0')+'W'; hoursEl.textContent=String(h).padStart(2,'0')+'H'; minsEl.textContent=String(m).padStart(2,'0')+'M'; secsEl.textContent=String(s).padStart(2,'0')+'S'; const p=span>0?Math.max(0,Math.min(100,((now-START)/span)*100)):0; fill.style.width=p+'%'; pct.textContent=p.toFixed(2)+'%'; passedEl.textContent=passed+' Passed'; totalEl.textContent=total+' Total';}
 const daysEl=document.getElementById('days'),weeksEl=document.getElementById('weeks'),hoursEl=document.getElementById('hours'),minsEl=document.getElementById('mins'),secsEl=document.getElementById('secs'),fill=document.getElementById('fill'),pct=document.getElementById('pct'),passedEl=document.getElementById('passed'),totalEl=document.getElementById('total'); countdown();setInterval(countdown,1000);
-let all=[],view=new Date(2026,11,1);
+let all=[],view=new Date(2026,11,1),sourceHealth=[];
 function bdDate(iso){return new Date(new Date(iso).toLocaleString('en-US',{timeZone:'Asia/Dhaka'}))}
 function filtered(){const q=search.value.toLowerCase(),sf=sourceFilter.value;return all.filter(e=>(!q||e.title.toLowerCase().includes(q))&&(!sf||e.source.includes(sf)))}
 function render(){month.textContent=view.toLocaleString('en-US',{month:'long',year:'numeric'});grid.innerHTML='';const y=view.getFullYear(),mo=view.getMonth(),first=new Date(y,mo,1),start=new Date(y,mo,1-first.getDay());const es=filtered();for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const cell=document.createElement('div');cell.className='day'+(d.getMonth()!=mo?' muted':'');const now=new Date();if(d.toDateString()==now.toDateString())cell.classList.add('today');cell.innerHTML='<span class="num">'+d.getDate()+'</span>';es.filter(e=>{const x=bdDate(e.date);return x.getFullYear()==d.getFullYear()&&x.getMonth()==d.getMonth()&&x.getDate()==d.getDate()}).slice(0,4).forEach(e=>{const el=document.createElement('a');el.className='event';el.textContent=e.title;el.title=e.title+' — '+new Date(e.date).toLocaleString('en-BD',{timeZone:'Asia/Dhaka'})+' • '+e.source;el.href=e.sourceUrl;el.target='_blank';cell.appendChild(el)});grid.appendChild(cell)}renderCards();}
 function renderCards(){const now=new Date();const arr=filtered().filter(e=>new Date(e.date)>now).slice(0,12);cards.innerHTML=arr.length?'':'<div class="empty">No upcoming events matched the current filter.</div>';arr.forEach(e=>{const d=new Date(e.date);const c=document.createElement('div');c.className='card';c.innerHTML='<h3>'+esc(e.title)+'</h3><div class="meta">'+d.toLocaleString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium',timeStyle:'short'})+'<br>'+Math.max(0,Math.ceil((d-now)/86400000))+' days left</div><div class="source">Source: <a target="_blank" href="'+e.sourceUrl+'">'+esc(e.source)+'</a></div>';cards.appendChild(c)})}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-async function load(force=false){syncStatus.textContent='● syncing sources…';try{const r=await fetch('/api/events'+(force?'?refresh=1':''));const j=await r.json();all=j.events||[];syncStatus.textContent='● updated '+new Date(j.updatedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});const names=[...new Set((j.sources||[]).map(x=>x.name))];sourceFilter.innerHTML='<option value="">All sources</option>'+names.map(n=>'<option>'+esc(n)+'</option>').join('');render()}catch(e){syncStatus.textContent='● sync unavailable';render()}}
+async function load(force=false){syncStatus.textContent='● syncing sources…';try{const r=await fetch('/api/events'+(force?'?refresh=1':''));const j=await r.json();all=j.events||[];sourceHealth=j.sources||[];const liveCount=sourceHealth.filter(x=>x.mode==='live').length;const fallback=sourceHealth.some(x=>x.mode==='verified-fallback');syncStatus.textContent='● '+all.length+' exams • '+liveCount+'/3 live'+(fallback?' • Chorcha backup':'')+' • '+new Date(j.updatedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});const names=[...new Set(sourceHealth.map(x=>x.name))];sourceFilter.innerHTML='<option value="">All sources</option>'+names.map(n=>'<option>'+esc(n)+'</option>').join('');render()}catch(e){syncStatus.textContent='● sync unavailable';render()}}
 prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};refresh.onclick=()=>load(true);search.oninput=render;sourceFilter.onchange=render;load();
 const cv=document.getElementById('stars'),cx=cv.getContext('2d');let stars=[];function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);stars=Array.from({length:Math.min(180,innerWidth/5)},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.1+.2,a:Math.random()*.7+.15,p:Math.random()*6.28}))}addEventListener('resize',resize);resize();function draw(t){cx.clearRect(0,0,innerWidth,innerHeight);for(const s of stars){cx.globalAlpha=s.a*(.65+.35*Math.sin(t/900+s.p));cx.fillStyle='#fff';cx.beginPath();cx.arc(s.x,s.y,s.r,0,6.28);cx.fill()}requestAnimationFrame(draw)}requestAnimationFrame(draw);
 </script></body></html>`;
