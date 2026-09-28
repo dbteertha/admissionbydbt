@@ -222,7 +222,7 @@ async function sync(force=false){
 }
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admission by DBT | 2026–27</title>
+<title>Admission by DBT | ভর্তি তথ্যকেন্দ্র ২০২৬–২৭</title>
 <style>
 :root{--bg:#030303;--panel:#0a0b0d;--line:#25282e;--text:#f4f4f2;--muted:#979b9f;--soft:#d9d7cd;--chip:#14161a}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}body{min-height:100vh;overflow-x:hidden}
@@ -255,18 +255,18 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 <section class="hero"><div class="hero-inner"><div class="kicker">Admission test begins • 30 November 2026</div><div class="days" id="days">00</div><div class="label">DAYS LEFT</div>
 <div class="clock"><div><b id="weeks">00W</b><span>WEEKS</span></div><div><b id="hours">00H</b><span>HOURS</span></div><div><b id="mins">00M</b><span>MINUTES</span></div><div><b id="secs">00S</b><span>SECONDS</span></div></div>
 <div class="progress"><div class="fill" id="fill"></div></div><div class="pct" id="pct">0%</div><div class="passed"><span id="passed">0 Passed</span><i>|</i><span id="total">0 Total</span></div></div></section>
-<section class="section"><div class="head"><div><h2>Admission Calendar</h2><div class="sub">University admission routine — clean names, dates and exam times.</div></div><div class="controls"><input id="search" placeholder="Search university…"><button class="btn" id="refresh">Refresh</button></div></div>
+<section class="section"><div class="head"><div><h2>Admission Calendar</h2><div class="sub">বিশ্ববিদ্যালয় ভর্তি রুটিন — পরিষ্কার নাম, তারিখ ও পরীক্ষার সময়।</div></div><div class="controls"><input id="search" placeholder="Search university…"><button class="btn" id="refresh">Refresh</button></div></div>
 <div class="calendar-head"><button class="btn" id="prev">←</button><div class="month" id="month"></div><button class="btn" id="next">→</button></div><div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="grid" id="grid"></div>
 <div class="upcoming"><div class="head"><div><h2 style="font-size:22px">Upcoming exams</h2><div class="sub">Tap any calendar item or source link to verify details.</div></div></div><div class="cards" id="cards"></div></div>
 <div class="footer">Schedules are aggregated from third-party sources and may change. Always verify critical dates from the official university notice.</div></section>
 <section class="info-center" id="infoCenter">
-  <div class="head"><div><h2 class="info-title">University Information Center</h2><div class="sub">Search a university to see admission dates, admit-card status, circulars, seats, subjects, eligibility, exam format and verified official resources.</div></div></div>
+  <div class="head"><div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্যকেন্দ্র</h2><div class="sub">বিশ্ববিদ্যালয়ের নাম লিখে বর্তমান ২০২৬–২৭ তথ্য, গত বছরের ২০২৫–২৬ সার্কুলারের বিস্তারিত, আবেদন, প্রবেশপত্র, ফি, আসন, বিষয়, যোগ্যতা, পরীক্ষার ধরন ও অফিসিয়াল উৎস দেখুন।</div></div></div>
   <div class="info-search">
-    <input id="uniSearch" list="uniList" placeholder="Type university name, e.g. DU, BUET, RUET, BUP…">
+    <input id="uniSearch" list="uniList" placeholder="বিশ্ববিদ্যালয়ের নাম লিখুন — যেমন DU, BUET, RUET, BUP…">
     <datalist id="uniList"></datalist>
-    <button class="btn" id="uniFind">Find information</button>
+    <button class="btn" id="uniFind">তথ্য দেখুন</button>
   </div>
-  <div id="uniResult"><div class="empty">Search for a university to open its admission information dashboard.</div></div>
+  <div id="uniResult"><div class="empty">বিশ্ববিদ্যালয়ের নাম লিখে বিস্তারিত ভর্তি তথ্য দেখুন।</div></div>
 </section></div>
 <script>
 const TARGET=new Date('2026-11-30T00:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
@@ -282,490 +282,348 @@ async function load(force=false){syncStatus.textContent='● syncing sources…'
 prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};refresh.onclick=()=>load(true);search.oninput=render;load();
 
 const UNIVERSITY_INFO = {
-  "Dhaka University": {
-    aliases:["DU","University of Dhaka","ঢাকা বিশ্ববিদ্যালয়","ঢাবি"],
-    official:"https://admission.eis.du.ac.bd/",
-    status:"2026–27 official exam schedule and minimum eligibility are already announced by the University of Dhaka.",
-    basis:"Current 2026–27 official DU announcement + admission calendars",
-    application:"Chorcha reports undergraduate application opening from 11 Nov 2026. Closing date, fee and admit-card window should be taken from the official DU admission portal once the application circular is published.",
-    admit:"2026–27 admit-card download dates are not yet visible in the verified official sources used here.",
-    fees:"2026–27 application fee is not yet verified in the current official notice set.",
-    centers:"Exam centre details will follow the unit-wise official admit card/circular.",
-    seats:"2026–27 unit/department seat matrix is not yet included in the current verified source set. Use the official DU portal when the final seat table is released.",
-    programs:["Science Unit","Arts, Law & Social Science Unit","Business Studies Unit","Fine Arts Unit","IBA Unit"],
+  "ঢাকা বিশ্ববিদ্যালয়": {
+    aliases:["DU","Dhaka University","University of Dhaka","ঢাবি"],
+    current:[
+      "২০২৬–২৭ আবেদন: ১১ নভেম্বর ২০২৬ দুপুর ১২টা থেকে ২৫ নভেম্বর ২০২৬ রাত ১১:৫৯ পর্যন্ত।",
+      "পরীক্ষা: IBA — ৫ ডিসেম্বর; বিজ্ঞান — ১২ ডিসেম্বর; কলা, আইন ও সামাজিক বিজ্ঞান — ১৯ ডিসেম্বর; চারুকলা — ২২ ডিসেম্বর; ব্যবসায় শিক্ষা — ২৬ ডিসেম্বর ২০২৬।",
+      "IBA ছাড়া অন্য ইউনিটগুলোর পরীক্ষা সকাল ১১টা–১২:৩০; IBA সকাল ১০টা–১২টা।",
+      "IBA ছাড়া প্রধান ৩ ইউনিটের পরীক্ষা ঢাকাসহ ৮টি বিভাগীয় শহরে অনুষ্ঠিত হবে।"
+    ],
+    previous:[
+      "২০২৫–২৬ আবেদন: ২৯ অক্টোবর ২০২৫ দুপুর ১২টা থেকে ১৬ নভেম্বর ২০২৫ রাত ১১:৫৯ পর্যন্ত।",
+      "প্রবেশপত্র ডাউনলোড শুরু হয়েছিল ২৪ নভেম্বর ২০২৫।",
+      "২০২৫–২৬ পরীক্ষার ঘোষিত সময়সূচি: IBA ২৮ নভেম্বর, চারুকলা ২৯ নভেম্বর, ব্যবসায় শিক্ষা ৬ ডিসেম্বর, কলা/আইন/সামাজিক বিজ্ঞান ১৩ ডিসেম্বর; বিজ্ঞান ইউনিটের পরীক্ষা পরে ২৭ ডিসেম্বর ২০২৫ বিকাল ৩:৩০–৫:০০-এ অনুষ্ঠিত হয়।",
+      "কলা, আইন ও সামাজিক বিজ্ঞান ইউনিটে ২,৯৩৪টি আসনের বিপরীতে ১,০৭,৭০১ জন পরীক্ষার্থী ছিল।",
+      "চারুকলায় ১৩০টি আসন এবং IBA-তে ১২০টি আসন ছিল।"
+    ],
     eligibility:[
-      "Passing years: SSC/equivalent from 2021–2024 and HSC/equivalent in 2026.",
-      "Science Unit — Science-group applicants: SSC+HSC GPA total at least 8.0 and at least 3.5 in each.",
-      "Science Unit — Humanities/Business applicants: total at least 7.5 and at least 3.0 in each.",
-      "Arts, Law & Social Science Unit — Humanities/Business: total at least 7.5 and at least 3.0 in each; Science: total at least 8.0 and at least 3.5 in each.",
-      "Business Studies Unit — Business/Humanities: total at least 7.5 and at least 3.0 in each; Science: total at least 8.0 and at least 3.5 in each.",
-      "Fine Arts Unit — total at least 6.5 and at least 3.0 in each."
+      "২০২৬–২৭ বিজ্ঞান ইউনিটে বিজ্ঞান বিভাগের জন্য SSC+HSC মোট GPA কমপক্ষে ৮.০০ এবং উভয় পরীক্ষায় কমপক্ষে ৩.৫০।",
+      "বিজ্ঞান ইউনিটে মানবিক/ব্যবসায় শিক্ষা থেকে মোট কমপক্ষে ৭.৫০ এবং পৃথকভাবে ৩.০০।",
+      "কলা, আইন ও সামাজিক বিজ্ঞান ইউনিটে মানবিক/ব্যবসায় শিক্ষার জন্য মোট ৭.৫০ ও পৃথকভাবে ৩.০০; বিজ্ঞান বিভাগের জন্য মোট ৮.০০ ও পৃথকভাবে ৩.৫০।",
+      "চারুকলা ইউনিটে মোট GPA কমপক্ষে ৬.৫০ এবং পৃথকভাবে ৩.০০।"
     ],
     format:[
-      "For the major non-IBA units, DU announced a 90-minute test: 45 minutes MCQ + 45 minutes written.",
-      "Admission test contributes 100 marks; SSC/HSC results contribute another 20 marks, for 120 total assessment marks.",
-      "Fine Arts includes General Knowledge and Drawing. IBA follows its own admission process."
+      "প্রধান ইউনিটে মোট ৯০ মিনিট: ৪৫ মিনিট MCQ + ৪৫ মিনিট লিখিত।",
+      "ভর্তি পরীক্ষা ১০০ নম্বর + SSC/HSC ফল ২০ নম্বর = মোট ১২০ নম্বর মূল্যায়ন।",
+      "চারুকলায় সাধারণ জ্ঞান ও অঙ্কন থাকে; IBA-এর প্রক্রিয়া আলাদা।"
     ],
-    documents:["SSC/HSC academic information","Recent photograph/signature as required by portal","Quota documents if applicable","Printed admit card when released"],
-    previous:"The 2025–26 DU minimum GPA thresholds were the same as the 2026–27 thresholds now announced.",
-    notes:["Classes for the 2026–27 undergraduate intake are planned to start 28 Mar 2027.","English-medium Science Unit candidates will receive a curriculum-appropriate question paper."],
-    checks:[
-      {label:"Science Unit — Science group",ssc:3.5,hsc:3.5,total:8.0},
-      {label:"Science Unit — Humanities/Business",ssc:3.0,hsc:3.0,total:7.5},
-      {label:"Arts Unit — Humanities/Business",ssc:3.0,hsc:3.0,total:7.5},
-      {label:"Arts Unit — Science",ssc:3.5,hsc:3.5,total:8.0},
-      {label:"Business Unit — Business/Humanities",ssc:3.0,hsc:3.0,total:7.5},
-      {label:"Business Unit — Science",ssc:3.5,hsc:3.5,total:8.0},
-      {label:"Fine Arts Unit",ssc:3.0,hsc:3.0,total:6.5}
-    ],
-    links:[
-      ["Official admission portal","https://admission.eis.du.ac.bd/"],
-      ["2026–27 official DU announcement","https://du.edu.bd/public/du_post_details/post/28137"]
-    ]
+    seats:"বর্তমান ২০২৬–২৭ পূর্ণ বিভাগভিত্তিক আসন তালিকা প্রকাশ হলে অফিসিয়াল পোর্টালকে অগ্রাধিকার দিতে হবে।",
+    fee:"২০২৬–২৭ সাধারণ আবেদন ফি বর্তমান যাচাইকৃত উৎসে এখনও নিশ্চিত নয়।",
+    documents:["SSC/HSC তথ্য","ছবি ও স্বাক্ষর","প্রযোজ্য কোটার কাগজপত্র","প্রবেশপত্র"],
+    links:[["অফিসিয়াল ভর্তি পোর্টাল","https://admission.eis.du.ac.bd/"],["২০২৬–২৭ অফিসিয়াল ঘোষণা","https://du.edu.bd/public/du_post_details/post/28137"]]
   },
 
   "BUET": {
-    aliases:["Bangladesh University of Engineering and Technology","বুয়েট"],
-    official:"https://ugadmission.buet.ac.bd/",
-    status:"2026–27 admission test date is announced for 16 Jan 2027; detailed current circular/prospectus should be treated as pending until visible on BUET's admission portal.",
-    basis:"2026–27 calendar date + official BUET admission portal; prior-cycle reference when current details are absent",
-    application:"2026–27 application window has not yet been verified in the official source set.",
-    admit:"Admit-card dates will be taken from the official BUET undergraduate portal after the circular opens.",
-    fees:"Not yet verified for 2026–27.",
-    centers:"Official seat plan/admit card will determine the venue.",
-    seats:"Department-wise seat counts are not hard-coded until the current BUET prospectus is verified.",
-    programs:["Engineering faculties","Architecture","Urban & Regional Planning"],
-    eligibility:[
-      "Current 2026–27 detailed subject/GPA thresholds are not yet verified here.",
-      "BUET admission is highly competitive and current-session requirements should be read from the official prospectus rather than inferred from older cycles."
+    aliases:["বাংলাদেশ প্রকৌশল বিশ্ববিদ্যালয়","Bangladesh University of Engineering and Technology","বুয়েট"],
+    current:["২০২৬–২৭ ভর্তি পরীক্ষা: ১৬ জানুয়ারি ২০২৭।","বর্তমান বিস্তারিত সার্কুলার প্রকাশ হলে BUET-এর অফিসিয়াল ভর্তি পোর্টালের তথ্যই চূড়ান্ত হবে।"],
+    previous:[
+      "২০২৫–২৬ অনলাইন আবেদন শুরু ১৬ নভেম্বর ২০২৫; শেষ ২ ডিসেম্বর ২০২৫; ফি জমার শেষ সময় ৪ ডিসেম্বর।",
+      "ভর্তি পরীক্ষা অনুষ্ঠিত হয়েছিল ১০ জানুয়ারি ২০২৬, মডিউল A ও B-তে সকাল/বিকাল শিফটে।",
+      "২০২৫–২৬-এ প্রাথমিক বাছাই পরীক্ষা ছিল না; মূলত লিখিত পরীক্ষার মাধ্যমে নির্বাচন, পরে মৌখিক পরীক্ষা ছিল।",
+      "আবেদন ফি: প্রকৌশল/URP ক্যাটাগরিতে ১,৩০০ টাকা; স্থাপত্যসহ ক্যাটাগরিতে ১,৫০০ টাকা।",
+      "নির্বাচিত ও অপেক্ষমাণ প্রার্থীর সম্ভাব্য মেধাতালিকা প্রকাশের তারিখ ছিল ৭ ফেব্রুয়ারি ২০২৬।"
     ],
-    format:["2026–27 exact written-test format and marks distribution are pending current prospectus verification."],
-    documents:["Academic information","Photograph/signature","Required equivalence/quota documents if applicable","Admit card after publication"],
-    previous:"BUET's 2025–26 Level-1 students appear in the university's 2026 undergraduate academic calendar, but the current admission prospectus details should still be verified separately.",
-    notes:["Do not use unofficial GPA/marks tables as final rules if the 2026–27 prospectus differs."],
-    links:[["Official undergraduate admission portal","https://ugadmission.buet.ac.bd/"]]
+    eligibility:["২০২৬–২৭ সুনির্দিষ্ট GPA/বিষয়ভিত্তিক যোগ্যতা বর্তমান অফিসিয়াল সার্কুলার প্রকাশ না হওয়া পর্যন্ত গত বছরের নিয়মকে চূড়ান্ত ধরা যাবে না।"],
+    format:["২০২৫–২৬-এ লিখিত পরীক্ষা; Architecture-এর জন্য অতিরিক্ত অঙ্কন/দৃষ্টিগত-স্থানিক দক্ষতার অংশ ছিল।"],
+    seats:"বর্তমান বিভাগভিত্তিক আসন অফিসিয়াল ২০২৬–২৭ প্রসপেক্টাস থেকে নিতে হবে।",
+    fee:"বর্তমান ফি অপেক্ষমাণ; ২০২৫–২৬ রেফারেন্স ১,৩০০/১,৫০০ টাকা।",
+    documents:["SSC/HSC তথ্য ও সনদ","ছবি/স্বাক্ষর","প্রবেশপত্র","প্রযোজ্য সমমান/কোটা কাগজ"],
+    links:[["BUET আন্ডারগ্র্যাজুয়েট ভর্তি পোর্টাল","https://ugadmission.buet.ac.bd/"]]
   },
 
   "RUET": {
-    aliases:["Rajshahi University of Engineering and Technology","রুয়েট"],
-    official:"https://admission.ruet.ac.bd/",
-    status:"2026–27 exam date is listed as 14 Jan 2027 in the admission calendars; the current official prospectus is not yet fully visible in the verified source set.",
-    basis:"2026–27 calendar + official RUET 2025–26 prospectus/schedule fallback",
-    application:"Previous cycle (2025–26): application 2 Dec 2025 10:00 AM to 13 Dec 2025 5:00 PM; fee payment deadline 15 Dec 2025 noon.",
-    admit:"Previous cycle: admit card available from 10 Jan 2026 5:00 PM. For 2026–27, wait for the new RUET notice.",
-    fees:"Current 2026–27 fee pending official circular.",
-    centers:"Current centre/seat plan pending official 2026–27 notice.",
-    seats:"Engineering/URP and Architecture seat allocation is handled separately; use the new prospectus for final department counts.",
-    programs:["Engineering & URP — Group KA","Architecture — Group KHA"],
-    eligibility:["Use the 2026–27 prospectus once published; previous-cycle rules are available in the official RUET prospectus."],
-    format:[
-      "2025–26 reference: Group KA — 400 marks, 2 hours 30 minutes.",
-      "Higher Mathematics 20 questions/120 marks; Physics 20/120; Chemistry 20/120; English 20/40.",
-      "Architecture Group KHA adds 200 marks: Free-hand Drawing 100 + Visual-Spatial Intelligence 100, 1 hour."
+    aliases:["Rajshahi University of Engineering and Technology","রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়","রুয়েট"],
+    current:["২০২৬–২৭ ভর্তি পরীক্ষা: ১৪ জানুয়ারি ২০২৭।"],
+    previous:[
+      "২০২৫–২৬ আবেদন: ২ ডিসেম্বর ২০২৫ সকাল ১০টা থেকে ১৩ ডিসেম্বর বিকাল ৫টা।",
+      "আবেদন ফি জমার শেষ সময় ছিল ১৫ ডিসেম্বর ২০২৫ দুপুর ১২টা।",
+      "যোগ্য প্রার্থীর তালিকা ৩ জানুয়ারি ২০২৬; আসনবিন্যাস ৬ জানুয়ারি; প্রবেশপত্র ১০ জানুয়ারি বিকাল ৫টা থেকে।",
+      "ভর্তি পরীক্ষা ছিল ২২ জানুয়ারি ২০২৬; ফল প্রকাশের লক্ষ্য ৬ ফেব্রুয়ারি।",
+      "KA গ্রুপ: ৪০০ নম্বর, ২ ঘণ্টা ৩০ মিনিট — উচ্চতর গণিত ১২০, পদার্থ ১২০, রসায়ন ১২০, ইংরেজি ৪০।",
+      "KHA/Architecture: অতিরিক্ত ২০০ নম্বর — Free-hand Drawing ১০০ + Visual-Spatial Intelligence ১০০; সময় ১ ঘণ্টা।"
     ],
-    documents:["SSC/HSC information","Photo/signature","Quota certificates where applicable","Admit card"],
-    previous:"2025–26 test was scheduled for 22 Jan 2026; eligible list 3 Jan; seat plan 6 Jan; admit card 10 Jan; result planned 6 Feb.",
-    notes:["RUET officially maintains Bangla and English prospectuses and publishes eligible lists, seat plans, admit cards and results through the admission portal."],
-    links:[
-      ["RUET admission portal","https://admission.ruet.ac.bd/"],
-      ["2025–26 official circular","https://ruet.ac.bd/notice/undergraduate-admission-circular-for-ruet-2025-2026"],
-      ["2025–26 English prospectus","https://admission.ruet.ac.bd/notices/prospectus/en-prospectus-2025-26.pdf"]
-    ]
+    eligibility:["২০২৬–২৭ যোগ্যতা নতুন প্রসপেক্টাস অনুযায়ী নিতে হবে; আগের বছরের পূর্ণ যোগ্যতা অফিসিয়াল RUET প্রসপেক্টাসে আছে।"],
+    format:["KA: ৪০০ নম্বর; Architecture-এ অতিরিক্ত ২০০ নম্বর।"],
+    seats:"বর্তমান বিভাগভিত্তিক আসন ২০২৬–২৭ প্রসপেক্টাস থেকে নেওয়া হবে।",
+    fee:"বর্তমান ফি অপেক্ষমাণ।",
+    documents:["SSC/HSC সনদ ও গ্রেডশিট","ছবি/স্বাক্ষর","কোটা সনদ","প্রবেশপত্র"],
+    links:[["RUET ভর্তি পোর্টাল","https://admission.ruet.ac.bd/"],["২০২৫–২৬ ইংরেজি প্রসপেক্টাস","https://admission.ruet.ac.bd/notices/prospectus/en-prospectus-2025-26.pdf"]]
   },
 
   "KUET": {
-    aliases:["Khulna University of Engineering and Technology","কুয়েট"],
-    official:"https://admission.kuet.ac.bd/",
-    status:"2026–27 official KUET admission portal is live. Test: 8 Jan 2027; centres: KUET, DU and RUET; medium shown as MCQ.",
-    basis:"Current 2026–27 KUET official portal + 2025–26 official prospectus fallback",
-    application:"Current detailed opening/closing dates are not yet shown in the verified portal snapshot.",
-    admit:"Current admit-card window not yet visible in the verified source set.",
-    fees:"Current 2026–27 fee pending official circular details.",
-    centers:"KUET, University of Dhaka and RUET — officially shown for 2026–27.",
-    seats:"Use the current prospectus for final program seat counts.",
-    programs:["Engineering programs","Architecture","Urban & Regional Planning"],
-    eligibility:[
-      "2025–26 reference: SSC/equivalent GPA at least 4.00.",
-      "HSC/equivalent Mathematics, Physics and Chemistry each required at least GPA 4.00.",
-      "The four highest HSC subject GPAs were required to total at least 18.00.",
-      "Biomedical Engineering had additional Biology-related requirements in the previous prospectus."
+    aliases:["Khulna University of Engineering and Technology","খুলনা প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়","কুয়েট"],
+    current:["২০২৬–২৭ পরীক্ষা: ৮ জানুয়ারি ২০২৭।","বর্তমান অফিসিয়াল পোর্টালে কেন্দ্র হিসেবে KUET, ঢাকা বিশ্ববিদ্যালয় ও RUET দেখানো হয়েছে।"],
+    previous:[
+      "২০২৫–২৬ আবেদন শুরু ৩ ডিসেম্বর ২০২৫ সকাল ১০টা; শেষ ১৩ ডিসেম্বর রাত ১১:৫৯।",
+      "প্রথম ধাপের ফি ১৪ ডিসেম্বর বিকাল ৫টার মধ্যে; যোগ্য তালিকা ২০ ডিসেম্বর; দ্বিতীয় ধাপের ফি ৩০ ডিসেম্বরের মধ্যে।",
+      "প্রবেশপত্র ডাউনলোড শুরু ৫ জানুয়ারি ২০২৬।",
+      "ভর্তি পরীক্ষা ১৫ জানুয়ারি ২০২৬ সকাল ৯:৩০–১২:৩০; Architecture অঙ্কন ১২:৪৫–১:৪৫।",
+      "মোট ১,০৬৫ আসন; এর মধ্যে ৫টি সংরক্ষিত আসন।",
+      "উদাহরণ: CE ১২০, URP ৬০, Architecture ৪০, EEE ১২০, CSE ১২০, ECE ৬০, BME ৩০, ME ১২০।",
+      "লিখিত পরীক্ষা মোট ৫০০: গণিত ১৫০, পদার্থ ১৫০, রসায়ন ১৫০, ইংরেজি ৫০। Architecture-এ অতিরিক্ত ১০০ নম্বর মুক্তহস্ত অঙ্কন।",
+      "SSC ন্যূনতম GPA ৪.০০; HSC-তে গণিত, পদার্থ, রসায়নে পৃথক GPA ৪.০০; চারটি নির্ধারিত বিষয়ের মোট গ্রেড পয়েন্ট কমপক্ষে ১৮.০০।",
+      "সর্বোচ্চ প্রায় ১২,০০০ প্রার্থীকে HSC গণিত+পদার্থ+রসায়ন+ইংরেজির গ্রেড পয়েন্টের ভিত্তিতে পরীক্ষায় সুযোগ দেওয়া হয়েছিল।"
     ],
-    format:["2026–27 official portal currently identifies the admission test medium as MCQ; full marks distribution is pending the current circular."],
-    documents:["Academic information","Photo/signature","Equivalent certificates where needed","Admit card"],
-    previous:"The 2025–26 KUET prospectus is the fallback source for eligibility until the full 2026–27 circular is published.",
-    notes:["Current portal has an 'Admission Test Circular' notice entry; that notice should override the previous-cycle eligibility when details differ."],
-    links:[
-      ["2026–27 official KUET admission portal","https://admission.kuet.ac.bd/"],
-      ["2025–26 official prospectus","https://admission.kuet.ac.bd/adm/fNotice/2025-2026%20Prospectus-Ban.pdf"]
-    ]
+    eligibility:["২০২৬–২৭ চূড়ান্ত যোগ্যতা নতুন সার্কুলার অনুযায়ী; ২০২৫–২৬ রেফারেন্সে SSC GPA ৪.০০ এবং HSC Math/Physics/Chemistry-তে পৃথক GPA ৪.০০ ছিল।"],
+    format:["গত বছর লিখিত ৫০০ নম্বর; Architecture-এ অতিরিক্ত ১০০ নম্বর অঙ্কন।"],
+    seats:"গত বছর মোট ১,০৬৫; বর্তমান সংখ্যা নতুন সার্কুলারে যাচাই করতে হবে।",
+    fee:"বর্তমান ফি অপেক্ষমাণ।",
+    documents:["SSC/HSC মূল রেজিস্ট্রেশন/সনদ","রঙিন প্রবেশপত্র","ছবি/স্বাক্ষর","প্রযোজ্য কোটা কাগজ"],
+    links:[["KUET ভর্তি পোর্টাল","https://admission.kuet.ac.bd/"],["২০২৫–২৬ অফিসিয়াল প্রসপেক্টাস","https://admission.kuet.ac.bd/adm/fNotice/2025-2026%20Prospectus-Ban.pdf"]]
   },
 
   "CUET": {
-    aliases:["Chittagong University of Engineering and Technology","চুয়েট"],
-    official:"https://admission.cuet.ac.bd/",
-    status:"2026–27 calendar date: 23 Jan 2027. Detailed current official admission circular is pending verification in the source set.",
-    basis:"2026–27 admission calendar + official CUET portal reference",
-    application:"Not yet verified for 2026–27.",
-    admit:"Not yet verified for 2026–27.",
-    fees:"Not yet verified for 2026–27.",
-    centers:"Current official seat plan pending.",
-    seats:"Final department-wise seat counts must follow the current CUET prospectus.",
-    programs:["Engineering","Architecture","Urban & Regional Planning"],
-    eligibility:["Current 2026–27 GPA/subject thresholds are pending the official circular."],
-    format:["Current exam type/marks distribution pending current circular verification."],
-    documents:["Academic information","Photo/signature","Quota/equivalence documents where applicable","Admit card"],
-    previous:"Previous-cycle details are intentionally not converted into numeric rules until the official CUET prospectus is directly verified.",
-    notes:["CUET is shown separately from RUET/KUET in the 2026–27 admission calendar."],
-    links:[["Official CUET admission portal","https://admission.cuet.ac.bd/"]]
+    aliases:["Chittagong University of Engineering and Technology","চট্টগ্রাম প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়","চুয়েট"],
+    current:["২০২৬–২৭ পরীক্ষা: ২৩ জানুয়ারি ২০২৭।"],
+    previous:[
+      "২০২৫–২৬ আবেদন: ১৫ ডিসেম্বর ২০২৫ সকাল ৯টা থেকে ৩১ ডিসেম্বর রাত ১১:৫৯।",
+      "আবেদন ফি জমার শেষ সময় ১ জানুয়ারি ২০২৬ রাত ১১:৫৯।",
+      "যোগ্য তালিকা প্রকাশ ৬ জানুয়ারি; প্রবেশপত্র ডাউনলোড শুরু ১২ জানুয়ারি সকাল ১০টা।",
+      "ভর্তি পরীক্ষা ১৭ জানুয়ারি ২০২৬।",
+      "বাংলাদেশি শিক্ষার্থীদের জন্য HSC Math+Physics+Chemistry মোট গ্রেড পয়েন্ট কমপক্ষে ১৪.০০ এবং English-এ ৩.০০; Biomedical Engineering-এর জন্য Biology-তে ৪.০০ লাগত।"
+    ],
+    eligibility:["২০২৬–২৭ নতুন সার্কুলার চূড়ান্ত; ২০২৫–২৬ রেফারেন্সে Math+Physics+Chemistry মোট ১৪.০০ এবং English ৩.০০ ছিল।"],
+    format:["বর্তমান পরীক্ষার পূর্ণ নম্বরবণ্টন নতুন সার্কুলারে যাচাই করতে হবে।"],
+    seats:"বর্তমান আসন তালিকা নতুন সার্কুলার থেকে নেওয়া হবে।",
+    fee:"বর্তমান ফি অপেক্ষমাণ।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","প্রবেশপত্র","প্রযোজ্য কোটা/সমমান কাগজ"],
+    links:[["CUET অফিসিয়াল ভর্তি পোর্টাল","https://admissioncuet.ac.bd/"],["CUET ভর্তি তথ্য","https://cuet.ac.bd/admission"]]
   },
 
   "MIST": {
-    aliases:["Military Institute of Science and Technology"],
-    official:"https://admission.mist.ac.bd/",
-    status:"MIST official undergraduate information provides detailed Unit A/B/C eligibility, marks and fees; 2026–27 calendar dates are 18–19 Dec 2026.",
-    basis:"Official MIST undergraduate information + 2026–27 admission calendar",
-    application:"Application is through the MIST admission portal; applicants create an account after eligibility check and pay online.",
-    admit:"Eligible applicants can download/print application copy and admit card after successful submission/payment according to portal timing.",
-    fees:"Official undergraduate info: Tk 1,200 Engineering; Tk 1,400 Engineering + Architecture; Tk 1,000 Unit C (Science).",
-    centers:"Current 2026–27 centre list should follow the admit card/official circular.",
-    seats:"Program-wise seats should be taken from the current MIST circular.",
-    programs:["Unit A — Engineering & Architecture","Unit B — Architecture drawing","Unit C — B.Sc. Mathematics & Data Science / B.Sc. Chemistry"],
-    eligibility:[
-      "Unit C official requirement: SSC and HSC/equivalent GPA at least 3.50 in each.",
-      "GCE Unit C: minimum B in five O-Level subjects including Math, Physics, Chemistry; minimum B in Math, Physics, Chemistry at A-Level.",
-      "Biomedical Engineering applicants need Biology with minimum A- at HSC or equivalent C at A-Level."
+    aliases:["Military Institute of Science and Technology","মিস্ট"],
+    current:["২০২৬–২৭ ক্যালেন্ডার অনুযায়ী C Unit — ১৮ ডিসেম্বর ২০২৬; A & B — ১৯ ডিসেম্বর ২০২৬।"],
+    previous:[
+      "২০২৫–২৬ অফিসিয়াল পোর্টালে আবেদন শেষ সময় ছিল ১৯ জানুয়ারি ২০২৬।",
+      "Unit A: মোট ২০০ নম্বর, ৩ ঘণ্টা — গণিত ৮০, পদার্থ ৬০, রসায়ন ৪০, ইংরেজি ২০।",
+      "Unit B: Freehand Drawing & Visual-Spatial Intelligence — ২০০ নম্বর, ২ ঘণ্টা।",
+      "Unit A ও B-তে পৃথকভাবে ন্যূনতম ৪০% প্রয়োজন ছিল।",
+      "Unit C: ৮০ নম্বর MCQ, ৬০ মিনিট — গণিত ২৫, রসায়ন ২৫, পদার্থ ২০, ইংরেজি ১০; পাস নম্বর ৩২।",
+      "ফি: Engineering ১,২০০ টাকা; Engineering+Architecture ১,৪০০ টাকা; Unit C ১,০০০ টাকা।",
+      "Unit C-এর মৌলিক GPA শর্ত ছিল SSC ও HSC-তে পৃথকভাবে কমপক্ষে ৩.৫০।"
     ],
-    format:[
-      "Unit A: 200 marks, 3 hours — Mathematics 80, Physics 60, Chemistry 40, English 20.",
-      "Unit B: Freehand Drawing & Visual-Spatial Intelligence 200 marks, 2 hours.",
-      "Minimum qualifying mark: 40% in Unit A and Unit B separately.",
-      "Unit C: MCQ 80 marks, 60 minutes — Mathematics 25, Chemistry 25, Physics 20, English 10; minimum 32.",
-      "Engineering/Architecture merit reference: written test 60%, HSC Math/Physics/Chemistry 20%, SSC Math/Physics/Chemistry 20%; last-year candidates receive 5% test-mark deduction."
-    ],
-    documents:["SSC/HSC or equivalent details","Photo/signature","GCE transcript/certificate verification where applicable","Admit card"],
-    previous:"MIST's official portal currently shows the prior undergraduate cycle application deadline as 19 Jan 2026; 2026–27 exact application window should follow the new circular.",
-    notes:["Questions are available in both Bangla and English; applicants may answer in either language."],
-    checks:[{label:"Unit C basic GPA gate",ssc:3.5,hsc:3.5,total:7.0}],
-    links:[
-      ["Official MIST admission portal","https://admission.mist.ac.bd/"],
-      ["Official undergraduate information","https://research.mist.ac.bd/study-with-us/undergraduate"]
-    ]
+    eligibility:["প্রোগ্রামভেদে আলাদা; Biomedical Engineering-এ Biology-এর অতিরিক্ত শর্ত থাকে।"],
+    format:["A: ২০০ নম্বর/৩ ঘণ্টা; B: ২০০ নম্বর/২ ঘণ্টা; C: ৮০ নম্বর MCQ/৬০ মিনিট — গত বছরের অফিসিয়াল রেফারেন্স।"],
+    seats:"বর্তমান প্রোগ্রামভিত্তিক আসন নতুন সার্কুলার অনুযায়ী।",
+    fee:"বর্তমান ২০২৬–২৭ ফি নতুন নোটিশে যাচাই করতে হবে।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","প্রবেশপত্র","GCE হলে transcript/certificate"],
+    links:[["MIST ভর্তি পোর্টাল","https://admission.mist.ac.bd/"],["MIST Undergraduate Information","https://research.mist.ac.bd/study-with-us/undergraduate"]]
   },
 
   "BUP": {
     aliases:["Bangladesh University of Professionals","বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস"],
-    official:"https://admission.bup.edu.bd/Admission/Home",
-    status:"BUP has already posted an official 'Admission Notice (Session: 2026–2027)' dated 1 Sep 2026.",
-    basis:"Current BUP 2026–27 official notice availability + calendar dates; previous undergraduate notice for format fallback",
-    application:"Use the current BUP notice for the exact application window. The official portal is already publishing the 2026–27 notice.",
-    admit:"Current notice/portal will control admit-card download. The site should not infer the window from older cycles.",
-    fees:"Previous undergraduate reference: Tk 1,100 application processing fee per faculty. Confirm against the 2026–27 notice.",
-    centers:"Current notice/admit card will specify centre details.",
-    seats:"Faculty/program seat numbers are current-notice dependent; do not assume prior-cycle counts.",
-    programs:["FASS","FSSS","FST","FBS","FET","FMS","BBA General"],
-    eligibility:["Faculty-specific GPA and subject requirements apply; use the 2026–27 notice for each faculty/program."],
-    format:[
-      "Previous undergraduate reference: MCQ admission test; 0.50 mark deducted for each wrong answer.",
-      "Previous reference required at least 40% in English to qualify.",
-      "Previous assessment reference (except MBA): admission test 55%, HSC/equivalent 25%, SSC/equivalent 20%.",
-      "Calculators were not allowed except in FST, where approved models were printed on the admit card."
+    current:["BUP ১ সেপ্টেম্বর ২০২৬ তারিখে ২০২৬–২৭ সেশনের অফিসিয়াল Admission Notice প্রকাশ করেছে।","ক্যালেন্ডারে FASS, FST, FET, FMS, FSSS, FBS ও BBA General-এর আলাদা পরীক্ষার তারিখ আছে।"],
+    previous:[
+      "পূর্ববর্তী আন্ডারগ্র্যাজুয়েট রেফারেন্সে আবেদন প্রসেসিং ফি ছিল প্রতি faculty-তে ১,১০০ টাকা।",
+      "ভর্তি পরীক্ষা ছিল MCQ ভিত্তিক; প্রতিটি ভুল উত্তরে ০.৫০ নম্বর কাটা হতো।",
+      "English-এ ন্যূনতম ৪০% পাওয়ার শর্ত ছিল।",
+      "MBA ছাড়া আন্ডারগ্র্যাজুয়েট রেফারেন্সে মূল্যায়ন: ভর্তি পরীক্ষা ৫৫%, HSC ২৫%, SSC ২০%।",
+      "FST ছাড়া সাধারণভাবে calculator অনুমোদিত ছিল না; FST-তে admit card-এ অনুমোদিত model উল্লেখ থাকত।"
     ],
-    documents:["SSC/HSC information","Photo/signature","Quota/supporting documents where applicable","Equivalence certificate for foreign qualifications","Admit card"],
-    previous:"2024–25 undergraduate admission notice is used only for format/fee reference where the 2026–27 PDF details have not been parsed.",
-    notes:["BUP source calendars show multiple faculty exams on 1, 2, 8 and 9 Jan 2027; FBS appears on both 1 and 9 Jan across sources, so the official notice must resolve that inconsistency."],
-    links:[
-      ["Official BUP admission portal","https://admission.bup.edu.bd/Admission/Home"],
-      ["All official BUP notices","https://admission.bup.edu.bd/Admission/NoticeAll"]
-    ]
+    eligibility:["Faculty/Program ভেদে GPA ও subject requirement আলাদা; ২০২৬–২৭ অফিসিয়াল notice-ই চূড়ান্ত।"],
+    format:["MCQ; negative marking ও faculty-specific details বর্তমান notice থেকে যাচাই করতে হবে।"],
+    seats:"Faculty/Program ভেদে আসন ২০২৬–২৭ notice থেকে নিতে হবে।",
+    fee:"গত বছরের রেফারেন্স ১,১০০ টাকা/Faculty; বর্তমান fee notice-এ যাচাই করতে হবে।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","কোটা কাগজ","সমমান সনদ","প্রবেশপত্র"],
+    links:[["BUP ভর্তি পোর্টাল","https://admission.bup.edu.bd/Admission/Home"],["সব BUP Notice","https://admission.bup.edu.bd/Admission/NoticeAll"]]
   },
 
-  "University of Rajshahi": {
-    aliases:["Rajshahi University","RU","রাবি"],
-    official:"https://admission.ru.ac.bd/",
-    status:"2026–27 calendar dates are announced/tentative in the source set; official 2025–26 portal remains a strong reference for workflow and timing.",
-    basis:"2026–27 calendar + official RU 2025–26 portal fallback",
-    application:"Chorcha reports a tentative 2026–27 application period of 12–27 Nov 2026. Previous official cycle: 20 Nov–8 Dec 2025.",
-    admit:"Previous official cycle: 17–22 Dec 2025. Current 2026–27 window pending official RU notice.",
-    fees:"Current fee not yet verified.",
-    centers:"Current seat plan/admit card pending.",
-    seats:"RU published an official 'Departments/Institutes Seats' notice on 17 Dec 2025 for the previous cycle; use the equivalent 2026–27 notice when released.",
-    programs:["Unit A — Humanities","Unit B — Business","Unit C — Science"],
-    eligibility:["Unit/department-specific conditions are published by RU in the official admission portal; current 2026–27 conditions are pending."],
-    format:["Current 2026–27 exact marks distribution is pending official notice."],
-    documents:["Academic information","Photo/selfie per RU instructions","Quota documents where applicable","Admit card"],
-    previous:"2025–26 official dates: online application 20 Nov–8 Dec 2025; admit card 17–22 Dec; Unit C test 16 Jan, Unit A 17 Jan, Unit B 24 Jan 2026.",
-    notes:["RU portal provides separate Application Guideline, Payment Instructions, Photo/Selfie Instructions, helpline, FAQ and complaint channels."],
-    links:[
-      ["Official RU admission portal","https://admission.ru.ac.bd/"],
-      ["Official RU notices","https://admission.ru.ac.bd/student/notices"]
-    ]
+  "রাজশাহী বিশ্ববিদ্যালয়": {
+    aliases:["University of Rajshahi","Rajshahi University","RU","রাবি"],
+    current:["২০২৬–২৭: B/Business — ৮ জানুয়ারি; C/Science — ৯ জানুয়ারি; A/Humanities — ১৬ জানুয়ারি ২০২৭।"],
+    previous:[
+      "২০২৫–২৬ অনলাইন আবেদন: ২০ নভেম্বর ২০২৫ দুপুর ১২:০১ থেকে ৭ ডিসেম্বর রাত ১১:৫৯ পর্যন্ত (অফিসিয়াল guideline)।",
+      "অফিসিয়াল পোর্টালে Application Guideline, Payment Instructions, Photo/Selfie Instructions, Helpline, FAQ ও Complaint সুবিধা ছিল।",
+      "পূর্ববর্তী সেশনে Unit C পরীক্ষা ১৬ জানুয়ারি, Unit A ১৭ জানুয়ারি এবং Unit B ২৪ জানুয়ারি ২০২৬ অনুষ্ঠিত হয়েছিল।",
+      "গত বছর Departments/Institutes Seats নামে আলাদা অফিসিয়াল seat notice প্রকাশ করা হয়েছিল।"
+    ],
+    eligibility:["Unit/Department অনুযায়ী যোগ্যতা আলাদা; ২০২৬–২৭ অফিসিয়াল guideline প্রকাশ হলে সেটিই চূড়ান্ত।"],
+    format:["বর্তমান ২০২৬–২৭ পরীক্ষার পূর্ণ marks distribution অফিসিয়াল notice-এ যাচাই করতে হবে।"],
+    seats:"Department/Institute seat notice থেকে বর্তমান সংখ্যা নিতে হবে।",
+    fee:"বর্তমান fee অপেক্ষমাণ।",
+    documents:["SSC/HSC তথ্য","Photo/Selfie","কোটা কাগজ","প্রবেশপত্র"],
+    links:[["RU ভর্তি পোর্টাল","https://admission.ru.ac.bd/"],["২০২৫–২৬ Application Guideline","https://admission.ru.ac.bd/student/application-guideline"]]
   },
 
-  "Jagannath University": {
-    aliases:["JnU","জবি"],
-    official:"https://admission.jnu.ac.bd/",
-    status:"2026–27 unit exam dates are in the calendars; detailed current application/admit-card windows are pending official publication.",
-    basis:"2026–27 calendar + official JnU 2025–26 prospectus fallback",
-    application:"Previous official cycle: 20 Nov–5 Dec 2025.",
-    admit:"Previous cycle unit-wise windows: A 10–21 Dec; C 10–22 Dec; D 25 Dec–4 Jan; E 7–11 Dec; B 15–25 Jan. Use only as planning reference.",
-    fees:"Current 2026–27 fee pending.",
-    centers:"Current seat plan/admit card pending.",
-    seats:"Unit/department seat counts should follow the 2026–27 admission guideline when published.",
-    programs:["A — Science","B — Humanities","C — Business","D — Social Science","E — Fine Arts"],
-    eligibility:["Current unit-wise 2026–27 eligibility is pending the official guideline."],
-    format:["Current unit-wise format/marks pending the official circular."],
-    documents:["Academic information","Photo/signature","Quota/equivalence documents if applicable","Admit card"],
-    previous:"Official 2025–26 prospectus page contains application dates, unit-specific admit-card windows and exam dates; it is used only when the current circular is absent.",
-    notes:["The current calendar places JnU A on 1 Jan, E on 8 Jan, B on 15 Jan, C on 22 Jan and D on 23 Jan 2027."],
-    links:[
-      ["Official JnU admission portal","https://admission.jnu.ac.bd/"],
-      ["2025–26 official prospectus page","https://admission.jnu.ac.bd/preliminary/prospectus/e714b56bd5992f4435b9adc23ac3832ef17073af.jsp"]
-    ]
+  "জগন্নাথ বিশ্ববিদ্যালয়": {
+    aliases:["Jagannath University","JnU","জবি"],
+    current:["২০২৬–২৭: A — ১ জানুয়ারি; E — ৮ জানুয়ারি; B — ১৫ জানুয়ারি; C — ২২ জানুয়ারি; D — ২৩ জানুয়ারি ২০২৭।"],
+    previous:[
+      "২০২৫–২৬ আবেদন: ২০ নভেম্বর–৫ ডিসেম্বর ২০২৫।",
+      "Admit Card: A Unit ১০–২১ ডিসেম্বর; C Unit ১০–২২ ডিসেম্বর; D Unit ২৫ ডিসেম্বর–৪ জানুয়ারি; E Unit ৭–১১ ডিসেম্বর; B Unit ১৫–২৫ জানুয়ারি।",
+      "২০২৫–২৬ পরীক্ষার তারিখ: A ২৬ ডিসেম্বর, C ২৭ ডিসেম্বর, D ৯ জানুয়ারি, E ১৩ ডিসেম্বর, B ৩০ জানুয়ারি।",
+      "অফিসিয়াল admission portal-এ user manual ও পূর্ণ ভর্তি নির্দেশিকা প্রকাশ করা হয়েছিল।"
+    ],
+    eligibility:["২০২৬–২৭ Unit-wise যোগ্যতা নতুন guideline অনুযায়ী নিতে হবে।"],
+    format:["Unit-wise marks ও question pattern current circular অনুযায়ী।"],
+    seats:"বর্তমান seat matrix নতুন prospectus/guideline থেকে নেওয়া হবে।",
+    fee:"বর্তমান fee অপেক্ষমাণ।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","কোটা/সমমান কাগজ","প্রবেশপত্র"],
+    links:[["JnU ভর্তি পোর্টাল","https://admission.jnu.ac.bd/"],["২০২৫–২৬ Prospectus Page","https://admission.jnu.ac.bd/preliminary/prospectus/5789b26bc53ff5bcd6ef80e542440c797167aa97.jsp"]]
   },
 
-  "Khulna University": {
-    aliases:["KU","খুলনা বিশ্ববিদ্যালয়","খুবি"],
-    official:"https://apply.ku.ac.bd/",
-    status:"2026–27 A/B/C/D unit exam dates are in the admission calendars; detailed current circulars are still being assembled.",
-    basis:"2026–27 calendar + official Khulna University 2025–26 unit prospectuses",
-    application:"Current 2026–27 application window pending official unit notices.",
-    admit:"Current admit-card window pending official notices.",
-    fees:"Current fee pending.",
-    centers:"2025–26 D Unit was held in Dhaka and Khulna; 2026–27 centres should follow the new unit circulars.",
-    seats:"2025–26 D Unit: 88 total seats including reserved/BKSP quota; A Unit covered 8 disciplines. Current 2026–27 seat table may change.",
-    programs:["A — Science/Engineering/Technology","B — Life Science","C — Humanities","D — Business"],
-    eligibility:[
-      "2025–26 D Unit: applicants from Science, Business or Humanities could apply.",
-      "D Unit required at least GPA 3.50 separately in SSC and HSC/equivalent and HSC English grade point at least 3.00.",
-      "GCE D Unit reference: at least B in three O-Level subjects and two A-Level subjects."
+  "খুলনা বিশ্ববিদ্যালয়": {
+    aliases:["Khulna University","KU","খুবি"],
+    current:["২০২৬–২৭: D/Business ও C/Humanities — ১৭ ডিসেম্বর; A/Science ও B/Life Science — ১৮ ডিসেম্বর ২০২৬।"],
+    previous:[
+      "২০২৫–২৬ A Unit ও D Unit-এর আবেদন ছিল ৭ নভেম্বর থেকে ২৭ নভেম্বর ২০২৫ রাত ১১:৫৯ পর্যন্ত।",
+      "A Unit পরীক্ষা ১৯ ডিসেম্বর ২০২৫; D Unit পরীক্ষা ১৮ ডিসেম্বর ২০২৫।",
+      "A Unit-এ মোট ৩২০ আসন; Architecture ৩৭, CSE ৪০, URP ৪০, ECE ৩৭, Mathematics ৪৫, Physics ৪০, Chemistry ৪০, Statistics ৪০।",
+      "A Unit যোগ্যতা: SSC+HSC মোট GPA কমপক্ষে ৮.০০।",
+      "A Unit পরীক্ষা ১০০ নম্বর: MCQ ৬০ + লিখিত ৪০; Architecture-এর জন্য অতিরিক্ত Freehand Drawing ৫০। MCQ ভুল উত্তরে ০.২৫ নম্বর কাটা হতো।",
+      "D Unit-এ মোট ৮৮ আসন; Business Administration ৪৭ ও Human Resource Management ৪০সহ quota।",
+      "D Unit যোগ্যতা: SSC ও HSC উভয়টিতে পৃথক GPA কমপক্ষে ৩.৫০ এবং HSC English-এ GPA কমপক্ষে ৩.০০।",
+      "D Unit পরীক্ষা ১০০ নম্বর/১ ঘণ্টা ৩০ মিনিট: MCQ ৬০ + English Composition লিখিত ৪০; MCQ-তে ২৫% negative marking।"
     ],
-    format:[
-      "2025–26 D Unit reference: 100 marks total.",
-      "MCQ: English Language & Grammar 20; Mathematics & Analytical Ability 30; General/Business Knowledge 10.",
-      "Written: English Composition 40."
-    ],
-    documents:["Academic information","Photo/signature","Quota supporting documents if applicable","Admit card"],
-    previous:"Current details fall back to the official 2025–26 unit PDFs where the 2026–27 circular is not yet available.",
-    notes:["Current calendar: D and C on 17 Dec 2026; A and B on 18 Dec 2026."],
-    checks:[{label:"D Unit 2025–26 basic GPA reference",ssc:3.5,hsc:3.5,total:7.0}],
-    links:[
-      ["Khulna University application portal","https://apply.ku.ac.bd/"],
-      ["2025–26 A Unit prospectus","https://apply.ku.ac.bd/images/prospectus/A-Unit.pdf"],
-      ["2025–26 D Unit prospectus","https://apply.ku.ac.bd/images/prospectus/D-Unit.pdf"]
-    ]
+    eligibility:["Unitভেদে আলাদা; A Unit Science/Engineering এবং D Unit Business-এর যোগ্যতা গত বছরের official prospectus-এ বিস্তারিত ছিল।"],
+    format:["A Unit: MCQ+লিখিত; D Unit: MCQ+English Composition; Architecture-এ অতিরিক্ত অঙ্কন — ২০২৫–২৬ রেফারেন্স।"],
+    seats:"গত বছর A Unit ৩২০, D Unit ৮৮; ২০২৬–২৭ নতুন circular-এ পরিবর্তন হতে পারে।",
+    fee:"বর্তমান fee অপেক্ষমাণ।",
+    documents:["SSC/HSC মূল grade sheet/certificate","ছবি/স্বাক্ষর","quota certificate","প্রবেশপত্র"],
+    links:[["KU Application Portal","https://apply.ku.ac.bd/"],["২০২৫–২৬ A Unit Prospectus","https://apply.ku.ac.bd/images/prospectus/A-Unit.pdf"],["২০২৫–২৬ D Unit Prospectus","https://apply.ku.ac.bd/images/prospectus/D-Unit.pdf"]]
   },
 
   "SUST": {
-    aliases:["Shahjalal University of Science and Technology","শাবিপ্রবি"],
-    official:"https://admission.sust.edu.bd/",
-    status:"2026–27 calendar dates: Unit A 26 Jan 2027; Unit B 27 Jan 2027. Current detailed circular pending.",
-    basis:"2026–27 calendar + official SUST 2025–26 admission/department eligibility information",
-    application:"Current 2026–27 application window pending.",
-    admit:"Current admit-card window pending.",
-    fees:"Current application fee pending.",
-    centers:"Current 2026–27 centre list pending official notice.",
-    seats:"Department-level examples from official SUST pages: Mechanical Engineering 35 seats; Forestry & Environmental Science 55 seats. Use current prospectus for full seat matrix.",
-    programs:["Unit A","Unit B","Architecture","CSE","EEE","IPE","MEE","SWE","Life Sciences","Social Sciences","Business and other departments"],
-    eligibility:[
-      "Official department eligibility reference: relevant HSC-level prerequisite subjects generally require minimum GPA 3.0.",
-      "Examples: CSE/EEE/IPE/MEE/PHY/SWE require Physics and Mathematics; Architecture requires Physics and Mathematics.",
-      "BMB/GEB require Biology, Chemistry and Mathematics; MAT/STA require Mathematics."
+    aliases:["Shahjalal University of Science and Technology","শাহজালাল বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়","শাবিপ্রবি"],
+    current:["২০২৬–২৭: A Unit — ২৬ জানুয়ারি; B Unit — ২৭ জানুয়ারি ২০২৭।"],
+    previous:[
+      "২০২৫–২৬ অফিসিয়াল admission site department eligibility table প্রকাশ করেছে।",
+      "বিভাগে ভর্তির জন্য সংশ্লিষ্ট HSC-Level prerequisite subject-এ সাধারণত কমপক্ষে GPA ৩.০০ লাগত।",
+      "CSE/EEE/IPE/MEE/PHY/SWE-তে Physics ও Mathematics; ARC-এ Physics ও Mathematics; BMB/GEB-এ Biology, Chemistry, Mathematics; MAT/STA-তে Mathematics প্রয়োজন ছিল।",
+      "গত বছরের অফিসিয়াল admission portal-এ SSC/HSC board, roll ও pass year দিয়ে registration শুরু করা হতো।"
     ],
-    format:["Current 2026–27 unit marks distribution pending official circular."],
-    documents:["SSC/HSC information","Photo/signature","Quota/equivalence documents if applicable","Admit card"],
-    previous:"Official SUST portal is still labeled 2025–26 in the verified source set; it supplies department-level eligibility references until 2026–27 details are published.",
-    notes:["Department eligibility can be stricter than general unit eligibility, so final subject choice must check department prerequisites."],
-    links:[
-      ["Official SUST admission portal","https://admission.sust.edu.bd/"],
-      ["SUST official admission reference","https://www.sust.edu/university-forms-and-downloads"]
-    ]
+    eligibility:["Unit eligibility-এর পাশাপাশি Department-specific prerequisite subject পূরণ করা বাধ্যতামূলক হতে পারে।"],
+    format:["২০২৬–২৭ পূর্ণ marks distribution current circular অনুযায়ী।"],
+    seats:"বিভাগভিত্তিক বর্তমান seat matrix current prospectus থেকে নিতে হবে।",
+    fee:"বর্তমান fee অপেক্ষমাণ।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","quota/equivalence documents","প্রবেশপত্র"],
+    links:[["SUST ভর্তি পোর্টাল","https://admission.sust.edu.bd/"]]
   },
 
-  "University of Chittagong": {
-    aliases:["Chittagong University","CU","চবি"],
-    official:"https://admission.cu.ac.bd/",
-    status:"2026–27 unit dates are announced in the calendars; detailed prospectus/eligibility should be taken from the current CU admission portal.",
-    basis:"2026–27 calendar + official CU admission portal",
-    application:"Current window pending verified official circular.",
-    admit:"Current unit-wise admit-card windows pending.",
-    fees:"Current fee pending.",
-    centers:"Current seat plan/admit card pending.",
-    seats:"Unit/department seat matrix pending current prospectus.",
-    programs:["A — Science","B — Arts & Humanities","B1","B2","C — Business","D — Social Science","D1"],
-    eligibility:["Current 2026–27 general and department-specific eligibility should follow the CU prospectus."],
-    format:["Unit-specific marks distribution and negative-marking policy pending current prospectus verification."],
-    documents:["Academic information","Photo/signature","Quota documents if applicable","Admit card"],
-    previous:"The official CU portal typically provides prospectus, eligibility, application process, schedule and fee rules; use last-cycle documents only until the new prospectus appears.",
-    notes:["Current calendar dates: C 29 Jan; A 30 Jan; B1 3 Feb; B2 4 Feb; B 5 Feb; D 6 Feb; D1 8 Feb 2027."],
-    links:[["Official CU admission portal","https://admission.cu.ac.bd/"]]
+  "চট্টগ্রাম বিশ্ববিদ্যালয়": {
+    aliases:["University of Chittagong","Chittagong University","CU","চবি"],
+    current:["২০২৬–২৭: C — ২৯ জানুয়ারি; A — ৩০ জানুয়ারি; B1 — ৩ ফেব্রুয়ারি; B2 — ৪ ফেব্রুয়ারি; B — ৫ ফেব্রুয়ারি; D — ৬ ফেব্রুয়ারি; D1 — ৮ ফেব্রুয়ারি ২০২৭।"],
+    previous:[
+      "২০২৫–২৬ অফিসিয়াল CU admission portal-এ Prospectus, Admission Notice, Application Process, General Eligibility, Schedule ও Fee Rules আলাদা মেনুতে প্রকাশ করা হয়েছিল।",
+      "A Unit-এর helpline আলাদা ছিল Science/Biological Sciences/Engineering/Marine Sciences faculties-এর জন্য।",
+      "B/B1/B2, C, D/D1-এর জন্য আলাদা faculty helpline ছিল।",
+      "গত বছরের portal-এ unit-specific eligibility ও fee rules অফিসিয়ালি প্রকাশ করা হয়েছিল; ২০২৬–২৭-এ নতুন prospectus প্রকাশ হলে সেটিই ব্যবহার করতে হবে।"
+    ],
+    eligibility:["Unit এবং Department অনুযায়ী যোগ্যতা ভিন্ন; current prospectus-ই চূড়ান্ত।"],
+    format:["Unit-wise question pattern, duration ও negative marking current prospectus অনুযায়ী।"],
+    seats:"Unit/Department seat matrix current prospectus থেকে।",
+    fee:"বর্তমান fee অপেক্ষমাণ।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","quota documents","প্রবেশপত্র"],
+    links:[["CU ভর্তি পোর্টাল","https://admission.cu.ac.bd/"],["২০২৫–২৬ Admission Notice Page","https://admission.cu.ac.bd/admission-notice"]]
   },
 
-  "Comilla University": {
-    aliases:["CoU","কুমিল্লা বিশ্ববিদ্যালয়","কুবি"],
-    official:"https://www.cou.ac.bd/admission",
-    status:"2026–27 application and exam schedule are already published in the admission calendars.",
-    basis:"Current 2026–27 Chorcha/calendar information + official CoU 2025–26 admission archive",
-    application:"Current 2026–27: 15 Nov–10 Dec 2026 (Chorcha).",
-    admit:"Current admit-card window not yet verified in the official source set.",
-    fees:"Current application fee pending official circular.",
-    centers:"Current calendar reports exam centres in Cumilla, Chattogram and Rajshahi.",
-    seats:"Unit/department seat matrix should follow the 2026–27 official circular.",
-    programs:["A — Science","B — Humanities","C — Business"],
-    eligibility:["Current 2026–27 GPA/unit conditions pending official circular."],
-    format:["Current unit-wise marks distribution pending official circular."],
-    documents:["Academic information","Photo/signature","Quota/equivalence documents if applicable","Admit card"],
-    previous:"The official CoU site maintains a 2025–26 undergraduate admission archive with unit results and merit notices; use it only as previous-cycle reference.",
-    notes:["Current exam dates: A 5 Feb 11:00 AM; B 6 Feb (sources differ on time); C 7 Feb (sources differ on time)."],
-    links:[
-      ["Official CoU admission archive","https://www.cou.ac.bd/admission"],
-      ["Official undergraduate program page","https://www.cou.ac.bd/program-category/undergraduate-program"]
-    ]
+  "কুমিল্লা বিশ্ববিদ্যালয়": {
+    aliases:["Comilla University","CoU","কুবি"],
+    current:["২০২৬–২৭ আবেদন: Chorcha অনুযায়ী ১৫ নভেম্বর–১০ ডিসেম্বর ২০২৬।","পরীক্ষা: A — ৫ ফেব্রুয়ারি; B — ৬ ফেব্রুয়ারি; C — ৭ ফেব্রুয়ারি ২০২৭।"],
+    previous:[
+      "২০২৫–২৬ অফিসিয়াল ভর্তি বিজ্ঞপ্তি ২৫ নভেম্বর ২০২৫ এবং ভর্তি নির্দেশিকা ২৭ নভেম্বর প্রকাশ হয়েছিল।",
+      "আবেদন শুরু হয়েছিল ২৭ নভেম্বর ২০২৫; সময় পরে বাড়ানো হয়েছিল।",
+      "ভর্তি পরীক্ষা ৩০ ও ৩১ জানুয়ারি ২০২৬ অনুষ্ঠিত হয়েছিল।",
+      "অফিসিয়াল notice অনুযায়ী ২০২৫–২৬ প্রবেশপত্র ডাউনলোড ২৬ জানুয়ারি ২০২৬ থেকে শুরু হয়েছিল।"
+    ],
+    eligibility:["২০২৬–২৭ Unit-wise GPA ও subject eligibility নতুন official guideline অনুযায়ী।"],
+    format:["বর্তমান unit-wise marks distribution নতুন guideline অনুযায়ী।"],
+    seats:"বর্তমান seat matrix নতুন guideline থেকে।",
+    fee:"বর্তমান fee অপেক্ষমাণ।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","quota/equivalence documents","প্রবেশপত্র"],
+    links:[["কুমিল্লা বিশ্ববিদ্যালয় Admission Archive","https://www.cou.ac.bd/admission"],["Undergraduate Program Notices","https://www.cou.ac.bd/program-category/undergraduate-program"]]
   },
-
-  "BUP": null,
 
   "BUTEX": {
     aliases:["Bangladesh University of Textiles","বুটেক্স","Textile University"],
-    official:"https://newsite.butex.edu.bd/admission_new/undergraduate-admission",
-    status:"2026–27 calendar date: 29 Jan 2027. Official undergraduate page currently provides detailed 2025–26 admission reference.",
-    basis:"2026–27 calendar + official BUTEX 2025–26 undergraduate admission page",
-    application:"Current 2026–27 application window pending official circular.",
-    admit:"Current admit-card date pending.",
-    fees:"Current application fee pending.",
-    centers:"Current seat plan pending.",
-    seats:"Official previous-cycle reference: about 9,000 candidates were allowed to sit against 640 seats.",
-    programs:["B.Sc. in Textile Engineering programs across BUTEX departments"],
-    eligibility:[
-      "2025–26 reference: SSC/equivalent GPA at least 4.00.",
-      "HSC/equivalent GPA at least 4.00.",
-      "HSC Mathematics + Physics + Chemistry + English grade points total at least 17.50, with each subject at least 3.50.",
-      "Mathematics must be present in HSC at least as optional subject.",
-      "Previous official FAQ says only current-year HSC candidates could apply; second-timers were not eligible."
+    current:["২০২৬–২৭ পরীক্ষা: ২৯ জানুয়ারি ২০২৭।"],
+    previous:[
+      "২০২৫–২৬-এ প্রায় ৯,০০০ পরীক্ষার্থীকে ৬৪০ আসনের বিপরীতে পরীক্ষায় অংশ নিতে দেওয়া হয়েছিল।",
+      "SSC GPA কমপক্ষে ৪.০০ এবং HSC GPA কমপক্ষে ৪.০০।",
+      "HSC Math+Physics+Chemistry+English মোট Grade Point কমপক্ষে ১৭.৫০; প্রতিটি বিষয়ে কমপক্ষে ৩.৫০।",
+      "HSC-তে Mathematics অন্তত optional subject হিসেবে থাকতে হতো।",
+      "Second timer গ্রহণ করা হয়নি; শুধুমাত্র ওই বছরের HSC উত্তীর্ণরা আবেদন করতে পারত।",
+      "লিখিত পরীক্ষা ২০০ নম্বর: Mathematics ৬০, Physics ৬০, Chemistry ৬০, English ২০।",
+      "Admit Card download সময় ১ জানুয়ারি থেকে বাড়িয়ে ৫ জানুয়ারি ২০২৬ রাত ১১:৫৯ পর্যন্ত করা হয়েছিল।"
     ],
-    format:[
-      "2025–26 reference: written admission test, 200 marks.",
-      "Mathematics 60, Physics 60, Chemistry 60, English 20.",
-      "Selection based on admission-test score."
-    ],
-    documents:["Academic information","Photo/signature","Admit card","Equivalence documents where applicable"],
-    previous:"The official BUTEX page explicitly labels its detailed circular/FAQ as 2025–26; these figures are used only until the 2026–27 circular appears.",
-    notes:["Current calendar sources differ on whether the 29 Jan 2027 exam starts at 10:00 or 11:00; official notice should decide."],
-    checks:[{label:"2025–26 basic SSC/HSC GPA reference",ssc:4.0,hsc:4.0,total:8.0}],
-    links:[["Official BUTEX undergraduate admission page","https://newsite.butex.edu.bd/admission_new/undergraduate-admission"]]
+    eligibility:["বর্তমান ২০২৬–২৭ circular না আসা পর্যন্ত গত বছরের GPA ও passing-year নিয়মকে কেবল reference হিসেবে দেখুন।"],
+    format:["গত বছর Written ২০০ marks — Math ৬০, Physics ৬০, Chemistry ৬০, English ২০।"],
+    seats:"গত বছর ৬৪০ আসন; current circular-এ পরিবর্তন হতে পারে।",
+    fee:"বর্তমান fee অপেক্ষমাণ।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","প্রবেশপত্র","equivalence document"],
+    links:[["BUTEX Undergraduate Admission","https://www.butex.edu.bd/admissions/"]]
   },
 
   "AAUB": {
     aliases:["Aviation and Aerospace University Bangladesh","Aviation and Aerospace University, Bangladesh","এএউবি"],
-    official:"https://aaub.edu.bd/",
-    status:"2026–27 admission test date is 5 Dec 2026 in the calendars; detailed current notice should be checked on the university site.",
-    basis:"2026–27 calendar + official AAUB 2025–26 admission guideline fallback",
-    application:"Current 2026–27 window pending detailed official notice.",
-    admit:"Current admit-card window pending.",
-    fees:"Current application fee pending.",
-    centers:"Current exam centre details should follow the 2026–27 AAUB notice.",
-    seats:"Current program-wise seat counts pending official notice.",
-    programs:["B.Sc. Aerospace Engineering","B.Sc. Avionics Engineering","B.Sc. Aircraft Maintenance Engineering (Aerospace)","B.Sc. Aircraft Maintenance Engineering (Avionics)"],
-    eligibility:["Use current 2026–27 official admission instruction when published; previous-cycle official guideline is linked for reference."],
-    format:["Current exam marks distribution pending the 2026–27 notice."],
-    documents:["Academic information","Photo/signature","Admit card","Equivalent certificates if applicable"],
-    previous:"AAUB's official 2025–26 guideline confirms four 4-year undergraduate programs in Aerospace/Avionics/Aircraft Maintenance Engineering.",
-    notes:["Do not confuse AAUB undergraduate programs with its postgraduate aviation/space programs."],
-    links:[
-      ["Official AAUB website","https://aaub.edu.bd/"],
-      ["2025–26 official admission guideline PDF","https://aaub.edu.bd/public/ckfinder/userfiles/files/Admission-Instruction-2025-26%281%29.pdf"]
-    ]
-  },
-
-  "GST Cluster": {
-    aliases:["GST","General Science and Technology Cluster","গুচ্ছ","GST Admission"],
-    official:"https://gstadmission.ac.bd/",
-    status:"2026–27 GST dates are announced: B 19 Mar; C & D 20 Mar; A 27 Mar 2027.",
-    basis:"Current 2026–27 calendars + official GST portal",
-    application:"Current 2026–27 application window pending official circular.",
-    admit:"Current admit-card/centre window pending official portal update.",
-    fees:"Current application fee pending official circular.",
-    centers:"Participating university/centre list pending current official notice.",
-    seats:"Seats are distributed across participating GST universities and subjects; use the current official seat matrix when published.",
-    programs:["A — Science","B — Humanities","C — Business","D — Architecture (where separately applied)"],
-    eligibility:["Group-specific GPA and HSC subject requirements are current-circular dependent; do not infer from prior GST cycles."],
-    format:["Current unit marks distribution, duration and negative-marking policy pending current circular."],
-    documents:["Academic information","Photo/signature","Quota/equivalence documents if applicable","Admit card"],
-    previous:"Previous-cycle GST materials may help understand the workflow, but the participating-university list and eligibility can change by session.",
-    notes:["The calendars agree on GST dates but may differ by one hour on unit start times; official notice should control final time."],
-    links:[["Official GST admission portal","https://gstadmission.ac.bd/"]]
-  },
-
-  "Agriculture Cluster": {
-    aliases:["Agri","Agricultural Universities Cluster","কৃষি গুচ্ছ","ACAS"],
-    official:"https://acas.edu.bd/",
-    status:"2026–27 Agriculture Cluster test is scheduled for 2 Jan 2027 in the admission calendars. Sher-e-Bangla Agricultural University is reported as lead coordinator.",
-    basis:"2026–27 calendar + official ACAS 2025–26 notices/seat plan fallback",
-    application:"Current 2026–27 application window pending official ACAS circular.",
-    admit:"Current admit-card window pending.",
-    fees:"Current application fee pending.",
-    centers:"Current centre list pending. Previous official 2025–26 seat plan used many centres/sub-centres nationwide.",
-    seats:"Previous cycle officially covered 9 public universities offering agriculture-related degrees; current participating institutions/seat matrix must be confirmed from the 2026–27 guideline.",
-    programs:["Agriculture","Veterinary/Animal Science","Fisheries","Agricultural Engineering","Forestry/Environment and other agriculture-related programs across participating universities"],
-    eligibility:["Current HSC science-subject/GPA thresholds pending the 2026–27 ACAS guideline."],
-    format:["Current 2026–27 exam marks distribution pending the new ACAS circular."],
-    documents:["Academic information","Photo/signature","Admit card","Quota/equivalence documents if applicable"],
-    previous:"Official ACAS notice archive contains the 2025–26 admission guideline, revised circular, seat plan, results, migration and university/degree allocation notices.",
-    notes:["The prior cycle used a cluster-wide merit/choice process across nine public universities."],
-    links:[
-      ["Official Agriculture Cluster portal","https://acas.edu.bd/"],
-      ["Official ACAS notices","https://acas.edu.bd/notice"]
-    ]
-  },
-
-  "Medical & Dental": {
-    aliases:["Medical","Dental","MBBS","BDS","মেডিকেল","ডেন্টাল"],
-    official:"https://dgme.gov.bd/",
-    status:"2026–27 admission calendar lists the combined Medical & Dental test on 4 Dec 2026 at 10:00 AM. Detailed domestic circular should come from DGME/DGHS.",
-    basis:"2026–27 admission calendar + official/reliable 2025–26 medical admission reference",
-    application:"Current 2026–27 application opening/closing dates pending DGME/DGHS domestic circular.",
-    admit:"Current admit-card window pending. Previous cycle required a colour-printed admit card and HSC/equivalent admit/registration card at the exam centre.",
-    fees:"Current application fee pending the 2026–27 circular.",
-    centers:"Previous cycle: 17 centres and 49 venues nationwide. Current 2026–27 centre list may differ.",
-    seats:"2025–26 reference: 13,051 combined government/private MBBS+BDS seats — government 5,645 (MBBS 5,100; BDS 545), private 7,406 (MBBS 6,001; BDS 1,405).",
-    programs:["MBBS","BDS"],
-    eligibility:[
-      "Current 2026–27 domestic GPA/passing-year rules pending the official circular.",
-      "Applicants should have Science background with Biology, Chemistry and Physics; exact GPA and Biology threshold must follow the current DGME/DGHS notice."
+    current:["২০২৬–২৭ স্নাতক ভর্তি পরীক্ষা: ৫ ডিসেম্বর ২০২৬; কেন্দ্র BAF Shaheen College, Dhaka এবং AAUB Lalmonirhat Campus।"],
+    previous:[
+      "২০২৫–২৬ আবেদন: ৯ নভেম্বর ২০২৫ দুপুর ১২টা থেকে ১১ ডিসেম্বর রাত ১১:৫৯।",
+      "সার্ভিস চার্জ/আবেদন ফি ১,০০০ টাকা; প্রদানের শেষ সময় ১৪ ডিসেম্বর রাত ১১:৫৯।",
+      "যোগ্য প্রার্থীর তালিকা ১৫ ডিসেম্বর; প্রবেশপত্র ১৬ ডিসেম্বর দুপুর ১২টা থেকে ২৬ ডিসেম্বর সকাল ৯টা পর্যন্ত।",
+      "ভর্তি পরীক্ষা ২৬ ডিসেম্বর ২০২৫ সকাল ১০টা–১২টা।",
+      "৪ বছর মেয়াদি undergraduate program: B.Sc. Aerospace Engineering, Avionics Engineering, Aircraft Maintenance Engineering (Aerospace), Aircraft Maintenance Engineering (Avionics)।"
     ],
-    format:[
-      "2025–26 reference: 100 MCQs, 1 hour 15 minutes, pass mark 40.",
-      "Biology 30, Chemistry 25, Physics 15, English 15, General Knowledge/Aptitude/Human Qualities 15.",
-      "0.25 mark deducted for each wrong answer.",
-      "Previous merit calculation added SSC GPA×8 (max 40) + HSC GPA×12 (max 60) to the written-test score."
+    eligibility:["২০২৬–২৭ current notice-ই চূড়ান্ত; গত বছরের পূর্ণ eligibility guideline official PDF-এ আছে।"],
+    format:["গত বছরের written test ছিল ২ ঘণ্টা।"],
+    seats:"বর্তমান program-wise seats current notice থেকে।",
+    fee:"গত বছর ১,০০০ টাকা; current fee নতুন notice অনুযায়ী।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","প্রবেশপত্র","প্রযোজ্য সমমান কাগজ"],
+    links:[["AAUB Admission Info","https://www.aaub.edu.bd/public/content/admission-info"],["২০২৫–২৬ Admission Guideline PDF","https://aaub.edu.bd/public/ckfinder/userfiles/files/Admission-Instruction-2025-26%281%29.pdf"]]
+  },
+
+  "GST গুচ্ছ": {
+    aliases:["GST","GST Cluster","General Science and Technology Cluster","গুচ্ছ"],
+    current:["২০২৬–২৭: B/Humanities — ১৯ মার্চ; C/Business ও D/Architecture — ২০ মার্চ; A/Science — ২৭ মার্চ ২০২৭।"],
+    previous:[
+      "২০২৫–২৬ official GST portal-এর workflow অনুযায়ী ইউনিটভিত্তিক আবেদন, admit card, centre এবং subject choice এক প্ল্যাটফর্মে পরিচালিত হয়েছে।",
+      "গত বছরের participating university/seat matrix ও eligibility session-specific ছিল; তাই ২০২৬–২৭-এ তালিকা পরিবর্তিত হতে পারে।"
     ],
-    documents:["Colour-printed admit card","Transparent black-ink ballpoint pen","HSC/equivalent admit card or registration card","Other documents required by current circular"],
-    previous:"2025–26 domestic MBBS/BDS test was held 12 Dec 2025 at 10:00 AM; DGME/DGHS published results and subsequent admission instructions.",
-    notes:["Previous cycle prohibited mobile phones, calculators, electronic devices and watches in the examination hall.","Current 2026–27 rules may change and must override the previous-cycle reference."],
-    links:[
-      ["DGME official notices","https://dgme.gov.bd/pages/notices"],
-      ["DGHS official notices","https://dghs.gov.bd/pages/notices"]
-    ]
+    eligibility:["A/B/C unit অনুযায়ী group, GPA ও subject requirement current GST circular থেকে নিতে হবে।"],
+    format:["বর্তমান marks distribution, duration ও negative marking current circular অনুযায়ী।"],
+    seats:"Participating university-wise seat matrix current GST notice থেকে।",
+    fee:"বর্তমান fee অপেক্ষমাণ।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","quota/equivalence documents","প্রবেশপত্র"],
+    links:[["GST Official Portal","https://gstadmission.ac.bd/"]]
+  },
+
+  "কৃষি গুচ্ছ": {
+    aliases:["Agriculture Cluster","Agri","Agricultural Universities Cluster","ACAS"],
+    current:["২০২৬–২৭ পরীক্ষা: ২ জানুয়ারি ২০২৭।"],
+    previous:[
+      "২০২৫–২৬ কৃষি গুচ্ছে কৃষিবিজ্ঞান বিষয়ে ডিগ্রি প্রদানকারী ৯টি পাবলিক বিশ্ববিদ্যালয় অংশ নিয়েছিল।",
+      "অফিসিয়াল ভর্তি বিজ্ঞপ্তি ও ভর্তি নির্দেশিকা প্রকাশ হয়েছিল ২৩ নভেম্বর ২০২৫; সংশোধিত বিজ্ঞপ্তি ১২ ডিসেম্বর।",
+      "অফিসিয়াল seat plan প্রকাশ হয়েছিল ২৮ ডিসেম্বর ২০২৫ এবং পরীক্ষার্থী/পরিদর্শক নির্দেশনা ২ জানুয়ারি ২০২৬।",
+      "পরে merit, waiting, migration, university/degree choice ও admission confirmation—সবকিছুর জন্য ধারাবাহিক official notice প্রকাশ করা হয়েছিল।"
+    ],
+    eligibility:["Science background, GPA ও Biology/Chemistry/Physics/Math subject requirement current ACAS guideline অনুযায়ী।"],
+    format:["বর্তমান exam marks distribution ও duration ২০২৬–২৭ guideline থেকে নিতে হবে।"],
+    seats:"৯টি বিশ্ববিদ্যালয়ের university/degree-wise seat matrix current guideline অনুযায়ী।",
+    fee:"বর্তমান fee অপেক্ষমাণ।",
+    documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","প্রবেশপত্র","quota/equivalence documents"],
+    links:[["ACAS Official Portal","https://acas.edu.bd/"],["ACAS Notice Archive","https://acas.edu.bd/notice"]]
+  },
+
+  "মেডিকেল ও ডেন্টাল": {
+    aliases:["Medical & Dental","Medical","Dental","MBBS","BDS","মেডিকেল","ডেন্টাল"],
+    current:["২০২৬–২৭ ক্যালেন্ডারে MBBS/BDS ভর্তি পরীক্ষা ৪ ডিসেম্বর ২০২৬ সকাল ১০টা দেখানো হয়েছে; DGME/DGHS-এর নতুন domestic circular চূড়ান্ত উৎস।"],
+    previous:[
+      "২০২৫–২৬ MBBS/BDS admission circular DGME ১০ নভেম্বর ২০২৫ প্রকাশ করেছিল।",
+      "ভর্তি পরীক্ষা হয়েছিল ১২ ডিসেম্বর ২০২৫ সকাল ১০টা।",
+      "গত বছরের reference: ১০০টি MCQ, সময় ১ ঘণ্টা ১৫ মিনিট, pass mark ৪০।",
+      "বিষয়ভিত্তিক: Biology ৩০, Chemistry ২৫, Physics ১৫, English ১৫, General Knowledge/Aptitude/Human Qualities ১৫।",
+      "প্রতি ভুল উত্তরে ০.২৫ নম্বর কাটা হতো।",
+      "Merit calculation reference: SSC GPA×৮ (max ৪০) + HSC GPA×১২ (max ৬০) + admission test score।",
+      "২০২৫–২৬ combined government/private MBBS+BDS seat reference ছিল ১৩,০৫১; এর মধ্যে সরকারি ৫,৬৪৫ এবং বেসরকারি ৭,৪০৬।"
+    ],
+    eligibility:["Science background, Biology/Chemistry/Physics ও GPA/passing-year শর্ত current DGME/DGHS circular অনুযায়ী।"],
+    format:["গত বছর ১০০ MCQ, ৭৫ মিনিট, −০.২৫ negative marking।"],
+    seats:"২০২৫–২৬ reference ১৩,০৫১; ২০২৬–২৭ সংখ্যা current circular-এ যাচাই করতে হবে।",
+    fee:"বর্তমান application fee নতুন circular অনুযায়ী।",
+    documents:["রঙিন প্রবেশপত্র","HSC/equivalent admit/registration card","কালো ballpoint pen","বর্তমান circular-এ চাওয়া অন্য কাগজ"],
+    links:[["DGME Notice","https://dgme.gov.bd/pages/notices"],["DGHS Notice","https://dghs.gov.bd/pages/notices"]]
   }
-};
-
-// Re-insert BUP because the object literal above keeps profiles grouped by type.
-UNIVERSITY_INFO["BUP"] = {
-  aliases:["Bangladesh University of Professionals","বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস"],
-  official:"https://admission.bup.edu.bd/Admission/Home",
-  status:"BUP has already posted an official Admission Notice for session 2026–27 (dated 1 Sep 2026).",
-  basis:"Current 2026–27 BUP official notice availability + calendars; previous undergraduate notice for format fallback",
-  application:"Use the current BUP notice for exact application dates.",
-  admit:"Use the 2026–27 BUP portal/notice for admit-card release.",
-  fees:"Previous undergraduate reference: Tk 1,100 application processing fee per faculty; confirm in 2026–27 notice.",
-  centers:"Current notice/admit card will specify centres.",
-  seats:"Faculty/program seat counts must follow the 2026–27 notice.",
-  programs:["FASS","FSSS","FST","FBS","FET","FMS","BBA General"],
-  eligibility:["Faculty-specific GPA and subject rules apply; use the 2026–27 faculty/program notice."],
-  format:["Previous undergraduate reference: MCQ admission test; 0.50 mark deducted per incorrect answer.","Previous reference required at least 40% in English.","Previous assessment weighting (except MBA): test 55%, HSC 25%, SSC 20%.","Calculator was prohibited except FST-approved models listed on the admit card."],
-  documents:["SSC/HSC details","Photo/signature","Quota/supporting documents","Equivalence certificate if needed","Admit card"],
-  previous:"2024–25 undergraduate notice is used only for format/fee reference until the full 2026–27 PDF is parsed.",
-  notes:["Calendar sources disagree on BUP FBS appearing on 1 Jan vs 9 Jan 2027; official BUP notice is authoritative."],
-  links:[["Official BUP admission portal","https://admission.bup.edu.bd/Admission/Home"],["All BUP notices","https://admission.bup.edu.bd/Admission/NoticeAll"]]
 };
 
 const uniList=document.getElementById('uniList');
@@ -775,78 +633,46 @@ function matchUniversity(q){
   q=q.trim().toLowerCase();
   if(!q) return null;
   for(const [name,info] of Object.entries(UNIVERSITY_INFO)){
-    if(!info) continue;
     if(name.toLowerCase()===q || info.aliases.some(a=>a.toLowerCase()===q)) return [name,info];
   }
   for(const [name,info] of Object.entries(UNIVERSITY_INFO)){
-    if(!info) continue;
     if(name.toLowerCase().includes(q) || info.aliases.some(a=>a.toLowerCase().includes(q)||q.includes(a.toLowerCase()))) return [name,info];
   }
   return null;
 }
-
 function listHtml(items){
-  if(!items||!items.length) return '<p>Not published / not verified yet.</p>';
+  if(!items||!items.length) return '<p>তথ্য এখনো প্রকাশিত/যাচাইকৃত নয়।</p>';
   return '<ul>'+items.map(v=>'<li>'+esc(v)+'</li>').join('')+'</ul>';
 }
-
 function renderUniversity(){
   const found=matchUniversity(uniSearch.value);
   if(!found){
-    uniResult.innerHTML='<div class="empty">No profile found. Search DU, BUET, RUET, KUET, CUET, MIST, BUP, Rajshahi University, Jagannath University, Khulna University, SUST, Chittagong University, Comilla University, BUTEX, AAUB, GST, Agriculture Cluster or Medical.</div>';
+    uniResult.innerHTML='<div class="empty">এই নামে প্রোফাইল পাওয়া যায়নি। DU, BUET, RUET, KUET, CUET, MIST, BUP, রাজশাহী বিশ্ববিদ্যালয়, জগন্নাথ বিশ্ববিদ্যালয়, খুলনা বিশ্ববিদ্যালয়, SUST, চট্টগ্রাম বিশ্ববিদ্যালয়, কুমিল্লা বিশ্ববিদ্যালয়, BUTEX, AAUB, GST, কৃষি গুচ্ছ বা মেডিকেল লিখে দেখুন।</div>';
     return;
   }
   const [name,x]=found;
   const eventMatches=all.filter(e=>{
     const s=(e.title||'').toLowerCase();
-    const tokens=[name,...x.aliases].filter(v=>v&&v.length>2).map(v=>v.toLowerCase());
-    return tokens.some(t=>s.includes(t));
+    return [name,...x.aliases].filter(v=>v&&v.length>2).some(t=>s.includes(t.toLowerCase()));
   });
-  const liveDates=eventMatches.length
-    ? eventMatches.map(e=>new Date(e.date).toLocaleString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium',timeStyle:'short'})+' — '+e.title)
-    : ['No current calendar event matched this profile yet.'];
-
+  const dateList=eventMatches.length
+    ? eventMatches.map(e=>new Date(e.date).toLocaleString('bn-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium',timeStyle:'short'})+' — '+e.title)
+    : x.current;
   const links=(x.links||[]).map(([label,url])=>'<a href="'+url+'" target="_blank" rel="noopener">'+esc(label)+' ↗</a>').join('<br>');
-  const checkOptions=(x.checks||[]).map((r,i)=>'<option value="'+i+'">'+esc(r.label)+'</option>').join('');
-  const checker=x.checks&&x.checks.length
-    ? '<div class="eligibility-box"><select id="ruleSelect">'+checkOptions+'</select><input id="sscGpa" type="number" min="0" max="5" step=".01" placeholder="SSC GPA"><input id="hscGpa" type="number" min="0" max="5" step=".01" placeholder="HSC GPA"><button class="btn" id="checkEligibility">Check basic GPA</button></div><div class="eligibility-result" id="eligibilityResult">This checker evaluates only the verified GPA gate shown above; subject/year/quota conditions still apply.</div>'
-    : '<div class="eligibility-result">No safe numeric checker is enabled for this profile yet because current-session eligibility includes subject/year rules that should not be guessed.</div>';
-
   uniResult.innerHTML=
     '<div class="info-name">'+esc(name)+'</div>'+
-    '<div class="info-status">'+esc(x.status)+'</div>'+
-    '<div class="source-badges"><span class="source-badge">'+esc(x.basis)+'</span></div>'+
+    '<div class="info-status">বর্তমান সেশন ২০২৬–২৭ • যেখানে বর্তমান সার্কুলার অসম্পূর্ণ, সেখানে ২০২৫–২৬ অফিসিয়াল সার্কুলারের তথ্য আলাদাভাবে দেখানো হয়েছে</div>'+
     '<div class="info-grid">'+
-      '<div class="info-card"><h3>📅 2026–27 exam dates</h3>'+listHtml(liveDates)+'</div>'+
-      '<div class="info-card"><h3>🧾 Application window</h3><p>'+esc(x.application)+'</p></div>'+
-      '<div class="info-card"><h3>🎫 Admit card</h3><p>'+esc(x.admit)+'</p></div>'+
-      '<div class="info-card"><h3>💳 Application fee</h3><p>'+esc(x.fees)+'</p></div>'+
-      '<div class="info-card"><h3>📍 Exam centres / seat plan</h3><p>'+esc(x.centers)+'</p></div>'+
-      '<div class="info-card"><h3>🪑 Seats</h3><p>'+esc(x.seats)+'</p></div>'+
-      '<div class="info-card"><h3>📚 Units / programs / subjects</h3>'+listHtml(x.programs)+'</div>'+
-      '<div class="info-card"><h3>✅ Eligibility</h3>'+listHtml(x.eligibility)+checker+'</div>'+
-      '<div class="info-card"><h3>📝 Exam format & marks</h3>'+listHtml(x.format)+'</div>'+
-      '<div class="info-card"><h3>📎 Typical required documents</h3>'+listHtml(x.documents)+'</div>'+
-      '<div class="info-card"><h3>🕘 Previous-cycle reference</h3><p>'+esc(x.previous)+'</p></div>'+
-      '<div class="info-card"><h3>ℹ️ Important notes</h3>'+listHtml(x.notes)+'</div>'+
-      '<div class="info-card"><h3>🔗 Official circulars / portals</h3><p>'+links+'</p><p>Official sources override calendar aggregators whenever details conflict.</p></div>'+
+      '<div class="info-card"><h3>📅 ২০২৬–২৭ পরীক্ষার তারিখ</h3>'+listHtml(dateList)+'</div>'+
+      '<div class="info-card"><h3>🆕 বর্তমান ২০২৬–২৭ তথ্য</h3>'+listHtml(x.current)+'</div>'+
+      '<div class="info-card" style="grid-column:span 2"><h3>📜 গত বছরের অফিসিয়াল সার্কুলার — ২০২৫–২৬</h3>'+listHtml(x.previous)+'</div>'+
+      '<div class="info-card"><h3>✅ যোগ্যতা</h3>'+listHtml(x.eligibility)+'</div>'+
+      '<div class="info-card"><h3>📝 পরীক্ষার ধরন ও নম্বরবণ্টন</h3>'+listHtml(x.format)+'</div>'+
+      '<div class="info-card"><h3>🪑 আসন</h3><p>'+esc(x.seats)+'</p></div>'+
+      '<div class="info-card"><h3>💳 আবেদন ফি</h3><p>'+esc(x.fee)+'</p></div>'+
+      '<div class="info-card"><h3>📎 প্রয়োজনীয় কাগজপত্র</h3>'+listHtml(x.documents)+'</div>'+
+      '<div class="info-card"><h3>🔗 অফিসিয়াল সার্কুলার/পোর্টাল</h3><p>'+links+'</p><p>বর্তমান অফিসিয়াল নোটিশের সঙ্গে কোনো অমিল হলে অফিসিয়াল নোটিশই চূড়ান্ত।</p></div>'+
     '</div>';
-
-  const btn=document.getElementById('checkEligibility');
-  if(btn){
-    btn.onclick=()=>{
-      const idx=parseInt(document.getElementById('ruleSelect').value,10);
-      const rule=x.checks[idx];
-      const s=parseFloat(document.getElementById('sscGpa').value);
-      const h=parseFloat(document.getElementById('hscGpa').value);
-      const out=document.getElementById('eligibilityResult');
-      if(!Number.isFinite(s)||!Number.isFinite(h)){out.textContent='Enter both SSC and HSC GPA.';return;}
-      const ok=s>=rule.ssc && h>=rule.hsc && (s+h)>=rule.total;
-      out.textContent=ok
-        ? '✅ Passes this verified basic GPA gate. You still need to satisfy passing-year, subject, quota and program-specific conditions.'
-        : '❌ Does not pass this selected GPA gate.';
-    };
-  }
 }
 uniFind.onclick=renderUniversity;
 uniSearch.addEventListener('keydown',e=>{if(e.key==='Enter')renderUniversity()});
