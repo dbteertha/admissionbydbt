@@ -128,12 +128,12 @@ function cleanTitle(s){
   return s.replace(/\s+/g,' ').replace(/^(university|বিশ্ববিদ্যালয়)\s*/i,'').slice(0,100).trim();
 }
 function textFromCell(s){
-  return decode(s.replace(/<br\\s*\\/?>(?=.)/gi,' ').replace(/<[^>]+>/g,' ')).replace(/\\s+/g,' ').trim();
+  return decode(s.replace(/<br\s*\/?>(?=.)/gi,' ').replace(/<[^>]+>/g,' ')).replace(/\s+/g,' ').trim();
 }
 function parseTableRows(html,source){
   const out=[];
-  for(const m of html.matchAll(/<tr\\b[^>]*>([\\s\\S]*?)<\\/tr>/gi)){
-    const cells=[...m[1].matchAll(/<t[dh]\\b[^>]*>([\\s\\S]*?)<\\/t[dh]>/gi)].map(x=>textFromCell(x[1]));
+  for(const m of html.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)){
+    const cells=[...m[1].matchAll(/<t[dh]\b[^>]*>([\s\S]*?)<\/t[dh]>/gi)].map(x=>textFromCell(x[1]));
     if(cells.length<2) continue;
     const dateIndex=cells.findIndex(x=>parseDate(x));
     if(dateIndex<0) continue;
@@ -147,7 +147,7 @@ function parseTableRows(html,source){
 }
 function parseHydrationJson(html,source){
   const out=[];
-  const scripts=[...html.matchAll(/<script\\b[^>]*(?:type=["']application\\/json["'])?[^>]*>([\\s\\S]*?)<\\/script>/gi)].map(m=>m[1].trim());
+  const scripts=[...html.matchAll(/<script\b[^>]*(?:type=["']application\/json["'])?[^>]*>([\s\S]*?)<\/script>/gi)].map(m=>m[1].trim());
   const walk=(v)=>{
     if(!v) return;
     if(Array.isArray(v)){v.forEach(walk);return;}
