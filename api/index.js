@@ -10,61 +10,61 @@ const SOURCES = [
 ];
 
 const CURATED_EVENTS = [
-  ['Medical & Dental','2026-12-04T10:00:00+06:00','10:00 AM','Admission-Calendar'],
-  ['DU IBA','2026-12-05T10:00:00+06:00','10:00 AM','Both calendars agree'],
-  ['AAUB','2026-12-05T10:00:00+06:00','10:00 AM','Confirmed'],
-  ['DU A / Science','2026-12-12T11:00:00+06:00','11:00 AM / 3:30 PM','Sources conflict'],
-  ['Khulna University D / Business','2026-12-17T10:00:00+06:00','10:00 AM','Confirmed'],
-  ['Khulna University C / Humanities','2026-12-17T13:30:00+06:00','1:30 PM','Confirmed'],
-  ['Khulna University A / Science','2026-12-18T10:00:00+06:00','10:00 AM','Admission-Calendar'],
-  ['MIST C Unit','2026-12-18T10:00:00+06:00','10:00 AM / 10:00 PM','Needs official confirmation'],
-  ['Khulna University B / Life Science','2026-12-18T14:30:00+06:00','2:30 PM','Confirmed'],
-  ['MIST A & B','2026-12-19T10:00:00+06:00','10:00 AM','Confirmed'],
-  ['DU B / Arts, Law & Social Science','2026-12-19T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['DU Fine Arts','2026-12-22T11:00:00+06:00','11:00 AM','Chorcha'],
-  ['DU C / Business','2026-12-26T11:00:00+06:00','11:00 AM / 12:00 PM','Sources conflict'],
-  ['Jagannath University A / Science','2027-01-01T10:00:00+06:00','10:00 AM','Confirmed'],
-  ['BUP FBS','2027-01-01T10:30:00+06:00','10:30 AM','Admission-Calendar / MNR-linked update'],
-  ['Agriculture Cluster','2027-01-02T10:00:00+06:00','10:00 / 11:00 AM','Sources conflict'],
-  ['BUP FASS','2027-01-02T15:30:00+06:00','3:30 PM','Confirmed'],
-  ['Jagannath E / Fine Arts','2027-01-08T10:00:00+06:00','10:00 AM','Confirmed'],
-  ['KUET','2027-01-08T10:00:00+06:00','10:00 AM','Admission-Calendar'],
-  ['BUP FST / FET / FMS','2027-01-08T10:30:00+06:00','10:30 AM','See conflict note'],
-  ['Rajshahi University B / Business','2027-01-08T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['BUP FSSS','2027-01-08T15:30:00+06:00','3:30 PM','Confirmed'],
-  ['Rajshahi University C / Science','2027-01-09T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['BUP FBS','2027-01-09T10:30:00+06:00','10:30 AM','Chorcha also lists this'],
-  ['BUP BBA General','2027-01-09T15:30:00+06:00','3:30 PM','Chorcha'],
-  ['RUET MCQ','2027-01-14T09:30:00+06:00','9:30 AM','Chorcha'],
-  ['Jagannath B / Humanities','2027-01-15T10:00:00+06:00','10:00 AM','Confirmed'],
-  ['BUET','2027-01-16T09:00:00+06:00','9:00 AM','Confirmed'],
-  ['Rajshahi University A / Humanities','2027-01-16T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['Jagannath C / Business','2027-01-22T10:00:00+06:00','10:00 AM','Confirmed'],
-  ['Jagannath D / Social Science','2027-01-23T10:00:00+06:00','10:00 / 11:00 AM','Sources conflict'],
-  ['CUET','2027-01-23T10:00:00+06:00','10:00 AM','Admission-Calendar'],
-  ['SUST A','2027-01-26T15:00:00+06:00','3:00 PM','Confirmed'],
-  ['SUST B','2027-01-27T15:00:00+06:00','3:00 PM','Confirmed'],
-  ['Chittagong University C','2027-01-29T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['BUTEX','2027-01-29T10:00:00+06:00','10:00 / 11:00 AM','Sources conflict'],
-  ['Chittagong University A','2027-01-30T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['Chittagong University B1','2027-02-03T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['Chittagong University B2','2027-02-04T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['Chittagong University B','2027-02-05T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['Comilla University A','2027-02-05T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['Chittagong University D','2027-02-06T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['Comilla University B','2027-02-06T11:00:00+06:00','11:00 AM / 3:00 PM','Sources conflict'],
-  ['Comilla University C','2027-02-07T11:00:00+06:00','11:00 AM / 3:00 PM','Sources conflict'],
-  ['Chittagong University D1','2027-02-08T11:00:00+06:00','11:00 AM','Confirmed'],
-  ['GST B / Humanities','2027-03-19T10:00:00+06:00','10:00 / 11:00 AM','Date agrees'],
-  ['GST D / Architecture','2027-03-20T10:00:00+06:00','10:00 AM','Chorcha separates D'],
-  ['GST C / Business','2027-03-20T10:00:00+06:00','10:00 / 11:00 AM','Date agrees'],
-  ['GST A / Science','2027-03-27T10:00:00+06:00','10:00 / 11:00 AM','Date agrees']
-].map(([title,date,displayTime,note])=>({
+  ['Medical & Dental','2026-12-04T10:00:00+06:00','Only Admission-Calendar visible'],
+  ['DU IBA','2026-12-05T10:00:00+06:00','Agree'],
+  ['Aviation and Aerospace University Bangladesh (AAUB)','2026-12-05T10:00:00+06:00','Agree'],
+  ['Dhaka University A / Science','2026-12-12T11:00:00+06:00','Agree'],
+  ['Khulna University D / Business','2026-12-17T10:00:00+06:00','Agree'],
+  ['Khulna University C / Humanities','2026-12-17T13:30:00+06:00','Agree'],
+  ['Khulna University A / Science','2026-12-18T10:00:00+06:00','Only Admission-Calendar visible'],
+  ['Khulna University B / Life Science','2026-12-18T14:30:00+06:00','Agree'],
+  ['MIST C Unit','2026-12-18T10:00:00+06:00','Agree'],
+  ['MIST A & B','2026-12-19T10:00:00+06:00','Agree'],
+  ['Dhaka University B / Arts, Law & Social Science','2026-12-19T11:00:00+06:00','Agree'],
+  ['Dhaka University Fine Arts','2026-12-22T11:00:00+06:00','Only Chorcha visible'],
+  ['Dhaka University C / Business','2026-12-26T11:00:00+06:00','Agree'],
+  ['Jagannath University A / Science','2027-01-01T10:00:00+06:00','Agree'],
+  ['BUP FBS','2027-01-01T10:30:00+06:00','Chorcha lists FBS on 9 Jan too'],
+  ['Agriculture Cluster','2027-01-02T10:00:00+06:00','Agree'],
+  ['BUP FASS','2027-01-02T15:30:00+06:00','Agree'],
+  ['Jagannath University E / Fine Arts','2027-01-08T10:00:00+06:00','Agree'],
+  ['KUET','2027-01-08T10:00:00+06:00','Only Admission-Calendar visible in table'],
+  ['BUP FST','2027-01-08T10:30:00+06:00','Agree'],
+  ['BUP FET','2027-01-08T10:30:00+06:00','Agree'],
+  ['BUP FMS','2027-01-08T10:30:00+06:00','Agree'],
+  ['Rajshahi University B / Business','2027-01-08T11:00:00+06:00','Agree'],
+  ['BUP FSSS','2027-01-08T15:30:00+06:00','Agree'],
+  ['Rajshahi University C / Science','2027-01-09T11:00:00+06:00','Agree'],
+  ['BUP FBS','2027-01-09T10:30:00+06:00','Source inconsistency'],
+  ['BUP BBA General','2027-01-09T15:30:00+06:00','Chorcha visible'],
+  ['RUET','2027-01-14T09:30:00+06:00','Chorcha visible'],
+  ['Jagannath University B / Humanities','2027-01-15T10:00:00+06:00','Agree'],
+  ['BUET','2027-01-16T09:00:00+06:00','Agree'],
+  ['Rajshahi University A / Humanities','2027-01-16T11:00:00+06:00','Agree'],
+  ['Jagannath University C / Business','2027-01-22T10:00:00+06:00','Agree'],
+  ['Jagannath University D / Social Science','2027-01-23T10:00:00+06:00','Agree'],
+  ['CUET','2027-01-23T10:00:00+06:00','Admission-Calendar visible'],
+  ['SUST A','2027-01-26T15:00:00+06:00','Agree'],
+  ['SUST B','2027-01-27T15:00:00+06:00','Agree'],
+  ['BUTEX','2027-01-29T10:00:00+06:00','Agree'],
+  ['Chittagong University C / Business','2027-01-29T11:00:00+06:00','Agree'],
+  ['Chittagong University A / Science','2027-01-30T11:00:00+06:00','Agree'],
+  ['Chittagong University B1','2027-02-03T11:00:00+06:00','Agree'],
+  ['Chittagong University B2','2027-02-04T11:00:00+06:00','Agree'],
+  ['Chittagong University B','2027-02-05T11:00:00+06:00','Agree'],
+  ['Comilla University A','2027-02-05T11:00:00+06:00','Agree'],
+  ['Chittagong University D','2027-02-06T11:00:00+06:00','Agree'],
+  ['Comilla University B','2027-02-06T11:00:00+06:00','Agree'],
+  ['Comilla University C','2027-02-07T11:00:00+06:00','Agree'],
+  ['Chittagong University D1','2027-02-08T11:00:00+06:00','Agree'],
+  ['GST B / Humanities','2027-03-19T10:00:00+06:00','Agree'],
+  ['GST C / Business','2027-03-20T10:00:00+06:00','Agree'],
+  ['GST D / Architecture','2027-03-20T10:00:00+06:00','Agree'],
+  ['GST A / Science','2027-03-27T10:00:00+06:00','Agree']
+].map(([title,date,agreement])=>({
   title,
   date:new Date(date).toISOString(),
-  displayTime,
-  note,
-  source:'Curated from supplied admission calendars'
+  agreement
 }));
 
 let cache = { at: 0, events: [], sources: [] };
@@ -254,10 +254,10 @@ const daysEl=document.getElementById('days'),weeksEl=document.getElementById('we
 let all=[],view=new Date(2026,11,1),sourceHealth=[];
 function bdDate(iso){return new Date(new Date(iso).toLocaleString('en-US',{timeZone:'Asia/Dhaka'}))}
 function filtered(){const q=search.value.toLowerCase();return all.filter(e=>!q||e.title.toLowerCase().includes(q))}
-function render(){month.textContent=view.toLocaleString('en-US',{month:'long',year:'numeric'});grid.innerHTML='';const y=view.getFullYear(),mo=view.getMonth(),first=new Date(y,mo,1),start=new Date(y,mo,1-first.getDay());const es=filtered();for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const cell=document.createElement('div');cell.className='day'+(d.getMonth()!=mo?' muted':'');const now=new Date();if(d.toDateString()==now.toDateString())cell.classList.add('today');cell.innerHTML='<span class="num">'+d.getDate()+'</span>';es.filter(e=>{const x=bdDate(e.date);return x.getFullYear()==d.getFullYear()&&x.getMonth()==d.getMonth()&&x.getDate()==d.getDate()}).slice(0,4).forEach(e=>{const el=document.createElement('div');el.className='event';el.textContent=e.title;el.title=e.title+' — '+(e.displayTime||new Date(e.date).toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'}));cell.appendChild(el)});grid.appendChild(cell)}renderCards();}
-function renderCards(){const now=new Date();const arr=filtered().filter(e=>new Date(e.date)>now).slice(0,12);cards.innerHTML=arr.length?'':'<div class="empty">No upcoming events matched the current filter.</div>';arr.forEach(e=>{const d=new Date(e.date);const c=document.createElement('div');c.className='card';c.innerHTML='<h3>'+esc(e.title)+'</h3><div class="meta">'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'})+' • '+esc(e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'}))+'<br>'+Math.max(0,Math.ceil((d-now)/86400000))+' days left</div>'+(e.note?'<div class="source">'+esc(e.note)+'</div>':'');cards.appendChild(c)})}
+function render(){month.textContent=view.toLocaleString('en-US',{month:'long',year:'numeric'});grid.innerHTML='';const y=view.getFullYear(),mo=view.getMonth(),first=new Date(y,mo,1),start=new Date(y,mo,1-first.getDay());const es=filtered();for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const cell=document.createElement('div');cell.className='day'+(d.getMonth()!=mo?' muted':'');const now=new Date();if(d.toDateString()==now.toDateString())cell.classList.add('today');cell.innerHTML='<span class="num">'+d.getDate()+'</span>';es.filter(e=>{const x=bdDate(e.date);return x.getFullYear()==d.getFullYear()&&x.getMonth()==d.getMonth()&&x.getDate()==d.getDate()}).slice(0,4).forEach(e=>{const el=document.createElement('div');el.className='event';el.textContent=e.title;el.title=e.title+(e.agreement?' — '+e.agreement:'');cell.appendChild(el)});grid.appendChild(cell)}renderCards();}
+function renderCards(){const now=new Date();const arr=filtered().filter(e=>new Date(e.date)>now).slice(0,12);cards.innerHTML=arr.length?'':'<div class="empty">No upcoming events matched the current filter.</div>';arr.forEach(e=>{const d=new Date(e.date);const c=document.createElement('div');c.className='card';c.innerHTML='<h3>'+esc(e.title)+'</h3><div class="meta">'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'})+' • '+esc(e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'}))+'<br>'+Math.max(0,Math.ceil((d-now)/86400000))+' days left</div>'+(e.agreement?'<div class="source">'+(e.agreement==='Agree'?'✅ ':'⚪ ')+esc(e.agreement)+'</div>':'');cards.appendChild(c)})}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-async function load(force=false){syncStatus.textContent='● syncing sources…';try{const r=await fetch('/api/events'+(force?'?refresh=1':''));const j=await r.json();all=j.events||[];sourceHealth=j.sources||[];const liveCount=sourceHealth.filter(x=>x.mode==='live').length;const fallback=sourceHealth.some(x=>x.mode==='verified-fallback');syncStatus.textContent='● '+all.length+' exams • '+liveCount+'/3 live'+(fallback?' • Chorcha backup':'')+' • '+new Date(j.updatedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});render()}catch(e){syncStatus.textContent='● sync unavailable';render()}}
+async function load(force=false){syncStatus.textContent='● syncing sources…';try{const r=await fetch('/api/events'+(force?'?refresh=1':''));const j=await r.json();all=j.events||[];sourceHealth=j.sources||[];syncStatus.textContent='● '+all.length+' exams • updated '+new Date(j.updatedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});render()}catch(e){syncStatus.textContent='● sync unavailable';render()}}
 prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};refresh.onclick=()=>load(true);search.oninput=render;load();
 const cv=document.getElementById('stars'),cx=cv.getContext('2d');let stars=[];function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);stars=Array.from({length:Math.min(180,innerWidth/5)},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.1+.2,a:Math.random()*.7+.15,p:Math.random()*6.28}))}addEventListener('resize',resize);resize();function draw(t){cx.clearRect(0,0,innerWidth,innerHeight);for(const s of stars){cx.globalAlpha=s.a*(.65+.35*Math.sin(t/900+s.p));cx.fillStyle='#fff';cx.beginPath();cx.arc(s.x,s.y,s.r,0,6.28);cx.fill()}requestAnimationFrame(draw)}requestAnimationFrame(draw);
 </script></body></html>`;
