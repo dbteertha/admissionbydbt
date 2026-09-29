@@ -224,73 +224,284 @@ async function sync(force=false){
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admission by DBT | ভর্তি তথ্যকেন্দ্র ২০২৬–২৭</title>
 <style>
-:root{--bg:#030303;--panel:#0a0b0d;--line:#25282e;--text:#f4f4f2;--muted:#979b9f;--soft:#d9d7cd;--chip:#14161a}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}body{min-height:100vh;overflow-x:hidden}
-#stars{position:fixed;inset:0;z-index:0;pointer-events:none;display:block}.app{position:relative;z-index:1}.app:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 18% 16%,rgba(77,115,255,.12),transparent 28%),radial-gradient(circle at 78% 24%,rgba(125,77,255,.10),transparent 30%),radial-gradient(circle at 50% 72%,rgba(33,96,170,.08),transparent 36%),linear-gradient(to bottom,rgba(0,0,0,.02),rgba(0,0,0,.18) 55%,rgba(0,0,0,.55));}.app:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 38%,rgba(0,0,0,.18) 72%,rgba(0,0,0,.52) 100%)}.app{position:relative;z-index:1;max-width:1180px;margin:auto;padding:28px 18px 64px}
-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.brand{font-weight:900;letter-spacing:.18em;font-size:13px}.live{font-size:12px;color:#b6babf;border:1px solid var(--line);padding:8px 11px;border-radius:999px;background:#090a0c}
-.hero{min-height:560px;display:grid;place-items:center;text-align:center}.hero-inner{width:min(780px,100%)}
-.kicker{font-size:12px;letter-spacing:.18em;color:#aeb2b7;text-transform:uppercase}.days{font-size:clamp(96px,19vw,188px);font-weight:900;line-height:.84;letter-spacing:-.08em;margin:18px 0 10px;text-shadow:0 0 30px #ffffff18}
-.label{font-weight:800;font-size:14px;letter-spacing:.12em}.clock{display:flex;justify-content:center;gap:clamp(14px,4vw,38px);margin:18px 0 22px}.clock b{font-size:clamp(25px,5vw,46px);letter-spacing:.02em}.clock span{display:block;color:#8e9297;font-size:10px;margin-top:3px}
-.progress{height:22px;border:1px solid #343941;border-radius:999px;overflow:hidden;background:#080a0d;box-shadow:inset 0 0 18px #000}.fill{height:100%;width:0;background:linear-gradient(90deg,#c9c7bd,#eeeDE7);border-radius:inherit;transition:width .8s}.pct{margin-top:9px;font-size:12px;color:#aeb2b7}.passed{font-size:22px;font-weight:800;margin-top:22px}.passed i{font-style:normal;color:#73777c;margin:0 14px}
-.section{background:#08090bde;border:1px solid #1e2126;border-radius:24px;padding:22px;backdrop-filter:blur(14px);box-shadow:0 28px 90px #0009}.head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px}.head h2{font-size:30px;margin:0}.sub{color:#8e9297;font-size:13px;margin-top:5px}
-.controls{display:flex;gap:8px;flex-wrap:wrap}.btn,input,select{background:#101216;color:#e7e8e9;border:1px solid #2b2f36;border-radius:12px;padding:10px 12px;font:inherit}.btn{cursor:pointer}.btn:hover{background:#171a20}
-.calendar-head{display:flex;align-items:center;justify-content:space-between;margin:14px 0}.month{font-size:19px;font-weight:800}.week,.grid{display:grid;grid-template-columns:repeat(7,1fr)}.week div{color:#777c83;font-size:11px;padding:8px;text-align:center}
-.day{min-height:112px;border-top:1px solid #1b1e23;border-left:1px solid #15181c;padding:8px;position:relative}.day:nth-child(7n+1){border-left:0}.day.muted{opacity:.25}.num{font-size:12px;color:#b8bbc0}.today .num{background:#eee;color:#090909;border-radius:999px;padding:3px 7px;display:inline-block;font-weight:900}.event{display:block;margin-top:6px;background:#15181d;border:1px solid #292d34;border-radius:9px;padding:6px 7px;font-size:10px;line-height:1.25;white-space:normal;overflow:hidden;cursor:default}.event:hover{background:#20242b}
-.upcoming{margin-top:28px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}.card{border:1px solid #23262c;background:#0d0f12;border-radius:15px;padding:14px}.card h3{font-size:14px;margin:0 0 8px}.meta{font-size:12px;color:#969aa0;line-height:1.6}.source{font-size:10px;color:#c5c8cc;margin-top:8px}.source a{color:#c5c8cc}
-.empty{color:#8a8f95;padding:30px;text-align:center;border:1px dashed #2a2e34;border-radius:14px}.footer{color:#6d7279;font-size:11px;text-align:center;margin-top:22px}
-.target-section{margin:0 0 26px;background:linear-gradient(145deg,rgba(13,15,20,.94),rgba(7,9,13,.9));border:1px solid #2a2e36;border-radius:24px;padding:20px;backdrop-filter:blur(16px);box-shadow:0 24px 80px #0008,inset 0 1px 0 #ffffff08}
-.target-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.target-head h2{margin:0;font-size:25px}.target-head .sub{max-width:640px}
-.target-count{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#d7bd69;border:1px solid #76612e;background:#2a220d;border-radius:999px;padding:7px 10px}
-.starred-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.starred-card{position:relative;overflow:hidden;border:1px solid #6d592b;background:linear-gradient(150deg,#17140bde,#0d0f14e8 52%,#12100ae6);border-radius:18px;padding:16px;box-shadow:0 12px 35px #0007,inset 0 1px 0 #ffe9a314}
-.starred-card:before{content:"";position:absolute;width:160px;height:160px;right:-70px;top:-95px;background:radial-gradient(circle,#e2b84a20,transparent 68%);pointer-events:none}
-.target-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.target-name{font-size:15px;font-weight:850;line-height:1.3}.target-date{font-size:11px;color:#bbb5a1;margin-top:5px}
-.target-timer{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}.target-time{background:#090a0dd9;border:1px solid #2f2a1c;border-radius:12px;padding:9px 5px;text-align:center}.target-time b{display:block;font-size:24px;line-height:1;color:#f6e7b3;letter-spacing:-.04em}.target-time span{display:block;margin-top:5px;font-size:8px;letter-spacing:.12em;color:#887d60}
-.target-message{font-size:11px;color:#a9a38f;margin-top:11px}.target-empty{border:1px dashed #4a4029;border-radius:15px;padding:17px;color:#a39d8a;font-size:12px;text-align:center;background:#0d0d0bd4}
-.star-btn{appearance:none;border:1px solid #343841;background:#11141a;color:#868b94;width:30px;height:30px;border-radius:10px;display:inline-grid;place-items:center;cursor:pointer;font-size:16px;line-height:1;flex:0 0 auto;transition:transform .18s ease,border-color .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease}.star-btn:hover{transform:translateY(-1px);border-color:#7a6631;color:#f1cf6d}.star-btn.active{color:#ffd669;border-color:#846d32;background:#29210d;box-shadow:0 0 18px #e7b93b24}
-.event{display:flex;align-items:flex-start;gap:5px}.event .star-btn{width:20px;height:20px;border-radius:6px;font-size:11px;padding:0;margin-top:-1px}.event-title{min-width:0;flex:1}.event.starred{border-color:#6e5b2d;background:linear-gradient(100deg,#261f0f,#17181c);box-shadow:inset 3px 0 0 #d5ad45}.event.starred .event-title{color:#f3dfaa;font-weight:750}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.card.starred{border-color:#6e5b2d;background:linear-gradient(145deg,#17140d,#0d0f12);box-shadow:0 12px 32px #0006,inset 3px 0 0 #d4ae4e}.card.starred h3{color:#f0ddb0}
-@media(max-width:700px){.target-section{padding:14px;border-radius:19px}.target-head h2{font-size:21px}.starred-grid{grid-template-columns:1fr}.target-timer{gap:5px}.target-time b{font-size:21px}.star-btn{width:34px;height:34px}.event .star-btn{width:22px;height:22px}.target-count{padding:6px 9px}}
+:root{
+  --bg:#03050a;--panel:rgba(9,12,19,.78);--panel-2:rgba(14,18,28,.78);
+  --line:rgba(255,255,255,.10);--line-strong:rgba(255,255,255,.16);
+  --text:#f7f8fb;--muted:#8f98aa;--soft:#c7cfdd;
+  --blue:#78a7ff;--cyan:#62e6ff;--violet:#a78bfa;--gold:#f2c766;--green:#74e6a7;
+  --danger:#ff7a8a;--shadow:0 28px 90px rgba(0,0,0,.42);
+  --radius:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"Noto Sans Bengali",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{min-height:100vh;overflow-x:hidden;background:#02040a}
+button,input,select{font:inherit}
+button{color:inherit}
+a{color:inherit}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;display:block}
+.app{position:relative;z-index:1;max-width:1240px;margin:auto;padding:20px 18px 92px}
+.app:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(circle at 18% 13%,rgba(64,112,255,.14),transparent 26%),
+  radial-gradient(circle at 84% 21%,rgba(127,76,255,.12),transparent 28%),
+  radial-gradient(circle at 50% 72%,rgba(44,154,255,.08),transparent 36%),
+  linear-gradient(to bottom,rgba(0,0,0,.02),rgba(0,0,0,.18) 52%,rgba(0,0,0,.62))}
+.app:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.16) 70%,rgba(0,0,0,.58) 100%)}
 
-.info-center{margin-top:26px;background:#08090bde;border:1px solid #1e2126;border-radius:24px;padding:22px;backdrop-filter:blur(14px)}
-.info-search{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 18px}.info-search input{flex:1;min-width:240px}
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
-.info-card{background:#0d0f12;border:1px solid #23262c;border-radius:16px;padding:15px}
-.info-card h3{font-size:13px;margin:0 0 9px;color:#f4f4f2}.info-card p,.info-card li{font-size:12px;color:#aeb2b7;line-height:1.58}.info-card li+li{margin-top:5px}
-.info-card ul{margin:0;padding-left:18px}.booklet-wrap{margin-top:18px}.booklet-title{font-size:21px;font-weight:900;margin:0 0 4px}.booklet-sub{font-size:12px;color:#9ca1a7;margin-bottom:12px}.booklet-row{border:1px solid #292d34;background:#0b0d10;border-radius:16px;padding:15px;margin-top:10px}.booklet-row h4{margin:0 0 10px;font-size:15px}.booklet-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px}.booklet-field{background:#101216;border-radius:11px;padding:10px}.booklet-field b{display:block;font-size:11px;margin-bottom:5px;color:#f2f2ef}.booklet-field span{font-size:11px;line-height:1.5;color:#aeb2b7}
-.category-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}.category-tab{border:1px solid #2b2f36;background:#101216;color:#d9dce0;border-radius:999px;padding:9px 13px;cursor:pointer;font-size:12px}.category-tab.active{background:#f1f1ed;color:#090909;border-color:#f1f1ed;font-weight:800}
-.category-section{margin-top:22px}.category-section h3{font-size:22px;margin:0 0 12px}.table-wrap{overflow-x:auto;border:1px solid #23262c;border-radius:16px;background:#0b0d10}.admission-table{width:100%;border-collapse:collapse;min-width:1050px}.admission-table th,.admission-table td{padding:12px 10px;border-bottom:1px solid #20242a;border-right:1px solid #1a1d22;vertical-align:top;text-align:left}.admission-table th:last-child,.admission-table td:last-child{border-right:0}.admission-table tr:last-child td{border-bottom:0}.admission-table th{position:sticky;top:0;background:#12151a;color:#f4f4f2;font-size:11px;z-index:1}.admission-table td{font-size:11px;color:#adb1b7;line-height:1.52}.admission-table td:first-child{font-weight:800;color:#f2f2ee;min-width:190px}.cat-count{font-size:11px;color:#8f949a;font-weight:500;margin-left:8px}
-@media(max-width:700px){.category-tabs{display:grid;grid-template-columns:1fr 1fr}.category-tab{border-radius:12px}.category-section h3{font-size:18px}.admission-table{min-width:900px}.admission-table th,.admission-table td{padding:9px 8px;font-size:10px}}.info-card a{color:#f0f0ed;text-decoration:underline;text-underline-offset:3px}
-.info-title{font-size:28px;margin:0}.info-name{font-size:20px;font-weight:800;margin:8px 0 2px}.info-status{font-size:11px;color:#9ca1a7}
-.eligibility-box{display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:8px;margin-top:10px}.eligibility-box input{width:100%;min-width:0}
-.eligibility-result{margin-top:10px;font-size:12px;color:#cdd0d4}
-.source-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.source-badge{font-size:10px;border:1px solid #2a2e34;border-radius:999px;padding:5px 8px;color:#aeb2b7}
-@media(max-width:700px){.info-center{padding:14px}.eligibility-box{grid-template-columns:1fr}.info-title{font-size:23px}}
-@media(max-width:700px){.hero{min-height:500px}.section{padding:14px}.day{min-height:78px;padding:5px}.event{font-size:8px;padding:4px}.head h2{font-size:24px}.clock{gap:14px}.passed{font-size:17px}}
-</style></head><body><canvas id="stars"></canvas><div class="app"><nav><div class="brand">ADMISSION BY DBT • 26/27</div><div id="syncStatus" class="live">● syncing sources…</div></nav>
-<section class="hero"><div class="hero-inner"><div class="kicker">Admission test begins • 30 November 2026</div><div class="days" id="days">00</div><div class="label">DAYS LEFT</div>
-<div class="clock"><div><b id="weeks">00W</b><span>WEEKS</span></div><div><b id="hours">00H</b><span>HOURS</span></div><div><b id="mins">00M</b><span>MINUTES</span></div><div><b id="secs">00S</b><span>SECONDS</span></div></div>
-<div class="progress"><div class="fill" id="fill"></div></div><div class="pct" id="pct">0%</div><div class="passed"><span id="passed">0 Passed</span><i>|</i><span id="total">0 Total</span></div></div></section>
-<section class="target-section" id="targetSection">
-  <div class="target-head">
-    <div><h2>★ My Target Exams</h2><div class="sub">Star the exams you care about. They stay highlighted and each gets its own live countdown.</div></div>
-    <div class="target-count" id="targetCount">0 STARRED</div>
-  </div>
-  <div class="starred-grid" id="starredCards"></div>
-</section>
-<section class="section"><div class="head"><div><h2>Admission Calendar</h2><div class="sub">বিশ্ববিদ্যালয় ভর্তি রুটিন — পরিষ্কার নাম, তারিখ ও পরীক্ষার সময়।</div></div><div class="controls"><input id="search" placeholder="Search university…"><button class="btn" id="refresh">Refresh</button></div></div>
-<div class="calendar-head"><button class="btn" id="prev">←</button><div class="month" id="month"></div><button class="btn" id="next">→</button></div><div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="grid" id="grid"></div>
-<div class="upcoming"><div class="head"><div><h2 style="font-size:22px">Upcoming exams</h2><div class="sub">Tap any calendar item or source link to verify details.</div></div></div><div class="cards" id="cards"></div></div>
-<div class="footer">Schedules are aggregated from third-party sources and may change. Always verify critical dates from the official university notice.</div></section>
-<section class="info-center" id="infoCenter">
-  <div class="head"><div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্য কণিকা</h2><div class="sub">আপনার দেওয়া তথ্য কণিকার চার্টগুলো ক্যাটাগরি অনুযায়ী সাজানো হয়েছে।</div></div></div>
-  <div class="category-tabs" id="categoryTabs"></div>
-  <div id="categoryCharts"></div>
-</section></div>
+/* top navigation */
+.topnav{position:sticky;top:12px;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 10px 16px;margin-bottom:10px;border:1px solid var(--line);border-radius:18px;background:rgba(7,10,17,.70);backdrop-filter:blur(22px) saturate(140%);box-shadow:0 16px 55px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.04)}
+.brand-wrap{display:flex;align-items:center;gap:11px;min-width:0}
+.brand-orb{width:26px;height:26px;border-radius:50%;position:relative;background:radial-gradient(circle at 38% 35%,#fff 0 4%,#91c8ff 5% 16%,#475cff 35%,#11182f 68%,#05070d 100%);box-shadow:0 0 24px rgba(105,139,255,.35)}
+.brand-orb:after{content:"";position:absolute;inset:-5px;border:1px solid rgba(126,174,255,.28);border-radius:50%;transform:rotate(-18deg) scaleY(.48)}
+.brand{font-weight:900;letter-spacing:.16em;font-size:12px;white-space:nowrap}
+.brand-sub{font-size:9px;color:var(--muted);letter-spacing:.08em;margin-top:2px}
+.navlinks{display:flex;gap:4px;align-items:center}
+.navlink{border:0;background:transparent;color:#aab2c0;text-decoration:none;font-size:11px;padding:8px 10px;border-radius:10px;cursor:pointer}
+.navlink:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav-actions{display:flex;align-items:center;gap:7px}
+.live{font-size:10px;color:#aab4c5;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:rgba(12,16,24,.66);white-space:nowrap}
+.focus-btn{border:1px solid rgba(120,167,255,.25);background:rgba(81,108,198,.10);color:#cddcff;border-radius:11px;padding:8px 10px;font-size:10px;cursor:pointer}
+.focus-btn:hover,.focus-btn.active{border-color:rgba(120,167,255,.56);background:rgba(96,124,226,.19);box-shadow:0 0 24px rgba(85,126,255,.12)}
+
+/* hero */
+.hero{min-height:610px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden}
+.hero-inner{width:min(850px,100%);position:relative;padding:64px 18px 42px}
+.orbit-shell{position:absolute;left:50%;top:45%;width:min(590px,82vw);aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid rgba(128,163,255,.10);border-radius:50%;pointer-events:none}
+.orbit-shell:before,.orbit-shell:after{content:"";position:absolute;border-radius:50%;inset:10%;border:1px dashed rgba(148,179,255,.10)}
+.orbit-shell:after{inset:24%;border-style:solid;border-color:rgba(255,255,255,.055)}
+.orbit-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:#8fb9ff;box-shadow:0 0 14px #7eafff;left:50%;top:-4px;transform-origin:0 calc(min(590px,82vw)/2);animation:orbit 16s linear infinite}
+@keyframes orbit{to{transform:rotate(360deg)}}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:#b8c1d2;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(8,11,18,.6)}
+.hero-eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+.hero-phase{margin:16px auto 0;width:max-content;max-width:100%;font-size:11px;color:#d6e2ff;background:rgba(81,116,219,.11);border:1px solid rgba(120,167,255,.20);border-radius:999px;padding:7px 11px}
+.days{font-size:clamp(108px,20vw,198px);font-weight:950;line-height:.82;letter-spacing:-.085em;margin:20px 0 10px;text-shadow:0 0 44px rgba(132,168,255,.14),0 6px 40px rgba(0,0,0,.4)}
+.label{font-weight:850;font-size:13px;letter-spacing:.19em;color:#e7ebf2}
+.hero-message{max-width:560px;margin:13px auto 0;color:#9ea8b9;font-size:13px;line-height:1.55}
+.clock{display:flex;justify-content:center;gap:clamp(16px,4vw,42px);margin:25px 0 24px}
+.clock div{min-width:64px}.clock b{font-size:clamp(23px,4vw,40px);letter-spacing:-.035em;font-variant-numeric:tabular-nums}.clock span{display:block;color:#727d91;font-size:8px;letter-spacing:.13em;margin-top:5px}
+.progress-wrap{width:min(690px,100%);margin:auto}.progress-meta{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#818b9d;margin-bottom:8px}
+.progress{height:10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;overflow:hidden;background:rgba(2,5,10,.75);box-shadow:inset 0 0 18px rgba(0,0,0,.65)}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#617cff,#77d9ff 55%,#b6f0ff);border-radius:inherit;transition:width .8s;box-shadow:0 0 18px rgba(102,202,255,.32)}
+.pct{font-size:10px;color:#aab3c4}.passed{font-size:14px;font-weight:750;color:#cbd3df}.passed i{font-style:normal;color:#4d5564;margin:0 10px}
+
+/* dashboard stat strip */
+.dashboard-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:-20px 0 22px;position:relative;z-index:2}
+.stat-card{min-height:88px;padding:14px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,rgba(13,17,27,.88),rgba(8,11,18,.78));backdrop-filter:blur(16px);box-shadow:0 18px 45px rgba(0,0,0,.20)}
+.stat-label{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#717c90}.stat-value{font-size:18px;font-weight:850;margin-top:7px;line-height:1.2}.stat-note{font-size:10px;color:#7e899d;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* general panels */
+.panel,.section,.target-section,.info-center,.mission-section{background:linear-gradient(145deg,rgba(9,12,19,.86),rgba(7,9,15,.80));border:1px solid var(--line);border-radius:var(--radius);backdrop-filter:blur(18px) saturate(125%);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.035)}
+.section,.info-center,.mission-section{padding:22px}
+.head,.target-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.head h2,.target-head h2{font-size:28px;margin:0;letter-spacing:-.035em}
+.sub{color:#8791a3;font-size:12px;margin-top:5px;line-height:1.45}
+.section-kicker{font-size:9px;text-transform:uppercase;letter-spacing:.16em;color:#6d7b96;margin-bottom:7px}
+
+/* mission */
+.mission-section{margin-bottom:22px;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:18px}
+.mission-main{min-width:0}.mission-side{border-left:1px solid var(--line);padding-left:18px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.mission-list{display:grid;gap:8px}.mission-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.025);transition:.18s ease}
+.mission-item:hover{border-color:rgba(120,167,255,.20);background:rgba(116,155,255,.045)}
+.mission-item.done{opacity:.58;background:rgba(116,230,167,.035);border-color:rgba(116,230,167,.16)}
+.mission-check{width:20px;height:20px;appearance:none;border:1px solid #465165;border-radius:7px;background:#0b0e15;display:grid;place-content:center;cursor:pointer;flex:0 0 auto}
+.mission-check:checked{background:linear-gradient(145deg,#6a91ff,#55d9ff);border-color:transparent}.mission-check:checked:after{content:"✓";font-size:12px;color:#06101d;font-weight:900}
+.mission-text{font-size:12px;color:#cbd3df;flex:1}.mission-item.done .mission-text{text-decoration:line-through}
+.mission-actions{display:flex;gap:7px;margin-top:10px}.mission-input{flex:1;min-width:0;background:#0d1119;border:1px solid var(--line);color:#e9edf5;border-radius:11px;padding:10px 11px;font-size:11px;outline:none}.mission-input:focus{border-color:rgba(120,167,255,.45);box-shadow:0 0 0 3px rgba(120,167,255,.07)}
+.btn{border:1px solid var(--line);background:#0e121a;color:#e9edf4;border-radius:11px;padding:9px 12px;cursor:pointer;font-size:11px;transition:.16s ease}.btn:hover{background:#151b26;border-color:var(--line-strong);transform:translateY(-1px)}
+.mission-ring{--mission:0deg;width:126px;height:126px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--cyan) var(--mission),rgba(255,255,255,.07) 0);position:relative;box-shadow:0 0 35px rgba(89,213,255,.10)}
+.mission-ring:after{content:"";position:absolute;inset:9px;border-radius:50%;background:#090c13;border:1px solid rgba(255,255,255,.06)}
+.mission-score{position:relative;z-index:2}.mission-score b{display:block;font-size:28px;letter-spacing:-.05em}.mission-score span{display:block;font-size:8px;letter-spacing:.13em;color:#79859a;margin-top:3px}.mission-note{font-size:10px;color:#7f899b;margin-top:10px;max-width:190px}
+
+/* targets */
+.target-section{margin:0 0 22px;padding:22px}
+.target-count{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#efd17c;border:1px solid rgba(242,199,102,.32);background:rgba(74,55,14,.27);border-radius:999px;padding:7px 10px}
+.starred-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:12px}
+.starred-card{position:relative;overflow:hidden;border:1px solid rgba(242,199,102,.26);background:linear-gradient(150deg,rgba(48,38,15,.47),rgba(10,13,20,.91) 52%,rgba(21,17,9,.78));border-radius:18px;padding:16px;box-shadow:0 14px 42px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,230,163,.07);transition:.18s ease}
+.starred-card:hover{transform:translateY(-2px);border-color:rgba(242,199,102,.45)}
+.starred-card.primary-target{border-color:rgba(242,199,102,.62);box-shadow:0 16px 46px rgba(0,0,0,.32),0 0 32px rgba(242,199,102,.07)}
+.starred-card:before{content:"";position:absolute;width:190px;height:190px;right:-86px;top:-105px;background:radial-gradient(circle,rgba(242,199,102,.14),transparent 68%);pointer-events:none}
+.target-badge{display:inline-flex;margin-bottom:10px;font-size:8px;letter-spacing:.14em;color:#ffe6a3;border:1px solid rgba(242,199,102,.30);border-radius:999px;padding:5px 7px;background:rgba(95,70,13,.20)}
+.target-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.target-name{font-size:15px;font-weight:850;line-height:1.3}.target-date{font-size:10px;color:#aaa38e;margin-top:5px}
+.target-timer{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}.target-time{background:rgba(5,7,11,.72);border:1px solid rgba(242,199,102,.14);border-radius:12px;padding:9px 5px;text-align:center}.target-time b{display:block;font-size:23px;line-height:1;color:#f8e8b6;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.target-time span{display:block;margin-top:5px;font-size:7px;letter-spacing:.13em;color:#867d64}
+.target-message{font-size:10px;color:#9c957f;margin-top:11px}.target-empty{grid-column:1/-1;border:1px dashed rgba(242,199,102,.22);border-radius:15px;padding:19px;color:#9e9888;font-size:11px;text-align:center;background:rgba(13,13,10,.48)}
+.star-btn{appearance:none;border:1px solid #343c4a;background:#0d1119;color:#778195;width:30px;height:30px;border-radius:10px;display:inline-grid;place-items:center;cursor:pointer;font-size:16px;line-height:1;flex:0 0 auto;transition:.18s ease}.star-btn:hover{transform:translateY(-1px) scale(1.03);border-color:rgba(242,199,102,.42);color:#f5d67d}.star-btn.active{color:#ffd76b;border-color:rgba(242,199,102,.46);background:rgba(86,64,15,.30);box-shadow:0 0 18px rgba(231,185,59,.15)}
+
+/* calendar */
+.controls{display:flex;gap:8px;flex-wrap:wrap}.controls input{background:#0d1119;color:#e7eaf1;border:1px solid var(--line);border-radius:11px;padding:10px 12px;outline:none;min-width:210px}.controls input:focus{border-color:rgba(120,167,255,.42);box-shadow:0 0 0 3px rgba(120,167,255,.06)}
+.calendar-head{display:flex;align-items:center;justify-content:space-between;margin:14px 0}.month{font-size:18px;font-weight:850;letter-spacing:-.02em}
+.calendar-scroll{overflow-x:auto;border:1px solid rgba(255,255,255,.06);border-radius:17px;background:rgba(5,8,13,.45)}
+.week,.grid{display:grid;grid-template-columns:repeat(7,1fr);min-width:720px}.week{background:rgba(255,255,255,.018)}.week div{color:#687489;font-size:9px;letter-spacing:.09em;padding:9px;text-align:center;text-transform:uppercase}
+.day{min-height:112px;border-top:1px solid rgba(255,255,255,.055);border-left:1px solid rgba(255,255,255,.04);padding:8px;position:relative}.day:nth-child(7n+1){border-left:0}.day.muted{opacity:.23}.num{font-size:11px;color:#aab3c2}.today{background:linear-gradient(145deg,rgba(95,126,255,.08),transparent)}.today .num{background:#e8eefc;color:#07101d;border-radius:999px;padding:3px 7px;display:inline-block;font-weight:900}
+.event{display:flex;align-items:flex-start;gap:5px;margin-top:6px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:5px 6px;font-size:9px;line-height:1.25;white-space:normal;overflow:hidden;cursor:default;transition:.15s ease}.event:hover{background:rgba(255,255,255,.065);border-color:rgba(120,167,255,.18)}.event .star-btn{width:19px;height:19px;border-radius:6px;font-size:10px;padding:0;margin-top:-1px}.event-title{min-width:0;flex:1}.event.starred{border-color:rgba(242,199,102,.32);background:linear-gradient(100deg,rgba(78,59,14,.32),rgba(25,27,34,.62));box-shadow:inset 2px 0 0 #d7ad43}.event.starred .event-title{color:#f2dfad;font-weight:750}
+.upcoming{margin-top:28px}.cards{display:grid;gap:8px}.card{position:relative;border:1px solid rgba(255,255,255,.075);background:rgba(12,16,24,.66);border-radius:14px;padding:13px 14px 13px 18px;transition:.16s ease}.card:before{content:"";position:absolute;left:0;top:15px;bottom:15px;width:2px;border-radius:3px;background:linear-gradient(var(--blue),var(--cyan));opacity:.45}.card:hover{transform:translateX(2px);border-color:rgba(120,167,255,.19)}.card h3{font-size:13px;margin:0 0 6px}.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.card.starred{border-color:rgba(242,199,102,.28);background:linear-gradient(145deg,rgba(44,35,13,.30),rgba(12,15,22,.78))}.card.starred:before{background:var(--gold);opacity:.9}.card.starred h3{color:#f0ddb0}.meta{font-size:10px;color:#8893a7;line-height:1.55}.source{font-size:9px;color:#aab2c0;margin-top:6px}
+.empty{color:#7c8799;padding:26px;text-align:center;border:1px dashed rgba(255,255,255,.10);border-radius:14px}
+
+/* info charts */
+.info-center{margin-top:22px}
+.info-title{font-size:28px;margin:0;letter-spacing:-.035em}
+.category-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px;position:sticky;top:82px;z-index:16;padding:9px;border:1px solid rgba(255,255,255,.07);border-radius:15px;background:rgba(7,10,16,.82);backdrop-filter:blur(18px)}
+.category-tab{border:1px solid rgba(255,255,255,.08);background:#0c111a;color:#aeb7c6;border-radius:10px;padding:9px 12px;cursor:pointer;font-size:10px;transition:.15s ease}.category-tab:hover{border-color:rgba(120,167,255,.25);color:#fff}.category-tab.active{background:linear-gradient(135deg,#dfe9ff,#9edfff);color:#07101d;border-color:transparent;font-weight:850;box-shadow:0 6px 20px rgba(93,170,255,.14)}
+.category-section{margin-top:24px;scroll-margin-top:140px}.category-section h3{font-size:21px;margin:0 0 12px}.cat-count{font-size:9px;color:#738097;font-weight:500;margin-left:7px}
+.table-wrap{overflow:auto;border:1px solid rgba(255,255,255,.07);border-radius:17px;background:rgba(6,9,14,.62)}
+.admission-table{width:100%;border-collapse:separate;border-spacing:0;min-width:1080px}.admission-table th,.admission-table td{padding:13px 11px;border-bottom:1px solid rgba(255,255,255,.055);border-right:1px solid rgba(255,255,255,.04);vertical-align:top;text-align:left}.admission-table th:last-child,.admission-table td:last-child{border-right:0}.admission-table tr:last-child td{border-bottom:0}.admission-table th{position:sticky;top:0;background:#101520;color:#e5eaf3;font-size:9px;letter-spacing:.04em;z-index:2}.admission-table td{font-size:10px;color:#a8b1c0;line-height:1.6}.admission-table td:first-child{font-weight:850;color:#edf1f7;min-width:190px;position:sticky;left:0;background:#0c1119;z-index:1}.admission-table tbody tr:hover td{background-color:rgba(93,140,255,.035)}.admission-table tbody tr:hover td:first-child{background:#111827}
+.footer{color:#667186;font-size:9px;text-align:center;margin-top:22px;line-height:1.6}
+
+/* mobile navigation */
+.mobile-dock{display:none}
+.focus-mode .calendar-section,.focus-mode .info-center,.focus-mode .dashboard-stats{display:none}
+.focus-mode .hero{min-height:470px}
+.focus-mode .mission-section,.focus-mode .target-section{box-shadow:0 22px 80px rgba(40,80,190,.12)}
+.focus-mode .focus-btn{color:#07101d;background:#bcd4ff;border-color:transparent}
+body.focus-mode:after{content:"FOCUS MODE";position:fixed;right:16px;bottom:16px;z-index:60;font-size:8px;letter-spacing:.18em;color:#9ab9ff;border:1px solid rgba(120,167,255,.25);border-radius:999px;padding:7px 9px;background:rgba(8,12,20,.78);backdrop-filter:blur(12px)}
+
+@media(max-width:900px){
+  .navlinks{display:none}
+  .dashboard-stats{grid-template-columns:repeat(2,1fr);margin-top:-8px}
+  .mission-section{grid-template-columns:1fr}
+  .mission-side{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}
+}
+@media(max-width:700px){
+  .app{padding:10px 10px 88px}.topnav{top:8px;border-radius:15px;padding:9px 10px}.brand-sub,.live{display:none}.brand{font-size:10px;letter-spacing:.13em}.focus-btn{padding:8px 9px}
+  .hero{min-height:520px}.hero-inner{padding:48px 8px 28px}.orbit-shell{width:86vw}.orbit-dot{display:none}.days{font-size:clamp(102px,31vw,150px);margin-top:18px}.hero-message{font-size:11px;padding:0 12px}.clock{gap:10px}.clock div{min-width:50px}.clock b{font-size:24px}.clock span{font-size:7px}
+  .dashboard-stats{grid-template-columns:repeat(2,1fr);gap:7px}.stat-card{min-height:78px;padding:12px;border-radius:14px}.stat-value{font-size:15px}.stat-note{font-size:9px}
+  .section,.target-section,.info-center,.mission-section{padding:14px;border-radius:18px}.head h2,.target-head h2,.info-title{font-size:22px}.sub{font-size:10px}.mission-actions{flex-wrap:wrap}.mission-input{flex-basis:100%}
+  .starred-grid{grid-template-columns:1fr}.target-timer{gap:5px}.target-time b{font-size:21px}.star-btn{width:34px;height:34px}.event .star-btn{width:20px;height:20px}
+  .calendar-scroll{margin:0 -4px}.controls{width:100%}.controls input{flex:1;min-width:0}.week,.grid{min-width:660px}.day{min-height:86px;padding:6px}.event{font-size:8px;padding:4px 5px}
+  .category-tabs{top:67px;display:grid;grid-template-columns:1fr 1fr;padding:7px}.category-tab{border-radius:9px;font-size:9px;padding:8px}
+  .table-wrap{overflow:visible;border:0;background:transparent}.admission-table{min-width:0;display:block}.admission-table thead{display:none}.admission-table tbody{display:grid;gap:10px}.admission-table tr{display:block;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(13,17,26,.86),rgba(8,11,17,.82));border-radius:15px;padding:5px 11px;box-shadow:0 12px 35px rgba(0,0,0,.16)}.admission-table td,.admission-table td:first-child{display:grid;grid-template-columns:112px 1fr;gap:10px;position:static!important;min-width:0;background:transparent!important;border:0;border-bottom:1px solid rgba(255,255,255,.055);padding:10px 0;font-size:10px}.admission-table td:last-child{border-bottom:0}.admission-table td:before{content:attr(data-label);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#69768d;font-weight:700}.admission-table td:first-child{display:block;font-size:13px;color:#f2f5fa;padding:10px 0}.admission-table td:first-child:before{display:none}
+  .mobile-dock{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:70;display:grid;grid-template-columns:repeat(5,1fr);width:calc(100% - 20px);max-width:520px;padding:6px;border:1px solid rgba(255,255,255,.10);border-radius:17px;background:rgba(7,10,16,.84);backdrop-filter:blur(22px);box-shadow:0 18px 55px rgba(0,0,0,.38)}.mobile-dock a,.mobile-dock button{border:0;background:transparent;color:#7f899b;text-decoration:none;text-align:center;border-radius:12px;padding:7px 3px;font-size:8px;cursor:pointer}.mobile-dock b{display:block;font-size:15px;color:#b8c4d8;margin-bottom:3px}.mobile-dock a:active,.mobile-dock button:active{background:rgba(255,255,255,.06)}
+  body.focus-mode:after{display:none}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.orbit-dot{animation:none}}
+</style></head><body><canvas id="stars"></canvas>
+<div class="app">
+  <nav class="topnav">
+    <div class="brand-wrap">
+      <div class="brand-orb"></div>
+      <div><div class="brand">ADMISSION BY DBT</div><div class="brand-sub">MISSION CONTROL • 2026–27</div></div>
+    </div>
+    <div class="navlinks">
+      <a class="navlink" href="#dashboard">Dashboard</a>
+      <a class="navlink" href="#targets">My Targets</a>
+      <a class="navlink" href="#calendar">Calendar</a>
+      <a class="navlink" href="#infoCenter">Admission Info</a>
+    </div>
+    <div class="nav-actions">
+      <div id="syncStatus" class="live">● syncing sources…</div>
+      <button class="focus-btn" id="focusBtn" type="button">FOCUS MODE</button>
+    </div>
+  </nav>
+
+  <main id="dashboard">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="orbit-shell"><div class="orbit-dot"></div></div>
+        <div class="hero-eyebrow"><i></i> Admission season 2026–27</div>
+        <div class="hero-phase" id="heroPhase">BUILD PHASE</div>
+        <div class="days" id="days">00</div>
+        <div class="label">DAYS LEFT</div>
+        <div class="hero-message" id="heroMessage">One focused day at a time.</div>
+        <div class="clock">
+          <div><b id="weeks">00W</b><span>WEEKS</span></div>
+          <div><b id="hours">00H</b><span>HOURS</span></div>
+          <div><b id="mins">00M</b><span>MINUTES</span></div>
+          <div><b id="secs">00S</b><span>SECONDS</span></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-meta"><div class="passed"><span id="passed">0 Passed</span><i>|</i><span id="total">0 Total</span></div><div class="pct" id="pct">0%</div></div>
+          <div class="progress"><div class="fill" id="fill"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard-stats">
+      <div class="stat-card"><div class="stat-label">Next exam</div><div class="stat-value" id="statNext">—</div><div class="stat-note" id="statNextNote">Waiting for schedule</div></div>
+      <div class="stat-card"><div class="stat-label">Starred targets</div><div class="stat-value" id="statStarred">0</div><div class="stat-note">Your personal exam list</div></div>
+      <div class="stat-card"><div class="stat-label">Current phase</div><div class="stat-value" id="statPhase">Build</div><div class="stat-note" id="statPhaseNote">Consistency first</div></div>
+      <div class="stat-card"><div class="stat-label">Today's mission</div><div class="stat-value" id="statMission">0%</div><div class="stat-note" id="statMissionNote">Start with one task</div></div>
+    </section>
+
+    <section class="mission-section" id="mission">
+      <div class="mission-main">
+        <div class="section-kicker">DAILY MOMENTUM</div>
+        <div class="head"><div><h2>Today’s Mission</h2><div class="sub">Keep the plan small enough to finish. Progress beats perfect planning.</div></div></div>
+        <div class="mission-list" id="missionList"></div>
+        <div class="mission-actions">
+          <input class="mission-input" id="missionInput" maxlength="90" placeholder="Add a small task for today…">
+          <button class="btn" id="missionAdd" type="button">+ Add task</button>
+          <button class="btn" id="missionReset" type="button">Reset today</button>
+        </div>
+      </div>
+      <div class="mission-side">
+        <div class="mission-ring" id="missionRing"><div class="mission-score"><b id="missionPct">0%</b><span>COMPLETE</span></div></div>
+        <div class="mission-note" id="missionNote">Start with the first task. Momentum comes after starting.</div>
+      </div>
+    </section>
+
+    <section class="target-section" id="targets">
+      <div class="target-head">
+        <div><div class="section-kicker">YOUR PRIORITIES</div><h2>★ My Target Exams</h2><div class="sub">Star any exam. Your nearest target becomes the mission priority and gets its own live timer.</div></div>
+        <div class="target-count" id="targetCount">0 STARRED</div>
+      </div>
+      <div class="starred-grid" id="starredCards"></div>
+    </section>
+
+    <section class="section calendar-section" id="calendar">
+      <div class="head">
+        <div><div class="section-kicker">SCHEDULE</div><h2>Admission Calendar</h2><div class="sub">Search, star and track the exams that matter to you.</div></div>
+        <div class="controls"><input id="search" placeholder="Search university or unit…"><button class="btn" id="refresh">Refresh</button></div>
+      </div>
+      <div class="calendar-head"><button class="btn" id="prev">← Previous</button><div class="month" id="month"></div><button class="btn" id="next">Next →</button></div>
+      <div class="calendar-scroll">
+        <div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+        <div class="grid" id="grid"></div>
+      </div>
+      <div class="upcoming">
+        <div class="head"><div><div class="section-kicker">TIMELINE</div><h2 style="font-size:22px">Upcoming Exams</h2><div class="sub">Closest exams first. Star one to promote it into your personal target board.</div></div></div>
+        <div class="cards" id="cards"></div>
+      </div>
+      <div class="footer">Schedules may change. Use the latest official university notice for critical decisions.</div>
+    </section>
+
+    <section class="info-center" id="infoCenter">
+      <div class="head"><div><div class="section-kicker">REFERENCE</div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্য কণিকা</h2><div class="sub">আসন, যোগ্যতা, পরীক্ষার ধরন, নম্বরবণ্টন ও ফলাফল নির্ণয় — ক্যাটাগরি অনুযায়ী।</div></div></div>
+      <div class="category-tabs" id="categoryTabs"></div>
+      <div id="categoryCharts"></div>
+    </section>
+  </main>
+</div>
+
+<nav class="mobile-dock" aria-label="Quick navigation">
+  <a href="#dashboard"><b>⌂</b>Home</a>
+  <a href="#targets"><b>★</b>Targets</a>
+  <a href="#calendar"><b>▦</b>Calendar</a>
+  <a href="#infoCenter"><b>≡</b>Info</a>
+  <button id="mobileFocusBtn" type="button"><b>◎</b>Focus</button>
+</nav>
 <script>
 const TARGET=new Date('2026-11-30T00:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
-function countdown(){const now=new Date(), diff=Math.max(0,TARGET-now), span=(TARGET-START), total=Math.round(span/86400000)+1, passed=Math.max(0,Math.min(total,Math.floor((now-START)/86400000))); const days=Math.floor(diff/86400000), weeks=Math.floor(days/7), h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60; daysEl.textContent=days; weeksEl.textContent=String(weeks).padStart(2,'0')+'W'; hoursEl.textContent=String(h).padStart(2,'0')+'H'; minsEl.textContent=String(m).padStart(2,'0')+'M'; secsEl.textContent=String(s).padStart(2,'0')+'S'; const p=span>0?Math.max(0,Math.min(100,((now-START)/span)*100)):0; fill.style.width=p+'%'; pct.textContent=p.toFixed(2)+'%'; passedEl.textContent=passed+' Passed'; totalEl.textContent=total+' Total';}
-const daysEl=document.getElementById('days'),weeksEl=document.getElementById('weeks'),hoursEl=document.getElementById('hours'),minsEl=document.getElementById('mins'),secsEl=document.getElementById('secs'),fill=document.getElementById('fill'),pct=document.getElementById('pct'),passedEl=document.getElementById('passed'),totalEl=document.getElementById('total'); countdown();setInterval(countdown,1000);
+function phaseFor(days){
+  if(days<=1)return {name:'EXAM MODE',stat:'Exam',note:'Stay calm. Execute.',msg:'You prepared for this. Keep your head clear and execute one question at a time.'};
+  if(days<=7)return {name:'FINAL SPRINT',stat:'Final sprint',note:'Revise. Rest. Execute.',msg:'Protect your confidence. Revise what matters, sleep properly, and keep moving.'};
+  if(days<=14)return {name:'MOCK SPRINT',stat:'Mocks',note:'Practice > new topics',msg:'The fastest gains now come from timed practice, mistakes, and focused revision.'};
+  if(days<=30)return {name:'REVISION PHASE',stat:'Revision',note:'Turn knowledge into recall',msg:'Reduce passive study. Recall, solve, review mistakes, repeat.'};
+  if(days<=60)return {name:'BUILD + REVISE',stat:'Build + revise',note:'Consistency compounds',msg:'A strong day does not need to be perfect. Finish the important work and come back tomorrow.'};
+  return {name:'FOUNDATION PHASE',stat:'Build',note:'Consistency first',msg:'Build the base now so revision feels lighter later. One focused day at a time.'};
+}
+function countdown(){
+  const now=new Date(), diff=Math.max(0,TARGET-now), span=(TARGET-START),
+    total=Math.round(span/86400000)+1,
+    passed=Math.max(0,Math.min(total,Math.floor((now-START)/86400000)));
+  const days=Math.floor(diff/86400000),weeks=Math.floor(days/7),
+    h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60;
+  daysEl.textContent=days;weeksEl.textContent=String(weeks).padStart(2,'0')+'W';
+  hoursEl.textContent=String(h).padStart(2,'0')+'H';minsEl.textContent=String(m).padStart(2,'0')+'M';secsEl.textContent=String(s).padStart(2,'0')+'S';
+  const p=span>0?Math.max(0,Math.min(100,((now-START)/span)*100)):0;
+  fill.style.width=p+'%';pct.textContent=p.toFixed(1)+'%';passedEl.textContent=passed+' Passed';totalEl.textContent=total+' Total';
+  const ph=phaseFor(days);
+  heroPhase.textContent=ph.name;heroMessage.textContent=ph.msg;
+  statPhase.textContent=ph.stat;statPhaseNote.textContent=ph.note;
+}const daysEl=document.getElementById('days'),weeksEl=document.getElementById('weeks'),hoursEl=document.getElementById('hours'),minsEl=document.getElementById('mins'),secsEl=document.getElementById('secs'),fill=document.getElementById('fill'),pct=document.getElementById('pct'),passedEl=document.getElementById('passed'),totalEl=document.getElementById('total'); countdown();setInterval(countdown,1000);
 let all=[],view=new Date(2026,11,1),sourceHealth=[];
 const STAR_KEY='admissionbydbt-starred-v1';
 let starred=new Set();
@@ -301,8 +512,12 @@ function isStarred(e){return starred.has(eventKey(e))}
 function saveStars(){localStorage.setItem(STAR_KEY,JSON.stringify([...starred]))}
 function toggleStar(e){
   const key=eventKey(e);
-  if(starred.has(key)) starred.delete(key); else starred.add(key);
+  const adding=!starred.has(key);
+  if(adding) starred.add(key); else starred.delete(key);
   saveStars();
+  if(adding&&typeof makeShooter==='function'&&!reduceMotion){
+    makeShooter(true,Math.max(80,innerWidth*.72),Math.max(80,innerHeight*.18));
+  }
   render();
 }
 function starButton(e,extraClass=''){
@@ -365,7 +580,7 @@ function renderCards(){
     card.appendChild(top);
     const meta=document.createElement('div');
     meta.className='meta';
-    meta.innerHTML=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'})+' • '+esc(e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'}))+'<br>'+Math.max(0,Math.ceil((d-now)/86400000))+' days left';
+    meta.innerHTML='<b style="color:#c9d3e4">'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'})+'</b> • '+esc(e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'}))+'<br>'+Math.max(0,Math.ceil((d-now)/86400000))+' days left';
     card.appendChild(meta);
     if(e.agreement){
       const src=document.createElement('div');
@@ -387,19 +602,34 @@ function splitCountdown(target){
     done:false
   };
 }
+function updateDashboardStats(){
+  const now=new Date();
+  const future=all.filter(e=>new Date(e.date)>now).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const next=future[0];
+  statStarred.textContent=all.filter(isStarred).length;
+  if(next){
+    const d=new Date(next.date),left=Math.max(0,Math.ceil((d-now)/86400000));
+    statNext.textContent=left+' days';
+    statNextNote.textContent=next.title;
+  }else{
+    statNext.textContent='—';statNextNote.textContent='No upcoming exam';
+  }
+}
 function renderStarredTargets(){
   const matches=all.filter(isStarred).sort((a,b)=>new Date(a.date)-new Date(b.date));
   targetCount.textContent=matches.length+' STARRED';
+  updateDashboardStats();
   if(!matches.length){
-    starredCards.innerHTML='<div class="target-empty">☆ Star any exam from the calendar or Upcoming Exams. Your selected exams will appear here with individual live timers.</div>';
+    starredCards.innerHTML='<div class="target-empty">☆ Star an exam from the calendar or Upcoming Exams. It will appear here with its own live countdown.</div>';
     return;
   }
-  starredCards.innerHTML=matches.map(e=>{
+  starredCards.innerHTML=matches.map((e,i)=>{
     const d=new Date(e.date),v=splitCountdown(e.date),key=encodeURIComponent(eventKey(e));
     const date=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'});
     const time=e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'});
-    const message=v.done?'Exam time / completed':'Keep going — '+v.d+' days to this target.';
-    return '<article class="starred-card" data-star-key="'+key+'">'+
+    const message=v.done?'Exam time / completed':(v.d<=7?'Final stretch — keep revision tight.':v.d<=30?'Revision matters more than collecting new topics.':'Keep going — '+v.d+' days to this target.');
+    return '<article class="starred-card'+(i===0&&!v.done?' primary-target':'')+'" data-star-key="'+key+'">'+
+      (i===0&&!v.done?'<div class="target-badge">NEXT TARGET</div>':'')+
       '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
       '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Target Exams" title="Remove from My Target Exams">★</button></div>'+
       '<div class="target-timer">'+
@@ -412,9 +642,7 @@ function renderStarredTargets(){
   starredCards.querySelectorAll('.target-unstar').forEach(btn=>{
     btn.onclick=()=>{
       const raw=decodeURIComponent(btn.dataset.starKey||'');
-      starred.delete(raw);
-      saveStars();
-      render();
+      starred.delete(raw);saveStars();render();
     };
   });
 }
@@ -912,12 +1140,12 @@ function renderCategoryTable(cat){
         '<th>ফলাফল নির্ণয় পদ্ধতি</th>'+
       '</tr></thead><tbody>'+
       rows.map(r=>'<tr>'+
-        '<td>'+esc(r.unit)+'</td>'+
-        '<td>'+esc(r.seats)+'</td>'+
-        '<td>'+esc(r.elig)+'</td>'+
-        '<td>'+esc(r.exam)+'</td>'+
-        '<td>'+esc(r.marks)+'</td>'+
-        '<td>'+esc(r.result)+'</td>'+
+        '<td data-label="বিশ্ববিদ্যালয় / ইউনিট">'+esc(r.unit)+'</td>'+
+        '<td data-label="আসন সংখ্যা">'+esc(r.seats)+'</td>'+
+        '<td data-label="আবেদন যোগ্যতা">'+esc(r.elig)+'</td>'+
+        '<td data-label="পরীক্ষার ধরন">'+esc(r.exam)+'</td>'+
+        '<td data-label="নম্বর / প্রশ্ন">'+esc(r.marks)+'</td>'+
+        '<td data-label="ফলাফল নির্ণয়">'+esc(r.result)+'</td>'+
       '</tr>').join('')+
       '</tbody></table></div></section>';
 }
@@ -938,6 +1166,71 @@ function renderAllCategories(){
   });
 }
 renderAllCategories();
+
+
+/* ---------- Daily mission ---------- */
+const MISSION_PREFIX='admissionbydbt-mission-';
+function dhakaDayKey(){return new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Dhaka'})}
+function missionKey(){return MISSION_PREFIX+dhakaDayKey()}
+const DEFAULT_MISSIONS=[
+  'Revise 2 important topics',
+  'Solve 30 MCQs',
+  'Review mistakes for 20 minutes'
+];
+let missions=[];
+function loadMissions(){
+  try{missions=JSON.parse(localStorage.getItem(missionKey())||'null')||DEFAULT_MISSIONS.map((text,i)=>({id:'d'+i,text,done:false}))}
+  catch(e){missions=DEFAULT_MISSIONS.map((text,i)=>({id:'d'+i,text,done:false}))}
+}
+function saveMissions(){localStorage.setItem(missionKey(),JSON.stringify(missions))}
+function missionPercent(){
+  if(!missions.length)return 0;
+  return Math.round(missions.filter(x=>x.done).length/missions.length*100);
+}
+function renderMissions(){
+  missionList.innerHTML=missions.length?missions.map((m,i)=>
+    '<label class="mission-item'+(m.done?' done':'')+'">'+
+      '<input class="mission-check" type="checkbox" data-mission="'+i+'" '+(m.done?'checked':'')+'>'+
+      '<span class="mission-text">'+esc(m.text)+'</span>'+
+    '</label>'
+  ).join(''):'<div class="empty">No tasks yet. Add one small task and start.</div>';
+  const p=missionPercent();
+  missionPct.textContent=p+'%';
+  missionRing.style.setProperty('--mission',(p*3.6)+'deg');
+  statMission.textContent=p+'%';
+  statMissionNote.textContent=p===100?'Mission complete ✓':p>=67?'Finish strong':p>=34?'Momentum building':'Start with one task';
+  missionNote.textContent=p===100?'Mission complete. Protect the momentum tomorrow.':p>=67?'You are close. Finish the last important task.':p>=34?'Good. Keep the next action small and clear.':'Start with the first task. Momentum comes after starting.';
+  missionList.querySelectorAll('.mission-check').forEach(el=>{
+    el.onchange=()=>{
+      const i=Number(el.dataset.mission);
+      if(missions[i]){missions[i].done=el.checked;saveMissions();renderMissions()}
+    };
+  });
+}
+missionAdd.onclick=()=>{
+  const text=missionInput.value.trim();
+  if(!text)return;
+  missions.push({id:'c'+Date.now(),text,done:false});
+  missionInput.value='';saveMissions();renderMissions();
+};
+missionInput.addEventListener('keydown',e=>{if(e.key==='Enter')missionAdd.click()});
+missionReset.onclick=()=>{
+  missions=DEFAULT_MISSIONS.map((text,i)=>({id:'d'+i,text,done:false}));
+  saveMissions();renderMissions();
+};
+loadMissions();renderMissions();
+
+/* ---------- Focus mode ---------- */
+const FOCUS_KEY='admissionbydbt-focus-v1';
+function setFocus(on){
+  document.body.classList.toggle('focus-mode',on);
+  focusBtn.classList.toggle('active',on);
+  focusBtn.textContent=on?'EXIT FOCUS':'FOCUS MODE';
+  localStorage.setItem(FOCUS_KEY,on?'1':'0');
+}
+focusBtn.onclick=()=>setFocus(!document.body.classList.contains('focus-mode'));
+mobileFocusBtn.onclick=()=>setFocus(!document.body.classList.contains('focus-mode'));
+setFocus(localStorage.getItem(FOCUS_KEY)==='1');
 
 const cv=document.getElementById('stars'),ctx=cv.getContext('2d',{alpha:true});
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
