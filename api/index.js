@@ -238,6 +238,19 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 .day{min-height:112px;border-top:1px solid #1b1e23;border-left:1px solid #15181c;padding:8px;position:relative}.day:nth-child(7n+1){border-left:0}.day.muted{opacity:.25}.num{font-size:12px;color:#b8bbc0}.today .num{background:#eee;color:#090909;border-radius:999px;padding:3px 7px;display:inline-block;font-weight:900}.event{display:block;margin-top:6px;background:#15181d;border:1px solid #292d34;border-radius:9px;padding:6px 7px;font-size:10px;line-height:1.25;white-space:normal;overflow:hidden;cursor:default}.event:hover{background:#20242b}
 .upcoming{margin-top:28px}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}.card{border:1px solid #23262c;background:#0d0f12;border-radius:15px;padding:14px}.card h3{font-size:14px;margin:0 0 8px}.meta{font-size:12px;color:#969aa0;line-height:1.6}.source{font-size:10px;color:#c5c8cc;margin-top:8px}.source a{color:#c5c8cc}
 .empty{color:#8a8f95;padding:30px;text-align:center;border:1px dashed #2a2e34;border-radius:14px}.footer{color:#6d7279;font-size:11px;text-align:center;margin-top:22px}
+.target-section{margin:0 0 26px;background:linear-gradient(145deg,rgba(13,15,20,.94),rgba(7,9,13,.9));border:1px solid #2a2e36;border-radius:24px;padding:20px;backdrop-filter:blur(16px);box-shadow:0 24px 80px #0008,inset 0 1px 0 #ffffff08}
+.target-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.target-head h2{margin:0;font-size:25px}.target-head .sub{max-width:640px}
+.target-count{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#d7bd69;border:1px solid #76612e;background:#2a220d;border-radius:999px;padding:7px 10px}
+.starred-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.starred-card{position:relative;overflow:hidden;border:1px solid #6d592b;background:linear-gradient(150deg,#17140bde,#0d0f14e8 52%,#12100ae6);border-radius:18px;padding:16px;box-shadow:0 12px 35px #0007,inset 0 1px 0 #ffe9a314}
+.starred-card:before{content:"";position:absolute;width:160px;height:160px;right:-70px;top:-95px;background:radial-gradient(circle,#e2b84a20,transparent 68%);pointer-events:none}
+.target-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.target-name{font-size:15px;font-weight:850;line-height:1.3}.target-date{font-size:11px;color:#bbb5a1;margin-top:5px}
+.target-timer{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}.target-time{background:#090a0dd9;border:1px solid #2f2a1c;border-radius:12px;padding:9px 5px;text-align:center}.target-time b{display:block;font-size:24px;line-height:1;color:#f6e7b3;letter-spacing:-.04em}.target-time span{display:block;margin-top:5px;font-size:8px;letter-spacing:.12em;color:#887d60}
+.target-message{font-size:11px;color:#a9a38f;margin-top:11px}.target-empty{border:1px dashed #4a4029;border-radius:15px;padding:17px;color:#a39d8a;font-size:12px;text-align:center;background:#0d0d0bd4}
+.star-btn{appearance:none;border:1px solid #343841;background:#11141a;color:#868b94;width:30px;height:30px;border-radius:10px;display:inline-grid;place-items:center;cursor:pointer;font-size:16px;line-height:1;flex:0 0 auto;transition:transform .18s ease,border-color .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease}.star-btn:hover{transform:translateY(-1px);border-color:#7a6631;color:#f1cf6d}.star-btn.active{color:#ffd669;border-color:#846d32;background:#29210d;box-shadow:0 0 18px #e7b93b24}
+.event{display:flex;align-items:flex-start;gap:5px}.event .star-btn{width:20px;height:20px;border-radius:6px;font-size:11px;padding:0;margin-top:-1px}.event-title{min-width:0;flex:1}.event.starred{border-color:#6e5b2d;background:linear-gradient(100deg,#261f0f,#17181c);box-shadow:inset 3px 0 0 #d5ad45}.event.starred .event-title{color:#f3dfaa;font-weight:750}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.card.starred{border-color:#6e5b2d;background:linear-gradient(145deg,#17140d,#0d0f12);box-shadow:0 12px 32px #0006,inset 3px 0 0 #d4ae4e}.card.starred h3{color:#f0ddb0}
+@media(max-width:700px){.target-section{padding:14px;border-radius:19px}.target-head h2{font-size:21px}.starred-grid{grid-template-columns:1fr}.target-timer{gap:5px}.target-time b{font-size:21px}.star-btn{width:34px;height:34px}.event .star-btn{width:22px;height:22px}.target-count{padding:6px 9px}}
 
 .info-center{margin-top:26px;background:#08090bde;border:1px solid #1e2126;border-radius:24px;padding:22px;backdrop-filter:blur(14px)}
 .info-search{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 18px}.info-search input{flex:1;min-width:240px}
@@ -258,6 +271,13 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 <section class="hero"><div class="hero-inner"><div class="kicker">Admission test begins • 30 November 2026</div><div class="days" id="days">00</div><div class="label">DAYS LEFT</div>
 <div class="clock"><div><b id="weeks">00W</b><span>WEEKS</span></div><div><b id="hours">00H</b><span>HOURS</span></div><div><b id="mins">00M</b><span>MINUTES</span></div><div><b id="secs">00S</b><span>SECONDS</span></div></div>
 <div class="progress"><div class="fill" id="fill"></div></div><div class="pct" id="pct">0%</div><div class="passed"><span id="passed">0 Passed</span><i>|</i><span id="total">0 Total</span></div></div></section>
+<section class="target-section" id="targetSection">
+  <div class="target-head">
+    <div><h2>★ My Target Exams</h2><div class="sub">Star the exams you care about. They stay highlighted and each gets its own live countdown.</div></div>
+    <div class="target-count" id="targetCount">0 STARRED</div>
+  </div>
+  <div class="starred-grid" id="starredCards"></div>
+</section>
 <section class="section"><div class="head"><div><h2>Admission Calendar</h2><div class="sub">বিশ্ববিদ্যালয় ভর্তি রুটিন — পরিষ্কার নাম, তারিখ ও পরীক্ষার সময়।</div></div><div class="controls"><input id="search" placeholder="Search university…"><button class="btn" id="refresh">Refresh</button></div></div>
 <div class="calendar-head"><button class="btn" id="prev">←</button><div class="month" id="month"></div><button class="btn" id="next">→</button></div><div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div><div class="grid" id="grid"></div>
 <div class="upcoming"><div class="head"><div><h2 style="font-size:22px">Upcoming exams</h2><div class="sub">Tap any calendar item or source link to verify details.</div></div></div><div class="cards" id="cards"></div></div>
@@ -272,13 +292,167 @@ const TARGET=new Date('2026-11-30T00:00:00+06:00'), START=new Date('2026-09-05T0
 function countdown(){const now=new Date(), diff=Math.max(0,TARGET-now), span=(TARGET-START), total=Math.round(span/86400000)+1, passed=Math.max(0,Math.min(total,Math.floor((now-START)/86400000))); const days=Math.floor(diff/86400000), weeks=Math.floor(days/7), h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60; daysEl.textContent=days; weeksEl.textContent=String(weeks).padStart(2,'0')+'W'; hoursEl.textContent=String(h).padStart(2,'0')+'H'; minsEl.textContent=String(m).padStart(2,'0')+'M'; secsEl.textContent=String(s).padStart(2,'0')+'S'; const p=span>0?Math.max(0,Math.min(100,((now-START)/span)*100)):0; fill.style.width=p+'%'; pct.textContent=p.toFixed(2)+'%'; passedEl.textContent=passed+' Passed'; totalEl.textContent=total+' Total';}
 const daysEl=document.getElementById('days'),weeksEl=document.getElementById('weeks'),hoursEl=document.getElementById('hours'),minsEl=document.getElementById('mins'),secsEl=document.getElementById('secs'),fill=document.getElementById('fill'),pct=document.getElementById('pct'),passedEl=document.getElementById('passed'),totalEl=document.getElementById('total'); countdown();setInterval(countdown,1000);
 let all=[],view=new Date(2026,11,1),sourceHealth=[];
+const STAR_KEY='admissionbydbt-starred-v1';
+let starred=new Set();
+try{starred=new Set(JSON.parse(localStorage.getItem(STAR_KEY)||'[]'))}catch(e){starred=new Set()}
+
+function eventKey(e){return e.title+'|'+e.date}
+function isStarred(e){return starred.has(eventKey(e))}
+function saveStars(){localStorage.setItem(STAR_KEY,JSON.stringify([...starred]))}
+function toggleStar(e){
+  const key=eventKey(e);
+  if(starred.has(key)) starred.delete(key); else starred.add(key);
+  saveStars();
+  render();
+}
+function starButton(e,extraClass=''){
+  const b=document.createElement('button');
+  b.type='button';
+  b.className='star-btn '+extraClass+(isStarred(e)?' active':'');
+  b.textContent=isStarred(e)?'★':'☆';
+  b.title=isStarred(e)?'Remove from My Target Exams':'Star this exam';
+  b.setAttribute('aria-label',b.title);
+  b.onclick=ev=>{ev.stopPropagation();toggleStar(e)};
+  return b;
+}
 function bdDate(iso){return new Date(new Date(iso).toLocaleString('en-US',{timeZone:'Asia/Dhaka'}))}
 function filtered(){const q=search.value.toLowerCase();return all.filter(e=>!q||e.title.toLowerCase().includes(q))}
-function render(){month.textContent=view.toLocaleString('en-US',{month:'long',year:'numeric'});grid.innerHTML='';const y=view.getFullYear(),mo=view.getMonth(),first=new Date(y,mo,1),start=new Date(y,mo,1-first.getDay());const es=filtered();for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const cell=document.createElement('div');cell.className='day'+(d.getMonth()!=mo?' muted':'');const now=new Date();if(d.toDateString()==now.toDateString())cell.classList.add('today');cell.innerHTML='<span class="num">'+d.getDate()+'</span>';es.filter(e=>{const x=bdDate(e.date);return x.getFullYear()==d.getFullYear()&&x.getMonth()==d.getMonth()&&x.getDate()==d.getDate()}).slice(0,4).forEach(e=>{const el=document.createElement('div');el.className='event';el.textContent=e.title;el.title=e.title+(e.agreement?' — '+e.agreement:'');cell.appendChild(el)});grid.appendChild(cell)}renderCards();}
-function renderCards(){const now=new Date();const arr=filtered().filter(e=>new Date(e.date)>now).slice(0,12);cards.innerHTML=arr.length?'':'<div class="empty">No upcoming events matched the current filter.</div>';arr.forEach(e=>{const d=new Date(e.date);const c=document.createElement('div');c.className='card';c.innerHTML='<h3>'+esc(e.title)+'</h3><div class="meta">'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'})+' • '+esc(e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'}))+'<br>'+Math.max(0,Math.ceil((d-now)/86400000))+' days left</div>'+(e.agreement?'<div class="source">'+(e.agreement==='Agree'?'✅ ':'⚪ ')+esc(e.agreement)+'</div>':'');cards.appendChild(c)})}
+function render(){
+  month.textContent=view.toLocaleString('en-US',{month:'long',year:'numeric'});
+  grid.innerHTML='';
+  const y=view.getFullYear(),mo=view.getMonth(),first=new Date(y,mo,1),start=new Date(y,mo,1-first.getDay());
+  const es=filtered();
+  for(let i=0;i<42;i++){
+    const d=new Date(start);d.setDate(start.getDate()+i);
+    const cell=document.createElement('div');
+    cell.className='day'+(d.getMonth()!=mo?' muted':'');
+    const now=new Date();
+    if(d.toDateString()==now.toDateString())cell.classList.add('today');
+    cell.innerHTML='<span class="num">'+d.getDate()+'</span>';
+    es.filter(e=>{
+      const x=bdDate(e.date);
+      return x.getFullYear()==d.getFullYear()&&x.getMonth()==d.getMonth()&&x.getDate()==d.getDate()
+    }).slice(0,4).forEach(e=>{
+      const el=document.createElement('div');
+      el.className='event'+(isStarred(e)?' starred':'');
+      el.title=e.title+(e.agreement?' — '+e.agreement:'');
+      el.appendChild(starButton(e));
+      const t=document.createElement('span');
+      t.className='event-title';
+      t.textContent=e.title;
+      el.appendChild(t);
+      cell.appendChild(el);
+    });
+    grid.appendChild(cell);
+  }
+  renderCards();
+  renderStarredTargets();
+}
+function renderCards(){
+  const now=new Date();
+  const arr=filtered().filter(e=>new Date(e.date)>now).slice(0,12);
+  cards.innerHTML=arr.length?'':'<div class="empty">No upcoming events matched the current filter.</div>';
+  arr.forEach(e=>{
+    const d=new Date(e.date);
+    const card=document.createElement('div');
+    card.className='card'+(isStarred(e)?' starred':'');
+    const top=document.createElement('div');
+    top.className='card-top';
+    const title=document.createElement('h3');
+    title.textContent=e.title;
+    top.appendChild(title);
+    top.appendChild(starButton(e));
+    card.appendChild(top);
+    const meta=document.createElement('div');
+    meta.className='meta';
+    meta.innerHTML=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'})+' • '+esc(e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'}))+'<br>'+Math.max(0,Math.ceil((d-now)/86400000))+' days left';
+    card.appendChild(meta);
+    if(e.agreement){
+      const src=document.createElement('div');
+      src.className='source';
+      src.textContent=(e.agreement==='Agree'?'✅ ':'⚪ ')+e.agreement;
+      card.appendChild(src);
+    }
+    cards.appendChild(card);
+  });
+}
+function splitCountdown(target){
+  let diff=new Date(target)-new Date();
+  if(diff<=0)return {d:0,h:0,m:0,s:0,done:true};
+  return {
+    d:Math.floor(diff/86400000),
+    h:Math.floor(diff/3600000)%24,
+    m:Math.floor(diff/60000)%60,
+    s:Math.floor(diff/1000)%60,
+    done:false
+  };
+}
+function renderStarredTargets(){
+  const matches=all.filter(isStarred).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  targetCount.textContent=matches.length+' STARRED';
+  if(!matches.length){
+    starredCards.innerHTML='<div class="target-empty">☆ Star any exam from the calendar or Upcoming Exams. Your selected exams will appear here with individual live timers.</div>';
+    return;
+  }
+  starredCards.innerHTML=matches.map(e=>{
+    const d=new Date(e.date),v=splitCountdown(e.date),key=encodeURIComponent(eventKey(e));
+    const date=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'});
+    const time=e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'});
+    const message=v.done?'Exam time / completed':'Keep going — '+v.d+' days to this target.';
+    return '<article class="starred-card" data-star-key="'+key+'">'+
+      '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
+      '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Target Exams" title="Remove from My Target Exams">★</button></div>'+
+      '<div class="target-timer">'+
+        '<div class="target-time"><b data-part="d">'+String(v.d).padStart(2,'0')+'</b><span>DAYS</span></div>'+
+        '<div class="target-time"><b data-part="h">'+String(v.h).padStart(2,'0')+'</b><span>HOURS</span></div>'+
+        '<div class="target-time"><b data-part="m">'+String(v.m).padStart(2,'0')+'</b><span>MIN</span></div>'+
+        '<div class="target-time"><b data-part="s">'+String(v.s).padStart(2,'0')+'</b><span>SEC</span></div>'+
+      '</div><div class="target-message">'+esc(message)+'</div></article>';
+  }).join('');
+  starredCards.querySelectorAll('.target-unstar').forEach(btn=>{
+    btn.onclick=()=>{
+      const raw=decodeURIComponent(btn.dataset.starKey||'');
+      starred.delete(raw);
+      saveStars();
+      render();
+    };
+  });
+}
+function updateStarredTimers(){
+  document.querySelectorAll('.starred-card').forEach(card=>{
+    const raw=decodeURIComponent(card.dataset.starKey||'');
+    const e=all.find(x=>eventKey(x)===raw);
+    if(!e)return;
+    const v=splitCountdown(e.date);
+    for(const part of ['d','h','m','s']){
+      const node=card.querySelector('[data-part="'+part+'"]');
+      if(node)node.textContent=String(v[part]).padStart(2,'0');
+    }
+    const msg=card.querySelector('.target-message');
+    if(msg)msg.textContent=v.done?'Exam time / completed':'Keep going — '+v.d+' days to this target.';
+  });
+}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-async function load(force=false){syncStatus.textContent='● syncing sources…';try{const r=await fetch('/api/events'+(force?'?refresh=1':''));const j=await r.json();all=j.events||[];sourceHealth=j.sources||[];syncStatus.textContent='● '+all.length+' exams • updated '+new Date(j.updatedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});render()}catch(e){syncStatus.textContent='● sync unavailable';render()}}
-prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};refresh.onclick=()=>load(true);search.oninput=render;load();
+async function load(force=false){
+  syncStatus.textContent='● syncing sources…';
+  try{
+    const r=await fetch('/api/events'+(force?'?refresh=1':''));
+    const j=await r.json();
+    all=j.events||[];
+    sourceHealth=j.sources||[];
+    syncStatus.textContent='● '+all.length+' exams • updated '+new Date(j.updatedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    render();
+  }catch(e){
+    syncStatus.textContent='● sync unavailable';
+    render();
+  }
+}
+prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};
+next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};
+refresh.onclick=()=>load(true);
+search.oninput=render;
+load();
+setInterval(updateStarredTimers,1000);
 
 const UNIVERSITY_INFO = {
   "ঢাকা বিশ্ববিদ্যালয়": {
