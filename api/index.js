@@ -226,7 +226,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
 <style>
 :root{--bg:#030303;--panel:#0a0b0d;--line:#25282e;--text:#f4f4f2;--muted:#979b9f;--soft:#d9d7cd;--chip:#14161a}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}body{min-height:100vh;overflow-x:hidden}
-#stars{position:fixed;inset:0;z-index:0;pointer-events:none}.app{position:relative;z-index:1;max-width:1180px;margin:auto;padding:28px 18px 64px}
+#halftone{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.82}.app:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 50% 10%,#ffffff08 0,transparent 34%),linear-gradient(to bottom,#0000 0,#03030355 55%,#030303 100%)}.app{position:relative;z-index:1;max-width:1180px;margin:auto;padding:28px 18px 64px}
 nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.brand{font-weight:900;letter-spacing:.18em;font-size:13px}.live{font-size:12px;color:#b6babf;border:1px solid var(--line);padding:8px 11px;border-radius:999px;background:#090a0c}
 .hero{min-height:560px;display:grid;place-items:center;text-align:center}.hero-inner{width:min(780px,100%)}
 .kicker{font-size:12px;letter-spacing:.18em;color:#aeb2b7;text-transform:uppercase}.days{font-size:clamp(96px,19vw,188px);font-weight:900;line-height:.84;letter-spacing:-.08em;margin:18px 0 10px;text-shadow:0 0 30px #ffffff18}
@@ -254,7 +254,7 @@ nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:
 .source-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.source-badge{font-size:10px;border:1px solid #2a2e34;border-radius:999px;padding:5px 8px;color:#aeb2b7}
 @media(max-width:700px){.info-center{padding:14px}.eligibility-box{grid-template-columns:1fr}.info-title{font-size:23px}}
 @media(max-width:700px){.hero{min-height:500px}.section{padding:14px}.day{min-height:78px;padding:5px}.event{font-size:8px;padding:4px}.head h2{font-size:24px}.clock{gap:14px}.passed{font-size:17px}}
-</style></head><body><canvas id="stars"></canvas><div class="app"><nav><div class="brand">ADMISSION BY DBT • 26/27</div><div id="syncStatus" class="live">● syncing sources…</div></nav>
+</style></head><body><canvas id="halftone"></canvas><div class="app"><nav><div class="brand">ADMISSION BY DBT • 26/27</div><div id="syncStatus" class="live">● syncing sources…</div></nav>
 <section class="hero"><div class="hero-inner"><div class="kicker">Admission test begins • 30 November 2026</div><div class="days" id="days">00</div><div class="label">DAYS LEFT</div>
 <div class="clock"><div><b id="weeks">00W</b><span>WEEKS</span></div><div><b id="hours">00H</b><span>HOURS</span></div><div><b id="mins">00M</b><span>MINUTES</span></div><div><b id="secs">00S</b><span>SECONDS</span></div></div>
 <div class="progress"><div class="fill" id="fill"></div></div><div class="pct" id="pct">0%</div><div class="passed"><span id="passed">0 Passed</span><i>|</i><span id="total">0 Total</span></div></div></section>
@@ -765,7 +765,51 @@ function renderAllCategories(){
 }
 renderAllCategories();
 
-const cv=document.getElementById('stars'),cx=cv.getContext('2d');let stars=[];function resize(){cv.width=innerWidth*devicePixelRatio;cv.height=innerHeight*devicePixelRatio;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);stars=Array.from({length:Math.min(180,innerWidth/5)},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.1+.2,a:Math.random()*.7+.15,p:Math.random()*6.28}))}addEventListener('resize',resize);resize();function draw(t){cx.clearRect(0,0,innerWidth,innerHeight);for(const s of stars){cx.globalAlpha=s.a*(.65+.35*Math.sin(t/900+s.p));cx.fillStyle='#fff';cx.beginPath();cx.arc(s.x,s.y,s.r,0,6.28);cx.fill()}requestAnimationFrame(draw)}requestAnimationFrame(draw);
+const cv=document.getElementById('halftone'),cx=cv.getContext('2d',{alpha:true});
+let dpr=Math.min(devicePixelRatio||1,2),cols=0,rows=0,spacing=18,dots=[],mx=innerWidth*.5,my=innerHeight*.35,tx=mx,ty=my,tick=0;
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function rebuildHalftone(){
+  dpr=Math.min(devicePixelRatio||1,2);
+  cv.width=Math.floor(innerWidth*dpr);cv.height=Math.floor(innerHeight*dpr);
+  cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
+  cx.setTransform(dpr,0,0,dpr,0,0);
+  spacing=innerWidth<700?20:18;
+  cols=Math.ceil(innerWidth/spacing)+2;rows=Math.ceil(innerHeight/spacing)+2;
+  dots=[];
+  for(let y=-1;y<rows;y++)for(let x=-1;x<cols;x++)dots.push({x:x*spacing,y:y*spacing,phase:Math.random()*6.283});
+}
+function pointerMove(e){tx=e.clientX;ty=e.clientY}
+function touchMove(e){if(e.touches&&e.touches[0]){tx=e.touches[0].clientX;ty=e.touches[0].clientY}}
+addEventListener('pointermove',pointerMove,{passive:true});
+addEventListener('touchmove',touchMove,{passive:true});
+addEventListener('resize',rebuildHalftone,{passive:true});
+rebuildHalftone();
+
+function drawHalftone(t){
+  tick=t||0;
+  mx+=((tx-mx)*.08);my+=((ty-my)*.08);
+  cx.clearRect(0,0,innerWidth,innerHeight);
+  const heroBias=Math.min(innerHeight*.58,520);
+  for(const p of dots){
+    const dx=p.x-mx,dy=p.y-my,dist=Math.sqrt(dx*dx+dy*dy);
+    const cursor=Math.max(0,1-dist/230);
+    const hero=Math.max(0,1-Math.abs(p.y-heroBias)/(innerHeight*.72));
+    const wave=reduceMotion?0:(Math.sin((p.x+p.y)*.014+tick*.0011+p.phase)*.5+.5);
+    let r=.65 + hero*1.0 + cursor*4.6 + wave*.55;
+    if(p.y>innerHeight*.72) r*=.62;
+    const alpha=.12 + hero*.10 + cursor*.34;
+    cx.globalAlpha=Math.min(.62,alpha);
+    cx.fillStyle='#f4f4f2';
+    cx.beginPath();cx.arc(p.x,p.y,r,0,Math.PI*2);cx.fill();
+  }
+  cx.globalAlpha=1;
+  if(!reduceMotion) requestAnimationFrame(drawHalftone);
+}
+drawHalftone(0);
+if(reduceMotion){
+  setTimeout(()=>drawHalftone(0),50);
+}
+
 </script></body></html>`;
 
 export default async function handler(req,res){
