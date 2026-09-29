@@ -1543,7 +1543,7 @@ async function trackerEnsureCloudSheet(){
   const meta=await trackerGFetch('https://sheets.googleapis.com/v4/spreadsheets/'+TRACKER_SHEET_ID+'?fields=sheets.properties');
   const found=(meta.sheets||[]).find(x=>x.properties&&x.properties.title===TRACKER_CLOUD_SHEET);
   if(found)return found.properties.sheetId;
-  const r=await trackerGFetch('https://sheets.googleapis.com/v4/spreadsheets/'+TRACKER_SHEET_ID+':batchUpdate',{method:'POST',body:JSON.stringify({requests:[{addSheet:{properties:{title:TRACKER_CLOUD_SHEET,hidden:true,rowCount:120,columnCount:2}}}]})});
+  const r=await trackerGFetch('https://sheets.googleapis.com/v4/spreadsheets/'+TRACKER_SHEET_ID+':batchUpdate',{method:'POST',body:JSON.stringify({requests:[{addSheet:{properties:{title:TRACKER_CLOUD_SHEET,hidden:true,gridProperties:{rowCount:120,columnCount:2}}}}]})});
   return r.replies&&r.replies[0]&&r.replies[0].addSheet&&r.replies[0].addSheet.properties.sheetId;
 }
 async function trackerCloudRead(){
