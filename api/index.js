@@ -226,7 +226,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
 <style>
 :root{--bg:#030303;--panel:#0a0b0d;--line:#25282e;--text:#f4f4f2;--muted:#979b9f;--soft:#d9d7cd;--chip:#14161a}
 *{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}body{min-height:100vh;overflow-x:hidden}
-#halftone{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.82}.app:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 50% 10%,#ffffff08 0,transparent 34%),linear-gradient(to bottom,#0000 0,#03030355 55%,#030303 100%)}.app{position:relative;z-index:1;max-width:1180px;margin:auto;padding:28px 18px 64px}
+#halftone{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.9}.app:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 50% 12%,#ffffff0b 0,transparent 34%),radial-gradient(circle at 50% 42%,#ffffff04 0,transparent 46%),linear-gradient(to bottom,#0000 0,#03030366 62%,#030303 100%)}.app{position:relative;z-index:1;max-width:1180px;margin:auto;padding:28px 18px 64px}
 nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.brand{font-weight:900;letter-spacing:.18em;font-size:13px}.live{font-size:12px;color:#b6babf;border:1px solid var(--line);padding:8px 11px;border-radius:999px;background:#090a0c}
 .hero{min-height:560px;display:grid;place-items:center;text-align:center}.hero-inner{width:min(780px,100%)}
 .kicker{font-size:12px;letter-spacing:.18em;color:#aeb2b7;text-transform:uppercase}.days{font-size:clamp(96px,19vw,188px);font-weight:900;line-height:.84;letter-spacing:-.08em;margin:18px 0 10px;text-shadow:0 0 30px #ffffff18}
@@ -766,49 +766,143 @@ function renderAllCategories(){
 renderAllCategories();
 
 const cv=document.getElementById('halftone'),cx=cv.getContext('2d',{alpha:true});
-let dpr=Math.min(devicePixelRatio||1,2),cols=0,rows=0,spacing=18,dots=[],mx=innerWidth*.5,my=innerHeight*.35,tx=mx,ty=my,tick=0;
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-function rebuildHalftone(){
-  dpr=Math.min(devicePixelRatio||1,2);
-  cv.width=Math.floor(innerWidth*dpr);cv.height=Math.floor(innerHeight*dpr);
-  cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
-  cx.setTransform(dpr,0,0,dpr,0,0);
-  spacing=innerWidth<700?20:18;
-  cols=Math.ceil(innerWidth/spacing)+2;rows=Math.ceil(innerHeight/spacing)+2;
-  dots=[];
-  for(let y=-1;y<rows;y++)for(let x=-1;x<cols;x++)dots.push({x:x*spacing,y:y*spacing,phase:Math.random()*6.283});
-}
-function pointerMove(e){tx=e.clientX;ty=e.clientY}
-function touchMove(e){if(e.touches&&e.touches[0]){tx=e.touches[0].clientX;ty=e.touches[0].clientY}}
-addEventListener('pointermove',pointerMove,{passive:true});
-addEventListener('touchmove',touchMove,{passive:true});
-addEventListener('resize',rebuildHalftone,{passive:true});
-rebuildHalftone();
+let dpr=1,spacing=22,dots=[],W=innerWidth,H=innerHeight;
+let px=W*.5,py=H*.33,tx=px,ty=py,lastInput=performance.now(),ripples=[];
+let isCoarse=matchMedia('(pointer: coarse)').matches;
 
-function drawHalftone(t){
-  tick=t||0;
-  mx+=((tx-mx)*.08);my+=((ty-my)*.08);
-  cx.clearRect(0,0,innerWidth,innerHeight);
-  const heroBias=Math.min(innerHeight*.58,520);
+function rebuildField(){
+  W=innerWidth;H=innerHeight;
+  dpr=Math.min(devicePixelRatio||1,isCoarse?1.35:1.7);
+  cv.width=Math.floor(W*dpr);cv.height=Math.floor(H*dpr);
+  cv.style.width=W+'px';cv.style.height=H+'px';
+  cx.setTransform(dpr,0,0,dpr,0,0);
+  spacing=isCoarse?24:(W>1400?20:22);
+  dots=[];
+  const cols=Math.ceil(W/spacing)+3,rows=Math.ceil(H/spacing)+3;
+  for(let y=-1;y<rows;y++){
+    for(let x=-1;x<cols;x++){
+      const ox=(y%2)*spacing*.5;
+      dots.push({
+        x:x*spacing+ox,
+        y:y*spacing,
+        seed:Math.sin((x+13)*12.9898+(y+7)*78.233)*43758.5453
+      });
+    }
+  }
+}
+
+function setTarget(x,y){
+  tx=Math.max(0,Math.min(W,x));
+  ty=Math.max(0,Math.min(H,y));
+  lastInput=performance.now();
+}
+function spawnRipple(x,y){
+  ripples.push({x,y,t0:performance.now()});
+  if(ripples.length>5) ripples.shift();
+}
+
+addEventListener('pointermove',e=>{
+  if(e.pointerType==='mouse'||e.pointerType==='pen') setTarget(e.clientX,e.clientY);
+},{passive:true});
+
+addEventListener('pointerdown',e=>{
+  setTarget(e.clientX,e.clientY);
+  spawnRipple(e.clientX,e.clientY);
+},{passive:true});
+
+addEventListener('touchmove',e=>{
+  const t=e.touches&&e.touches[0];
+  if(t) setTarget(t.clientX,t.clientY);
+},{passive:true});
+
+addEventListener('resize',()=>{
+  isCoarse=matchMedia('(pointer: coarse)').matches;
+  rebuildField();
+},{passive:true});
+
+rebuildField();
+
+function renderField(t){
+  if(isCoarse && t-lastInput>1800 && !reduceMotion){
+    const tt=t*.00018;
+    tx=W*(.5+.23*Math.sin(tt*1.7));
+    ty=H*(.31+.11*Math.cos(tt*1.25));
+  }
+
+  px+=(tx-px)*(isCoarse?.055:.085);
+  py+=(ty-py)*(isCoarse?.055:.085);
+
+  cx.clearRect(0,0,W,H);
+
+  const liveRipples=[];
+  for(const r of ripples){
+    const age=t-r.t0;
+    if(age<1200) liveRipples.push(r);
+  }
+  ripples=liveRipples;
+
+  const heroY=Math.min(H*.36,390);
+
   for(const p of dots){
-    const dx=p.x-mx,dy=p.y-my,dist=Math.sqrt(dx*dx+dy*dy);
-    const cursor=Math.max(0,1-dist/230);
-    const hero=Math.max(0,1-Math.abs(p.y-heroBias)/(innerHeight*.72));
-    const wave=reduceMotion?0:(Math.sin((p.x+p.y)*.014+tick*.0011+p.phase)*.5+.5);
-    let r=.65 + hero*1.0 + cursor*4.6 + wave*.55;
-    if(p.y>innerHeight*.72) r*=.62;
-    const alpha=.12 + hero*.10 + cursor*.34;
-    cx.globalAlpha=Math.min(.62,alpha);
+    const dx=p.x-px,dy=p.y-py;
+    const dist=Math.hypot(dx,dy);
+    const lens=Math.max(0,1-dist/(isCoarse?190:230));
+
+    const heroGlow=Math.max(0,1-Math.abs(p.y-heroY)/(H*.72));
+    const grain=(p.seed-Math.floor(p.seed));
+
+    let push=0;
+    if(dist>1 && lens>0) push=(lens*lens)*(isCoarse?5:8);
+
+    let x=p.x+(dx/dist||0)*push;
+    let y=p.y+(dy/dist||0)*push;
+
+    let rippleBoost=0;
+    for(const r of ripples){
+      const age=t-r.t0;
+      const ringRadius=age*.34;
+      const rd=Math.abs(Math.hypot(p.x-r.x,p.y-r.y)-ringRadius);
+      if(rd<24) rippleBoost+=Math.max(0,1-rd/24)*(1-age/1200);
+    }
+
+    const ring=Math.sin(dist*.052-t*.0062)*.5+.5;
+    const pulse=reduceMotion?0:(Math.sin(t*.0014+p.x*.01+p.y*.008)*.5+.5);
+
+    let rad=.45+grain*.55+heroGlow*.55;
+    rad+=lens*(1.9+ring*2.1);
+    rad+=rippleBoost*3.2;
+    rad+=pulse*.16;
+
+    let alpha=.075+heroGlow*.075+lens*.24+rippleBoost*.32;
+    if(p.y>H*.78) alpha*=.72;
+
+    cx.globalAlpha=Math.min(.58,alpha);
     cx.fillStyle='#f4f4f2';
-    cx.beginPath();cx.arc(p.x,p.y,r,0,Math.PI*2);cx.fill();
+    cx.beginPath();cx.arc(x,y,rad,0,Math.PI*2);cx.fill();
+  }
+
+  // soft focal halo
+  const g=cx.createRadialGradient(px,py,0,px,py,isCoarse?120:150);
+  g.addColorStop(0,'rgba(255,255,255,.055)');
+  g.addColorStop(.45,'rgba(255,255,255,.018)');
+  g.addColorStop(1,'rgba(255,255,255,0)');
+  cx.globalAlpha=1;cx.fillStyle=g;cx.beginPath();cx.arc(px,py,isCoarse?120:150,0,Math.PI*2);cx.fill();
+
+  // expanding tap/click rings
+  for(const r of ripples){
+    const age=t-r.t0,prog=age/1200;
+    cx.globalAlpha=(1-prog)*.22;
+    cx.strokeStyle='#f4f4f2';
+    cx.lineWidth=1;
+    cx.beginPath();cx.arc(r.x,r.y,age*.34,0,Math.PI*2);cx.stroke();
   }
   cx.globalAlpha=1;
-  if(!reduceMotion) requestAnimationFrame(drawHalftone);
+
+  if(!reduceMotion) requestAnimationFrame(renderField);
 }
-drawHalftone(0);
-if(reduceMotion){
-  setTimeout(()=>drawHalftone(0),50);
-}
+renderField(0);
+if(reduceMotion) setTimeout(()=>renderField(0),60);
 
 </script></body></html>`;
 
