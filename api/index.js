@@ -283,7 +283,7 @@ a{color:inherit}
 .pct{font-size:10px;color:#aab3c4}.passed{font-size:14px;font-weight:750;color:#cbd3df}.passed i{font-style:normal;color:#4d5564;margin:0 10px}
 
 /* dashboard stat strip */
-.dashboard-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:-20px 0 22px;position:relative;z-index:2}
+.dashboard-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:-20px 0 22px;position:relative;z-index:2}
 .stat-card{min-height:88px;padding:14px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,rgba(13,17,27,.88),rgba(8,11,18,.78));backdrop-filter:blur(16px);box-shadow:0 18px 45px rgba(0,0,0,.20)}
 .stat-label{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#717c90}.stat-value{font-size:18px;font-weight:850;margin-top:7px;line-height:1.2}.stat-note{font-size:10px;color:#7e899d;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
@@ -345,35 +345,6 @@ a{color:inherit}
 .footer{color:#667186;font-size:9px;text-align:center;margin-top:22px;line-height:1.6}
 
 
-/* study tracker */
-.tracker-section{margin:22px 0;padding:22px;background:linear-gradient(145deg,rgba(9,12,19,.90),rgba(7,9,15,.84));border:1px solid var(--line);border-radius:var(--radius);backdrop-filter:blur(18px) saturate(125%);box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.035);scroll-margin-top:88px}
-.tracker-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-end;flex-wrap:wrap}.tracker-title{font-size:30px;margin:0;letter-spacing:-.04em}.tracker-actions{display:flex;gap:7px;flex-wrap:wrap}.tracker-actions .btn.primary{border-color:rgba(104,176,255,.38);background:linear-gradient(135deg,rgba(87,118,255,.22),rgba(52,198,255,.12));color:#eaf3ff}
-.tracker-cloud{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);background:rgba(7,10,16,.58);border-radius:12px;font-size:9px;color:#8f9aac}.tracker-cloud i{width:7px;height:7px;border-radius:50%;background:#6b7689;box-shadow:0 0 12px rgba(107,118,137,.2)}.tracker-cloud.connected i{background:var(--green);box-shadow:0 0 12px rgba(116,230,167,.5)}.tracker-cloud.syncing i{background:var(--gold)}
-.tracker-summary{display:grid;grid-template-columns:1.25fr repeat(3,1fr);gap:9px;margin:18px 0 14px}.tracker-summary-card{border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);border-radius:15px;padding:13px}.tracker-summary-card span{display:block;color:#6f7b90;font-size:8px;letter-spacing:.12em;text-transform:uppercase}.tracker-summary-card b{display:block;font-size:21px;letter-spacing:-.04em;margin-top:6px}.tracker-summary-card small{display:block;color:#8290a4;font-size:9px;margin-top:4px}
-.tracker-progress{height:7px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;margin-top:8px}.tracker-progress>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#6b86ff,#63e2ff);width:0;transition:width .25s ease}
-.subject-strip{display:flex;gap:8px;overflow:auto;padding:4px 1px 10px;scrollbar-width:thin}.subject-tab{min-width:170px;text-align:left;border:1px solid rgba(255,255,255,.07);background:rgba(12,16,24,.68);border-radius:15px;padding:12px;cursor:pointer;transition:.16s ease}.subject-tab:hover{border-color:rgba(120,167,255,.22);transform:translateY(-1px)}.subject-tab.active{border-color:rgba(100,195,255,.36);background:linear-gradient(145deg,rgba(65,98,205,.18),rgba(27,84,124,.10));box-shadow:0 10px 32px rgba(44,113,224,.08)}.subject-tab strong{display:block;font-size:13px}.subject-tab .subject-meta{color:#77849a;font-size:9px;margin-top:5px}.subject-tab .subject-pct{float:right;color:#dbe9ff}
-.tracker-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:8px 0 12px}.tracker-search{display:flex;gap:7px;flex:1;min-width:260px}.tracker-search input,.tracker-filter{background:#0d1119;color:#e8edf6;border:1px solid var(--line);border-radius:11px;padding:9px 11px;font-size:10px;outline:none}.tracker-search input{flex:1;min-width:140px}.tracker-search input:focus,.tracker-filter:focus{border-color:rgba(120,167,255,.42);box-shadow:0 0 0 3px rgba(120,167,255,.06)}.tracker-tools{display:flex;gap:7px;flex-wrap:wrap}
-.tracker-table-wrap{overflow:auto;border:1px solid rgba(255,255,255,.07);border-radius:17px;background:rgba(5,8,13,.55);max-height:680px}.tracker-table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%}.tracker-table th,.tracker-table td{border-right:1px solid rgba(255,255,255,.045);border-bottom:1px solid rgba(255,255,255,.05);height:50px}.tracker-table th{position:sticky;top:0;z-index:8;background:#101621;color:#aebbd0;font-size:9px;letter-spacing:.05em;padding:0 10px;white-space:nowrap}.tracker-table th:first-child{left:0;z-index:10;min-width:230px;text-align:left}.tracker-table td:first-child{position:sticky;left:0;z-index:5;background:#0c1119;min-width:230px;padding:9px 10px}.tracker-table tr:hover td{background-color:rgba(97,145,255,.026)}.tracker-table tr:hover td:first-child{background:#111824}.chapter-cell{display:flex;align-items:center;gap:9px}.chapter-num{width:25px;height:25px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.04);color:#718098;font-size:9px;flex:0 0 auto}.chapter-name{min-width:0}.chapter-name strong{font-size:11px;color:#eef2f8;display:block}.chapter-name small{font-size:8px;color:#6f7c91;display:block;margin-top:3px}.chapter-actions{margin-left:auto;display:flex;gap:4px;opacity:0;transition:.15s}.tracker-table tr:hover .chapter-actions{opacity:1}
-.field-head{display:flex;align-items:center;gap:6px}.field-head button{border:0;background:transparent;color:#657286;cursor:pointer;padding:2px;font-size:10px}.field-head button:hover{color:#fff}
-.track-cell{min-width:92px;position:relative;text-align:center;padding:5px}.cell-box{position:relative;min-height:38px;display:flex;align-items:center;justify-content:center;border-radius:9px}.cell-box:hover{background:rgba(255,255,255,.025)}.tracker-check{appearance:none;width:23px;height:23px;border-radius:8px;border:1px solid #40506a;background:#0b1018;cursor:pointer;display:grid;place-content:center;transition:.15s}.tracker-check:hover{border-color:#7aa7ff;box-shadow:0 0 0 4px rgba(95,150,255,.055)}.tracker-check:checked{border-color:transparent;background:linear-gradient(145deg,#6988ff,#58d6ff);box-shadow:0 0 17px rgba(78,181,255,.17)}.tracker-check:checked:after{content:"✓";font-size:14px;color:#04111f;font-weight:950}.cell-input{width:82px;max-width:100%;background:#0c1119;border:1px solid transparent;border-radius:8px;color:#dce4ef;padding:7px 7px;font-size:9px;text-align:center;outline:none}.cell-input:hover,.cell-input:focus{border-color:rgba(120,167,255,.28);background:#101723}.cell-actions{position:absolute;right:2px;top:2px;display:flex;gap:3px;opacity:0;transform:translateY(-3px);pointer-events:none;transition:.14s ease;z-index:4}.cell-box:hover .cell-actions{opacity:1;transform:none;pointer-events:auto}.cell-action{width:21px;height:21px;border-radius:6px;border:1px solid rgba(255,255,255,.10);background:#111925;color:#8997aa;display:grid;place-items:center;cursor:pointer;font-size:9px;box-shadow:0 4px 12px rgba(0,0,0,.3)}.cell-action:hover{color:#fff;border-color:rgba(120,167,255,.3)}.comment-mark{position:absolute;left:7px;top:6px;width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(242,199,102,.48)}
-.row-complete td:first-child:after{content:"COMPLETE";font-size:7px;letter-spacing:.12em;color:#64d99c;margin-left:8px}
-.tracker-mobile{display:none}.tracker-empty{padding:30px;text-align:center;color:#758198;border:1px dashed rgba(255,255,255,.10);border-radius:15px}
-.tracker-fab{border:1px dashed rgba(120,167,255,.23);background:rgba(67,103,200,.07);color:#9fbef6;border-radius:11px;padding:8px 10px;font-size:9px;cursor:pointer}.tracker-fab:hover{background:rgba(67,103,200,.13)}
-.tracker-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.68);z-index:120;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(8px)}.tracker-modal-backdrop.open{display:flex}.tracker-modal{width:min(520px,100%);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#111722,#080c13);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:18px;box-shadow:0 30px 100px rgba(0,0,0,.62)}.tracker-modal h3{margin:0;font-size:19px}.tracker-modal .modal-sub{font-size:9px;color:#77849a;margin:5px 0 16px}.form-grid{display:grid;gap:10px}.form-row label{display:block;font-size:9px;color:#8390a4;margin-bottom:5px;letter-spacing:.05em}.form-row input,.form-row textarea,.form-row select{width:100%;background:#0a1018;border:1px solid rgba(255,255,255,.10);color:#e8edf4;border-radius:11px;padding:10px 11px;font-size:11px;outline:none}.form-row textarea{min-height:120px;resize:vertical;line-height:1.55}.form-row input:focus,.form-row textarea:focus,.form-row select:focus{border-color:rgba(120,167,255,.42);box-shadow:0 0 0 3px rgba(120,167,255,.055)}.modal-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:14px}.danger-btn{border-color:rgba(255,122,138,.24)!important;color:#ff9ba6!important}.danger-btn:hover{background:rgba(255,80,100,.08)!important}
-.tracker-toast{position:fixed;right:16px;bottom:18px;z-index:130;background:#101722;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:10px 12px;color:#dce5f2;font-size:10px;box-shadow:0 18px 55px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s}.tracker-toast.show{opacity:1;transform:none}
-.cloud-box{padding:11px;border:1px solid rgba(95,160,255,.16);background:rgba(66,111,219,.06);border-radius:13px;color:#9aa8bb;font-size:10px;line-height:1.55}.cloud-box b{color:#dce9ff}
-.backup-list{display:grid;gap:7px;margin-top:10px}.backup-item{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:9px}.backup-item span{font-size:9px;color:#8390a5}
-
-@media(max-width:900px){
-  .tracker-summary{grid-template-columns:1fr 1fr}.tracker-summary-card:first-child{grid-column:1/-1}
-}
-@media(max-width:700px){
-  .tracker-section{padding:14px;border-radius:18px}.tracker-title{font-size:23px}.tracker-top{align-items:flex-start}.tracker-actions{width:100%}.tracker-actions .btn{flex:1}.tracker-cloud{width:100%;justify-content:center}
-  .tracker-summary{grid-template-columns:1fr 1fr;gap:7px}.tracker-summary-card{padding:11px}.tracker-summary-card b{font-size:17px}
-  .subject-tab{min-width:145px}.tracker-toolbar{align-items:stretch}.tracker-search{min-width:0;width:100%}.tracker-tools{width:100%}.tracker-tools .btn,.tracker-tools .tracker-fab{flex:1}
-  .tracker-table-wrap{display:none}.tracker-mobile{display:grid;gap:10px}.mobile-chapter{border:1px solid rgba(255,255,255,.075);background:linear-gradient(145deg,rgba(12,16,25,.82),rgba(7,10,16,.80));border-radius:15px;padding:12px}.mobile-chapter-head{display:flex;align-items:center;gap:9px;margin-bottom:9px}.mobile-chapter-title{flex:1}.mobile-chapter-title strong{display:block;font-size:13px}.mobile-chapter-title small{display:block;color:#768298;font-size:8px;margin-top:3px}.mobile-fields{display:grid;gap:6px}.mobile-field{display:flex;align-items:center;gap:9px;min-height:42px;border-top:1px solid rgba(255,255,255,.05);padding-top:6px}.mobile-field-label{flex:1;font-size:10px;color:#aeb8c8}.mobile-field .cell-box{width:96px}.mobile-field .cell-actions{opacity:1;transform:none;pointer-events:auto;position:static}.mobile-field .comment-mark{position:static;width:6px;height:6px}
-  .tracker-modal{border-radius:17px;padding:15px}
-}
 /* mobile navigation */
 .mobile-dock{display:none}
 
@@ -405,7 +376,7 @@ a{color:inherit}
     <div class="navlinks">
       <a class="navlink" href="#dashboard">Dashboard</a>
       <a class="navlink" href="#targets">My Targets</a>
-      <a class="navlink" href="#tracker">Study Tracker</a>
+      <a class="navlink" href="/tracker">Study Tracker</a>
       <a class="navlink" href="#calendar">Calendar</a>
       <a class="navlink" href="#infoCenter">Admission Info</a>
     </div>
@@ -440,7 +411,6 @@ a{color:inherit}
       <div class="stat-card"><div class="stat-label">Next exam</div><div class="stat-value" id="statNext">—</div><div class="stat-note" id="statNextNote">Waiting for schedule</div></div>
       <div class="stat-card"><div class="stat-label">Starred targets</div><div class="stat-value" id="statStarred">0</div><div class="stat-note">Your personal exam list</div></div>
       <div class="stat-card"><div class="stat-label">Current phase</div><div class="stat-value" id="statPhase">Build</div><div class="stat-note" id="statPhaseNote">Consistency first</div></div>
-      <div class="stat-card"><div class="stat-label">Study tracker</div><div class="stat-value" id="statTracker">0%</div><div class="stat-note" id="statTrackerNote">75 chapters loaded</div></div>
     </section>
 
     <section class="target-section" id="targets">
@@ -449,53 +419,6 @@ a{color:inherit}
         <div class="target-count" id="targetCount">0 STARRED</div>
       </div>
       <div class="starred-grid" id="starredCards"></div>
-    </section>
-
-    <section class="tracker-section" id="tracker">
-      <div class="tracker-top">
-        <div>
-          <div class="section-kicker">PERSONAL PREPARATION DATABASE</div>
-          <h2 class="tracker-title">Study Tracker</h2>
-          <div class="sub">Chapter-by-chapter tracking from your ADM sheet. Fully editable, autosaved, commentable and backup-ready.</div>
-        </div>
-        <div class="tracker-actions">
-          <div class="tracker-cloud" id="trackerCloud"><i></i><span id="trackerCloudText">Local autosave active</span></div>
-          <button class="btn primary" id="trackerGoogleBtn" type="button">Connect Google</button>
-          <button class="btn" id="trackerBackupBtn" type="button">Backups</button>
-        </div>
-      </div>
-
-      <div class="tracker-summary">
-        <div class="tracker-summary-card"><span>Overall preparation</span><b id="trackerOverall">0%</b><small id="trackerOverallNote">0 completed tasks</small><div class="tracker-progress"><i id="trackerOverallBar"></i></div></div>
-        <div class="tracker-summary-card"><span>Subjects</span><b id="trackerSubjectCount">4</b><small>Fully editable</small></div>
-        <div class="tracker-summary-card"><span>Chapters</span><b id="trackerChapterCount">75</b><small id="trackerChapterNote">From ADM</small></div>
-        <div class="tracker-summary-card"><span>Comments</span><b id="trackerCommentCount">0</b><small>Cell + chapter notes</small></div>
-      </div>
-
-      <div class="subject-strip" id="trackerSubjects"></div>
-
-      <div class="tracker-toolbar">
-        <div class="tracker-search">
-          <input id="trackerSearch" placeholder="Search chapters…">
-          <select class="tracker-filter" id="trackerFilter">
-            <option value="all">All chapters</option>
-            <option value="not-started">Not started</option>
-            <option value="in-progress">In progress</option>
-            <option value="complete">Complete</option>
-          </select>
-        </div>
-        <div class="tracker-tools">
-          <button class="tracker-fab" id="trackerAddSubject" type="button">＋ Subject</button>
-          <button class="tracker-fab" id="trackerAddChapter" type="button">＋ Chapter</button>
-          <button class="tracker-fab" id="trackerAddField" type="button">＋ Column</button>
-          <button class="btn" id="trackerExport" type="button">Export</button>
-          <button class="btn" id="trackerImport" type="button">Import</button>
-          <input id="trackerImportFile" type="file" accept="application/json,.json" hidden>
-        </div>
-      </div>
-
-      <div class="tracker-table-wrap"><div id="trackerTableHost"></div></div>
-      <div class="tracker-mobile" id="trackerMobileHost"></div>
     </section>
 
     <section class="section calendar-section" id="calendar">
@@ -522,15 +445,10 @@ a{color:inherit}
 <nav class="mobile-dock" aria-label="Quick navigation">
   <a href="#dashboard"><b>⌂</b>Home</a>
   <a href="#targets"><b>★</b>Targets</a>
-  <a href="#tracker"><b>✓</b>Tracker</a>
+  <a href="/tracker"><b>✓</b>Tracker</a>
   <a href="#calendar"><b>▦</b>Calendar</a>
   <a href="#infoCenter"><b>≡</b>Info</a>
 </nav>
-<div class="tracker-modal-backdrop" id="trackerModalBackdrop">
-  <div class="tracker-modal" id="trackerModal"></div>
-</div>
-<div class="tracker-toast" id="trackerToast"></div>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
 const TARGET=new Date('2026-11-30T00:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
 function phaseFor(days){
@@ -1193,399 +1111,7 @@ renderAllCategories();
 
 
 
-/* ==================== COMPLETE STUDY TRACKER ==================== */
-const TRACKER_KEY='admissionbydbt-tracker-v2';
-const TRACKER_HISTORY_KEY='admissionbydbt-tracker-history-v2';
-const TRACKER_GOOGLE_CLIENT_KEY='admissionbydbt-google-client-id';
-const TRACKER_SHEET_ID='1P8kqgrz1T7LQBMEYe2vZsAsKg0gkOomSD2armaWfGOc';
-const TRACKER_CLOUD_SHEET='_DBT_TRACKER';
-let trackerGoogleToken='';
-let trackerCloudTimer=null;
-let trackerActiveSubject='phy';
-let trackerLastSnapshot=0;
 
-function uid(prefix){return prefix+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8)}
-function seedTracker(){
-  function fields(prefix,names){return names.map((name,i)=>({id:prefix+'_f'+(i+1),name:name,type:'checkbox',options:[]}))}
-  function chapters(prefix,names){return names.map((name,i)=>({id:prefix+'_c'+(i+1),name:name,note:'',createdAt:new Date().toISOString()}))}
-  return {
-    version:2,
-    source:'ADM Google Sheet',
-    updatedAt:new Date().toISOString(),
-    subjects:[
-      {id:'phy',name:'PHY',fields:fields('phy',['QB','BOOK','SLIDE / NOTE','M QB','V QB','CB']),chapters:chapters('phy',['ভৌত','ভেক্টর','গতি','বল','কাজ','মহাকর্ষ','গাঠনিক','পর্যায়বত্ত','তরঙ্গ','গ্যাস','তাপ','স্থির','চল','চৌম্বক','আবেশ','জ্যমিতিক','ভৌত','আধুনিক','নিউক্লিয়ার','সেমিকন্ডাক্টর','জ্যোতির্বিজ্ঞান'])},
-      {id:'math',name:'MATH',fields:fields('math',['QB','BOOK','SLIDE / NOTE','V QB','CB']),chapters:chapters('math',['ম্যাট্রিক্স','ভেক্টর','সরলরেখা','বত্ত','বিন্যাস','ত্রিকোণমিতি ১','ত্রিকোণমিতি ২','ফাংশন','অন্তরীকরণ','যোগজীকরণ','বাস্তব','যোগাশ্রয়ী','জটিল','বহুপদী','দ্বিপদী','কণিক','বি.ত্রিকোণমিতি','স্থিতি','গতি','বিস্তার'])},
-      {id:'chem',name:'CHEM',fields:fields('chem',['QB','BOOK','SLIDE / NOTE','M QB','V QB','CB']),chapters:chapters('chem',['ল্যাব','গুণগত','পর্যায়বত্ত','পরিবর্তন','কর্মমুখী','পরিবেশ','জৈব','পরিমাণ','তড়িৎ','অর্থনৈতিক'])},
-      {id:'bio',name:'BIO',fields:fields('bio',['BOOK','M QB']),chapters:chapters('bio',['কোষ','বিভাজন','রসায়ন','অণুজীব','শৈবাল','ব্রায়োফাইটা','নগ্নবীজী','টিস্যু','শারীরতত্ত্ব','প্রজনন','প্রযুক্তি','পরিবেশ','শ্রেণি','পরিচিতি','পরিপাক','রক্ত','শ্বসন','বর্জ্য','চলন','সমন্বয়','ধারাবাহিকতা','প্রতিরক্ষা','জীন','আচরণ'])}
-    ],
-    cells:{},
-    trash:[]
-  };
-}
-function normalizeTracker(x){
-  if(!x||!Array.isArray(x.subjects)||!x.cells)return seedTracker();
-  x.version=2;x.trash=Array.isArray(x.trash)?x.trash:[];
-  x.subjects.forEach(s=>{
-    s.fields=Array.isArray(s.fields)?s.fields:[];
-    s.chapters=Array.isArray(s.chapters)?s.chapters:[];
-    s.fields.forEach(f=>{f.type=f.type||'checkbox';f.options=Array.isArray(f.options)?f.options:[]});
-    s.chapters.forEach(ch=>{if(typeof ch.note!=='string')ch.note=''});
-  });
-  return x;
-}
-let trackerState;
-try{trackerState=normalizeTracker(JSON.parse(localStorage.getItem(TRACKER_KEY)||'null'))}catch(e){trackerState=seedTracker()}
-if(!trackerState.subjects.some(s=>s.id===trackerActiveSubject))trackerActiveSubject=trackerState.subjects[0]?.id||'';
-
-function trackerCellKey(sid,cid,fid){return sid+'|'+cid+'|'+fid}
-function trackerGetCell(sid,cid,fid){
-  const key=trackerCellKey(sid,cid,fid);
-  if(!trackerState.cells[key])trackerState.cells[key]={value:null,comment:'',updatedAt:null};
-  return trackerState.cells[key];
-}
-function trackerSubject(){return trackerState.subjects.find(s=>s.id===trackerActiveSubject)||trackerState.subjects[0]}
-function trackerToastMsg(msg){
-  trackerToast.textContent=msg;trackerToast.classList.add('show');
-  clearTimeout(trackerToast._t);trackerToast._t=setTimeout(()=>trackerToast.classList.remove('show'),1800);
-}
-function trackerSnapshot(reason,force){
-  const now=Date.now();
-  if(!force&&now-trackerLastSnapshot<600000)return;
-  trackerLastSnapshot=now;
-  let h=[];try{h=JSON.parse(localStorage.getItem(TRACKER_HISTORY_KEY)||'[]')}catch(e){}
-  h.unshift({time:new Date().toISOString(),reason:reason||'Autosave',data:JSON.parse(JSON.stringify(trackerState))});
-  if(h.length>15)h.length=15;
-  try{localStorage.setItem(TRACKER_HISTORY_KEY,JSON.stringify(h))}catch(e){}
-}
-function trackerSave(reason,destructive){
-  if(destructive)trackerSnapshot(reason||'Before edit',true);else trackerSnapshot('Autosave',false);
-  trackerState.updatedAt=new Date().toISOString();
-  localStorage.setItem(TRACKER_KEY,JSON.stringify(trackerState));
-  renderTracker();
-  if(trackerGoogleToken)trackerQueueCloudSave();
-}
-function trackerFieldValueDone(field,cell){
-  if(field.type==='checkbox')return cell.value===true;
-  return cell.value!==null&&String(cell.value).trim()!=='';
-}
-function trackerChapterStats(s,ch){
-  const fields=s.fields.filter(f=>f.type==='checkbox');
-  if(!fields.length)return {done:0,total:0,pct:0,status:'not-started'};
-  let done=0;
-  fields.forEach(f=>{if(trackerGetCell(s.id,ch.id,f.id).value===true)done++});
-  const pct=Math.round(done/fields.length*100);
-  return {done,total:fields.length,pct,status:done===0?'not-started':done===fields.length?'complete':'in-progress'};
-}
-function trackerSubjectStats(s){
-  let done=0,total=0;
-  s.chapters.forEach(ch=>s.fields.forEach(f=>{if(f.type==='checkbox'){total++;if(trackerGetCell(s.id,ch.id,f.id).value===true)done++}}));
-  return {done,total,pct:total?Math.round(done/total*100):0};
-}
-function trackerGlobalStats(){
-  let done=0,total=0,chapters=0,comments=0;
-  trackerState.subjects.forEach(s=>{
-    chapters+=s.chapters.length;
-    s.chapters.forEach(ch=>{
-      if(ch.note&&ch.note.trim())comments++;
-      s.fields.forEach(f=>{
-        const cell=trackerGetCell(s.id,ch.id,f.id);
-        if(f.type==='checkbox'){total++;if(cell.value===true)done++}
-        if(cell.comment&&cell.comment.trim())comments++;
-      });
-    });
-  });
-  return {done,total,pct:total?Math.round(done/total*100):0,chapters,comments};
-}
-function renderTracker(){
-  const s=trackerSubject();
-  if(!s){trackerSubjects.innerHTML='';trackerTableHost.innerHTML='<div class="tracker-empty">Add a subject to start.</div>';trackerMobileHost.innerHTML='';return}
-  const gs=trackerGlobalStats();
-  trackerOverall.textContent=gs.pct+'%';trackerOverallNote.textContent=gs.done+' / '+gs.total+' checkbox tasks completed';trackerOverallBar.style.width=gs.pct+'%';
-  trackerSubjectCount.textContent=trackerState.subjects.length;trackerChapterCount.textContent=gs.chapters;trackerCommentCount.textContent=gs.comments;
-  if(typeof statTracker!=='undefined'){statTracker.textContent=gs.pct+'%';statTrackerNote.textContent=gs.chapters+' chapters • '+gs.done+'/'+gs.total+' tasks'}
-  trackerSubjects.innerHTML=trackerState.subjects.map(sub=>{
-    const st=trackerSubjectStats(sub);
-    return '<button class="subject-tab'+(sub.id===s.id?' active':'')+'" data-sub="'+esc(sub.id)+'"><strong>'+esc(sub.name)+' <span class="subject-pct">'+st.pct+'%</span></strong><div class="subject-meta">'+sub.chapters.length+' chapters • '+st.done+'/'+st.total+' tasks</div><div class="tracker-progress"><i style="width:'+st.pct+'%"></i></div></button>';
-  }).join('');
-  trackerSubjects.querySelectorAll('[data-sub]').forEach(b=>b.onclick=()=>{trackerActiveSubject=b.dataset.sub;trackerSearch.value='';trackerFilter.value='all';renderTracker()});
-  renderTrackerRows(s);
-}
-function trackerFilteredChapters(s){
-  const q=trackerSearch.value.trim().toLowerCase(),flt=trackerFilter.value;
-  return s.chapters.filter(ch=>{
-    const st=trackerChapterStats(s,ch);
-    return (!q||ch.name.toLowerCase().includes(q))&&(flt==='all'||st.status===flt);
-  });
-}
-function cellHtml(s,ch,f){
-  const cell=trackerGetCell(s.id,ch.id,f.id),hasComment=!!(cell.comment&&cell.comment.trim());
-  let value='';
-  if(f.type==='checkbox'){
-    value='<input class="tracker-check" type="checkbox" data-cell-toggle="1" '+(cell.value===true?'checked':'')+'>';
-  }else if(f.type==='select'){
-    value='<select class="cell-input" data-cell-inline="1"><option value=""></option>'+f.options.map(o=>'<option '+(String(cell.value||'')===o?'selected':'')+'>'+esc(o)+'</option>').join('')+'</select>';
-  }else{
-    const type=f.type==='number'?'number':f.type==='date'?'date':'text';
-    value='<input class="cell-input" data-cell-inline="1" type="'+type+'" value="'+esc(cell.value==null?'':cell.value)+'">';
-  }
-  return '<div class="cell-box" data-sid="'+esc(s.id)+'" data-cid="'+esc(ch.id)+'" data-fid="'+esc(f.id)+'">'+
-    (hasComment?'<span class="comment-mark" title="Comment attached"></span>':'')+
-    value+
-    '<div class="cell-actions"><button class="cell-action" data-cell-comment="1" title="Comment">💬</button><button class="cell-action" data-cell-edit="1" title="Edit">✎</button></div>'+
-  '</div>';
-}
-function bindTrackerCells(root){
-  root.querySelectorAll('.cell-box').forEach(box=>{
-    const sid=box.dataset.sid,cid=box.dataset.cid,fid=box.dataset.fid;
-    const s=trackerState.subjects.find(x=>x.id===sid),ch=s?.chapters.find(x=>x.id===cid),f=s?.fields.find(x=>x.id===fid);
-    if(!s||!ch||!f)return;
-    const toggle=box.querySelector('[data-cell-toggle]');
-    if(toggle)toggle.onchange=()=>{const cell=trackerGetCell(sid,cid,fid);cell.value=toggle.checked;cell.updatedAt=new Date().toISOString();trackerSave('Checkbox changed')};
-    const inline=box.querySelector('[data-cell-inline]');
-    if(inline)inline.onchange=()=>{const cell=trackerGetCell(sid,cid,fid);cell.value=inline.value;cell.updatedAt=new Date().toISOString();trackerSave('Cell changed')};
-    const comment=box.querySelector('[data-cell-comment]');
-    if(comment)comment.onclick=e=>{e.stopPropagation();openCellModal(s,ch,f,'comment')};
-    const edit=box.querySelector('[data-cell-edit]');
-    if(edit)edit.onclick=e=>{e.stopPropagation();openCellModal(s,ch,f,'edit')};
-  });
-}
-function renderTrackerRows(s){
-  const chapters=trackerFilteredChapters(s);
-  if(!chapters.length){
-    trackerTableHost.innerHTML='<div class="tracker-empty">No chapters match this filter.</div>';
-    trackerMobileHost.innerHTML='<div class="tracker-empty">No chapters match this filter.</div>';
-    return;
-  }
-  let html='<table class="tracker-table"><thead><tr><th><div class="field-head"><span>'+esc(s.name)+' • CHAPTER</span><button data-edit-subject="'+esc(s.id)+'" title="Edit subject">✎</button></div></th>';
-  s.fields.forEach(f=>{html+='<th><div class="field-head"><span>'+esc(f.name)+'</span><button data-edit-field="'+esc(f.id)+'" title="Edit column">✎</button></div></th>'});
-  html+='</tr></thead><tbody>';
-  chapters.forEach((ch,idx)=>{
-    const st=trackerChapterStats(s,ch);
-    html+='<tr class="'+(st.status==='complete'?'row-complete':'')+'"><td><div class="chapter-cell"><span class="chapter-num">'+String(s.chapters.indexOf(ch)+1).padStart(2,'0')+'</span><div class="chapter-name"><strong>'+esc(ch.name)+'</strong><small>'+st.pct+'% • '+st.done+'/'+st.total+(ch.note?' • note':'')+'</small></div><div class="chapter-actions"><button class="cell-action" data-chapter-note="'+esc(ch.id)+'" title="Chapter note">💬</button><button class="cell-action" data-edit-chapter="'+esc(ch.id)+'" title="Edit chapter">✎</button></div></div></td>';
-    s.fields.forEach(f=>{html+='<td class="track-cell">'+cellHtml(s,ch,f)+'</td>'});
-    html+='</tr>';
-  });
-  html+='</tbody></table>';
-  trackerTableHost.innerHTML=html;
-
-  trackerMobileHost.innerHTML=chapters.map(ch=>{
-    const st=trackerChapterStats(s,ch);
-    return '<article class="mobile-chapter"><div class="mobile-chapter-head"><span class="chapter-num">'+String(s.chapters.indexOf(ch)+1).padStart(2,'0')+'</span><div class="mobile-chapter-title"><strong>'+esc(ch.name)+'</strong><small>'+st.pct+'% complete'+(ch.note?' • chapter note':'')+'</small></div><button class="cell-action" data-chapter-note="'+esc(ch.id)+'">💬</button><button class="cell-action" data-edit-chapter="'+esc(ch.id)+'">✎</button></div><div class="mobile-fields">'+
-      s.fields.map(f=>'<div class="mobile-field"><div class="mobile-field-label">'+esc(f.name)+'</div>'+cellHtml(s,ch,f)+'</div>').join('')+
-    '</div></article>';
-  }).join('');
-
-  [trackerTableHost,trackerMobileHost].forEach(root=>{
-    bindTrackerCells(root);
-    root.querySelectorAll('[data-edit-field]').forEach(b=>b.onclick=()=>openFieldModal(s,s.fields.find(f=>f.id===b.dataset.editField)));
-    root.querySelectorAll('[data-edit-subject]').forEach(b=>b.onclick=()=>openSubjectModal(s));
-    root.querySelectorAll('[data-edit-chapter]').forEach(b=>b.onclick=()=>openChapterModal(s,s.chapters.find(ch=>ch.id===b.dataset.editChapter)));
-    root.querySelectorAll('[data-chapter-note]').forEach(b=>b.onclick=()=>openChapterNoteModal(s,s.chapters.find(ch=>ch.id===b.dataset.chapterNote)));
-  });
-}
-function modalOpen(title,sub,body,actions){
-  trackerModal.innerHTML='<h3>'+esc(title)+'</h3><div class="modal-sub">'+esc(sub||'')+'</div><div class="form-grid">'+body+'</div><div class="modal-actions">'+actions+'</div>';
-  trackerModalBackdrop.classList.add('open');
-}
-function modalClose(){trackerModalBackdrop.classList.remove('open')}
-trackerModalBackdrop.addEventListener('click',e=>{if(e.target===trackerModalBackdrop)modalClose()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')modalClose()});
-
-function openCellModal(s,ch,f,mode){
-  const cell=trackerGetCell(s.id,ch.id,f.id);
-  let valueField='';
-  if(f.type==='checkbox')valueField='<select id="tmValue"><option value="false" '+(cell.value!==true?'selected':'')+'>Unchecked</option><option value="true" '+(cell.value===true?'selected':'')+'>Checked</option></select>';
-  else if(f.type==='select')valueField='<select id="tmValue"><option value=""></option>'+f.options.map(o=>'<option '+(String(cell.value||'')===o?'selected':'')+'>'+esc(o)+'</option>').join('')+'</select>';
-  else valueField='<input id="tmValue" type="'+(f.type==='number'?'number':f.type==='date'?'date':'text')+'" value="'+esc(cell.value==null?'':cell.value)+'">';
-  modalOpen(ch.name+' • '+f.name,s.name,
-    '<div class="form-row"><label>VALUE</label>'+valueField+'</div>'+
-    '<div class="form-row"><label>COMMENT</label><textarea id="tmComment" placeholder="Add a note for this exact cell…">'+esc(cell.comment||'')+'</textarea></div>'+
-    '<div class="form-row"><label>LAST UPDATED</label><div class="cloud-box">'+esc(cell.updatedAt?new Date(cell.updatedAt).toLocaleString():'Never')+'</div></div>',
-    '<button class="btn" id="tmCancel">Cancel</button><button class="btn primary" id="tmSave">Save</button>'
-  );
-  tmCancel.onclick=modalClose;
-  tmSave.onclick=()=>{
-    cell.value=f.type==='checkbox'?tmValue.value==='true':tmValue.value;
-    cell.comment=tmComment.value.trim();cell.updatedAt=new Date().toISOString();
-    trackerSave('Cell edited');modalClose();trackerToastMsg('Saved');
-  };
-  setTimeout(()=>{if(mode==='comment')tmComment.focus();else tmValue.focus()},30);
-}
-function openChapterNoteModal(s,ch){
-  modalOpen('Chapter note',s.name+' • '+ch.name,
-    '<div class="form-row"><label>NOTE</label><textarea id="tmChapterNote" placeholder="General notes, weak areas, reminders…">'+esc(ch.note||'')+'</textarea></div>',
-    '<button class="btn" id="tmCancel">Cancel</button><button class="btn primary" id="tmSave">Save note</button>'
-  );
-  tmCancel.onclick=modalClose;tmSave.onclick=()=>{ch.note=tmChapterNote.value.trim();trackerSave('Chapter note');modalClose();trackerToastMsg('Chapter note saved')};
-}
-function openSubjectModal(s){
-  modalOpen('Edit subject','Rename or remove this subject.',
-    '<div class="form-row"><label>SUBJECT NAME</label><input id="tmName" value="'+esc(s.name)+'"></div>',
-    '<button class="btn danger-btn" id="tmDelete">Archive subject</button><button class="btn" id="tmCancel">Cancel</button><button class="btn primary" id="tmSave">Save</button>'
-  );
-  tmCancel.onclick=modalClose;tmSave.onclick=()=>{const n=tmName.value.trim();if(!n)return; s.name=n;trackerSave('Subject renamed');modalClose()};
-  tmDelete.onclick=()=>{if(!confirm('Archive '+s.name+' and all of its tracker data? A backup snapshot will be kept.'))return;trackerState.trash.push({type:'subject',deletedAt:new Date().toISOString(),data:JSON.parse(JSON.stringify(s))});trackerState.subjects=trackerState.subjects.filter(x=>x.id!==s.id);trackerActiveSubject=trackerState.subjects[0]?.id||'';trackerSave('Subject archived',true);modalClose()};
-}
-function openChapterModal(s,ch){
-  modalOpen('Edit chapter',s.name,
-    '<div class="form-row"><label>CHAPTER NAME</label><input id="tmName" value="'+esc(ch.name)+'"></div>',
-    '<button class="btn danger-btn" id="tmDelete">Archive chapter</button><button class="btn" id="tmCancel">Cancel</button><button class="btn primary" id="tmSave">Save</button>'
-  );
-  tmCancel.onclick=modalClose;tmSave.onclick=()=>{const n=tmName.value.trim();if(!n)return;ch.name=n;trackerSave('Chapter renamed');modalClose()};
-  tmDelete.onclick=()=>{if(!confirm('Archive this chapter? A backup snapshot will be kept.'))return;trackerState.trash.push({type:'chapter',subjectId:s.id,deletedAt:new Date().toISOString(),data:JSON.parse(JSON.stringify(ch))});s.chapters=s.chapters.filter(x=>x.id!==ch.id);trackerSave('Chapter archived',true);modalClose()};
-}
-function openFieldModal(s,f){
-  modalOpen('Edit tracker column',s.name,
-    '<div class="form-row"><label>COLUMN NAME</label><input id="tmName" value="'+esc(f.name)+'"></div>'+
-    '<div class="form-row"><label>TYPE</label><select id="tmType"><option value="checkbox">Checkbox</option><option value="text">Text</option><option value="number">Number</option><option value="date">Date</option><option value="select">Dropdown</option></select></div>'+
-    '<div class="form-row"><label>DROPDOWN OPTIONS (comma separated)</label><input id="tmOptions" value="'+esc((f.options||[]).join(', '))+'"></div>',
-    '<button class="btn danger-btn" id="tmDelete">Archive column</button><button class="btn" id="tmCancel">Cancel</button><button class="btn primary" id="tmSave">Save</button>'
-  );
-  tmType.value=f.type||'checkbox';tmCancel.onclick=modalClose;
-  tmSave.onclick=()=>{const n=tmName.value.trim();if(!n)return;f.name=n;f.type=tmType.value;f.options=tmOptions.value.split(',').map(x=>x.trim()).filter(Boolean);trackerSave('Column edited');modalClose()};
-  tmDelete.onclick=()=>{if(!confirm('Archive this column? Existing values remain recoverable in backups.'))return;trackerState.trash.push({type:'field',subjectId:s.id,deletedAt:new Date().toISOString(),data:JSON.parse(JSON.stringify(f))});s.fields=s.fields.filter(x=>x.id!==f.id);trackerSave('Column archived',true);modalClose()};
-}
-trackerAddSubject.onclick=()=>{
-  modalOpen('Add subject','Create another fully editable subject.',
-    '<div class="form-row"><label>SUBJECT NAME</label><input id="tmName" placeholder="e.g. ICT"></div>',
-    '<button class="btn" id="tmCancel">Cancel</button><button class="btn primary" id="tmSave">Add subject</button>'
-  );
-  tmCancel.onclick=modalClose;tmSave.onclick=()=>{const n=tmName.value.trim();if(!n)return;const id=uid('sub');trackerState.subjects.push({id,name:n,fields:[],chapters:[]});trackerActiveSubject=id;trackerSave('Subject added');modalClose()};
-};
-trackerAddChapter.onclick=()=>{
-  const s=trackerSubject();if(!s)return;
-  modalOpen('Add chapter',s.name,
-    '<div class="form-row"><label>CHAPTER NAME</label><input id="tmName" placeholder="Chapter name"></div>'+
-    '<div class="form-row"><label>CHAPTER NOTE (optional)</label><textarea id="tmNote" style="min-height:80px"></textarea></div>',
-    '<button class="btn" id="tmCancel">Cancel</button><button class="btn primary" id="tmSave">Add chapter</button>'
-  );
-  tmCancel.onclick=modalClose;tmSave.onclick=()=>{const n=tmName.value.trim();if(!n)return;s.chapters.push({id:uid('ch'),name:n,note:tmNote.value.trim(),createdAt:new Date().toISOString()});trackerSave('Chapter added');modalClose()};
-};
-trackerAddField.onclick=()=>{
-  const s=trackerSubject();if(!s)return;
-  modalOpen('Add tracker column',s.name,
-    '<div class="form-row"><label>COLUMN NAME</label><input id="tmName" placeholder="e.g. Revision 1"></div>'+
-    '<div class="form-row"><label>TYPE</label><select id="tmType"><option value="checkbox">Checkbox</option><option value="text">Text</option><option value="number">Number</option><option value="date">Date</option><option value="select">Dropdown</option></select></div>'+
-    '<div class="form-row"><label>DROPDOWN OPTIONS (only for Dropdown)</label><input id="tmOptions" placeholder="Weak, Medium, Strong"></div>',
-    '<button class="btn" id="tmCancel">Cancel</button><button class="btn primary" id="tmSave">Add column</button>'
-  );
-  tmCancel.onclick=modalClose;tmSave.onclick=()=>{const n=tmName.value.trim();if(!n)return;s.fields.push({id:uid('fld'),name:n,type:tmType.value,options:tmOptions.value.split(',').map(x=>x.trim()).filter(Boolean)});trackerSave('Column added');modalClose()};
-};
-trackerSearch.oninput=()=>renderTrackerRows(trackerSubject());
-trackerFilter.onchange=()=>renderTrackerRows(trackerSubject());
-
-function trackerExportData(){
-  const blob=new Blob([JSON.stringify({exportedAt:new Date().toISOString(),tracker:trackerState},null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='admissionbydbt-tracker-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  trackerToastMsg('Backup exported');
-}
-trackerExport.onclick=trackerExportData;
-trackerImport.onclick=()=>trackerImportFile.click();
-trackerImportFile.onchange=async()=>{
-  const file=trackerImportFile.files&&trackerImportFile.files[0];if(!file)return;
-  try{
-    const data=JSON.parse(await file.text()),incoming=normalizeTracker(data.tracker||data);
-    if(!confirm('Import this tracker backup? Your current tracker will be snapshotted first.'))return;
-    trackerSnapshot('Before import',true);trackerState=incoming;trackerActiveSubject=trackerState.subjects[0]?.id||'';trackerSave('Backup imported');trackerToastMsg('Backup restored');
-  }catch(e){alert('Could not import this backup: '+e.message)}
-  trackerImportFile.value='';
-};
-trackerBackupBtn.onclick=()=>{
-  let h=[];try{h=JSON.parse(localStorage.getItem(TRACKER_HISTORY_KEY)||'[]')}catch(e){}
-  modalOpen('Backups & recovery','Local snapshots are kept automatically. Export gives you a separate file you control.',
-    '<div class="cloud-box"><b>Recommended:</b> export a JSON backup occasionally. It preserves subjects, chapters, custom columns, every cell value and every comment.</div>'+
-    '<div class="backup-list">'+(h.length?h.map((x,i)=>'<div class="backup-item"><span>'+esc(new Date(x.time).toLocaleString())+' • '+esc(x.reason||'Snapshot')+'</span><button class="btn" data-restore="'+i+'">Restore</button></div>').join(''):'<div class="tracker-empty">No snapshots yet.</div>')+'</div>',
-    '<button class="btn" id="tmExport">Export JSON</button><button class="btn" id="tmClose">Close</button>'
-  );
-  tmClose.onclick=modalClose;tmExport.onclick=trackerExportData;
-  trackerModal.querySelectorAll('[data-restore]').forEach(b=>b.onclick=()=>{const item=h[Number(b.dataset.restore)];if(!item)return;if(!confirm('Restore this snapshot? Current state will be snapshotted first.'))return;trackerSnapshot('Before restore',true);trackerState=normalizeTracker(item.data);trackerActiveSubject=trackerState.subjects[0]?.id||'';trackerSave('Snapshot restored');modalClose();trackerToastMsg('Snapshot restored')});
-};
-
-/* Google Sheets cloud sync. OAuth client ID is public configuration; access tokens stay in memory only. */
-function trackerCloudStatus(state,text){
-  trackerCloud.classList.remove('connected','syncing');
-  if(state)trackerCloud.classList.add(state);
-  trackerCloudText.textContent=text;
-}
-function trackerGoogleClientId(){return localStorage.getItem(TRACKER_GOOGLE_CLIENT_KEY)||''}
-function trackerConnectGoogle(){
-  const cid=trackerGoogleClientId();
-  if(!cid){
-    modalOpen('Google cloud sync setup','One-time OAuth setup. Your tracker will sync into a hidden tab of your ADM Google Sheet without changing Sheet1.',
-      '<div class="cloud-box"><b>Google OAuth Client ID required.</b><br>Enable Google Sheets API, create a Web application OAuth client, add <b>https://admissionbydbt.vercel.app</b> as an Authorized JavaScript origin, and keep the OAuth app in Testing with only your Google account as a test user. Then paste the Client ID below.</div>'+
-      '<div class="form-row"><label>GOOGLE OAUTH CLIENT ID</label><input id="tmClientId" placeholder="123...apps.googleusercontent.com"></div>',
-      '<button class="btn" id="tmCancel">Cancel</button><button class="btn primary" id="tmSave">Save & connect</button>'
-    );
-    tmCancel.onclick=modalClose;tmSave.onclick=()=>{const v=tmClientId.value.trim();if(!v)return;localStorage.setItem(TRACKER_GOOGLE_CLIENT_KEY,v);modalClose();trackerConnectGoogle()};
-    return;
-  }
-  if(!window.google||!google.accounts||!google.accounts.oauth2){trackerToastMsg('Google sign-in is still loading. Try again in a moment.');return}
-  trackerCloudStatus('syncing','Connecting to Google…');
-  const client=google.accounts.oauth2.initTokenClient({
-    client_id:cid,
-    scope:'https://www.googleapis.com/auth/spreadsheets',
-    callback:resp=>{
-      if(resp.error){trackerCloudStatus('', 'Google sync not connected');alert('Google authorization failed: '+resp.error);return}
-      trackerGoogleToken=resp.access_token;trackerCloudStatus('connected','Google Sheet connected');trackerInitialCloudSync();
-    }
-  });
-  client.requestAccessToken({prompt:'consent'});
-}
-trackerGoogleBtn.onclick=trackerConnectGoogle;
-
-async function trackerGFetch(url,options){
-  const r=await fetch(url,Object.assign({},options||{}, {headers:Object.assign({'Authorization':'Bearer '+trackerGoogleToken,'Content-Type':'application/json'},(options&&options.headers)||{})}));
-  if(r.status===401){trackerGoogleToken='';trackerCloudStatus('', 'Google session expired • reconnect');throw new Error('Google session expired')}
-  if(!r.ok){const t=await r.text();throw new Error(t.slice(0,400))}
-  return r.status===204?{}:r.json();
-}
-async function trackerEnsureCloudSheet(){
-  const meta=await trackerGFetch('https://sheets.googleapis.com/v4/spreadsheets/'+TRACKER_SHEET_ID+'?fields=sheets.properties');
-  const found=(meta.sheets||[]).find(x=>x.properties&&x.properties.title===TRACKER_CLOUD_SHEET);
-  if(found)return found.properties.sheetId;
-  const r=await trackerGFetch('https://sheets.googleapis.com/v4/spreadsheets/'+TRACKER_SHEET_ID+':batchUpdate',{method:'POST',body:JSON.stringify({requests:[{addSheet:{properties:{title:TRACKER_CLOUD_SHEET,hidden:true,gridProperties:{rowCount:120,columnCount:2}}}}]})});
-  return r.replies&&r.replies[0]&&r.replies[0].addSheet&&r.replies[0].addSheet.properties.sheetId;
-}
-async function trackerCloudRead(){
-  await trackerEnsureCloudSheet();
-  const range=encodeURIComponent("'"+TRACKER_CLOUD_SHEET+"'!A1:A120");
-  const r=await trackerGFetch('https://sheets.googleapis.com/v4/spreadsheets/'+TRACKER_SHEET_ID+'/values/'+range);
-  const chunks=(r.values||[]).map(x=>x&&x[0]?x[0]:'').filter(Boolean);
-  if(!chunks.length)return null;
-  try{return normalizeTracker(JSON.parse(chunks.join('')))}catch(e){throw new Error('Cloud tracker data is unreadable')}
-}
-async function trackerCloudWrite(){
-  if(!trackerGoogleToken)return;
-  trackerCloudStatus('syncing','Saving to Google…');
-  await trackerEnsureCloudSheet();
-  const json=JSON.stringify(trackerState),chunks=[];
-  for(let i=0;i<json.length;i+=24000)chunks.push([json.slice(i,i+24000)]);
-  const range=encodeURIComponent("'"+TRACKER_CLOUD_SHEET+"'!A1:A120");
-  await trackerGFetch('https://sheets.googleapis.com/v4/spreadsheets/'+TRACKER_SHEET_ID+'/values/'+range+':clear',{method:'POST',body:'{}'});
-  const writeRange=encodeURIComponent("'"+TRACKER_CLOUD_SHEET+"'!A1:A"+Math.max(1,chunks.length));
-  await trackerGFetch('https://sheets.googleapis.com/v4/spreadsheets/'+TRACKER_SHEET_ID+'/values/'+writeRange+'?valueInputOption=RAW',{method:'PUT',body:JSON.stringify({range:TRACKER_CLOUD_SHEET+'!A1:A'+chunks.length,majorDimension:'ROWS',values:chunks})});
-  trackerCloudStatus('connected','Saved to Google • '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}));
-}
-function trackerQueueCloudSave(){
-  clearTimeout(trackerCloudTimer);trackerCloudTimer=setTimeout(()=>trackerCloudWrite().catch(e=>{trackerCloudStatus('', 'Google sync error');console.error(e)}),1300);
-}
-async function trackerInitialCloudSync(){
-  try{
-    trackerCloudStatus('syncing','Checking cloud copy…');
-    const cloud=await trackerCloudRead();
-    if(!cloud){await trackerCloudWrite();trackerToastMsg('Cloud tracker created');return}
-    const ct=Date.parse(cloud.updatedAt||0),lt=Date.parse(trackerState.updatedAt||0);
-    if(ct>lt+1000){
-      if(confirm('Your Google Sheet has a newer tracker copy. Load the newer cloud version?')){
-        trackerSnapshot('Before cloud restore',true);trackerState=cloud;trackerActiveSubject=trackerState.subjects[0]?.id||'';localStorage.setItem(TRACKER_KEY,JSON.stringify(trackerState));renderTracker();trackerToastMsg('Loaded newer cloud copy');
-      }else await trackerCloudWrite();
-    }else if(lt>ct+1000)await trackerCloudWrite();
-    else trackerCloudStatus('connected','Google Sheet synced');
-  }catch(e){trackerCloudStatus('', 'Google sync error');alert('Cloud sync could not start: '+e.message)}
-}
-
-renderTracker();
-/* ================== END STUDY TRACKER ================== */
 
 const cv=document.getElementById('stars'),ctx=cv.getContext('2d',{alpha:true});
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
