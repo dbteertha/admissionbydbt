@@ -260,8 +260,6 @@ a{color:inherit}
 .navlink:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav-actions{display:flex;align-items:center;gap:7px}
 .live{font-size:10px;color:#aab4c5;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:rgba(12,16,24,.66);white-space:nowrap}
-.focus-btn{border:1px solid rgba(120,167,255,.25);background:rgba(81,108,198,.10);color:#cddcff;border-radius:11px;padding:8px 10px;font-size:10px;cursor:pointer}
-.focus-btn:hover,.focus-btn.active{border-color:rgba(120,167,255,.56);background:rgba(96,124,226,.19);box-shadow:0 0 24px rgba(85,126,255,.12)}
 
 /* hero */
 .hero{min-height:610px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden}
@@ -348,11 +346,6 @@ a{color:inherit}
 
 /* mobile navigation */
 .mobile-dock{display:none}
-.focus-mode .calendar-section,.focus-mode .info-center,.focus-mode .dashboard-stats{display:none}
-.focus-mode .hero{min-height:500px}
-.focus-mode .target-section{box-shadow:0 22px 80px rgba(40,80,190,.12)}
-.focus-mode .focus-btn{color:#07101d;background:#bcd4ff;border-color:transparent}
-body.focus-mode:after{content:"FOCUS MODE";position:fixed;right:16px;bottom:16px;z-index:60;font-size:8px;letter-spacing:.18em;color:#9ab9ff;border:1px solid rgba(120,167,255,.25);border-radius:999px;padding:7px 9px;background:rgba(8,12,20,.78);backdrop-filter:blur(12px)}
 
 @media(max-width:900px){
   .navlinks{display:none}
@@ -361,7 +354,7 @@ body.focus-mode:after{content:"FOCUS MODE";position:fixed;right:16px;bottom:16px
   .mission-side{border-left:0;border-top:1px solid var(--line);padding:18px 0 0}
 }
 @media(max-width:700px){
-  .app{padding:10px 10px 88px}.topnav{top:8px;border-radius:15px;padding:9px 10px}.brand-sub,.live{display:none}.brand{font-size:10px;letter-spacing:.13em}.focus-btn{padding:8px 9px}
+  .app{padding:10px 10px 88px}.topnav{top:8px;border-radius:15px;padding:9px 10px}.brand-sub,.live{display:none}.brand{font-size:10px;letter-spacing:.13em}
   .hero{min-height:520px}.hero-inner{padding:48px 8px 28px}.orbit-shell{width:86vw}.orbit-dot{display:none}.days{font-size:clamp(102px,31vw,150px);margin-top:18px}.hero-message{font-size:11px;padding:0 12px}.clock{gap:10px}.clock div{min-width:50px}.clock b{font-size:24px}.clock span{font-size:7px}
   .dashboard-stats{grid-template-columns:repeat(2,1fr);gap:7px}.stat-card{min-height:78px;padding:12px;border-radius:14px}.stat-value{font-size:15px}.stat-note{font-size:9px}
   .section,.target-section,.info-center,.mission-section{padding:14px;border-radius:18px}.head h2,.target-head h2,.info-title{font-size:22px}.sub{font-size:10px}.mission-actions{flex-wrap:wrap}.mission-input{flex-basis:100%}
@@ -369,8 +362,7 @@ body.focus-mode:after{content:"FOCUS MODE";position:fixed;right:16px;bottom:16px
   .calendar-scroll{margin:0 -4px}.controls{width:100%}.controls input{flex:1;min-width:0}.week,.grid{min-width:660px}.day{min-height:86px;padding:6px}.event{font-size:8px;padding:4px 5px}
   .category-tabs{top:67px;display:grid;grid-template-columns:1fr 1fr;padding:7px}.category-tab{border-radius:9px;font-size:9px;padding:8px}
   .table-wrap{overflow:visible;border:0;background:transparent}.admission-table{min-width:0;display:block}.admission-table thead{display:none}.admission-table tbody{display:grid;gap:10px}.admission-table tr{display:block;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(13,17,26,.86),rgba(8,11,17,.82));border-radius:15px;padding:5px 11px;box-shadow:0 12px 35px rgba(0,0,0,.16)}.admission-table td,.admission-table td:first-child{display:grid;grid-template-columns:112px 1fr;gap:10px;position:static!important;min-width:0;background:transparent!important;border:0;border-bottom:1px solid rgba(255,255,255,.055);padding:10px 0;font-size:10px}.admission-table td:last-child{border-bottom:0}.admission-table td:before{content:attr(data-label);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#69768d;font-weight:700}.admission-table td:first-child{display:block;font-size:13px;color:#f2f5fa;padding:10px 0}.admission-table td:first-child:before{display:none}
-  .mobile-dock{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:70;display:grid;grid-template-columns:repeat(5,1fr);width:calc(100% - 20px);max-width:520px;padding:6px;border:1px solid rgba(255,255,255,.10);border-radius:17px;background:rgba(7,10,16,.84);backdrop-filter:blur(22px);box-shadow:0 18px 55px rgba(0,0,0,.38)}.mobile-dock a,.mobile-dock button{border:0;background:transparent;color:#7f899b;text-decoration:none;text-align:center;border-radius:12px;padding:7px 3px;font-size:8px;cursor:pointer}.mobile-dock b{display:block;font-size:15px;color:#b8c4d8;margin-bottom:3px}.mobile-dock a:active,.mobile-dock button:active{background:rgba(255,255,255,.06)}
-  body.focus-mode:after{display:none}
+  .mobile-dock{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:70;display:grid;grid-template-columns:repeat(4,1fr);width:calc(100% - 20px);max-width:520px;padding:6px;border:1px solid rgba(255,255,255,.10);border-radius:17px;background:rgba(7,10,16,.84);backdrop-filter:blur(22px);box-shadow:0 18px 55px rgba(0,0,0,.38)}.mobile-dock a,.mobile-dock button{border:0;background:transparent;color:#7f899b;text-decoration:none;text-align:center;border-radius:12px;padding:7px 3px;font-size:8px;cursor:pointer}.mobile-dock b{display:block;font-size:15px;color:#b8c4d8;margin-bottom:3px}.mobile-dock a:active,.mobile-dock button:active{background:rgba(255,255,255,.06)}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.orbit-dot{animation:none}}
 </style></head><body><canvas id="stars"></canvas>
@@ -388,7 +380,6 @@ body.focus-mode:after{content:"FOCUS MODE";position:fixed;right:16px;bottom:16px
     </div>
     <div class="nav-actions">
       <div id="syncStatus" class="live">● syncing sources…</div>
-      <button class="focus-btn" id="focusBtn" type="button">FOCUS MODE</button>
     </div>
   </nav>
 
@@ -454,7 +445,6 @@ body.focus-mode:after{content:"FOCUS MODE";position:fixed;right:16px;bottom:16px
   <a href="#targets"><b>★</b>Targets</a>
   <a href="#calendar"><b>▦</b>Calendar</a>
   <a href="#infoCenter"><b>≡</b>Info</a>
-  <button id="mobileFocusBtn" type="button"><b>◎</b>Focus</button>
 </nav>
 <script>
 const TARGET=new Date('2026-11-30T00:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
@@ -1116,18 +1106,6 @@ function renderAllCategories(){
 }
 renderAllCategories();
 
-
-/* ---------- Focus mode ---------- */
-const FOCUS_KEY='admissionbydbt-focus-v1';
-function setFocus(on){
-  document.body.classList.toggle('focus-mode',on);
-  focusBtn.classList.toggle('active',on);
-  focusBtn.textContent=on?'EXIT FOCUS':'FOCUS MODE';
-  localStorage.setItem(FOCUS_KEY,on?'1':'0');
-}
-focusBtn.onclick=()=>setFocus(!document.body.classList.contains('focus-mode'));
-mobileFocusBtn.onclick=()=>setFocus(!document.body.classList.contains('focus-mode'));
-setFocus(localStorage.getItem(FOCUS_KEY)==='1');
 
 const cv=document.getElementById('stars'),ctx=cv.getContext('2d',{alpha:true});
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
