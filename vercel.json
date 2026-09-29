@@ -1,8 +1,21 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/api/events", "destination": "/api/index.js" },
-    { "source": "/health", "destination": "/api/index.js" },
-    { "source": "/(.*)", "destination": "/api/index.js" }
+    {
+      "source": "/api/events",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/health",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/tracker",
+      "destination": "/api/tracker.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.js"
+    }
   ]
 }
