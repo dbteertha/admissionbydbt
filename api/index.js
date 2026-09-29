@@ -285,7 +285,7 @@ a{color:inherit}
 .pct{font-size:10px;color:#aab3c4}.passed{font-size:14px;font-weight:750;color:#cbd3df}.passed i{font-style:normal;color:#4d5564;margin:0 10px}
 
 /* dashboard stat strip */
-.dashboard-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:-20px 0 22px;position:relative;z-index:2}
+.dashboard-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:-20px 0 22px;position:relative;z-index:2}
 .stat-card{min-height:88px;padding:14px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,rgba(13,17,27,.88),rgba(8,11,18,.78));backdrop-filter:blur(16px);box-shadow:0 18px 45px rgba(0,0,0,.20)}
 .stat-label{font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#717c90}.stat-value{font-size:18px;font-weight:850;margin-top:7px;line-height:1.2}.stat-note{font-size:10px;color:#7e899d;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
@@ -349,8 +349,8 @@ a{color:inherit}
 /* mobile navigation */
 .mobile-dock{display:none}
 .focus-mode .calendar-section,.focus-mode .info-center,.focus-mode .dashboard-stats{display:none}
-.focus-mode .hero{min-height:470px}
-.focus-mode .mission-section,.focus-mode .target-section{box-shadow:0 22px 80px rgba(40,80,190,.12)}
+.focus-mode .hero{min-height:500px}
+.focus-mode .target-section{box-shadow:0 22px 80px rgba(40,80,190,.12)}
 .focus-mode .focus-btn{color:#07101d;background:#bcd4ff;border-color:transparent}
 body.focus-mode:after{content:"FOCUS MODE";position:fixed;right:16px;bottom:16px;z-index:60;font-size:8px;letter-spacing:.18em;color:#9ab9ff;border:1px solid rgba(120,167,255,.25);border-radius:999px;padding:7px 9px;background:rgba(8,12,20,.78);backdrop-filter:blur(12px)}
 
@@ -418,24 +418,6 @@ body.focus-mode:after{content:"FOCUS MODE";position:fixed;right:16px;bottom:16px
       <div class="stat-card"><div class="stat-label">Next exam</div><div class="stat-value" id="statNext">—</div><div class="stat-note" id="statNextNote">Waiting for schedule</div></div>
       <div class="stat-card"><div class="stat-label">Starred targets</div><div class="stat-value" id="statStarred">0</div><div class="stat-note">Your personal exam list</div></div>
       <div class="stat-card"><div class="stat-label">Current phase</div><div class="stat-value" id="statPhase">Build</div><div class="stat-note" id="statPhaseNote">Consistency first</div></div>
-      <div class="stat-card"><div class="stat-label">Today's mission</div><div class="stat-value" id="statMission">0%</div><div class="stat-note" id="statMissionNote">Start with one task</div></div>
-    </section>
-
-    <section class="mission-section" id="mission">
-      <div class="mission-main">
-        <div class="section-kicker">DAILY MOMENTUM</div>
-        <div class="head"><div><h2>Today’s Mission</h2><div class="sub">Keep the plan small enough to finish. Progress beats perfect planning.</div></div></div>
-        <div class="mission-list" id="missionList"></div>
-        <div class="mission-actions">
-          <input class="mission-input" id="missionInput" maxlength="90" placeholder="Add a small task for today…">
-          <button class="btn" id="missionAdd" type="button">+ Add task</button>
-          <button class="btn" id="missionReset" type="button">Reset today</button>
-        </div>
-      </div>
-      <div class="mission-side">
-        <div class="mission-ring" id="missionRing"><div class="mission-score"><b id="missionPct">0%</b><span>COMPLETE</span></div></div>
-        <div class="mission-note" id="missionNote">Start with the first task. Momentum comes after starting.</div>
-      </div>
     </section>
 
     <section class="target-section" id="targets">
@@ -455,10 +437,6 @@ body.focus-mode:after{content:"FOCUS MODE";position:fixed;right:16px;bottom:16px
       <div class="calendar-scroll">
         <div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
         <div class="grid" id="grid"></div>
-      </div>
-      <div class="upcoming">
-        <div class="head"><div><div class="section-kicker">TIMELINE</div><h2 style="font-size:22px">Upcoming Exams</h2><div class="sub">Closest exams first. Star one to promote it into your personal target board.</div></div></div>
-        <div class="cards" id="cards"></div>
       </div>
       <div class="footer">Schedules may change. Use the latest official university notice for critical decisions.</div>
     </section>
@@ -560,36 +538,7 @@ function render(){
     });
     grid.appendChild(cell);
   }
-  renderCards();
   renderStarredTargets();
-}
-function renderCards(){
-  const now=new Date();
-  const arr=filtered().filter(e=>new Date(e.date)>now).slice(0,12);
-  cards.innerHTML=arr.length?'':'<div class="empty">No upcoming events matched the current filter.</div>';
-  arr.forEach(e=>{
-    const d=new Date(e.date);
-    const card=document.createElement('div');
-    card.className='card'+(isStarred(e)?' starred':'');
-    const top=document.createElement('div');
-    top.className='card-top';
-    const title=document.createElement('h3');
-    title.textContent=e.title;
-    top.appendChild(title);
-    top.appendChild(starButton(e));
-    card.appendChild(top);
-    const meta=document.createElement('div');
-    meta.className='meta';
-    meta.innerHTML='<b style="color:#c9d3e4">'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'})+'</b> • '+esc(e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'}))+'<br>'+Math.max(0,Math.ceil((d-now)/86400000))+' days left';
-    card.appendChild(meta);
-    if(e.agreement){
-      const src=document.createElement('div');
-      src.className='source';
-      src.textContent=(e.agreement==='Agree'?'✅ ':'⚪ ')+e.agreement;
-      card.appendChild(src);
-    }
-    cards.appendChild(card);
-  });
 }
 function splitCountdown(target){
   let diff=new Date(target)-new Date();
@@ -1167,58 +1116,6 @@ function renderAllCategories(){
 }
 renderAllCategories();
 
-
-/* ---------- Daily mission ---------- */
-const MISSION_PREFIX='admissionbydbt-mission-';
-function dhakaDayKey(){return new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Dhaka'})}
-function missionKey(){return MISSION_PREFIX+dhakaDayKey()}
-const DEFAULT_MISSIONS=[
-  'Revise 2 important topics',
-  'Solve 30 MCQs',
-  'Review mistakes for 20 minutes'
-];
-let missions=[];
-function loadMissions(){
-  try{missions=JSON.parse(localStorage.getItem(missionKey())||'null')||DEFAULT_MISSIONS.map((text,i)=>({id:'d'+i,text,done:false}))}
-  catch(e){missions=DEFAULT_MISSIONS.map((text,i)=>({id:'d'+i,text,done:false}))}
-}
-function saveMissions(){localStorage.setItem(missionKey(),JSON.stringify(missions))}
-function missionPercent(){
-  if(!missions.length)return 0;
-  return Math.round(missions.filter(x=>x.done).length/missions.length*100);
-}
-function renderMissions(){
-  missionList.innerHTML=missions.length?missions.map((m,i)=>
-    '<label class="mission-item'+(m.done?' done':'')+'">'+
-      '<input class="mission-check" type="checkbox" data-mission="'+i+'" '+(m.done?'checked':'')+'>'+
-      '<span class="mission-text">'+esc(m.text)+'</span>'+
-    '</label>'
-  ).join(''):'<div class="empty">No tasks yet. Add one small task and start.</div>';
-  const p=missionPercent();
-  missionPct.textContent=p+'%';
-  missionRing.style.setProperty('--mission',(p*3.6)+'deg');
-  statMission.textContent=p+'%';
-  statMissionNote.textContent=p===100?'Mission complete ✓':p>=67?'Finish strong':p>=34?'Momentum building':'Start with one task';
-  missionNote.textContent=p===100?'Mission complete. Protect the momentum tomorrow.':p>=67?'You are close. Finish the last important task.':p>=34?'Good. Keep the next action small and clear.':'Start with the first task. Momentum comes after starting.';
-  missionList.querySelectorAll('.mission-check').forEach(el=>{
-    el.onchange=()=>{
-      const i=Number(el.dataset.mission);
-      if(missions[i]){missions[i].done=el.checked;saveMissions();renderMissions()}
-    };
-  });
-}
-missionAdd.onclick=()=>{
-  const text=missionInput.value.trim();
-  if(!text)return;
-  missions.push({id:'c'+Date.now(),text,done:false});
-  missionInput.value='';saveMissions();renderMissions();
-};
-missionInput.addEventListener('keydown',e=>{if(e.key==='Enter')missionAdd.click()});
-missionReset.onclick=()=>{
-  missions=DEFAULT_MISSIONS.map((text,i)=>({id:'d'+i,text,done:false}));
-  saveMissions();renderMissions();
-};
-loadMissions();renderMissions();
 
 /* ---------- Focus mode ---------- */
 const FOCUS_KEY='admissionbydbt-focus-v1';
