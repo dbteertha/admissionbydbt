@@ -10,61 +10,64 @@ const SOURCES = [
 ];
 
 const CURATED_EVENTS = [
-  ['Medical & Dental','2026-12-04T10:00:00+06:00','Only Admission-Calendar visible'],
-  ['DU IBA','2026-12-05T10:00:00+06:00','Agree'],
-  ['Aviation and Aerospace University Bangladesh (AAUB)','2026-12-05T10:00:00+06:00','Agree'],
-  ['Dhaka University A / Science','2026-12-12T11:00:00+06:00','Agree'],
-  ['Khulna University D / Business','2026-12-17T10:00:00+06:00','Agree'],
-  ['Khulna University C / Humanities','2026-12-17T13:30:00+06:00','Agree'],
-  ['Khulna University A / Science','2026-12-18T10:00:00+06:00','Only Admission-Calendar visible'],
-  ['Khulna University B / Life Science','2026-12-18T14:30:00+06:00','Agree'],
+  ['Medical & Dental','2026-12-04T10:00:00+06:00','Tentative — 4 Dec depends on HSC-result timing','Tentative'],
+  ['DU IBA','2026-12-05T10:00:00+06:00','Official — 5 Dec 2026, 10:00 AM–12:00 PM','Official'],
+  ['Aviation and Aerospace University Bangladesh (AAUB)','2026-12-05T10:00:00+06:00','Official — undergraduate test 5 Dec 2026','Official'],
+  ['Dhaka University A / Science','2026-12-12T11:00:00+06:00','Official — 12 Dec 2026, 11:00 AM–12:30 PM','Official'],
+  ['Khulna University D / Business','2026-12-17T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
+  ['Khulna University C / Humanities','2026-12-17T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
+  ['Khulna University A / Science','2026-12-18T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
+  ['Khulna University B / Life Science','2026-12-18T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
   ['MIST C Unit','2026-12-18T10:00:00+06:00','Agree'],
   ['MIST A & B','2026-12-19T10:00:00+06:00','Agree'],
-  ['Dhaka University B / Arts, Law & Social Science','2026-12-19T11:00:00+06:00','Agree'],
-  ['Dhaka University Fine Arts','2026-12-22T11:00:00+06:00','Only Chorcha visible'],
-  ['Dhaka University C / Business','2026-12-26T11:00:00+06:00','Agree'],
+  ['Dhaka University B / Arts, Law & Social Science','2026-12-19T11:00:00+06:00','Official — 19 Dec 2026, 11:00 AM–12:30 PM','Official'],
+  ['Dhaka University Fine Arts','2026-12-22T11:00:00+06:00','Official — 22 Dec 2026, 11:00 AM–12:30 PM','Official'],
+  ['Dhaka University C / Business','2026-12-26T11:00:00+06:00','Official — 26 Dec 2026, 11:00 AM–12:30 PM','Official'],
   ['Jagannath University A / Science','2027-01-01T10:00:00+06:00','Agree'],
-  ['BUP FBS','2027-01-01T10:30:00+06:00','Chorcha lists FBS on 9 Jan too'],
+  ['BUP FBS','2027-01-01T10:30:00+06:00','Official/current notice — first FBS date; keep 9 Jan too','Official'],
   ['Agriculture Cluster','2027-01-02T10:00:00+06:00','Agree'],
-  ['BUP FASS','2027-01-02T15:30:00+06:00','Agree'],
+  ['BUP FASS','2027-01-02T15:30:00+06:00','Official/current BUP notice','Official'],
   ['Jagannath University E / Fine Arts','2027-01-08T10:00:00+06:00','Agree'],
-  ['KUET','2027-01-08T10:00:00+06:00','Only Admission-Calendar visible in table'],
-  ['BUP FST','2027-01-08T10:30:00+06:00','Agree'],
-  ['BUP FET','2027-01-08T10:30:00+06:00','Agree'],
-  ['BUP FMS','2027-01-08T10:30:00+06:00','Agree'],
+  ['KUET','2027-01-08T10:00:00+06:00','Official portal/circular — 8 Jan 2027; centres KUET, DU and RUET; MCQ','Official'],
+  ['BUP FST','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
+  ['BUP FET','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
+  ['BUP FMS','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
   ['Rajshahi University B / Business','2027-01-08T11:00:00+06:00','Agree'],
-  ['BUP FSSS','2027-01-08T15:30:00+06:00','Agree'],
+  ['BUP FSSS','2027-01-08T15:30:00+06:00','Current BUP notice','Official'],
   ['Rajshahi University C / Science','2027-01-09T11:00:00+06:00','Agree'],
-  ['BUP FBS','2027-01-09T10:30:00+06:00','Source inconsistency'],
+  ['BUP FBS','2027-01-09T10:30:00+06:00','Official/current notice — second FBS date; intentional, not duplicate','Official'],
   ['BUP BBA General','2027-01-09T15:30:00+06:00','Chorcha visible'],
   ['RUET','2027-01-14T09:30:00+06:00','Chorcha visible'],
   ['Jagannath University B / Humanities','2027-01-15T10:00:00+06:00','Agree'],
-  ['BUET','2027-01-16T09:00:00+06:00','Agree'],
+  ['BUET','2027-01-16T09:00:00+06:00','Date announced — detailed 2026–27 circular pending','Circular pending'],
   ['Rajshahi University A / Humanities','2027-01-16T11:00:00+06:00','Agree'],
   ['Jagannath University C / Business','2027-01-22T10:00:00+06:00','Agree'],
   ['Jagannath University D / Social Science','2027-01-23T10:00:00+06:00','Agree'],
   ['CUET','2027-01-23T10:00:00+06:00','Admission-Calendar visible'],
-  ['SUST A','2027-01-26T15:00:00+06:00','Agree'],
-  ['SUST B','2027-01-27T15:00:00+06:00','Agree'],
-  ['BUTEX','2027-01-29T10:00:00+06:00','Agree'],
+  ['SUST A','2027-01-26T15:00:00+06:00','Date confirmed — full application/test-plan notice pending','Circular pending'],
+  ['SUST B','2027-01-27T15:00:00+06:00','Date confirmed — full application/test-plan notice pending','Circular pending'],
+  ['BUTEX','2027-01-29T10:00:00+06:00','Official university announcement — 29 Jan 2027','Official'],
   ['Chittagong University C / Business','2027-01-29T11:00:00+06:00','Agree'],
   ['Chittagong University A / Science','2027-01-30T11:00:00+06:00','Agree'],
   ['Chittagong University B1','2027-02-03T11:00:00+06:00','Agree'],
   ['Chittagong University B2','2027-02-04T11:00:00+06:00','Agree'],
   ['Chittagong University B','2027-02-05T11:00:00+06:00','Agree'],
-  ['Comilla University A','2027-02-05T11:00:00+06:00','Agree'],
+  ['Comilla University A','2027-02-05T11:00:00+06:00','Official university press release — 5 Feb 2027','Official'],
   ['Chittagong University D','2027-02-06T11:00:00+06:00','Agree'],
-  ['Comilla University B','2027-02-06T11:00:00+06:00','Agree'],
-  ['Comilla University C','2027-02-07T11:00:00+06:00','Agree'],
+  ['Comilla University B','2027-02-06T11:00:00+06:00','Official university press release — 6 Feb 2027','Official'],
+  ['Comilla University C','2027-02-07T11:00:00+06:00','Official university press release — 7 Feb 2027','Official'],
   ['Chittagong University D1','2027-02-08T11:00:00+06:00','Agree'],
-  ['GST B / Humanities','2027-03-19T10:00:00+06:00','Agree'],
-  ['GST C / Business','2027-03-20T10:00:00+06:00','Agree'],
-  ['GST D / Architecture','2027-03-20T10:00:00+06:00','Agree'],
-  ['GST A / Science','2027-03-27T10:00:00+06:00','Agree']
-].map(([title,date,agreement])=>({
+  ['GST B / Humanities','2027-03-19T10:00:00+06:00','Date announced — full application circular pending','Circular pending'],
+  ['GST C / Business','2027-03-20T10:00:00+06:00','Date announced — full application circular pending','Circular pending'],
+  ['GST D / Architecture','2027-03-20T10:00:00+06:00','New separate D / Architecture unit — date announced; full circular pending','Circular pending'],
+  ['GST A / Science','2027-03-27T10:00:00+06:00','Date announced — full application circular pending','Circular pending']
+].map(([title,date,agreement,displayTime])=>({
   title,
   date:new Date(date).toISOString(),
-  agreement
+  agreement,
+  ...(displayTime?{displayTime}:{}),
+  ...(agreement&&agreement.startsWith('Tentative')?{status:'tentative'}:{}),
+  ...(agreement&&agreement.includes('Circular pending')?{status:'pending'}:{})
 }));
 
 let cache = { at: 0, events: [], sources: [] };
@@ -221,6 +224,23 @@ async function sync(force=false){
   return cache;
 }
 
+const OFFICIAL_CIRCULARS = [
+  {name:'Dhaka University',short:'DU',status:'Official 2026–27',url:'https://www.du.ac.bd/du_post_details/post/28137'},
+  {name:'BUP Admission Notice',short:'BUP',status:'Official 2026–27',url:'https://www.bup.edu.bd/notice/details/1061'},
+  {name:'BUP Admission Portal',short:'BUP Portal',status:'Official portal',url:'https://admission.bup.edu.bd/Admission/Home'},
+  {name:'KUET Undergraduate Admission',short:'KUET',status:'Official circular',url:'https://admission.kuet.ac.bd/'},
+  {name:'AAUB Admission Information',short:'AAUB',status:'Official 2026–27',url:'https://www.aaub.edu.bd/public/content/admission-info'},
+  {name:'AAUB Notice Archive',short:'AAUB Notices',status:'Official notices',url:'https://www.aaub.edu.bd/notice'},
+  {name:'Khulna University',short:'KU',status:'Official date notice',url:'https://ku.ac.bd/news-details/2783'},
+  {name:'BUTEX Academic Notices',short:'BUTEX',status:'Official notices',url:'https://www.butex.edu.bd/academic-notices/'},
+  {name:'Comilla University Press Releases',short:'CoU',status:'Official press release',url:'https://www.cou.ac.bd/press-releases'}
+];
+const CIRCULAR_PENDING = [
+  'Medical / Dental','BUET detailed circular','RUET','CUET','Rajshahi University',
+  'Jagannath University','Chittagong University','SUST full circular',
+  'Agriculture Cluster','GST full application circular','MIST 2026–27'
+];
+
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admission by DBT | ভর্তি তথ্যকেন্দ্র ২০২৬–২৭</title>
 <style>
@@ -366,6 +386,31 @@ a{color:inherit}
   .mobile-dock{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:70;display:grid;grid-template-columns:repeat(5,1fr);width:calc(100% - 20px);max-width:520px;padding:6px;border:1px solid rgba(255,255,255,.10);border-radius:17px;background:rgba(7,10,16,.84);backdrop-filter:blur(22px);box-shadow:0 18px 55px rgba(0,0,0,.38)}.mobile-dock a,.mobile-dock button{border:0;background:transparent;color:#7f899b;text-decoration:none;text-align:center;border-radius:12px;padding:7px 3px;font-size:8px;cursor:pointer}.mobile-dock b{display:block;font-size:15px;color:#b8c4d8;margin-bottom:3px}.mobile-dock a:active,.mobile-dock button:active{background:rgba(255,255,255,.06)}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.orbit-dot{animation:none}}
+
+/* official circular directory */
+.circular-section{margin:0 0 22px;padding:22px}
+.circular-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.circular-card{
+  min-height:104px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;
+  padding:14px;border:1px solid rgba(255,255,255,.09);border-radius:16px;
+  background:linear-gradient(145deg,rgba(14,18,27,.91),rgba(7,10,16,.88));
+  color:inherit;text-decoration:none;transition:.17s ease;position:relative;overflow:hidden;
+}
+.circular-card:after{content:"↗";position:absolute;right:12px;top:10px;color:#63718a;font-size:13px}
+.circular-card:hover{transform:translateY(-2px);border-color:rgba(120,167,255,.30);background:linear-gradient(145deg,rgba(19,25,38,.96),rgba(9,13,21,.94))}
+.circular-card strong{font-size:13px;line-height:1.25;padding-right:20px}
+.circular-card span{font-size:9px;color:#8490a2}
+.circular-card b{font-size:8px;letter-spacing:.10em;text-transform:uppercase;color:#9fdab7}
+.circular-pending{margin-top:12px;padding:12px;border:1px solid rgba(242,199,102,.14);border-radius:14px;background:rgba(242,199,102,.035)}
+.circular-pending-title{font-size:8px;letter-spacing:.13em;text-transform:uppercase;color:#c5a95d;margin-bottom:8px}
+.circular-pending-list{display:flex;flex-wrap:wrap;gap:6px}
+.circular-pending-chip{padding:6px 8px;border:1px solid rgba(255,255,255,.07);border-radius:999px;background:#0b0e14;color:#8b94a3;font-size:8px}
+.audit-note{margin-top:11px;color:#7f899a;font-size:9px;line-height:1.5}
+.event-status{display:inline-flex;margin-left:5px;padding:2px 5px;border-radius:999px;font-size:6px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.event-status.tentative{color:#ffd68b;border:1px solid rgba(255,190,80,.32);background:rgba(255,176,55,.10)}
+.event-status.pending{color:#b7c5db;border:1px solid rgba(150,175,210,.22);background:rgba(120,150,190,.08)}
+.hero-target-note{margin:10px auto 0;width:max-content;max-width:100%;font-size:9px;color:#8f9bad;letter-spacing:.04em}
+@media(max-width:700px){.circular-section{padding:14px}.circular-grid{grid-template-columns:1fr 1fr}.circular-card{min-height:92px;padding:11px}.circular-card strong{font-size:11px}}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -378,6 +423,7 @@ a{color:inherit}
       <a class="navlink" href="#targets">My Targets</a>
       <a class="navlink" href="/tracker">Study Tracker</a>
       <a class="navlink" href="#calendar">Calendar</a>
+      <a class="navlink" href="#circulars">Circulars</a>
       <a class="navlink" href="#infoCenter">Admission Info</a>
     </div>
     <div class="nav-actions">
@@ -394,6 +440,7 @@ a{color:inherit}
         <div class="days" id="days">00</div>
         <div class="label">DAYS LEFT</div>
         <div class="hero-message" id="heroMessage">One focused day at a time.</div>
+        <div class="hero-target-note">Countdown target: first confirmed admission tests • DU IBA + AAUB • 5 Dec 2026</div>
         <div class="clock">
           <div><b id="weeks">00W</b><span>WEEKS</span></div>
           <div><b id="hours">00H</b><span>HOURS</span></div>
@@ -419,6 +466,20 @@ a{color:inherit}
         <div class="target-count" id="targetCount">0 STARRED</div>
       </div>
       <div class="starred-grid" id="starredCards"></div>
+    </section>
+
+    <section class="section circular-section" id="circulars">
+      <div class="head">
+        <div><div class="section-kicker">OFFICIAL SOURCES</div><h2>2026–27 Circulars & Notices</h2><div class="sub">Tap a university name to open its current official admission notice or portal.</div></div>
+      </div>
+      <div class="circular-grid">
+        ${OFFICIAL_CIRCULARS.map(x=>'<a class="circular-card" href="'+x.url+'" target="_blank" rel="noopener"><div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' • Official source</span></a>').join('')}
+      </div>
+      <div class="circular-pending">
+        <div class="circular-pending-title">2026–27 full circular still pending / not verified as published</div>
+        <div class="circular-pending-list">${CIRCULAR_PENDING.map(x=>'<span class="circular-pending-chip">'+x+'</span>').join('')}</div>
+        <div class="audit-note">Do not treat previous-cycle eligibility, fees, seats or detailed exam plans as confirmed for 2026–27 until a current official circular is published.</div>
+      </div>
     </section>
 
     <section class="section calendar-section" id="calendar">
@@ -450,7 +511,7 @@ a{color:inherit}
   <a href="#infoCenter"><b>≡</b>Info</a>
 </nav>
 <script>
-const TARGET=new Date('2026-11-30T00:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
+const TARGET=new Date('2026-12-05T10:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
 function phaseFor(days){
   if(days<=1)return {name:'EXAM MODE',stat:'Exam',note:'Stay calm. Execute.',msg:'You prepared for this. Keep your head clear and execute one question at a time.'};
   if(days<=7)return {name:'FINAL SPRINT',stat:'Final sprint',note:'Revise. Rest. Execute.',msg:'Protect your confidence. Revise what matters, sleep properly, and keep moving.'};
@@ -527,6 +588,12 @@ function render(){
       t.className='event-title';
       t.textContent=e.title;
       el.appendChild(t);
+      if(e.status==='tentative'||e.status==='pending'){
+        const badge=document.createElement('span');
+        badge.className='event-status '+e.status;
+        badge.textContent=e.status==='tentative'?'Tentative':'Pending';
+        el.appendChild(badge);
+      }
       cell.appendChild(el);
     });
     grid.appendChild(cell);
