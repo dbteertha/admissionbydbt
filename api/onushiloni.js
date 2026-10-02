@@ -86,6 +86,8 @@ a{color:inherit;text-decoration:none}
 .selector-foot{position:sticky;bottom:8px;margin-top:10px;padding:10px;border:1px solid #223249;background:rgba(8,13,21,.96);border-radius:13px;box-shadow:0 15px 35px rgba(0,0,0,.3)}
 .match-count{font-size:9px;color:#8090a5;margin-bottom:8px}
 .match-count b{color:#dff2ff;font-size:13px}
+.subtopic-head{margin:16px 0 3px;padding:9px 12px;border-left:3px solid #5ecff0;background:linear-gradient(90deg,rgba(65,177,220,.11),transparent);border-radius:7px;color:#d7f4ff;font-size:11px;font-weight:750}
+.subtopic-head small{display:block;margin-top:3px;color:#6f829a;font-size:8px;font-weight:500}
 .selector-buttons{display:grid;grid-template-columns:1fr auto;gap:7px}
 .selector-buttons .btn{width:100%}
 .section-label{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#68768b;margin:2px 0 10px}
@@ -221,7 +223,12 @@ a{color:inherit;text-decoration:none}
         </div>
 
         <div class="facet">
-          <div class="facet-head"><b>Question Type</b><div class="facet-actions"><button class="mini" data-all="type">All</button><button class="mini" data-clear="type">Clear</button></div></div>
+          <div class="facet-head"><b>Chapter Subtopic</b><div class="facet-actions"><button class="mini" data-all="subtopic">All</button><button class="mini" data-clear="subtopic">Clear</button></div></div>
+          <div class="check-grid one" id="subtopicChecks"></div>
+        </div>
+
+        <div class="facet">
+          <div class="facet-head"><b>MCQ Type</b><div class="facet-actions"><button class="mini" data-all="type">All</button><button class="mini" data-clear="type">Clear</button></div></div>
           <div class="check-grid" id="typeChecks"></div>
         </div>
 
@@ -251,7 +258,7 @@ a{color:inherit;text-decoration:none}
           <button class="filter" data-filter="saved">Saved</button>
         </div>
       </div>
-      <div class="notice">Use Subject → Paper → Chapter → Type → Author filters in any combination. Questions are returned in original QB order: subject, paper, chapter, then QB serial. Printed source references stay exactly as written in the book.</div>
+      <div class="notice">Use Subject → Paper → Chapter → Subtopic → MCQ Type → Author in any combination. Chapter subtopics follow the black section headings used inside the original QB. Questions are returned in original QB order and grouped under those subtopic headings.</div>
       <section class="questions" id="questions"></section>
     </main>
   </div>
@@ -288,30 +295,30 @@ var SUBJECTS={
 };
 
 var QUESTIONS=[
-{id:'chem-1-3',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:3,pdfPage:4,q:'কেমিস্ট্রি ল্যাবে কখন নিরাপত্তা চশমা ব্যবহার করা আবশ্যক?',options:['দ্রবণ প্রস্তুতিতে','রাসায়নিক বস্তুর ওজন নিতে','রাসায়নিক পদার্থ উত্তপ্ত হলে','যন্ত্রপাতি পরিষ্কার করার সময়'],answer:2,solution:'রাসায়নিক পদার্থ উত্তপ্ত করার সময় ছিটকে পড়া বা বাষ্পের ঝুঁকি থাকে, তাই নিরাপত্তা চশমা ব্যবহার করা আবশ্যক।'},
-{id:'chem-1-4',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:4,pdfPage:4,q:'ল্যাবরেটরির নিরাপত্তা সামগ্রী কোনটি?',options:['ফিউম হুড','লাইফ জ্যাকেট','রেইন কোট','O₂ গ্যাস সিলিন্ডার'],answer:0,solution:'ফিউম হুড ল্যাবের ক্ষতিকর বাষ্প বা গ্যাস নিরাপদভাবে অপসারণে ব্যবহৃত নিরাপত্তা সামগ্রী।'},
-{id:'chem-1-7',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:7,pdfPage:4,q:'বৈদ্যুতিক শক বা ক্ষত থেকে সুরক্ষার জন্য কোন গ্লাভস উপযোগী?',options:['ল্যাটেক্স','নিওপ্রিন','জিটেক্স','PVC'],answer:0,solution:'উৎসের উত্তরমালা অনুযায়ী সঠিক উত্তর ল্যাটেক্স।'},
-{id:'chem-1-8',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:8,pdfPage:4,q:'নিচের অক্সাইডগুলোর মধ্যে কোনটি পাইরেক্স গ্লাস তৈরি করতে পারে?',options:['SiO₂','LiO₂','Al₂O₃','B₂O₃'],answer:3,solution:'পাইরেক্স গ্লাসে B₂O₃ ব্যবহৃত হয়। উৎসের ব্যাখ্যায় SiO₂-এর সঙ্গে B₂O₃ যোগে পাইরেক্সের তাপ ও রাসায়নিক প্রতিরোধী বৈশিষ্ট্য তৈরির কথা বলা হয়েছে।'},
-{id:'chem-1-12',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:12,pdfPage:4,q:'ল্যাবে শরীরে আগুন লাগলে কী করতে হবে?',options:['শরীরে CO₂ প্রয়োগ করতে হবে','কম্বল জড়াতে হবে','হাই প্রেসারে বায়ু দিতে হবে','হাই-স্পিডে পানি মারতে হবে'],answer:1,solution:'উৎসের উত্তরমালা অনুযায়ী শরীরে আগুন লাগলে কম্বল জড়ানো সঠিক পদক্ষেপ।'},
+{id:'chem-1-3',subject:'chemistry',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:3,pdfPage:4,q:'কেমিস্ট্রি ল্যাবে কখন নিরাপত্তা চশমা ব্যবহার করা আবশ্যক?',options:['দ্রবণ প্রস্তুতিতে','রাসায়নিক বস্তুর ওজন নিতে','রাসায়নিক পদার্থ উত্তপ্ত হলে','যন্ত্রপাতি পরিষ্কার করার সময়'],answer:2,solution:'রাসায়নিক পদার্থ উত্তপ্ত করার সময় ছিটকে পড়া বা বাষ্পের ঝুঁকি থাকে, তাই নিরাপত্তা চশমা ব্যবহার করা আবশ্যক।'},
+{id:'chem-1-4',subject:'chemistry',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:4,pdfPage:4,q:'ল্যাবরেটরির নিরাপত্তা সামগ্রী কোনটি?',options:['ফিউম হুড','লাইফ জ্যাকেট','রেইন কোট','O₂ গ্যাস সিলিন্ডার'],answer:0,solution:'ফিউম হুড ল্যাবের ক্ষতিকর বাষ্প বা গ্যাস নিরাপদভাবে অপসারণে ব্যবহৃত নিরাপত্তা সামগ্রী।'},
+{id:'chem-1-7',subject:'chemistry',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:7,pdfPage:4,q:'বৈদ্যুতিক শক বা ক্ষত থেকে সুরক্ষার জন্য কোন গ্লাভস উপযোগী?',options:['ল্যাটেক্স','নিওপ্রিন','জিটেক্স','PVC'],answer:0,solution:'উৎসের উত্তরমালা অনুযায়ী সঠিক উত্তর ল্যাটেক্স।'},
+{id:'chem-1-8',subject:'chemistry',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:8,pdfPage:4,q:'নিচের অক্সাইডগুলোর মধ্যে কোনটি পাইরেক্স গ্লাস তৈরি করতে পারে?',options:['SiO₂','LiO₂','Al₂O₃','B₂O₃'],answer:3,solution:'পাইরেক্স গ্লাসে B₂O₃ ব্যবহৃত হয়। উৎসের ব্যাখ্যায় SiO₂-এর সঙ্গে B₂O₃ যোগে পাইরেক্সের তাপ ও রাসায়নিক প্রতিরোধী বৈশিষ্ট্য তৈরির কথা বলা হয়েছে।'},
+{id:'chem-1-12',subject:'chemistry',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:12,pdfPage:4,q:'ল্যাবে শরীরে আগুন লাগলে কী করতে হবে?',options:['শরীরে CO₂ প্রয়োগ করতে হবে','কম্বল জড়াতে হবে','হাই প্রেসারে বায়ু দিতে হবে','হাই-স্পিডে পানি মারতে হবে'],answer:1,solution:'উৎসের উত্তরমালা অনুযায়ী শরীরে আগুন লাগলে কম্বল জড়ানো সঠিক পদক্ষেপ।'},
 
-{id:'phys-1-4',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:4,pdfPage:4,q:'তড়িৎ চুম্বকীয় তরঙ্গ তত্ত্ব আবিষ্কার করেন—',options:['রাদারফোর্ড','নিউটন','ম্যাক্সওয়েল','আইনস্টাইন'],answer:2,solution:'জেমস ক্লার্ক ম্যাক্সওয়েল তড়িৎ ও চৌম্বক ক্ষেত্রকে একত্রিত করে তড়িৎচুম্বকীয় তরঙ্গের তত্ত্ব প্রতিষ্ঠা করেন।'},
-{id:'phys-1-6',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:6,pdfPage:4,q:'কোনো বস্তু হতে শক্তির বিকিরণ নিরবচ্ছিন্নভাবে ঘটে না—এই তত্ত্বের প্রবক্তা কে?',options:['লর্ড রাদারফোর্ড','আলবার্ট আইনস্টাইন','ম্যাক্স প্ল্যাঙ্ক','মাইকেল ফ্যারাডে'],answer:2,solution:'ম্যাক্স প্ল্যাঙ্ক শক্তি কোয়ান্টা আকারে নির্গত বা শোষিত হয়—এই ধারণা দেন।'},
-{id:'phys-1-10',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:10,pdfPage:4,q:'“ভর ও শক্তি সমতুল্য”—কোন বিজ্ঞানীর অভিমত?',options:['নিউটন','গ্যালিলিও','আইনস্টাইন','ফ্যারাডে'],answer:2,solution:'আইনস্টাইনের ভর-শক্তি সমতুল্যতার সম্পর্ক E = mc² দ্বারা প্রকাশ করা হয়।'},
-{id:'phys-1-12',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:12,pdfPage:4,q:'কোন বৈজ্ঞানিক সর্বপ্রথম সূর্যকেন্দ্রিক বিশ্বের ধারণা প্রদান করেন?',options:['কেপলার','টলেমি','ডেমোক্রিটাস','কোপার্নিকাস'],answer:3,solution:'নিকোলাস কোপার্নিকাস সূর্যকেন্দ্রিক মডেলকে সুসংগঠিতভাবে উপস্থাপন করেন।'},
-{id:'phys-1-14',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:14,pdfPage:4,q:'পরমাণুর ধারণা সর্বপ্রথম প্রদান করেন—',options:['নিউটন','ডাল্টন','ডেমোক্রিটাস','আর্কিমিডিস'],answer:2,solution:'প্রাচীন গ্রিক দার্শনিক ডেমোক্রিটাস পদার্থের অবিভাজ্য ক্ষুদ্র কণার ধারণা দেন।'},
+{id:'phys-1-4',subject:'physics',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:4,pdfPage:4,q:'তড়িৎ চুম্বকীয় তরঙ্গ তত্ত্ব আবিষ্কার করেন—',options:['রাদারফোর্ড','নিউটন','ম্যাক্সওয়েল','আইনস্টাইন'],answer:2,solution:'জেমস ক্লার্ক ম্যাক্সওয়েল তড়িৎ ও চৌম্বক ক্ষেত্রকে একত্রিত করে তড়িৎচুম্বকীয় তরঙ্গের তত্ত্ব প্রতিষ্ঠা করেন।'},
+{id:'phys-1-6',subject:'physics',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:6,pdfPage:4,q:'কোনো বস্তু হতে শক্তির বিকিরণ নিরবচ্ছিন্নভাবে ঘটে না—এই তত্ত্বের প্রবক্তা কে?',options:['লর্ড রাদারফোর্ড','আলবার্ট আইনস্টাইন','ম্যাক্স প্ল্যাঙ্ক','মাইকেল ফ্যারাডে'],answer:2,solution:'ম্যাক্স প্ল্যাঙ্ক শক্তি কোয়ান্টা আকারে নির্গত বা শোষিত হয়—এই ধারণা দেন।'},
+{id:'phys-1-10',subject:'physics',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:10,pdfPage:4,q:'“ভর ও শক্তি সমতুল্য”—কোন বিজ্ঞানীর অভিমত?',options:['নিউটন','গ্যালিলিও','আইনস্টাইন','ফ্যারাডে'],answer:2,solution:'আইনস্টাইনের ভর-শক্তি সমতুল্যতার সম্পর্ক E = mc² দ্বারা প্রকাশ করা হয়।'},
+{id:'phys-1-12',subject:'physics',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:12,pdfPage:4,q:'কোন বৈজ্ঞানিক সর্বপ্রথম সূর্যকেন্দ্রিক বিশ্বের ধারণা প্রদান করেন?',options:['কেপলার','টলেমি','ডেমোক্রিটাস','কোপার্নিকাস'],answer:3,solution:'নিকোলাস কোপার্নিকাস সূর্যকেন্দ্রিক মডেলকে সুসংগঠিতভাবে উপস্থাপন করেন।'},
+{id:'phys-1-14',subject:'physics',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:14,pdfPage:4,q:'পরমাণুর ধারণা সর্বপ্রথম প্রদান করেন—',options:['নিউটন','ডাল্টন','ডেমোক্রিটাস','আর্কিমিডিস'],answer:2,solution:'প্রাচীন গ্রিক দার্শনিক ডেমোক্রিটাস পদার্থের অবিভাজ্য ক্ষুদ্র কণার ধারণা দেন।'},
 
-{id:'bio-1-1',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:1,pdfPage:4,q:'কোষ আবিষ্কার করেন কে?',options:['লিউয়েন হুক','রবার্ট হুক','রবার্ট ব্রাউন','রবার্ট ডারউইন'],answer:1,solution:'রবার্ট হুক কর্কের পাতলা অংশ পর্যবেক্ষণ করে “cell” শব্দটি ব্যবহার করেন।'},
-{id:'bio-1-2',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:2,pdfPage:4,q:'জীবদেহের জৈবিক কার্যকলাপের একক কী?',options:['অঙ্গ','টিস্যু','জীবকোষ','কোষপর্দা'],answer:2,solution:'কোষ জীবদেহের গঠনগত ও কার্যগত মৌলিক একক।'},
-{id:'bio-1-3',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:3,pdfPage:4,q:'Cell শব্দটি কোন ভাষা থেকে এসেছে?',options:['গ্রিক','ল্যাটিন','সুইডিশ','ইংরেজি'],answer:1,solution:'Cell শব্দটি ল্যাটিন “cella” থেকে এসেছে, যার অর্থ ছোট কক্ষ বা প্রকোষ্ঠ।'},
-{id:'bio-1-4',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:4,pdfPage:4,q:'কোন বিজ্ঞানীগণ কোষতত্ত্ব দেন?',options:['লাইনার ও ক্লিকার','সিয়ার ও নিকলসন','স্লাইডেন ও সোয়ান','ভ্যান লিউয়েন হুক ও লিন'],answer:2,solution:'ম্যাথিয়াস স্লাইডেন ও থিওডর সোয়ান কোষতত্ত্ব প্রণয়নে গুরুত্বপূর্ণ ভূমিকা রাখেন।'},
-{id:'bio-1-5',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:5,pdfPage:4,q:'প্রাণীকোষ বিষয়ে কোনটি সঠিক?',options:['কোষে সেন্ট্রোসোম থাকে','সাইটোপ্লাজমে প্লাস্টিড থাকে','সঞ্চিত খাদ্য সাধারণত শ্বেতসার','কোষ কেন্দ্রে বড় কোষ গহ্বর থাকে'],answer:0,solution:'উৎসের ব্যাখ্যা অনুযায়ী প্রাণীকোষে সাধারণত সেন্ট্রোসোম থাকে। প্লাস্টিড থাকে না; সঞ্চিত খাদ্য প্রধানত গ্লাইকোজেন।'}
+{id:'bio-1-1',subject:'biology',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:1,pdfPage:4,q:'কোষ আবিষ্কার করেন কে?',options:['লিউয়েন হুক','রবার্ট হুক','রবার্ট ব্রাউন','রবার্ট ডারউইন'],answer:1,solution:'রবার্ট হুক কর্কের পাতলা অংশ পর্যবেক্ষণ করে “cell” শব্দটি ব্যবহার করেন।'},
+{id:'bio-1-2',subject:'biology',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:2,pdfPage:4,q:'জীবদেহের জৈবিক কার্যকলাপের একক কী?',options:['অঙ্গ','টিস্যু','জীবকোষ','কোষপর্দা'],answer:2,solution:'কোষ জীবদেহের গঠনগত ও কার্যগত মৌলিক একক।'},
+{id:'bio-1-3',subject:'biology',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:3,pdfPage:4,q:'Cell শব্দটি কোন ভাষা থেকে এসেছে?',options:['গ্রিক','ল্যাটিন','সুইডিশ','ইংরেজি'],answer:1,solution:'Cell শব্দটি ল্যাটিন “cella” থেকে এসেছে, যার অর্থ ছোট কক্ষ বা প্রকোষ্ঠ।'},
+{id:'bio-1-4',subject:'biology',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:4,pdfPage:4,q:'কোন বিজ্ঞানীগণ কোষতত্ত্ব দেন?',options:['লাইনার ও ক্লিকার','সিয়ার ও নিকলসন','স্লাইডেন ও সোয়ান','ভ্যান লিউয়েন হুক ও লিন'],answer:2,solution:'ম্যাথিয়াস স্লাইডেন ও থিওডর সোয়ান কোষতত্ত্ব প্রণয়নে গুরুত্বপূর্ণ ভূমিকা রাখেন।'},
+{id:'bio-1-5',subject:'biology',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:5,pdfPage:4,q:'প্রাণীকোষ বিষয়ে কোনটি সঠিক?',options:['কোষে সেন্ট্রোসোম থাকে','সাইটোপ্লাজমে প্লাস্টিড থাকে','সঞ্চিত খাদ্য সাধারণত শ্বেতসার','কোষ কেন্দ্রে বড় কোষ গহ্বর থাকে'],answer:0,solution:'উৎসের ব্যাখ্যা অনুযায়ী প্রাণীকোষে সাধারণত সেন্ট্রোসোম থাকে। প্লাস্টিড থাকে না; সঞ্চিত খাদ্য প্রধানত গ্লাইকোজেন।'}
 ];
 
 var KEY='onushiloni_qb_state_v1';
 var state={answers:{},saved:{}};
 try{state=Object.assign(state,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
 
-var selected={subject:new Set(),paper:new Set(),chapter:new Set(),type:new Set(),author:new Set()};
+var selected={subject:new Set(),paper:new Set(),chapter:new Set(),subtopic:new Set(),type:new Set(),author:new Set()};
 var builtIds=[];
 var filter='all',query='';
 
@@ -324,6 +331,7 @@ function subjectOrder(k){return {chemistry:0,physics:1,biology:2}[k]??99}
 function paperData(q){return SUBJECTS[q.subject].papers[q.paper||0]}
 function chapterName(q){var p=paperData(q);return p&&p.chapters[q.chapter]?p.chapters[q.chapter]:'Chapter '+(q.chapter+1)}
 function qType(q){return q.type||'MCQ'}
+function qSubtopic(q){return (q.subtopic||'').trim()}
 function qAuthor(q){return (q.author||'').trim()}
 
 function checkedValues(group){
@@ -337,6 +345,22 @@ function allQuestionTypes(){
 }
 function allAuthors(){
   return Array.from(new Set(QUESTIONS.map(qAuthor).filter(Boolean))).sort(function(a,b){return a.localeCompare(b)});
+}
+function availableSubtopics(){
+  var qs=QUESTIONS.filter(function(q){
+    if(selected.subject.size&&!selected.subject.has(q.subject))return false;
+    if(selected.paper.size&&!selected.paper.has(paperKey(q.paper)))return false;
+    if(selected.chapter.size&&!selected.chapter.has(chapterKey(q)))return false;
+    return !!qSubtopic(q);
+  });
+  var seen=new Map();
+  qs.forEach(function(q){
+    var key=chapterKey(q)+'|'+qSubtopic(q);
+    if(!seen.has(key))seen.set(key,{key:key,label:qSubtopic(q),subject:q.subject,paper:q.paper||0,chapter:q.chapter,order:Number(q.subtopicOrder??999)});
+  });
+  return Array.from(seen.values()).sort(function(a,b){
+    return subjectOrder(a.subject)-subjectOrder(b.subject)||a.paper-b.paper||a.chapter-b.chapter||a.order-b.order||a.label.localeCompare(b.label);
+  });
 }
 
 function renderSubjectChecks(){
@@ -374,6 +398,13 @@ function renderChapterChecks(){
   });
   el.innerHTML=rows.length?rows.join(''):'<div class="facet-empty">Choose a subject or paper to see chapters.</div>';
 }
+function renderSubtopicChecks(){
+  var el=document.getElementById('subtopicChecks'),vals=availableSubtopics();
+  el.innerHTML=vals.length?vals.map(function(x){
+    var p=SUBJECTS[x.subject].papers[x.paper];
+    return '<label class="check"><input type="checkbox" data-group="subtopic" value="'+esc(x.key)+'" '+(selected.subtopic.has(x.key)?'checked':'')+'><span>'+esc(x.label)+'<small>'+esc(SUBJECTS[x.subject].name)+' • '+esc(p.short)+' • Ch '+(x.chapter+1)+'</small></span></label>';
+  }).join(''):'<div class="facet-empty">Exact QB subtopics will appear here as the full question database is transcribed. No subtopic names are invented.</div>';
+}
 function renderTypeChecks(){
   var el=document.getElementById('typeChecks'),vals=allQuestionTypes();
   el.innerHTML=vals.length?vals.map(function(v){
@@ -391,6 +422,7 @@ function questionMatchesSelection(q){
   if(selected.subject.size&&!selected.subject.has(q.subject))return false;
   if(selected.paper.size&&!selected.paper.has(paperKey(q.paper)))return false;
   if(selected.chapter.size&&!selected.chapter.has(chapterKey(q)))return false;
+  if(selected.subtopic.size&&!selected.subtopic.has(chapterKey(q)+'|'+qSubtopic(q)))return false;
   if(selected.type.size&&!selected.type.has(qType(q)))return false;
   if(selected.author.size&&!selected.author.has(qAuthor(q)))return false;
   return true;
@@ -400,6 +432,7 @@ function sortedMatches(){
     return subjectOrder(a.subject)-subjectOrder(b.subject) ||
       (a.paper||0)-(b.paper||0) ||
       a.chapter-b.chapter ||
+      Number(a.subtopicOrder??999)-Number(b.subtopicOrder??999) ||
       Number(a.serial)-Number(b.serial) ||
       Number(a.pdfPage||0)-Number(b.pdfPage||0);
   });
@@ -414,6 +447,10 @@ function bindSelectorInputs(){
       var g=inp.dataset.group;syncSelected(g);
       if(g==='subject'||g==='paper'){
         renderChapterChecks();
+        renderSubtopicChecks();
+        bindSelectorInputs();
+      }else if(g==='chapter'){
+        renderSubtopicChecks();
         bindSelectorInputs();
       }
       updateMatchCount();
@@ -421,13 +458,14 @@ function bindSelectorInputs(){
   });
 }
 function renderSelector(){
-  renderSubjectChecks();renderPaperChecks();renderChapterChecks();renderTypeChecks();renderAuthorChecks();bindSelectorInputs();updateMatchCount();
+  renderSubjectChecks();renderPaperChecks();renderChapterChecks();renderSubtopicChecks();renderTypeChecks();renderAuthorChecks();bindSelectorInputs();updateMatchCount();
 }
 
 function setGroupAll(group,on){
   document.querySelectorAll('input[data-group="'+group+'"]').forEach(function(x){x.checked=on});
   syncSelected(group);
-  if(group==='subject'||group==='paper'){renderChapterChecks();bindSelectorInputs()}
+  if(group==='subject'||group==='paper'){renderChapterChecks();renderSubtopicChecks();bindSelectorInputs()}
+  else if(group==='chapter'){renderSubtopicChecks();bindSelectorInputs()}
   updateMatchCount();
 }
 document.querySelectorAll('[data-all]').forEach(function(b){b.onclick=function(){setGroupAll(b.dataset.all,true)}});
@@ -455,7 +493,7 @@ function renderQuestion(q){
   var extra=(qType(q)?' • '+esc(qType(q)):'')+(qAuthor(q)?' • '+esc(qAuthor(q)):'');
   return '<article class="q" data-qid="'+q.id+'">'+
     '<div class="q-top"><div class="q-id"><div class="serial">'+q.serial+'</div><div class="ref"><b>'+esc(SUBJECTS[q.subject].name)+' • '+esc(p.name)+'</b><br>'+
-    esc(chapterName(q))+' • PDF p.'+q.pdfPage+extra+'<br><span class="source-ref"><b>'+printedSource+'</b></span></div></div>'+
+    esc(chapterName(q))+(qSubtopic(q)?' • '+esc(qSubtopic(q)):'')+' • PDF p.'+q.pdfPage+extra+'<br><span class="source-ref"><b>'+printedSource+'</b></span></div></div>'+
     '<div class="q-actions"><button class="icon-btn '+(saved?'saved':'')+'" data-save title="Bookmark">'+(saved?'★':'☆')+'</button></div></div>'+
     '<div class="q-text">'+esc(q.q)+'</div><div class="options">'+opts+'</div>'+meta+'</article>';
 }
@@ -470,20 +508,26 @@ function postFilter(q){
 }
 function renderBuiltQuestions(){
   var base=QUESTIONS.filter(function(q){return builtIds.indexOf(q.id)!==-1}).sort(function(a,b){
-    return subjectOrder(a.subject)-subjectOrder(b.subject)||(a.paper||0)-(b.paper||0)||a.chapter-b.chapter||Number(a.serial)-Number(b.serial);
+    return subjectOrder(a.subject)-subjectOrder(b.subject)||(a.paper||0)-(b.paper||0)||a.chapter-b.chapter||Number(a.subtopicOrder??999)-Number(b.subtopicOrder??999)||Number(a.serial)-Number(b.serial);
   });
   var list=base.filter(postFilter),el=document.getElementById('questions');
   document.getElementById('chapterTitle').textContent='Selected Questions';
   document.getElementById('chapterMeta').textContent=builtIds.length?builtIds.length+' questions selected • '+list.length+' currently visible':'Choose one or more checkboxes, then press Show Questions.';
-  if(!builtIds.length){el.innerHTML='<div class="empty">Select Subject, Paper, Chapter, Type and/or Author using the checkboxes. Then press <b>Show Questions</b>. Leaving a category unchecked means “all” for that category.</div>';return}
+  if(!builtIds.length){el.innerHTML='<div class="empty">Select Subject, Paper, Chapter, Subtopic, MCQ Type and/or Author using the checkboxes. Then press <b>Show Questions</b>. Leaving a category unchecked means “all” for that category.</div>';return}
   if(!list.length){el.innerHTML='<div class="empty">No questions match the current search/progress filter.</div>';return}
-  var out=[],lastGroup='';
+  var out=[],lastChapter='',lastSubtopic='';
   list.forEach(function(q){
-    var group=q.subject+'|'+(q.paper||0)+'|'+q.chapter;
-    if(group!==lastGroup){
+    var chapterGroup=q.subject+'|'+(q.paper||0)+'|'+q.chapter;
+    if(chapterGroup!==lastChapter){
       var p=paperData(q);
       out.push('<div style="padding:10px 3px 2px;color:#8ea1b8;font-size:10px;letter-spacing:.04em"><b style="color:#d9e8f7">'+esc(SUBJECTS[q.subject].name)+' • '+esc(p.short)+'</b> — '+esc(chapterName(q))+'</div>');
-      lastGroup=group;
+      lastChapter=chapterGroup;lastSubtopic='';
+    }
+    var sub=qSubtopic(q);
+    var subKey=chapterGroup+'|'+sub;
+    if(sub&&subKey!==lastSubtopic){
+      out.push('<div class="subtopic-head">'+esc(sub)+'<small>MCQs under this QB subtopic</small></div>');
+      lastSubtopic=subKey;
     }
     out.push(renderQuestion(q));
   });
