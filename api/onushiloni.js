@@ -106,7 +106,9 @@ a{color:inherit;text-decoration:none}
 .q-top{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
 .q-id{display:flex;align-items:center;gap:8px;min-width:0}
 .serial{width:32px;height:32px;border-radius:10px;background:#101a28;border:1px solid #263449;display:grid;place-items:center;font-size:11px;font-weight:800;color:#d9ebff}
-.ref{font-size:8px;color:#8291a7;line-height:1.5}
+.ref{font-size:8px;color:#8291a7;line-height:1.55}
+.source-ref{display:inline-block;margin-top:3px;color:#aebdd0}
+.source-ref b{color:#d9e6f4;font-weight:650}
 .ref b{color:#b9c7d9;font-weight:600}
 .q-actions{display:flex;gap:6px}
 .icon-btn{width:31px;height:31px;border:1px solid var(--line);background:#0b121c;border-radius:10px;cursor:pointer}
@@ -193,7 +195,7 @@ a{color:inherit;text-decoration:none}
           <button class="filter" data-filter="saved">Saved</button>
         </div>
       </div>
-      <div class="notice">The interface is now live as a separate section of your existing site. The current build contains a source-verified starter set from the uploaded scanned books; the same data structure is ready for the remaining questions chapter by chapter.</div>
+      <div class="notice">The interface is live as a separate section of your existing site. Printed source references will be copied exactly from the QB and shown in bracket form beside each question, followed by its Q. NO.</div>
       <section class="questions" id="questions"></section>
     </main>
   </div>
@@ -313,9 +315,10 @@ function renderQuestion(q){
       '<div class="solution"><div class="s-title">Answer & solution</div><p>'+esc(q.solution)+'</p></div>';
   }
   var paper=SUBJECTS[q.subject].papers[q.paper||0];
+  var printedSource=q.source?esc(q.source):'[Source reference pending exact QB transcription]';
   return '<article class="q" data-qid="'+q.id+'">'+
-    '<div class="q-top"><div class="q-id"><div class="serial">'+q.serial+'</div><div class="ref"><b>Retina Onushiloni QB 2026–27</b><br>'+
-    esc(paper.name)+' • Ch '+(q.chapter+1)+' • Q'+q.serial+' • PDF p.'+q.pdfPage+'</div></div>'+
+    '<div class="q-top"><div class="q-id"><div class="serial">'+q.serial+'</div><div class="ref"><b>'+esc(paper.name)+'</b> • Chapter '+(q.chapter+1)+' • PDF p.'+q.pdfPage+'<br>'+
+    '<span class="source-ref"><b>'+printedSource+'</b> &nbsp; Q. NO. '+q.serial+'</span></div></div>'+
     '<div class="q-actions"><button class="icon-btn '+(saved?'saved':'')+'" data-save title="Bookmark">'+(saved?'★':'☆')+'</button></div></div>'+
     '<div class="q-text">'+esc(q.q)+'</div><div class="options">'+opts+'</div>'+meta+'</article>';
 }
