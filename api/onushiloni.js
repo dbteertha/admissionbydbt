@@ -11,7 +11,79 @@ export default async function handler(req,res){
   const chemParts=await Promise.all(chemFiles.map(async function(p){
     return JSON.parse(await fs.readFile(new URL(p,import.meta.url),'utf8'));
   }));
-  const chemP1Data=chemParts.flat();
+  const chemP1DataRaw=chemParts.flat();
+  const SUBTOPIC_BY_PAGE={
+    4:'ল্যাবরেটরির ব্যবহার বিধি: পোশাক, নিরাপদ গ্লাস, মাস্ক, হ্যান্ড গ্লাভস',
+    5:'ল্যাবরেটরির যন্ত্রপাতি ও নিরাপত্তা সামগ্রী পরিষ্কার করার কৌশল',
+    17:'ল্যাবরেটরি নিরাপত্তা সামগ্রী ও ব্যবহার বিধি',
+    18:'প্রাথমিক চিকিৎসা ও ফাস্ট এইড বক্সের ব্যবহার বিধি',
+    19:'পরমাণুর মডেল ও প্রাথমিক ধারণা',
+    22:'কোয়ান্টাম সংখ্যা, বিভিন্ন অরবিটাল ও ইলেকট্রন ধারণ ক্ষমতা',
+    29:'পরমাণুর মূল কণিকা',
+    44:'দৃশ্যমান আলো ও বর্ণালি',
+    46:'যৌগের দ্রাব্যতা ও দ্রাব্যতা গুণফল',
+    62:'ইলেকট্রন বিন্যাসের ভিত্তিতে মৌলের শ্রেণিবিভাগ',
+    96:'রাসায়নিক বিক্রিয়ার হার, দিক ও গতিসূত্র',
+    130:'বাফার দ্রবণ ও pH এর প্রয়োগ',
+    134:'ভর-শক্তির নিত্যতা সূত্র ও এনথালপির পরিবর্তন',
+    138:'খাদ্য নিরাপত্তা ও রসায়ন',
+    139:'প্রিজারভেটিভস ও খাদ্য সংরক্ষণ কৌশল',
+    141:'প্রাকৃতিক ফুড প্রিজারভেটিভস',
+    144:'কলয়েড, সাসপেনশন ও কোয়াগুলেশন'
+  };
+  const CHAPTER_PAGE_RANGES={0:[4,18],1:[19,61],2:[62,94],3:[95,137],4:[138,154]};
+  const pageSubtopic={};
+  Object.keys(CHAPTER_PAGE_RANGES).forEach(function(k){
+    const range=CHAPTER_PAGE_RANGES[k]; let current='';
+    for(let p=range[0];p<=range[1];p++){if(SUBTOPIC_BY_PAGE[p])current=SUBTOPIC_BY_PAGE[p];pageSubtopic[p]=current}
+  });
+  function enrichOcrQuestion(input){
+    const q={...input},raw=String(input.raw||'');
+    if((!Array.isArray(q.options)||q.options.length<4)&&raw){
+      const body=raw.split(/\b(?:Solve|Note)\s*[:：]/i)[0];
+      const ms=Array.from(body.matchAll(/(?:^|\s)(ক|খ|গ|ঘ|4|৪)\s*[\.,,)]\s*/g));
+      const expected=['ক','খ','গ','ঘ'];let pos=0,chosen=[];
+      expected.forEach(function(exp){
+        let pick=-1;
+        for(let j=pos;j<ms.length;j++){const lab=ms[j][1];if(lab===exp||((lab==='4'||lab==='৪')&&(exp==='খ'||exp==='ঘ'))){pick=j;break}}
+        if(pick>=0){chosen.push(ms[pick]);pos=pick+1}
+      });
+      if(chosen.length===4){
+        const opts=[];
+        for(let i=0;i<4;i++){const st=chosen[i].index+chosen[i][0].length,en=i<3?chosen[i+1].index:body.length;opts.push(body.slice(st,en).trim())}
+        if(opts.every(Boolean)){q.options=opts;q.optionsEstimated=true}
+      }
+    }
+    if(!Number.isInteger(q.answer)&&raw){
+      const pats=[/সঠিক\s*উত্তর\s*(?:হবে)?\s*\(?([কখগঘ])\)?/g,/উত্তর\s*হবে\s*\(?([কখগঘ])\)?/g,/উত্তর\s*\(?([কখগঘ])\)?/g];
+      let best=null;
+      pats.forEach(function(re,pri){for(const m of raw.matchAll(re)){const x={pri:3-pri,pos:m.index,letter:m[1]};if(!best||x.pri>best.pri||(x.pri===best.pri&&x.pos>best.pos))best=x}});
+      if(best){q.answer={ক:0,খ:1,গ:2,ঘ:3}[best.letter];q.answerEstimated=true;q.answerEvidence='printed solution/note OCR'}
+    }
+    if(!q.source&&raw){
+      const refs=[];const re=/[\[\(]([^\]\)]{2,90})[\]\)]/g;
+      for(const m of raw.matchAll(re)){const t=m[0];if(/বো|BUET|MCAT|MAT|Dental|DU|RU|CU|JU|KU|SUST|BUTEX|IUT|MIST|AFMC|BUP|CKRUET|20\d{2}|19\d{2}|[০-৯]{4}/i.test(t))refs.push(t)}
+      if(refs.length){q.source=refs.slice(0,3).join(' ');q.sourcePrinted=true;q.sourceEstimated=true}
+    }
+    if(!q.author&&raw){
+      const names=[];if(/হাজারী|হাজা/.test(raw))names.push('হাজারী');if(/কবীর|কবির/.test(raw))names.push('কবীর');if(/গুহ/.test(raw))names.push('গুহ');if(/লিংকন|লিং\b/.test(raw))names.push('লিংকন');
+      if(names.length){q.author=[...new Set(names)].join(', ');q.authorEstimated=true}
+    }
+    if(!q.subtopic&&pageSubtopic[q.pdfPage]){q.subtopic=pageSubtopic[q.pdfPage];q.subtopicOrder=999;q.subtopicEstimated=true}
+    q.included=true;
+    q.needsVisualAudit=(!q.q||!Array.isArray(q.options)||q.options.length<4||!Number.isInteger(q.answer));
+    return q;
+  }
+  const chemP1Data=chemP1DataRaw.map(enrichOcrQuestion);
+  const chemAudit={
+    included:chemP1Data.length,
+    fullOptions:chemP1Data.filter(q=>Array.isArray(q.options)&&q.options.length===4).length,
+    answers:chemP1Data.filter(q=>Number.isInteger(q.answer)).length,
+    sources:chemP1Data.filter(q=>!!q.source).length,
+    authors:chemP1Data.filter(q=>!!q.author).length,
+    subtopics:chemP1Data.filter(q=>!!q.subtopic).length,
+    needsAudit:chemP1Data.filter(q=>q.needsVisualAudit).length
+  };
   res.setHeader('Content-Type','text/html; charset=utf-8');
   res.setHeader('Cache-Control','no-store');
   res.statusCode=200;
@@ -322,6 +394,7 @@ function expectedPaperCount(subject,paper){
 }
 
 var OCR_CHEM_DATA=${JSON.stringify(chemP1Data)};
+var CHEM_AUDIT=${JSON.stringify(chemAudit)};
 var QUESTIONS=[
 {id:'chem-p1-c1-q1',subject:'chemistry',paper:0,type:'MCQ',author:'হাজারী',subtopic:'ল্যাবরেটরির ব্যবহার বিধি: পোশাক, নিরাপদ গ্লাস, মাস্ক, হ্যান্ড গ্লাভস',subtopicOrder:1,chapter:0,serial:1,pdfPage:4,q:'ল্যাবরেটরিতে নিজের নিরাপত্তা নিশ্চিত করতে নিচের কোন প্রাথমিক ব্যবস্থা নিলে ভুল হবে?',options:['এপ্রোন পরা','নিরাপদ চশমা পকেটে থাকা','হাতে গ্লাভস পরা','পায়ে জুতা পরা'],answer:1,source:'',sourcePrinted:false,solution:'',solutionPrinted:false},
 {id:'chem-p1-c1-q2',subject:'chemistry',paper:0,type:'MCQ',author:'হাজারী',subtopic:'ল্যাবরেটরির ব্যবহার বিধি: পোশাক, নিরাপদ গ্লাস, মাস্ক, হ্যান্ড গ্লাভস',subtopicOrder:1,chapter:0,serial:2,pdfPage:4,q:'কেমিস্ট্রি ল্যাবে শ্বাস-প্রশ্বাসের ক্ষেত্রে নিরাপদ থাকার জন্য নিচের কোনটি ব্যবহার করা হয়?',options:['নিরাপদ চশমা','এপ্রোন','গ্লাভস','মাস্ক'],answer:3,source:'[ব. বো. ২০২১]',sourcePrinted:true,solution:'',solutionPrinted:false},
@@ -542,13 +615,13 @@ function renderQuestion(q){
       '<span class="pill good">Correct: '+letter(q.answer)+'. '+esc(options[q.answer])+'</span></div>'+
       '<div class="solution"><div class="s-title">Answer & solution</div><p>'+esc(q.solution||(q.solutionPrinted===false?'No separate solution is printed for this question in the QB.':'Solution transcription pending.'))+'</p></div>';
   }else if(!answerKnown){
-    meta='<div class="answer-meta"><span class="pill">OCR imported • answer audit pending</span>'+
+    meta='<div class="answer-meta"><span class="pill">Included from QB • answer audit pending</span>'+
       (q.ocrConfidence?'<span class="pill">OCR confidence: '+esc(q.ocrConfidence)+'</span>':'')+'</div>'+
       (q.solution?'<div class="solution"><div class="s-title">Printed note / solution (OCR)</div><p>'+esc(q.solution)+'</p></div>':'');
   }
   var p=paperData(q),printedSource=q.source?esc(q.source):'';
   var sourceLine=printedSource?'<br><span class="source-ref"><b>'+printedSource+'</b></span>':'';
-  var extra=(qType(q)?' • '+esc(qType(q)):'')+(qAuthor(q)?' • Author: '+esc(qAuthor(q)):'');
+  var extra=(qType(q)?' • '+esc(qType(q)):'')+(qAuthor(q)?' • Author: '+esc(qAuthor(q)):'')+(q.needsVisualAudit?' • ⚠ audit pending':'');
   return '<article class="q" data-qid="'+q.id+'">'+
     '<div class="q-top"><div class="q-id"><div class="serial">'+q.serial+'</div><div class="ref"><b>'+esc(SUBJECTS[q.subject].name)+' • '+esc(p.name)+'</b><br>'+
     esc(chapterName(q))+(qSubtopic(q)?' • '+esc(qSubtopic(q)):'')+' • PDF p.'+q.pdfPage+extra+sourceLine+'</div></div>'+
