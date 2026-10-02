@@ -297,7 +297,7 @@ var SUBJECTS={
 
 var EXPECTED_COUNTS={
   chemistry:{
-    0:{0:214,1:716,2:877,3:702,4:302}
+    0:{0:293,1:733,2:736,3:733,4:371}
   }
 };
 function expectedCount(subject,paper,chapter){
@@ -591,7 +591,7 @@ function renderPaperProgress(){
   if(!box)return;
   var exp=expectedPaperCount('chemistry',0);
   var loaded=QUESTIONS.filter(function(q){return q.subject==='chemistry'&&(q.paper||0)===0}).length;
-  box.innerHTML='<div class="notice"><b style="color:#dbeeff">Chemistry 1st Paper:</b> '+loaded+' / '+exp+' questions structured. Verified chapter targets from the QB are Ch-1: 214, Ch-2: 716, Ch-3: 877, Ch-4: 702, Ch-5: 302. This paper is not marked complete until all '+exp+' are present.</div>';
+  box.innerHTML='<div class="notice"><b style="color:#dbeeff">Chemistry 1st Paper:</b> '+loaded+' / '+exp+' questions structured. Verified chapter targets from the QB are Ch-1: 293, Ch-2: 733, Ch-3: 736, Ch-4: 733, Ch-5: 371. This paper is not marked complete until all '+exp+' are present.</div>';
 }
 function renderStats(){
   var attempted=Object.keys(state.answers).filter(function(id){return QUESTIONS.some(function(q){return q.id===id})}).length;
