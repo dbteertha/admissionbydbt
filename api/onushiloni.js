@@ -346,7 +346,7 @@ a{color:inherit;text-decoration:none}
           <button class="filter" data-filter="saved">Saved</button>
         </div>
       </div>
-      <div class="notice">Chemistry 1st Paper is being ingested in verified source order. Use Subject → Paper → Chapter → Subtopic → MCQ Type → Author in any combination. Chapter subtopics follow the black section headings used inside the original QB.</div>
+      <div class="notice">Chemistry 1st Paper is being rebuilt directly from the original QB pages. Only page-checked MCQs are published. Raw OCR records are kept internal and are not shown as final questions. Full question text, all options, original serial, chapter/subtopic, answer, author, source reference, printed solution, and diagrams are checked against the QB before publication.</div>
       <div id="paperProgress" style="margin:0 0 12px"></div>
       <section class="questions" id="questions"></section>
     </main>
@@ -433,9 +433,9 @@ var VERIFIED_CHEM=QUESTIONS.filter(function(q){return q.subject==='chemistry'&&(
 var OTHER_QUESTIONS=QUESTIONS.filter(function(q){return !(q.subject==='chemistry'&&(q.paper||0)===0)});
 var VERIFIED_MAP={};
 VERIFIED_CHEM.forEach(function(q){VERIFIED_MAP[q.chapter+'|'+q.serial]=q});
-QUESTIONS=OCR_CHEM_DATA.map(function(q){
-  return VERIFIED_MAP[q.chapter+'|'+q.serial]||q;
-}).concat(OTHER_QUESTIONS);
+// IMPORTANT: OCR_CHEM_DATA is retained only as an internal transcription aid.
+// It is not published to students until the record has been checked against the QB page.
+QUESTIONS=VERIFIED_CHEM.concat(OTHER_QUESTIONS);
 
 
 var KEY='onushiloni_qb_state_v1';
@@ -517,7 +517,7 @@ function renderChapterChecks(){
         var key=sk+'|'+pk+'|'+ci;
         var loaded=QUESTIONS.filter(function(q){return q.subject===sk&&paperKey(q.paper)===pk&&q.chapter===ci}).length;
         var expected=expectedCount(sk,Number(pk),ci);
-        var status=expected?(loaded+' / '+expected+' structured'):loaded+' loaded question'+(loaded===1?'':'s');
+        var status=expected?(loaded+' / '+expected+' verified'):loaded+' loaded question'+(loaded===1?'':'s');
         rows.push('<label class="check"><input type="checkbox" data-group="chapter" value="'+key+'" '+(selected.chapter.has(key)?'checked':'')+'><span>'+esc(SUBJECTS[sk].name)+' • '+p.short+' • '+(ci+1)+'. '+esc(name)+'<small>'+status+'</small></span></label>');
       });
     });
