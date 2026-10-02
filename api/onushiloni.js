@@ -195,7 +195,7 @@ a{color:inherit;text-decoration:none}
           <button class="filter" data-filter="saved">Saved</button>
         </div>
       </div>
-      <div class="notice">The interface is live as a separate section of your existing site. Printed source references will be copied exactly from the QB and shown in bracket form beside each question, followed by its Q. NO.</div>
+      <div class="notice">The interface is live as a separate section of your existing site. Printed source references will be copied exactly from the QB and shown in bracket form beside each question. The large question serial will follow the original QB serial.</div>
       <section class="questions" id="questions"></section>
     </main>
   </div>
@@ -318,7 +318,7 @@ function renderQuestion(q){
   var printedSource=q.source?esc(q.source):'[Source reference pending exact QB transcription]';
   return '<article class="q" data-qid="'+q.id+'">'+
     '<div class="q-top"><div class="q-id"><div class="serial">'+q.serial+'</div><div class="ref"><b>'+esc(paper.name)+'</b> • Chapter '+(q.chapter+1)+' • PDF p.'+q.pdfPage+'<br>'+
-    '<span class="source-ref"><b>'+printedSource+'</b> &nbsp; Q. NO. '+q.serial+'</span></div></div>'+
+    '<span class="source-ref"><b>'+printedSource+'</b></span></div></div>'+
     '<div class="q-actions"><button class="icon-btn '+(saved?'saved':'')+'" data-save title="Bookmark">'+(saved?'★':'☆')+'</button></div></div>'+
     '<div class="q-text">'+esc(q.q)+'</div><div class="options">'+opts+'</div>'+meta+'</article>';
 }
