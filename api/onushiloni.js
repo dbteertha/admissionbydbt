@@ -259,6 +259,7 @@ a{color:inherit;text-decoration:none}
         </div>
       </div>
       <div class="notice">Chemistry 1st Paper is being ingested in verified source order. Use Subject → Paper → Chapter → Subtopic → MCQ Type → Author in any combination. Chapter subtopics follow the black section headings used inside the original QB.</div>
+      <div id="paperProgress" style="margin:0 0 12px"></div>
       <section class="questions" id="questions"></section>
     </main>
   </div>
@@ -293,6 +294,19 @@ var SUBJECTS={
     ]}
   ]}
 };
+
+var EXPECTED_COUNTS={
+  chemistry:{
+    0:{0:214,1:716,2:877,3:702,4:302}
+  }
+};
+function expectedCount(subject,paper,chapter){
+  return EXPECTED_COUNTS[subject]&&EXPECTED_COUNTS[subject][paper]&&EXPECTED_COUNTS[subject][paper][chapter]||0;
+}
+function expectedPaperCount(subject,paper){
+  var x=EXPECTED_COUNTS[subject]&&EXPECTED_COUNTS[subject][paper];
+  return x?Object.values(x).reduce(function(a,b){return a+b},0):0;
+}
 
 var QUESTIONS=[
 {id:'chem-p1-c1-q1',subject:'chemistry',paper:0,type:'MCQ',author:'হাজারী',subtopic:'ল্যাবরেটরির ব্যবহার বিধি: পোশাক, নিরাপদ গ্লাস, মাস্ক, হ্যান্ড গ্লাভস',subtopicOrder:1,chapter:0,serial:1,pdfPage:4,q:'ল্যাবরেটরিতে নিজের নিরাপত্তা নিশ্চিত করতে নিচের কোন প্রাথমিক ব্যবস্থা নিলে ভুল হবে?',options:['এপ্রোন পরা','নিরাপদ চশমা পকেটে থাকা','হাতে গ্লাভস পরা','পায়ে জুতা পরা'],answer:1,source:'',sourcePrinted:false,solution:'',solutionPrinted:false},
@@ -404,7 +418,9 @@ function renderChapterChecks(){
       p.chapters.forEach(function(name,ci){
         var key=sk+'|'+pk+'|'+ci;
         var loaded=QUESTIONS.filter(function(q){return q.subject===sk&&paperKey(q.paper)===pk&&q.chapter===ci}).length;
-        rows.push('<label class="check"><input type="checkbox" data-group="chapter" value="'+key+'" '+(selected.chapter.has(key)?'checked':'')+'><span>'+esc(SUBJECTS[sk].name)+' • '+p.short+' • '+(ci+1)+'. '+esc(name)+'<small>'+loaded+' loaded question'+(loaded===1?'':'s')+'</small></span></label>');
+        var expected=expectedCount(sk,Number(pk),ci);
+        var status=expected?(loaded+' / '+expected+' structured'):loaded+' loaded question'+(loaded===1?'':'s');
+        rows.push('<label class="check"><input type="checkbox" data-group="chapter" value="'+key+'" '+(selected.chapter.has(key)?'checked':'')+'><span>'+esc(SUBJECTS[sk].name)+' • '+p.short+' • '+(ci+1)+'. '+esc(name)+'<small>'+status+'</small></span></label>');
       });
     });
   });
@@ -570,6 +586,13 @@ document.getElementById('clearSelector').onclick=function(){
   renderSelector();renderBuiltQuestions();
 };
 
+function renderPaperProgress(){
+  var box=document.getElementById('paperProgress');
+  if(!box)return;
+  var exp=expectedPaperCount('chemistry',0);
+  var loaded=QUESTIONS.filter(function(q){return q.subject==='chemistry'&&(q.paper||0)===0}).length;
+  box.innerHTML='<div class="notice"><b style="color:#dbeeff">Chemistry 1st Paper:</b> '+loaded+' / '+exp+' questions structured. Verified chapter targets from the QB are Ch-1: 214, Ch-2: 716, Ch-3: 877, Ch-4: 702, Ch-5: 302. This paper is not marked complete until all '+exp+' are present.</div>';
+}
 function renderStats(){
   var attempted=Object.keys(state.answers).filter(function(id){return QUESTIONS.some(function(q){return q.id===id})}).length;
   var correct=QUESTIONS.filter(function(q){return state.answers[q.id]===q.answer}).length;
@@ -587,7 +610,7 @@ document.getElementById('resetProgress').onclick=function(){
   if(confirm('Reset all Onushiloni answers and bookmarks saved in this browser?')){state={answers:{},saved:{}};save();renderBuiltQuestions();renderStats()}
 };
 
-renderSelector();renderBuiltQuestions();renderStats();
+renderSelector();renderBuiltQuestions();renderPaperProgress();renderStats();
 </script>
 </body>
 </html>`);
