@@ -1,4 +1,17 @@
+import fs from 'node:fs/promises';
+
 export default async function handler(req,res){
+  const chemFiles=[
+    '../data/qb/chemistry/paper-1/chapter-01.json',
+    '../data/qb/chemistry/paper-1/chapter-02.json',
+    '../data/qb/chemistry/paper-1/chapter-03.json',
+    '../data/qb/chemistry/paper-1/chapter-04.json',
+    '../data/qb/chemistry/paper-1/chapter-05.json'
+  ];
+  const chemParts=await Promise.all(chemFiles.map(async function(p){
+    return JSON.parse(await fs.readFile(new URL(p,import.meta.url),'utf8'));
+  }));
+  const chemP1Data=chemParts.flat();
   res.setHeader('Content-Type','text/html; charset=utf-8');
   res.setHeader('Cache-Control','no-store');
   res.statusCode=200;
@@ -308,6 +321,7 @@ function expectedPaperCount(subject,paper){
   return x?Object.values(x).reduce(function(a,b){return a+b},0):0;
 }
 
+var OCR_CHEM_DATA=${JSON.stringify(chemP1Data)};
 var QUESTIONS=[
 {id:'chem-p1-c1-q1',subject:'chemistry',paper:0,type:'MCQ',author:'হাজারী',subtopic:'ল্যাবরেটরির ব্যবহার বিধি: পোশাক, নিরাপদ গ্লাস, মাস্ক, হ্যান্ড গ্লাভস',subtopicOrder:1,chapter:0,serial:1,pdfPage:4,q:'ল্যাবরেটরিতে নিজের নিরাপত্তা নিশ্চিত করতে নিচের কোন প্রাথমিক ব্যবস্থা নিলে ভুল হবে?',options:['এপ্রোন পরা','নিরাপদ চশমা পকেটে থাকা','হাতে গ্লাভস পরা','পায়ে জুতা পরা'],answer:1,source:'',sourcePrinted:false,solution:'',solutionPrinted:false},
 {id:'chem-p1-c1-q2',subject:'chemistry',paper:0,type:'MCQ',author:'হাজারী',subtopic:'ল্যাবরেটরির ব্যবহার বিধি: পোশাক, নিরাপদ গ্লাস, মাস্ক, হ্যান্ড গ্লাভস',subtopicOrder:1,chapter:0,serial:2,pdfPage:4,q:'কেমিস্ট্রি ল্যাবে শ্বাস-প্রশ্বাসের ক্ষেত্রে নিরাপদ থাকার জন্য নিচের কোনটি ব্যবহার করা হয়?',options:['নিরাপদ চশমা','এপ্রোন','গ্লাভস','মাস্ক'],answer:3,source:'[ব. বো. ২০২১]',sourcePrinted:true,solution:'',solutionPrinted:false},
@@ -339,6 +353,14 @@ var QUESTIONS=[
 {id:'bio-1-4',subject:'biology',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:4,pdfPage:4,q:'কোন বিজ্ঞানীগণ কোষতত্ত্ব দেন?',options:['লাইনার ও ক্লিকার','সিয়ার ও নিকলসন','স্লাইডেন ও সোয়ান','ভ্যান লিউয়েন হুক ও লিন'],answer:2,solution:'ম্যাথিয়াস স্লাইডেন ও থিওডর সোয়ান কোষতত্ত্ব প্রণয়নে গুরুত্বপূর্ণ ভূমিকা রাখেন।'},
 {id:'bio-1-5',subject:'biology',paper:0,type:'MCQ',author:'',subtopic:'',subtopicOrder:999,chapter:0,serial:5,pdfPage:4,q:'প্রাণীকোষ বিষয়ে কোনটি সঠিক?',options:['কোষে সেন্ট্রোসোম থাকে','সাইটোপ্লাজমে প্লাস্টিড থাকে','সঞ্চিত খাদ্য সাধারণত শ্বেতসার','কোষ কেন্দ্রে বড় কোষ গহ্বর থাকে'],answer:0,solution:'উৎসের ব্যাখ্যা অনুযায়ী প্রাণীকোষে সাধারণত সেন্ট্রোসোম থাকে। প্লাস্টিড থাকে না; সঞ্চিত খাদ্য প্রধানত গ্লাইকোজেন।'}
 ];
+var VERIFIED_CHEM=QUESTIONS.filter(function(q){return q.subject==='chemistry'&&(q.paper||0)===0});
+var OTHER_QUESTIONS=QUESTIONS.filter(function(q){return !(q.subject==='chemistry'&&(q.paper||0)===0)});
+var VERIFIED_MAP={};
+VERIFIED_CHEM.forEach(function(q){VERIFIED_MAP[q.chapter+'|'+q.serial]=q});
+QUESTIONS=OCR_CHEM_DATA.map(function(q){
+  return VERIFIED_MAP[q.chapter+'|'+q.serial]||q;
+}).concat(OTHER_QUESTIONS);
+
 
 var KEY='onushiloni_qb_state_v1';
 var state={answers:{},saved:{}};
@@ -500,22 +522,29 @@ document.querySelectorAll('[data-all]').forEach(function(b){b.onclick=function()
 document.querySelectorAll('[data-clear]').forEach(function(b){b.onclick=function(){setGroupAll(b.dataset.clear,false)}});
 
 function renderQuestion(q){
-  var chosen=state.answers[q.id],answered=chosen!==undefined,saved=!!state.saved[q.id];
-  var opts=q.options.map(function(o,i){
+  var answerKnown=Number.isInteger(q.answer)&&q.answer>=0&&q.answer<(q.options||[]).length;
+  var chosen=state.answers[q.id],answered=answerKnown&&chosen!==undefined,saved=!!state.saved[q.id];
+  var options=Array.isArray(q.options)?q.options:[];
+  var opts=options.map(function(o,i){
     var cls='option';
     if(answered){
       if(i===q.answer)cls+=' correct';
       if(i===chosen&&i!==q.answer)cls+=' wrong';
       if(i===chosen)cls+=' first';
     }
-    return '<button class="'+cls+'" data-opt="'+i+'" '+(answered?'disabled':'')+'><span class="letter">'+letter(i)+'</span><span>'+esc(o)+'</span></button>';
+    return '<button class="'+cls+'" data-opt="'+i+'" '+(!answerKnown||answered?'disabled':'')+'><span class="letter">'+letter(i)+'</span><span>'+esc(o)+'</span></button>';
   }).join('');
+  if(!opts&&q.raw)opts='<div class="facet-empty" style="grid-column:1/-1;white-space:pre-wrap">OCR text: '+esc(q.raw)+'</div>';
   var meta='';
   if(answered){
-    meta='<div class="answer-meta"><span class="pill first">First selected: '+letter(chosen)+'. '+esc(q.options[chosen])+'</span>'+
+    meta='<div class="answer-meta"><span class="pill first">First selected: '+letter(chosen)+'. '+esc(options[chosen])+'</span>'+
       '<span class="pill '+(chosen===q.answer?'good':'bad')+'">'+(chosen===q.answer?'✓ Correct on first try':'✕ Wrong on first try')+'</span>'+
-      '<span class="pill good">Correct: '+letter(q.answer)+'. '+esc(q.options[q.answer])+'</span></div>'+
+      '<span class="pill good">Correct: '+letter(q.answer)+'. '+esc(options[q.answer])+'</span></div>'+
       '<div class="solution"><div class="s-title">Answer & solution</div><p>'+esc(q.solution||(q.solutionPrinted===false?'No separate solution is printed for this question in the QB.':'Solution transcription pending.'))+'</p></div>';
+  }else if(!answerKnown){
+    meta='<div class="answer-meta"><span class="pill">OCR imported • answer audit pending</span>'+
+      (q.ocrConfidence?'<span class="pill">OCR confidence: '+esc(q.ocrConfidence)+'</span>':'')+'</div>'+
+      (q.solution?'<div class="solution"><div class="s-title">Printed note / solution (OCR)</div><p>'+esc(q.solution)+'</p></div>':'');
   }
   var p=paperData(q),printedSource=q.source?esc(q.source):'';
   var sourceLine=printedSource?'<br><span class="source-ref"><b>'+printedSource+'</b></span>':'';
@@ -524,14 +553,14 @@ function renderQuestion(q){
     '<div class="q-top"><div class="q-id"><div class="serial">'+q.serial+'</div><div class="ref"><b>'+esc(SUBJECTS[q.subject].name)+' • '+esc(p.name)+'</b><br>'+
     esc(chapterName(q))+(qSubtopic(q)?' • '+esc(qSubtopic(q)):'')+' • PDF p.'+q.pdfPage+extra+sourceLine+'</div></div>'+
     '<div class="q-actions"><button class="icon-btn '+(saved?'saved':'')+'" data-save title="Bookmark">'+(saved?'★':'☆')+'</button></div></div>'+
-    '<div class="q-text">'+esc(q.q)+'</div><div class="options">'+opts+'</div>'+meta+'</article>';
+    '<div class="q-text">'+esc(q.q||'OCR text requires verification')+'</div><div class="options">'+opts+'</div>'+meta+'</article>';
 }
 
 function postFilter(q){
   var a=state.answers[q.id];
-  if(query && q.q.toLowerCase().indexOf(query.toLowerCase())===-1 && q.options.join(' ').toLowerCase().indexOf(query.toLowerCase())===-1)return false;
+  if(query && String(q.q||'').toLowerCase().indexOf(query.toLowerCase())===-1 && (q.options||[]).join(' ').toLowerCase().indexOf(query.toLowerCase())===-1)return false;
   if(filter==='unanswered'&&a!==undefined)return false;
-  if(filter==='wrong'&&(a===undefined||a===q.answer))return false;
+  if(filter==='wrong'&&(a===undefined||!Number.isInteger(q.answer)||a===q.answer))return false;
   if(filter==='saved'&&!state.saved[q.id])return false;
   return true;
 }
@@ -565,7 +594,7 @@ function renderBuiltQuestions(){
     var id=card.dataset.qid,q=QUESTIONS.find(function(x){return x.id===id});
     card.querySelectorAll('[data-opt]').forEach(function(b){
       b.onclick=function(){
-        if(state.answers[id]!==undefined)return;
+        if(!Number.isInteger(q.answer)||state.answers[id]!==undefined)return;
         state.answers[id]=Number(b.dataset.opt);save();renderBuiltQuestions();renderStats();
         setTimeout(function(){var n=document.querySelector('[data-qid="'+id+'"]');if(n)n.scrollIntoView({block:'center',behavior:'smooth'})},20);
       }
@@ -591,11 +620,11 @@ function renderPaperProgress(){
   if(!box)return;
   var exp=expectedPaperCount('chemistry',0);
   var loaded=QUESTIONS.filter(function(q){return q.subject==='chemistry'&&(q.paper||0)===0}).length;
-  box.innerHTML='<div class="notice"><b style="color:#dbeeff">Chemistry 1st Paper:</b> '+loaded+' / '+exp+' questions structured. Verified chapter targets from the QB are Ch-1: 293, Ch-2: 733, Ch-3: 736, Ch-4: 733, Ch-5: 371. This paper is not marked complete until all '+exp+' are present.</div>';
+  box.innerHTML='<div class="notice"><b style="color:#dbeeff">Chemistry 1st Paper:</b> '+loaded+' / '+exp+' question serials imported from PDF pages 1–154. Chapter totals: 293 + 733 + 736 + 733 + 371 = 2866. OCR-derived records are shown immediately; answers, sources, authors, subtopics and formulas remain explicitly unverified where they could not be read safely.</div>';
 }
 function renderStats(){
   var attempted=Object.keys(state.answers).filter(function(id){return QUESTIONS.some(function(q){return q.id===id})}).length;
-  var correct=QUESTIONS.filter(function(q){return state.answers[q.id]===q.answer}).length;
+  var correct=QUESTIONS.filter(function(q){return Number.isInteger(q.answer)&&state.answers[q.id]===q.answer}).length;
   var saved=QUESTIONS.filter(function(q){return state.saved[q.id]}).length;
   document.getElementById('stLoaded').textContent=QUESTIONS.length;
   document.getElementById('stAttempted').textContent=attempted;
