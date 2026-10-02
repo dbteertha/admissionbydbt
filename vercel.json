@@ -2,6 +2,14 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/onushiloni",
+      "destination": "/api/onushiloni.js"
+    },
+    {
+      "source": "/onushiloni/(.*)",
+      "destination": "/api/onushiloni.js"
+    },
+    {
       "source": "/api/events",
       "destination": "/api/index.js"
     },
