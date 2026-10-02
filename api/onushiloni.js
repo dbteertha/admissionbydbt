@@ -55,13 +55,39 @@ a{color:inherit;text-decoration:none}
 .stat{padding:14px 15px;border:1px solid rgba(255,255,255,.075);background:rgba(255,255,255,.025);border-radius:14px}
 .stat span{display:block;color:#6f7b8d;font-size:8px;text-transform:uppercase;letter-spacing:.12em}
 .stat b{font-size:24px;display:block;margin-top:5px;letter-spacing:-.04em}
-.layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;align-items:start}
+.layout{display:grid;grid-template-columns:360px minmax(0,1fr);gap:16px;align-items:start}
 .side{position:sticky;top:78px}
 .panel{
   border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(12,17,27,.96),rgba(8,12,19,.92));
   border-radius:var(--r);box-shadow:var(--shadow)
 }
 .side-card{padding:15px}
+.selector-title{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:13px}
+.selector-title h3{font-size:16px;margin:0;letter-spacing:-.02em}
+.selector-title p{font-size:9px;color:#748298;line-height:1.5;margin:4px 0 0}
+.facet{border-top:1px solid rgba(255,255,255,.07);padding:12px 0}
+.facet:first-of-type{border-top:0}
+.facet-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.facet-head b{font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:#8290a5}
+.facet-actions{display:flex;gap:5px}
+.mini{border:0;background:transparent;color:#6684a4;font-size:8px;cursor:pointer;padding:2px 3px}
+.mini:hover{color:#b9ddff}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.check-grid.one{grid-template-columns:1fr}
+.check{
+  display:flex;align-items:flex-start;gap:8px;border:1px solid #1c2838;background:#0a1019;border-radius:10px;
+  padding:8px 9px;color:#9eacbd;font-size:9px;line-height:1.35;cursor:pointer
+}
+.check:hover{border-color:#30445e;background:#0e1622}
+.check input{width:14px;height:14px;margin:0;accent-color:#6da8ff;flex:0 0 auto}
+.check span{min-width:0}
+.check small{display:block;color:#5e6c80;margin-top:2px;font-size:7px}
+.facet-empty{padding:9px 10px;border:1px dashed #263345;border-radius:10px;color:#657287;font-size:8px;line-height:1.45}
+.selector-foot{position:sticky;bottom:8px;margin-top:10px;padding:10px;border:1px solid #223249;background:rgba(8,13,21,.96);border-radius:13px;box-shadow:0 15px 35px rgba(0,0,0,.3)}
+.match-count{font-size:9px;color:#8090a5;margin-bottom:8px}
+.match-count b{color:#dff2ff;font-size:13px}
+.selector-buttons{display:grid;grid-template-columns:1fr auto;gap:7px}
+.selector-buttons .btn{width:100%}
 .section-label{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#68768b;margin:2px 0 10px}
 .subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
 .papers{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px}
@@ -175,18 +201,48 @@ a{color:inherit;text-decoration:none}
   <div class="layout">
     <aside class="side">
       <div class="panel side-card">
-        <div class="section-label">Subjects</div>
-        <div class="subjects" id="subjects"></div>
-        <div class="section-label">Papers</div>
-        <div class="papers" id="papers"></div>
-        <div class="section-label">Chapters</div>
-        <div class="chapter-list" id="chapters"></div>
+        <div class="selector-title">
+          <div><h3>Build your question set</h3><p>Select one or many checkboxes. Multiple values inside one category are combined; categories work together.</p></div>
+        </div>
+
+        <div class="facet">
+          <div class="facet-head"><b>Subject</b><div class="facet-actions"><button class="mini" data-all="subject">All</button><button class="mini" data-clear="subject">Clear</button></div></div>
+          <div class="check-grid" id="subjectChecks"></div>
+        </div>
+
+        <div class="facet">
+          <div class="facet-head"><b>Paper</b><div class="facet-actions"><button class="mini" data-all="paper">All</button><button class="mini" data-clear="paper">Clear</button></div></div>
+          <div class="check-grid" id="paperChecks"></div>
+        </div>
+
+        <div class="facet">
+          <div class="facet-head"><b>Chapter</b><div class="facet-actions"><button class="mini" data-all="chapter">All</button><button class="mini" data-clear="chapter">Clear</button></div></div>
+          <div class="check-grid one" id="chapterChecks"></div>
+        </div>
+
+        <div class="facet">
+          <div class="facet-head"><b>Question Type</b><div class="facet-actions"><button class="mini" data-all="type">All</button><button class="mini" data-clear="type">Clear</button></div></div>
+          <div class="check-grid" id="typeChecks"></div>
+        </div>
+
+        <div class="facet">
+          <div class="facet-head"><b>Author</b><div class="facet-actions"><button class="mini" data-all="author">All</button><button class="mini" data-clear="author">Clear</button></div></div>
+          <div class="check-grid one" id="authorChecks"></div>
+        </div>
+
+        <div class="selector-foot">
+          <div class="match-count"><b id="matchCount">0</b> questions match the current selection</div>
+          <div class="selector-buttons">
+            <button class="btn primary" id="buildSet">Show Questions</button>
+            <button class="btn" id="clearSelector">Reset</button>
+          </div>
+        </div>
       </div>
     </aside>
 
     <main>
       <div class="main-head">
-        <div><h2 id="chapterTitle">Question Bank</h2><p id="chapterMeta"></p></div>
+        <div><h2 id="chapterTitle">Selected Questions</h2><p id="chapterMeta">Choose filters, then press Show Questions.</p></div>
         <div class="tools">
           <label class="search"><input id="search" placeholder="Search loaded questions..."></label>
           <button class="filter active" data-filter="all">All</button>
@@ -195,7 +251,7 @@ a{color:inherit;text-decoration:none}
           <button class="filter" data-filter="saved">Saved</button>
         </div>
       </div>
-      <div class="notice">The interface is live as a separate section of your existing site. Printed source references will be copied exactly from the QB and shown in bracket form beside each question. The large question serial will follow the original QB serial.</div>
+      <div class="notice">Use Subject → Paper → Chapter → Type → Author filters in any combination. Questions are returned in original QB order: subject, paper, chapter, then QB serial. Printed source references stay exactly as written in the book.</div>
       <section class="questions" id="questions"></section>
     </main>
   </div>
@@ -232,70 +288,151 @@ var SUBJECTS={
 };
 
 var QUESTIONS=[
-{id:'chem-1-3',subject:'chemistry',paper:0,chapter:0,serial:3,pdfPage:4,q:'কেমিস্ট্রি ল্যাবে কখন নিরাপত্তা চশমা ব্যবহার করা আবশ্যক?',options:['দ্রবণ প্রস্তুতিতে','রাসায়নিক বস্তুর ওজন নিতে','রাসায়নিক পদার্থ উত্তপ্ত হলে','যন্ত্রপাতি পরিষ্কার করার সময়'],answer:2,solution:'রাসায়নিক পদার্থ উত্তপ্ত করার সময় ছিটকে পড়া বা বাষ্পের ঝুঁকি থাকে, তাই নিরাপত্তা চশমা ব্যবহার করা আবশ্যক।'},
-{id:'chem-1-4',subject:'chemistry',paper:0,chapter:0,serial:4,pdfPage:4,q:'ল্যাবরেটরির নিরাপত্তা সামগ্রী কোনটি?',options:['ফিউম হুড','লাইফ জ্যাকেট','রেইন কোট','O₂ গ্যাস সিলিন্ডার'],answer:0,solution:'ফিউম হুড ল্যাবের ক্ষতিকর বাষ্প বা গ্যাস নিরাপদভাবে অপসারণে ব্যবহৃত নিরাপত্তা সামগ্রী।'},
-{id:'chem-1-7',subject:'chemistry',paper:0,chapter:0,serial:7,pdfPage:4,q:'বৈদ্যুতিক শক বা ক্ষত থেকে সুরক্ষার জন্য কোন গ্লাভস উপযোগী?',options:['ল্যাটেক্স','নিওপ্রিন','জিটেক্স','PVC'],answer:0,solution:'উৎসের উত্তরমালা অনুযায়ী সঠিক উত্তর ল্যাটেক্স।'},
-{id:'chem-1-8',subject:'chemistry',paper:0,chapter:0,serial:8,pdfPage:4,q:'নিচের অক্সাইডগুলোর মধ্যে কোনটি পাইরেক্স গ্লাস তৈরি করতে পারে?',options:['SiO₂','LiO₂','Al₂O₃','B₂O₃'],answer:3,solution:'পাইরেক্স গ্লাসে B₂O₃ ব্যবহৃত হয়। উৎসের ব্যাখ্যায় SiO₂-এর সঙ্গে B₂O₃ যোগে পাইরেক্সের তাপ ও রাসায়নিক প্রতিরোধী বৈশিষ্ট্য তৈরির কথা বলা হয়েছে।'},
-{id:'chem-1-12',subject:'chemistry',paper:0,chapter:0,serial:12,pdfPage:4,q:'ল্যাবে শরীরে আগুন লাগলে কী করতে হবে?',options:['শরীরে CO₂ প্রয়োগ করতে হবে','কম্বল জড়াতে হবে','হাই প্রেসারে বায়ু দিতে হবে','হাই-স্পিডে পানি মারতে হবে'],answer:1,solution:'উৎসের উত্তরমালা অনুযায়ী শরীরে আগুন লাগলে কম্বল জড়ানো সঠিক পদক্ষেপ।'},
+{id:'chem-1-3',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:3,pdfPage:4,q:'কেমিস্ট্রি ল্যাবে কখন নিরাপত্তা চশমা ব্যবহার করা আবশ্যক?',options:['দ্রবণ প্রস্তুতিতে','রাসায়নিক বস্তুর ওজন নিতে','রাসায়নিক পদার্থ উত্তপ্ত হলে','যন্ত্রপাতি পরিষ্কার করার সময়'],answer:2,solution:'রাসায়নিক পদার্থ উত্তপ্ত করার সময় ছিটকে পড়া বা বাষ্পের ঝুঁকি থাকে, তাই নিরাপত্তা চশমা ব্যবহার করা আবশ্যক।'},
+{id:'chem-1-4',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:4,pdfPage:4,q:'ল্যাবরেটরির নিরাপত্তা সামগ্রী কোনটি?',options:['ফিউম হুড','লাইফ জ্যাকেট','রেইন কোট','O₂ গ্যাস সিলিন্ডার'],answer:0,solution:'ফিউম হুড ল্যাবের ক্ষতিকর বাষ্প বা গ্যাস নিরাপদভাবে অপসারণে ব্যবহৃত নিরাপত্তা সামগ্রী।'},
+{id:'chem-1-7',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:7,pdfPage:4,q:'বৈদ্যুতিক শক বা ক্ষত থেকে সুরক্ষার জন্য কোন গ্লাভস উপযোগী?',options:['ল্যাটেক্স','নিওপ্রিন','জিটেক্স','PVC'],answer:0,solution:'উৎসের উত্তরমালা অনুযায়ী সঠিক উত্তর ল্যাটেক্স।'},
+{id:'chem-1-8',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:8,pdfPage:4,q:'নিচের অক্সাইডগুলোর মধ্যে কোনটি পাইরেক্স গ্লাস তৈরি করতে পারে?',options:['SiO₂','LiO₂','Al₂O₃','B₂O₃'],answer:3,solution:'পাইরেক্স গ্লাসে B₂O₃ ব্যবহৃত হয়। উৎসের ব্যাখ্যায় SiO₂-এর সঙ্গে B₂O₃ যোগে পাইরেক্সের তাপ ও রাসায়নিক প্রতিরোধী বৈশিষ্ট্য তৈরির কথা বলা হয়েছে।'},
+{id:'chem-1-12',subject:'chemistry',paper:0,type:'MCQ',author:'',chapter:0,serial:12,pdfPage:4,q:'ল্যাবে শরীরে আগুন লাগলে কী করতে হবে?',options:['শরীরে CO₂ প্রয়োগ করতে হবে','কম্বল জড়াতে হবে','হাই প্রেসারে বায়ু দিতে হবে','হাই-স্পিডে পানি মারতে হবে'],answer:1,solution:'উৎসের উত্তরমালা অনুযায়ী শরীরে আগুন লাগলে কম্বল জড়ানো সঠিক পদক্ষেপ।'},
 
-{id:'phys-1-4',subject:'physics',paper:0,chapter:0,serial:4,pdfPage:4,q:'তড়িৎ চুম্বকীয় তরঙ্গ তত্ত্ব আবিষ্কার করেন—',options:['রাদারফোর্ড','নিউটন','ম্যাক্সওয়েল','আইনস্টাইন'],answer:2,solution:'জেমস ক্লার্ক ম্যাক্সওয়েল তড়িৎ ও চৌম্বক ক্ষেত্রকে একত্রিত করে তড়িৎচুম্বকীয় তরঙ্গের তত্ত্ব প্রতিষ্ঠা করেন।'},
-{id:'phys-1-6',subject:'physics',paper:0,chapter:0,serial:6,pdfPage:4,q:'কোনো বস্তু হতে শক্তির বিকিরণ নিরবচ্ছিন্নভাবে ঘটে না—এই তত্ত্বের প্রবক্তা কে?',options:['লর্ড রাদারফোর্ড','আলবার্ট আইনস্টাইন','ম্যাক্স প্ল্যাঙ্ক','মাইকেল ফ্যারাডে'],answer:2,solution:'ম্যাক্স প্ল্যাঙ্ক শক্তি কোয়ান্টা আকারে নির্গত বা শোষিত হয়—এই ধারণা দেন।'},
-{id:'phys-1-10',subject:'physics',paper:0,chapter:0,serial:10,pdfPage:4,q:'“ভর ও শক্তি সমতুল্য”—কোন বিজ্ঞানীর অভিমত?',options:['নিউটন','গ্যালিলিও','আইনস্টাইন','ফ্যারাডে'],answer:2,solution:'আইনস্টাইনের ভর-শক্তি সমতুল্যতার সম্পর্ক E = mc² দ্বারা প্রকাশ করা হয়।'},
-{id:'phys-1-12',subject:'physics',paper:0,chapter:0,serial:12,pdfPage:4,q:'কোন বৈজ্ঞানিক সর্বপ্রথম সূর্যকেন্দ্রিক বিশ্বের ধারণা প্রদান করেন?',options:['কেপলার','টলেমি','ডেমোক্রিটাস','কোপার্নিকাস'],answer:3,solution:'নিকোলাস কোপার্নিকাস সূর্যকেন্দ্রিক মডেলকে সুসংগঠিতভাবে উপস্থাপন করেন।'},
-{id:'phys-1-14',subject:'physics',paper:0,chapter:0,serial:14,pdfPage:4,q:'পরমাণুর ধারণা সর্বপ্রথম প্রদান করেন—',options:['নিউটন','ডাল্টন','ডেমোক্রিটাস','আর্কিমিডিস'],answer:2,solution:'প্রাচীন গ্রিক দার্শনিক ডেমোক্রিটাস পদার্থের অবিভাজ্য ক্ষুদ্র কণার ধারণা দেন।'},
+{id:'phys-1-4',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:4,pdfPage:4,q:'তড়িৎ চুম্বকীয় তরঙ্গ তত্ত্ব আবিষ্কার করেন—',options:['রাদারফোর্ড','নিউটন','ম্যাক্সওয়েল','আইনস্টাইন'],answer:2,solution:'জেমস ক্লার্ক ম্যাক্সওয়েল তড়িৎ ও চৌম্বক ক্ষেত্রকে একত্রিত করে তড়িৎচুম্বকীয় তরঙ্গের তত্ত্ব প্রতিষ্ঠা করেন।'},
+{id:'phys-1-6',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:6,pdfPage:4,q:'কোনো বস্তু হতে শক্তির বিকিরণ নিরবচ্ছিন্নভাবে ঘটে না—এই তত্ত্বের প্রবক্তা কে?',options:['লর্ড রাদারফোর্ড','আলবার্ট আইনস্টাইন','ম্যাক্স প্ল্যাঙ্ক','মাইকেল ফ্যারাডে'],answer:2,solution:'ম্যাক্স প্ল্যাঙ্ক শক্তি কোয়ান্টা আকারে নির্গত বা শোষিত হয়—এই ধারণা দেন।'},
+{id:'phys-1-10',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:10,pdfPage:4,q:'“ভর ও শক্তি সমতুল্য”—কোন বিজ্ঞানীর অভিমত?',options:['নিউটন','গ্যালিলিও','আইনস্টাইন','ফ্যারাডে'],answer:2,solution:'আইনস্টাইনের ভর-শক্তি সমতুল্যতার সম্পর্ক E = mc² দ্বারা প্রকাশ করা হয়।'},
+{id:'phys-1-12',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:12,pdfPage:4,q:'কোন বৈজ্ঞানিক সর্বপ্রথম সূর্যকেন্দ্রিক বিশ্বের ধারণা প্রদান করেন?',options:['কেপলার','টলেমি','ডেমোক্রিটাস','কোপার্নিকাস'],answer:3,solution:'নিকোলাস কোপার্নিকাস সূর্যকেন্দ্রিক মডেলকে সুসংগঠিতভাবে উপস্থাপন করেন।'},
+{id:'phys-1-14',subject:'physics',paper:0,type:'MCQ',author:'',chapter:0,serial:14,pdfPage:4,q:'পরমাণুর ধারণা সর্বপ্রথম প্রদান করেন—',options:['নিউটন','ডাল্টন','ডেমোক্রিটাস','আর্কিমিডিস'],answer:2,solution:'প্রাচীন গ্রিক দার্শনিক ডেমোক্রিটাস পদার্থের অবিভাজ্য ক্ষুদ্র কণার ধারণা দেন।'},
 
-{id:'bio-1-1',subject:'biology',paper:0,chapter:0,serial:1,pdfPage:4,q:'কোষ আবিষ্কার করেন কে?',options:['লিউয়েন হুক','রবার্ট হুক','রবার্ট ব্রাউন','রবার্ট ডারউইন'],answer:1,solution:'রবার্ট হুক কর্কের পাতলা অংশ পর্যবেক্ষণ করে “cell” শব্দটি ব্যবহার করেন।'},
-{id:'bio-1-2',subject:'biology',paper:0,chapter:0,serial:2,pdfPage:4,q:'জীবদেহের জৈবিক কার্যকলাপের একক কী?',options:['অঙ্গ','টিস্যু','জীবকোষ','কোষপর্দা'],answer:2,solution:'কোষ জীবদেহের গঠনগত ও কার্যগত মৌলিক একক।'},
-{id:'bio-1-3',subject:'biology',paper:0,chapter:0,serial:3,pdfPage:4,q:'Cell শব্দটি কোন ভাষা থেকে এসেছে?',options:['গ্রিক','ল্যাটিন','সুইডিশ','ইংরেজি'],answer:1,solution:'Cell শব্দটি ল্যাটিন “cella” থেকে এসেছে, যার অর্থ ছোট কক্ষ বা প্রকোষ্ঠ।'},
-{id:'bio-1-4',subject:'biology',paper:0,chapter:0,serial:4,pdfPage:4,q:'কোন বিজ্ঞানীগণ কোষতত্ত্ব দেন?',options:['লাইনার ও ক্লিকার','সিয়ার ও নিকলসন','স্লাইডেন ও সোয়ান','ভ্যান লিউয়েন হুক ও লিন'],answer:2,solution:'ম্যাথিয়াস স্লাইডেন ও থিওডর সোয়ান কোষতত্ত্ব প্রণয়নে গুরুত্বপূর্ণ ভূমিকা রাখেন।'},
-{id:'bio-1-5',subject:'biology',paper:0,chapter:0,serial:5,pdfPage:4,q:'প্রাণীকোষ বিষয়ে কোনটি সঠিক?',options:['কোষে সেন্ট্রোসোম থাকে','সাইটোপ্লাজমে প্লাস্টিড থাকে','সঞ্চিত খাদ্য সাধারণত শ্বেতসার','কোষ কেন্দ্রে বড় কোষ গহ্বর থাকে'],answer:0,solution:'উৎসের ব্যাখ্যা অনুযায়ী প্রাণীকোষে সাধারণত সেন্ট্রোসোম থাকে। প্লাস্টিড থাকে না; সঞ্চিত খাদ্য প্রধানত গ্লাইকোজেন।'}
+{id:'bio-1-1',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:1,pdfPage:4,q:'কোষ আবিষ্কার করেন কে?',options:['লিউয়েন হুক','রবার্ট হুক','রবার্ট ব্রাউন','রবার্ট ডারউইন'],answer:1,solution:'রবার্ট হুক কর্কের পাতলা অংশ পর্যবেক্ষণ করে “cell” শব্দটি ব্যবহার করেন।'},
+{id:'bio-1-2',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:2,pdfPage:4,q:'জীবদেহের জৈবিক কার্যকলাপের একক কী?',options:['অঙ্গ','টিস্যু','জীবকোষ','কোষপর্দা'],answer:2,solution:'কোষ জীবদেহের গঠনগত ও কার্যগত মৌলিক একক।'},
+{id:'bio-1-3',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:3,pdfPage:4,q:'Cell শব্দটি কোন ভাষা থেকে এসেছে?',options:['গ্রিক','ল্যাটিন','সুইডিশ','ইংরেজি'],answer:1,solution:'Cell শব্দটি ল্যাটিন “cella” থেকে এসেছে, যার অর্থ ছোট কক্ষ বা প্রকোষ্ঠ।'},
+{id:'bio-1-4',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:4,pdfPage:4,q:'কোন বিজ্ঞানীগণ কোষতত্ত্ব দেন?',options:['লাইনার ও ক্লিকার','সিয়ার ও নিকলসন','স্লাইডেন ও সোয়ান','ভ্যান লিউয়েন হুক ও লিন'],answer:2,solution:'ম্যাথিয়াস স্লাইডেন ও থিওডর সোয়ান কোষতত্ত্ব প্রণয়নে গুরুত্বপূর্ণ ভূমিকা রাখেন।'},
+{id:'bio-1-5',subject:'biology',paper:0,type:'MCQ',author:'',chapter:0,serial:5,pdfPage:4,q:'প্রাণীকোষ বিষয়ে কোনটি সঠিক?',options:['কোষে সেন্ট্রোসোম থাকে','সাইটোপ্লাজমে প্লাস্টিড থাকে','সঞ্চিত খাদ্য সাধারণত শ্বেতসার','কোষ কেন্দ্রে বড় কোষ গহ্বর থাকে'],answer:0,solution:'উৎসের ব্যাখ্যা অনুযায়ী প্রাণীকোষে সাধারণত সেন্ট্রোসোম থাকে। প্লাস্টিড থাকে না; সঞ্চিত খাদ্য প্রধানত গ্লাইকোজেন।'}
 ];
 
 var KEY='onushiloni_qb_state_v1';
 var state={answers:{},saved:{}};
 try{state=Object.assign(state,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
-var activeSubject='biology',activePaper=0,activeChapter=0,filter='all',query='';
+
+var selected={subject:new Set(),paper:new Set(),chapter:new Set(),type:new Set(),author:new Set()};
+var builtIds=[];
+var filter='all',query='';
 
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function letter(i){return ['ক','খ','গ','ঘ'][i]||String(i+1)}
-function activePaperData(){return SUBJECTS[activeSubject].papers[activePaper]}
+function paperKey(p){return String(Number(p||0))}
+function chapterKey(q){return q.subject+'|'+paperKey(q.paper)+'|'+q.chapter}
+function subjectOrder(k){return {chemistry:0,physics:1,biology:2}[k]??99}
+function paperData(q){return SUBJECTS[q.subject].papers[q.paper||0]}
+function chapterName(q){var p=paperData(q);return p&&p.chapters[q.chapter]?p.chapters[q.chapter]:'Chapter '+(q.chapter+1)}
+function qType(q){return q.type||'MCQ'}
+function qAuthor(q){return (q.author||'').trim()}
 
-function renderSubjects(){
-  var el=document.getElementById('subjects');
+function checkedValues(group){
+  return Array.from(document.querySelectorAll('input[data-group="'+group+'"]:checked')).map(function(x){return x.value});
+}
+function syncSelected(group){
+  selected[group]=new Set(checkedValues(group));
+}
+function allQuestionTypes(){
+  return Array.from(new Set(QUESTIONS.map(qType))).sort();
+}
+function allAuthors(){
+  return Array.from(new Set(QUESTIONS.map(qAuthor).filter(Boolean))).sort(function(a,b){return a.localeCompare(b)});
+}
+
+function renderSubjectChecks(){
+  var el=document.getElementById('subjectChecks');
   el.innerHTML=Object.keys(SUBJECTS).map(function(k){
-    var s=SUBJECTS[k];
-    return '<button class="subject '+(k===activeSubject?'active':'')+'" data-subject="'+k+'"><i>'+s.icon+'</i><b>'+s.name+'</b></button>';
+    var s=SUBJECTS[k],checked=selected.subject.has(k);
+    return '<label class="check"><input type="checkbox" data-group="subject" value="'+k+'" '+(checked?'checked':'')+'><span>'+s.icon+' '+esc(s.name)+'</span></label>';
   }).join('');
-  el.querySelectorAll('[data-subject]').forEach(function(b){b.onclick=function(){activeSubject=b.dataset.subject;activePaper=0;activeChapter=0;renderAll()}})
 }
-function renderPapers(){
-  var el=document.getElementById('papers'),s=SUBJECTS[activeSubject];
-  el.innerHTML=s.papers.map(function(p,i){
-    return '<button class="paper-tab '+(i===activePaper?'active':'')+'" data-paper="'+i+'">'+p.short+'</button>';
-  }).join('');
-  el.querySelectorAll('[data-paper]').forEach(function(b){b.onclick=function(){activePaper=Number(b.dataset.paper);activeChapter=0;renderAll()}})
+function renderPaperChecks(){
+  var el=document.getElementById('paperChecks');
+  el.innerHTML=[
+    '<label class="check"><input type="checkbox" data-group="paper" value="0" '+(selected.paper.has('0')?'checked':'')+'><span>1st Paper</span></label>',
+    '<label class="check"><input type="checkbox" data-group="paper" value="1" '+(selected.paper.has('1')?'checked':'')+'><span>2nd Paper</span></label>'
+  ].join('');
 }
-function chapterLoadedCount(subject,paper,idx){return QUESTIONS.filter(function(q){return q.subject===subject&&(q.paper||0)===paper&&q.chapter===idx}).length}
-function renderChapters(){
-  var p=activePaperData(),el=document.getElementById('chapters');
-  el.innerHTML=p.chapters.map(function(name,i){
-    var count=chapterLoadedCount(activeSubject,activePaper,i);
-    return '<button class="chapter '+(i===activeChapter?'active':'')+'" data-ch="'+i+'"><span class="no">'+(i+1)+'</span><span>'+esc(name)+'<small>'+(count?count+' question'+(count>1?'s':'')+' loaded':'QB data pending')+'</small></span></button>';
-  }).join('');
-  el.querySelectorAll('[data-ch]').forEach(function(b){b.onclick=function(){activeChapter=Number(b.dataset.ch);renderAll();window.scrollTo({top:330,behavior:'smooth'})}})
+function effectiveSubjects(){
+  return selected.subject.size?Array.from(selected.subject):Object.keys(SUBJECTS);
 }
-function currentQuestions(){
-  return QUESTIONS.filter(function(q){
-    if(q.subject!==activeSubject||(q.paper||0)!==activePaper||q.chapter!==activeChapter)return false;
-    var a=state.answers[q.id];
-    if(query && q.q.toLowerCase().indexOf(query.toLowerCase())===-1 && q.options.join(' ').toLowerCase().indexOf(query.toLowerCase())===-1)return false;
-    if(filter==='unanswered'&&a!==undefined)return false;
-    if(filter==='wrong'&&(a===undefined||a===q.answer))return false;
-    if(filter==='saved'&&!state.saved[q.id])return false;
-    return true;
+function effectivePapers(){
+  return selected.paper.size?Array.from(selected.paper):['0','1'];
+}
+function renderChapterChecks(){
+  var el=document.getElementById('chapterChecks'),rows=[];
+  effectiveSubjects().forEach(function(sk){
+    effectivePapers().forEach(function(pk){
+      var p=SUBJECTS[sk].papers[Number(pk)];
+      if(!p)return;
+      p.chapters.forEach(function(name,ci){
+        var key=sk+'|'+pk+'|'+ci;
+        var loaded=QUESTIONS.filter(function(q){return q.subject===sk&&paperKey(q.paper)===pk&&q.chapter===ci}).length;
+        rows.push('<label class="check"><input type="checkbox" data-group="chapter" value="'+key+'" '+(selected.chapter.has(key)?'checked':'')+'><span>'+esc(SUBJECTS[sk].name)+' • '+p.short+' • '+(ci+1)+'. '+esc(name)+'<small>'+loaded+' loaded question'+(loaded===1?'':'s')+'</small></span></label>');
+      });
+    });
+  });
+  el.innerHTML=rows.length?rows.join(''):'<div class="facet-empty">Choose a subject or paper to see chapters.</div>';
+}
+function renderTypeChecks(){
+  var el=document.getElementById('typeChecks'),vals=allQuestionTypes();
+  el.innerHTML=vals.length?vals.map(function(v){
+    return '<label class="check"><input type="checkbox" data-group="type" value="'+esc(v)+'" '+(selected.type.has(v)?'checked':'')+'><span>'+esc(v)+'</span></label>';
+  }).join(''):'<div class="facet-empty">Question-type metadata will appear here when loaded.</div>';
+}
+function renderAuthorChecks(){
+  var el=document.getElementById('authorChecks'),vals=allAuthors();
+  el.innerHTML=vals.length?vals.map(function(v){
+    return '<label class="check"><input type="checkbox" data-group="author" value="'+esc(v)+'" '+(selected.author.has(v)?'checked':'')+'><span>'+esc(v)+'</span></label>';
+  }).join(''):'<div class="facet-empty">No author metadata is loaded in the starter data yet. When the full QB dataset includes authors, they will appear here automatically.</div>';
+}
+
+function questionMatchesSelection(q){
+  if(selected.subject.size&&!selected.subject.has(q.subject))return false;
+  if(selected.paper.size&&!selected.paper.has(paperKey(q.paper)))return false;
+  if(selected.chapter.size&&!selected.chapter.has(chapterKey(q)))return false;
+  if(selected.type.size&&!selected.type.has(qType(q)))return false;
+  if(selected.author.size&&!selected.author.has(qAuthor(q)))return false;
+  return true;
+}
+function sortedMatches(){
+  return QUESTIONS.filter(questionMatchesSelection).sort(function(a,b){
+    return subjectOrder(a.subject)-subjectOrder(b.subject) ||
+      (a.paper||0)-(b.paper||0) ||
+      a.chapter-b.chapter ||
+      Number(a.serial)-Number(b.serial) ||
+      Number(a.pdfPage||0)-Number(b.pdfPage||0);
   });
 }
+function updateMatchCount(){
+  document.getElementById('matchCount').textContent=sortedMatches().length;
+}
+
+function bindSelectorInputs(){
+  document.querySelectorAll('input[data-group]').forEach(function(inp){
+    inp.onchange=function(){
+      var g=inp.dataset.group;syncSelected(g);
+      if(g==='subject'||g==='paper'){
+        renderChapterChecks();
+        bindSelectorInputs();
+      }
+      updateMatchCount();
+    };
+  });
+}
+function renderSelector(){
+  renderSubjectChecks();renderPaperChecks();renderChapterChecks();renderTypeChecks();renderAuthorChecks();bindSelectorInputs();updateMatchCount();
+}
+
+function setGroupAll(group,on){
+  document.querySelectorAll('input[data-group="'+group+'"]').forEach(function(x){x.checked=on});
+  syncSelected(group);
+  if(group==='subject'||group==='paper'){renderChapterChecks();bindSelectorInputs()}
+  updateMatchCount();
+}
+document.querySelectorAll('[data-all]').forEach(function(b){b.onclick=function(){setGroupAll(b.dataset.all,true)}});
+document.querySelectorAll('[data-clear]').forEach(function(b){b.onclick=function(){setGroupAll(b.dataset.clear,false)}});
+
 function renderQuestion(q){
   var chosen=state.answers[q.id],answered=chosen!==undefined,saved=!!state.saved[q.id];
   var opts=q.options.map(function(o,i){
@@ -312,36 +449,70 @@ function renderQuestion(q){
     meta='<div class="answer-meta"><span class="pill first">First selected: '+letter(chosen)+'. '+esc(q.options[chosen])+'</span>'+
       '<span class="pill '+(chosen===q.answer?'good':'bad')+'">'+(chosen===q.answer?'✓ Correct on first try':'✕ Wrong on first try')+'</span>'+
       '<span class="pill good">Correct: '+letter(q.answer)+'. '+esc(q.options[q.answer])+'</span></div>'+
-      '<div class="solution"><div class="s-title">Answer & solution</div><p>'+esc(q.solution)+'</p></div>';
+      '<div class="solution"><div class="s-title">Answer & solution</div><p>'+esc(q.solution||'Solution not yet transcribed from the QB.')+'</p></div>';
   }
-  var paper=SUBJECTS[q.subject].papers[q.paper||0];
-  var printedSource=q.source?esc(q.source):'[Source reference pending exact QB transcription]';
+  var p=paperData(q),printedSource=q.source?esc(q.source):'[Source reference pending exact QB transcription]';
+  var extra=(qType(q)?' • '+esc(qType(q)):'')+(qAuthor(q)?' • '+esc(qAuthor(q)):'');
   return '<article class="q" data-qid="'+q.id+'">'+
-    '<div class="q-top"><div class="q-id"><div class="serial">'+q.serial+'</div><div class="ref"><b>'+esc(paper.name)+'</b> • Chapter '+(q.chapter+1)+' • PDF p.'+q.pdfPage+'<br>'+
-    '<span class="source-ref"><b>'+printedSource+'</b></span></div></div>'+
+    '<div class="q-top"><div class="q-id"><div class="serial">'+q.serial+'</div><div class="ref"><b>'+esc(SUBJECTS[q.subject].name)+' • '+esc(p.name)+'</b><br>'+
+    esc(chapterName(q))+' • PDF p.'+q.pdfPage+extra+'<br><span class="source-ref"><b>'+printedSource+'</b></span></div></div>'+
     '<div class="q-actions"><button class="icon-btn '+(saved?'saved':'')+'" data-save title="Bookmark">'+(saved?'★':'☆')+'</button></div></div>'+
     '<div class="q-text">'+esc(q.q)+'</div><div class="options">'+opts+'</div>'+meta+'</article>';
 }
-function renderQuestions(){
-  var p=activePaperData();
-  document.getElementById('chapterTitle').textContent=p.chapters[activeChapter];
-  document.getElementById('chapterMeta').textContent=p.name+' • Chapter '+(activeChapter+1)+' • '+chapterLoadedCount(activeSubject,activePaper,activeChapter)+' questions currently loaded';
-  var list=currentQuestions(),el=document.getElementById('questions');
-  if(!list.length){el.innerHTML='<div class="empty">'+(chapterLoadedCount(activeSubject,activePaper,activeChapter)?'No questions match this filter.':'This chapter is ready in the navigation; its scanned QB questions have not yet been structured into interactive cards.')+'</div>';return}
-  el.innerHTML=list.map(renderQuestion).join('');
+
+function postFilter(q){
+  var a=state.answers[q.id];
+  if(query && q.q.toLowerCase().indexOf(query.toLowerCase())===-1 && q.options.join(' ').toLowerCase().indexOf(query.toLowerCase())===-1)return false;
+  if(filter==='unanswered'&&a!==undefined)return false;
+  if(filter==='wrong'&&(a===undefined||a===q.answer))return false;
+  if(filter==='saved'&&!state.saved[q.id])return false;
+  return true;
+}
+function renderBuiltQuestions(){
+  var base=QUESTIONS.filter(function(q){return builtIds.indexOf(q.id)!==-1}).sort(function(a,b){
+    return subjectOrder(a.subject)-subjectOrder(b.subject)||(a.paper||0)-(b.paper||0)||a.chapter-b.chapter||Number(a.serial)-Number(b.serial);
+  });
+  var list=base.filter(postFilter),el=document.getElementById('questions');
+  document.getElementById('chapterTitle').textContent='Selected Questions';
+  document.getElementById('chapterMeta').textContent=builtIds.length?builtIds.length+' questions selected • '+list.length+' currently visible':'Choose one or more checkboxes, then press Show Questions.';
+  if(!builtIds.length){el.innerHTML='<div class="empty">Select Subject, Paper, Chapter, Type and/or Author using the checkboxes. Then press <b>Show Questions</b>. Leaving a category unchecked means “all” for that category.</div>';return}
+  if(!list.length){el.innerHTML='<div class="empty">No questions match the current search/progress filter.</div>';return}
+  var out=[],lastGroup='';
+  list.forEach(function(q){
+    var group=q.subject+'|'+(q.paper||0)+'|'+q.chapter;
+    if(group!==lastGroup){
+      var p=paperData(q);
+      out.push('<div style="padding:10px 3px 2px;color:#8ea1b8;font-size:10px;letter-spacing:.04em"><b style="color:#d9e8f7">'+esc(SUBJECTS[q.subject].name)+' • '+esc(p.short)+'</b> — '+esc(chapterName(q))+'</div>');
+      lastGroup=group;
+    }
+    out.push(renderQuestion(q));
+  });
+  el.innerHTML=out.join('');
   el.querySelectorAll('.q').forEach(function(card){
     var id=card.dataset.qid,q=QUESTIONS.find(function(x){return x.id===id});
     card.querySelectorAll('[data-opt]').forEach(function(b){
       b.onclick=function(){
         if(state.answers[id]!==undefined)return;
-        state.answers[id]=Number(b.dataset.opt);save();renderQuestions();renderStats();
+        state.answers[id]=Number(b.dataset.opt);save();renderBuiltQuestions();renderStats();
         setTimeout(function(){var n=document.querySelector('[data-qid="'+id+'"]');if(n)n.scrollIntoView({block:'center',behavior:'smooth'})},20);
       }
     });
     var sb=card.querySelector('[data-save]');
-    sb.onclick=function(){state.saved[id]=!state.saved[id];save();renderQuestions();renderStats()}
+    sb.onclick=function(){state.saved[id]=!state.saved[id];save();renderBuiltQuestions();renderStats()}
   });
 }
+document.getElementById('buildSet').onclick=function(){
+  builtIds=sortedMatches().map(function(q){return q.id});
+  renderBuiltQuestions();
+  document.getElementById('questions').scrollIntoView({behavior:'smooth',block:'start'});
+};
+document.getElementById('clearSelector').onclick=function(){
+  Object.keys(selected).forEach(function(k){selected[k]=new Set()});
+  builtIds=[];query='';document.getElementById('search').value='';
+  filter='all';document.querySelectorAll('[data-filter]').forEach(function(x){x.classList.toggle('active',x.dataset.filter==='all')});
+  renderSelector();renderBuiltQuestions();
+};
+
 function renderStats(){
   var attempted=Object.keys(state.answers).filter(function(id){return QUESTIONS.some(function(q){return q.id===id})}).length;
   var correct=QUESTIONS.filter(function(q){return state.answers[q.id]===q.answer}).length;
@@ -351,15 +522,15 @@ function renderStats(){
   document.getElementById('stCorrect').textContent=correct;
   document.getElementById('stSaved').textContent=saved;
 }
-function renderAll(){renderSubjects();renderPapers();renderChapters();renderQuestions();renderStats()}
-document.getElementById('search').oninput=function(){query=this.value.trim();renderQuestions()}
+document.getElementById('search').oninput=function(){query=this.value.trim();renderBuiltQuestions()}
 document.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){
-  filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(function(x){x.classList.toggle('active',x===b)});renderQuestions()
+  filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(function(x){x.classList.toggle('active',x===b)});renderBuiltQuestions()
 }});
 document.getElementById('resetProgress').onclick=function(){
-  if(confirm('Reset all Onushiloni answers and bookmarks saved in this browser?')){state={answers:{},saved:{}};save();renderAll()}
+  if(confirm('Reset all Onushiloni answers and bookmarks saved in this browser?')){state={answers:{},saved:{}};save();renderBuiltQuestions();renderStats()}
 };
-renderAll();
+
+renderSelector();renderBuiltQuestions();renderStats();
 </script>
 </body>
 </html>`);
