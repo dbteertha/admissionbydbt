@@ -63,7 +63,11 @@ a{color:inherit;text-decoration:none}
 }
 .side-card{padding:15px}
 .section-label{font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:#68768b;margin:2px 0 10px}
-.subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px}
+.subjects{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
+.papers{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:16px}
+.paper-tab{border:1px solid var(--line);background:#0b111b;color:#8291a6;border-radius:11px;padding:9px 8px;cursor:pointer;font-size:10px;font-weight:700}
+.paper-tab:hover{border-color:#354860;color:#cbd8e7}
+.paper-tab.active{border-color:rgba(101,205,255,.45);background:linear-gradient(145deg,rgba(54,95,180,.24),rgba(30,110,143,.12));color:#edf7ff}
 .subject{
   border:1px solid var(--line);background:#0b111b;border-radius:12px;padding:10px 6px;cursor:pointer;text-align:center;
   transition:.16s
@@ -171,6 +175,8 @@ a{color:inherit;text-decoration:none}
       <div class="panel side-card">
         <div class="section-label">Subjects</div>
         <div class="subjects" id="subjects"></div>
+        <div class="section-label">Papers</div>
+        <div class="papers" id="papers"></div>
         <div class="section-label">Chapters</div>
         <div class="chapter-list" id="chapters"></div>
       </div>
@@ -197,45 +203,61 @@ a{color:inherit;text-decoration:none}
 
 <script>
 var SUBJECTS={
-  chemistry:{name:'Chemistry',icon:'⚗️',paper:'রসায়ন প্রথম পত্র',chapters:[
-    'ল্যাবরেটরির নিরাপদ ব্যবহার','গুণগত রসায়ন','মৌলের পর্যায়বৃত্ত ধর্ম ও রাসায়নিক বন্ধন','রাসায়নিক পরিবর্তন','কর্মমুখী রসায়ন'
+  chemistry:{name:'Chemistry',icon:'⚗️',papers:[
+    {name:'রসায়ন প্রথম পত্র',short:'1st Paper',chapters:[
+      'ল্যাবরেটরির নিরাপদ ব্যবহার','গুণগত রসায়ন','মৌলের পর্যায়বৃত্ত ধর্ম ও রাসায়নিক বন্ধন','রাসায়নিক পরিবর্তন','কর্মমুখী রসায়ন'
+    ]},
+    {name:'রসায়ন দ্বিতীয় পত্র',short:'2nd Paper',chapters:[
+      'পরিবেশ রসায়ন','জৈব রসায়ন','পরিমাণগত রসায়ন','তড়িৎ রসায়ন','অর্থনৈতিক রসায়ন'
+    ]}
   ]},
-  physics:{name:'Physics',icon:'⚛️',paper:'পদার্থবিজ্ঞান প্রথম পত্র',chapters:[
-    'ভৌত জগৎ ও পরিমাপ','ভেক্টর','গতিবিদ্যা','নিউটনিয়ান বলবিদ্যা','কাজ, শক্তি ও ক্ষমতা','মহাকর্ষ ও অভিকর্ষ','পদার্থের গাঠনিক ধর্ম','পর্যাবৃত্ত গতি','তরঙ্গ','আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব'
+  physics:{name:'Physics',icon:'⚛️',papers:[
+    {name:'পদার্থবিজ্ঞান প্রথম পত্র',short:'1st Paper',chapters:[
+      'ভৌত জগৎ ও পরিমাপ','ভেক্টর','গতিবিদ্যা','নিউটনিয়ান বলবিদ্যা','কাজ, শক্তি ও ক্ষমতা','মহাকর্ষ ও অভিকর্ষ','পদার্থের গাঠনিক ধর্ম','পর্যাবৃত্ত গতি','তরঙ্গ','আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব'
+    ]},
+    {name:'পদার্থবিজ্ঞান দ্বিতীয় পত্র',short:'2nd Paper',chapters:[
+      'তাপগতিবিদ্যা','স্থির তড়িৎ','চল তড়িৎ','তড়িৎ প্রবাহের চৌম্বক ক্রিয়া ও চুম্বকত্ব','তড়িৎ চৌম্বকীয় আবেশ ও পরিবর্তী প্রবাহ','জ্যামিতিক আলোকবিজ্ঞান','ভৌত আলোকবিজ্ঞান','আধুনিক পদার্থবিজ্ঞানের সূচনা','পরমাণুর মডেল ও নিউক্লীয় পদার্থবিজ্ঞান','সেমিকন্ডাক্টর ও ইলেকট্রনিক্স','জ্যোতির্বিজ্ঞান'
+    ]}
   ]},
-  biology:{name:'Biology',icon:'🧬',paper:'জীববিজ্ঞান প্রথম পত্র',chapters:[
-    'কোষ ও এর গঠন','কোষ বিভাজন','কোষ রসায়ন','অণুজীব','শৈবাল ও ছত্রাক','ব্রায়োফাইটা ও টেরিডোফাইটা','নগ্নবীজী ও আবৃতবীজী উদ্ভিদ','টিস্যু ও টিস্যুতন্ত্র','উদ্ভিদ শারীরতত্ত্ব','উদ্ভিদ প্রজনন','জীবপ্রযুক্তি','জীবের পরিবেশ, বিস্তার ও সংরক্ষণ'
+  biology:{name:'Biology',icon:'🧬',papers:[
+    {name:'জীববিজ্ঞান প্রথম পত্র',short:'1st Paper',chapters:[
+      'কোষ ও এর গঠন','কোষ বিভাজন','কোষ রসায়ন','অণুজীব','শৈবাল ও ছত্রাক','ব্রায়োফাইটা ও টেরিডোফাইটা','নগ্নবীজী ও আবৃতবীজী উদ্ভিদ','টিস্যু ও টিস্যুতন্ত্র','উদ্ভিদ শারীরতত্ত্ব','উদ্ভিদ প্রজনন','জীবপ্রযুক্তি','জীবের পরিবেশ, বিস্তার ও সংরক্ষণ'
+    ]},
+    {name:'জীববিজ্ঞান দ্বিতীয় পত্র',short:'2nd Paper',chapters:[
+      'প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস','প্রাণীর পরিচিতি (হাইড্রা, ঘাসফড়িং ও রুই মাছ)','মানব শারীরতত্ত্ব: পরিপাক ও শোষণ','মানব শারীরতত্ত্ব: রক্ত ও সঞ্চালন','মানব শারীরতত্ত্ব: শ্বাসক্রিয়া ও শ্বসন','মানব শারীরতত্ত্ব: বর্জ্য ও নিষ্কাশন','মানব শারীরতত্ত্ব: চলন ও অঙ্গচালনা','মানব শারীরতত্ত্ব: সমন্বয় ও নিয়ন্ত্রণ','মানব জীবনের ধারাবাহিকতা','মানবদেহের প্রতিরক্ষা','জিনতত্ত্ব ও বিবর্তন','প্রাণীর আচরণ'
+    ]}
   ]}
 };
 
 var QUESTIONS=[
-{id:'chem-1-3',subject:'chemistry',chapter:0,serial:3,pdfPage:4,q:'কেমিস্ট্রি ল্যাবে কখন নিরাপত্তা চশমা ব্যবহার করা আবশ্যক?',options:['দ্রবণ প্রস্তুতিতে','রাসায়নিক বস্তুর ওজন নিতে','রাসায়নিক পদার্থ উত্তপ্ত হলে','যন্ত্রপাতি পরিষ্কার করার সময়'],answer:2,solution:'রাসায়নিক পদার্থ উত্তপ্ত করার সময় ছিটকে পড়া বা বাষ্পের ঝুঁকি থাকে, তাই নিরাপত্তা চশমা ব্যবহার করা আবশ্যক।'},
-{id:'chem-1-4',subject:'chemistry',chapter:0,serial:4,pdfPage:4,q:'ল্যাবরেটরির নিরাপত্তা সামগ্রী কোনটি?',options:['ফিউম হুড','লাইফ জ্যাকেট','রেইন কোট','O₂ গ্যাস সিলিন্ডার'],answer:0,solution:'ফিউম হুড ল্যাবের ক্ষতিকর বাষ্প বা গ্যাস নিরাপদভাবে অপসারণে ব্যবহৃত নিরাপত্তা সামগ্রী।'},
-{id:'chem-1-7',subject:'chemistry',chapter:0,serial:7,pdfPage:4,q:'বৈদ্যুতিক শক বা ক্ষত থেকে সুরক্ষার জন্য কোন গ্লাভস উপযোগী?',options:['ল্যাটেক্স','নিওপ্রিন','জিটেক্স','PVC'],answer:0,solution:'উৎসের উত্তরমালা অনুযায়ী সঠিক উত্তর ল্যাটেক্স।'},
-{id:'chem-1-8',subject:'chemistry',chapter:0,serial:8,pdfPage:4,q:'নিচের অক্সাইডগুলোর মধ্যে কোনটি পাইরেক্স গ্লাস তৈরি করতে পারে?',options:['SiO₂','LiO₂','Al₂O₃','B₂O₃'],answer:3,solution:'পাইরেক্স গ্লাসে B₂O₃ ব্যবহৃত হয়। উৎসের ব্যাখ্যায় SiO₂-এর সঙ্গে B₂O₃ যোগে পাইরেক্সের তাপ ও রাসায়নিক প্রতিরোধী বৈশিষ্ট্য তৈরির কথা বলা হয়েছে।'},
-{id:'chem-1-12',subject:'chemistry',chapter:0,serial:12,pdfPage:4,q:'ল্যাবে শরীরে আগুন লাগলে কী করতে হবে?',options:['শরীরে CO₂ প্রয়োগ করতে হবে','কম্বল জড়াতে হবে','হাই প্রেসারে বায়ু দিতে হবে','হাই-স্পিডে পানি মারতে হবে'],answer:1,solution:'উৎসের উত্তরমালা অনুযায়ী শরীরে আগুন লাগলে কম্বল জড়ানো সঠিক পদক্ষেপ।'},
+{id:'chem-1-3',subject:'chemistry',paper:0,chapter:0,serial:3,pdfPage:4,q:'কেমিস্ট্রি ল্যাবে কখন নিরাপত্তা চশমা ব্যবহার করা আবশ্যক?',options:['দ্রবণ প্রস্তুতিতে','রাসায়নিক বস্তুর ওজন নিতে','রাসায়নিক পদার্থ উত্তপ্ত হলে','যন্ত্রপাতি পরিষ্কার করার সময়'],answer:2,solution:'রাসায়নিক পদার্থ উত্তপ্ত করার সময় ছিটকে পড়া বা বাষ্পের ঝুঁকি থাকে, তাই নিরাপত্তা চশমা ব্যবহার করা আবশ্যক।'},
+{id:'chem-1-4',subject:'chemistry',paper:0,chapter:0,serial:4,pdfPage:4,q:'ল্যাবরেটরির নিরাপত্তা সামগ্রী কোনটি?',options:['ফিউম হুড','লাইফ জ্যাকেট','রেইন কোট','O₂ গ্যাস সিলিন্ডার'],answer:0,solution:'ফিউম হুড ল্যাবের ক্ষতিকর বাষ্প বা গ্যাস নিরাপদভাবে অপসারণে ব্যবহৃত নিরাপত্তা সামগ্রী।'},
+{id:'chem-1-7',subject:'chemistry',paper:0,chapter:0,serial:7,pdfPage:4,q:'বৈদ্যুতিক শক বা ক্ষত থেকে সুরক্ষার জন্য কোন গ্লাভস উপযোগী?',options:['ল্যাটেক্স','নিওপ্রিন','জিটেক্স','PVC'],answer:0,solution:'উৎসের উত্তরমালা অনুযায়ী সঠিক উত্তর ল্যাটেক্স।'},
+{id:'chem-1-8',subject:'chemistry',paper:0,chapter:0,serial:8,pdfPage:4,q:'নিচের অক্সাইডগুলোর মধ্যে কোনটি পাইরেক্স গ্লাস তৈরি করতে পারে?',options:['SiO₂','LiO₂','Al₂O₃','B₂O₃'],answer:3,solution:'পাইরেক্স গ্লাসে B₂O₃ ব্যবহৃত হয়। উৎসের ব্যাখ্যায় SiO₂-এর সঙ্গে B₂O₃ যোগে পাইরেক্সের তাপ ও রাসায়নিক প্রতিরোধী বৈশিষ্ট্য তৈরির কথা বলা হয়েছে।'},
+{id:'chem-1-12',subject:'chemistry',paper:0,chapter:0,serial:12,pdfPage:4,q:'ল্যাবে শরীরে আগুন লাগলে কী করতে হবে?',options:['শরীরে CO₂ প্রয়োগ করতে হবে','কম্বল জড়াতে হবে','হাই প্রেসারে বায়ু দিতে হবে','হাই-স্পিডে পানি মারতে হবে'],answer:1,solution:'উৎসের উত্তরমালা অনুযায়ী শরীরে আগুন লাগলে কম্বল জড়ানো সঠিক পদক্ষেপ।'},
 
-{id:'phys-1-4',subject:'physics',chapter:0,serial:4,pdfPage:4,q:'তড়িৎ চুম্বকীয় তরঙ্গ তত্ত্ব আবিষ্কার করেন—',options:['রাদারফোর্ড','নিউটন','ম্যাক্সওয়েল','আইনস্টাইন'],answer:2,solution:'জেমস ক্লার্ক ম্যাক্সওয়েল তড়িৎ ও চৌম্বক ক্ষেত্রকে একত্রিত করে তড়িৎচুম্বকীয় তরঙ্গের তত্ত্ব প্রতিষ্ঠা করেন।'},
-{id:'phys-1-6',subject:'physics',chapter:0,serial:6,pdfPage:4,q:'কোনো বস্তু হতে শক্তির বিকিরণ নিরবচ্ছিন্নভাবে ঘটে না—এই তত্ত্বের প্রবক্তা কে?',options:['লর্ড রাদারফোর্ড','আলবার্ট আইনস্টাইন','ম্যাক্স প্ল্যাঙ্ক','মাইকেল ফ্যারাডে'],answer:2,solution:'ম্যাক্স প্ল্যাঙ্ক শক্তি কোয়ান্টা আকারে নির্গত বা শোষিত হয়—এই ধারণা দেন।'},
-{id:'phys-1-10',subject:'physics',chapter:0,serial:10,pdfPage:4,q:'“ভর ও শক্তি সমতুল্য”—কোন বিজ্ঞানীর অভিমত?',options:['নিউটন','গ্যালিলিও','আইনস্টাইন','ফ্যারাডে'],answer:2,solution:'আইনস্টাইনের ভর-শক্তি সমতুল্যতার সম্পর্ক E = mc² দ্বারা প্রকাশ করা হয়।'},
-{id:'phys-1-12',subject:'physics',chapter:0,serial:12,pdfPage:4,q:'কোন বৈজ্ঞানিক সর্বপ্রথম সূর্যকেন্দ্রিক বিশ্বের ধারণা প্রদান করেন?',options:['কেপলার','টলেমি','ডেমোক্রিটাস','কোপার্নিকাস'],answer:3,solution:'নিকোলাস কোপার্নিকাস সূর্যকেন্দ্রিক মডেলকে সুসংগঠিতভাবে উপস্থাপন করেন।'},
-{id:'phys-1-14',subject:'physics',chapter:0,serial:14,pdfPage:4,q:'পরমাণুর ধারণা সর্বপ্রথম প্রদান করেন—',options:['নিউটন','ডাল্টন','ডেমোক্রিটাস','আর্কিমিডিস'],answer:2,solution:'প্রাচীন গ্রিক দার্শনিক ডেমোক্রিটাস পদার্থের অবিভাজ্য ক্ষুদ্র কণার ধারণা দেন।'},
+{id:'phys-1-4',subject:'physics',paper:0,chapter:0,serial:4,pdfPage:4,q:'তড়িৎ চুম্বকীয় তরঙ্গ তত্ত্ব আবিষ্কার করেন—',options:['রাদারফোর্ড','নিউটন','ম্যাক্সওয়েল','আইনস্টাইন'],answer:2,solution:'জেমস ক্লার্ক ম্যাক্সওয়েল তড়িৎ ও চৌম্বক ক্ষেত্রকে একত্রিত করে তড়িৎচুম্বকীয় তরঙ্গের তত্ত্ব প্রতিষ্ঠা করেন।'},
+{id:'phys-1-6',subject:'physics',paper:0,chapter:0,serial:6,pdfPage:4,q:'কোনো বস্তু হতে শক্তির বিকিরণ নিরবচ্ছিন্নভাবে ঘটে না—এই তত্ত্বের প্রবক্তা কে?',options:['লর্ড রাদারফোর্ড','আলবার্ট আইনস্টাইন','ম্যাক্স প্ল্যাঙ্ক','মাইকেল ফ্যারাডে'],answer:2,solution:'ম্যাক্স প্ল্যাঙ্ক শক্তি কোয়ান্টা আকারে নির্গত বা শোষিত হয়—এই ধারণা দেন।'},
+{id:'phys-1-10',subject:'physics',paper:0,chapter:0,serial:10,pdfPage:4,q:'“ভর ও শক্তি সমতুল্য”—কোন বিজ্ঞানীর অভিমত?',options:['নিউটন','গ্যালিলিও','আইনস্টাইন','ফ্যারাডে'],answer:2,solution:'আইনস্টাইনের ভর-শক্তি সমতুল্যতার সম্পর্ক E = mc² দ্বারা প্রকাশ করা হয়।'},
+{id:'phys-1-12',subject:'physics',paper:0,chapter:0,serial:12,pdfPage:4,q:'কোন বৈজ্ঞানিক সর্বপ্রথম সূর্যকেন্দ্রিক বিশ্বের ধারণা প্রদান করেন?',options:['কেপলার','টলেমি','ডেমোক্রিটাস','কোপার্নিকাস'],answer:3,solution:'নিকোলাস কোপার্নিকাস সূর্যকেন্দ্রিক মডেলকে সুসংগঠিতভাবে উপস্থাপন করেন।'},
+{id:'phys-1-14',subject:'physics',paper:0,chapter:0,serial:14,pdfPage:4,q:'পরমাণুর ধারণা সর্বপ্রথম প্রদান করেন—',options:['নিউটন','ডাল্টন','ডেমোক্রিটাস','আর্কিমিডিস'],answer:2,solution:'প্রাচীন গ্রিক দার্শনিক ডেমোক্রিটাস পদার্থের অবিভাজ্য ক্ষুদ্র কণার ধারণা দেন।'},
 
-{id:'bio-1-1',subject:'biology',chapter:0,serial:1,pdfPage:4,q:'কোষ আবিষ্কার করেন কে?',options:['লিউয়েন হুক','রবার্ট হুক','রবার্ট ব্রাউন','রবার্ট ডারউইন'],answer:1,solution:'রবার্ট হুক কর্কের পাতলা অংশ পর্যবেক্ষণ করে “cell” শব্দটি ব্যবহার করেন।'},
-{id:'bio-1-2',subject:'biology',chapter:0,serial:2,pdfPage:4,q:'জীবদেহের জৈবিক কার্যকলাপের একক কী?',options:['অঙ্গ','টিস্যু','জীবকোষ','কোষপর্দা'],answer:2,solution:'কোষ জীবদেহের গঠনগত ও কার্যগত মৌলিক একক।'},
-{id:'bio-1-3',subject:'biology',chapter:0,serial:3,pdfPage:4,q:'Cell শব্দটি কোন ভাষা থেকে এসেছে?',options:['গ্রিক','ল্যাটিন','সুইডিশ','ইংরেজি'],answer:1,solution:'Cell শব্দটি ল্যাটিন “cella” থেকে এসেছে, যার অর্থ ছোট কক্ষ বা প্রকোষ্ঠ।'},
-{id:'bio-1-4',subject:'biology',chapter:0,serial:4,pdfPage:4,q:'কোন বিজ্ঞানীগণ কোষতত্ত্ব দেন?',options:['লাইনার ও ক্লিকার','সিয়ার ও নিকলসন','স্লাইডেন ও সোয়ান','ভ্যান লিউয়েন হুক ও লিন'],answer:2,solution:'ম্যাথিয়াস স্লাইডেন ও থিওডর সোয়ান কোষতত্ত্ব প্রণয়নে গুরুত্বপূর্ণ ভূমিকা রাখেন।'},
-{id:'bio-1-5',subject:'biology',chapter:0,serial:5,pdfPage:4,q:'প্রাণীকোষ বিষয়ে কোনটি সঠিক?',options:['কোষে সেন্ট্রোসোম থাকে','সাইটোপ্লাজমে প্লাস্টিড থাকে','সঞ্চিত খাদ্য সাধারণত শ্বেতসার','কোষ কেন্দ্রে বড় কোষ গহ্বর থাকে'],answer:0,solution:'উৎসের ব্যাখ্যা অনুযায়ী প্রাণীকোষে সাধারণত সেন্ট্রোসোম থাকে। প্লাস্টিড থাকে না; সঞ্চিত খাদ্য প্রধানত গ্লাইকোজেন।'}
+{id:'bio-1-1',subject:'biology',paper:0,chapter:0,serial:1,pdfPage:4,q:'কোষ আবিষ্কার করেন কে?',options:['লিউয়েন হুক','রবার্ট হুক','রবার্ট ব্রাউন','রবার্ট ডারউইন'],answer:1,solution:'রবার্ট হুক কর্কের পাতলা অংশ পর্যবেক্ষণ করে “cell” শব্দটি ব্যবহার করেন।'},
+{id:'bio-1-2',subject:'biology',paper:0,chapter:0,serial:2,pdfPage:4,q:'জীবদেহের জৈবিক কার্যকলাপের একক কী?',options:['অঙ্গ','টিস্যু','জীবকোষ','কোষপর্দা'],answer:2,solution:'কোষ জীবদেহের গঠনগত ও কার্যগত মৌলিক একক।'},
+{id:'bio-1-3',subject:'biology',paper:0,chapter:0,serial:3,pdfPage:4,q:'Cell শব্দটি কোন ভাষা থেকে এসেছে?',options:['গ্রিক','ল্যাটিন','সুইডিশ','ইংরেজি'],answer:1,solution:'Cell শব্দটি ল্যাটিন “cella” থেকে এসেছে, যার অর্থ ছোট কক্ষ বা প্রকোষ্ঠ।'},
+{id:'bio-1-4',subject:'biology',paper:0,chapter:0,serial:4,pdfPage:4,q:'কোন বিজ্ঞানীগণ কোষতত্ত্ব দেন?',options:['লাইনার ও ক্লিকার','সিয়ার ও নিকলসন','স্লাইডেন ও সোয়ান','ভ্যান লিউয়েন হুক ও লিন'],answer:2,solution:'ম্যাথিয়াস স্লাইডেন ও থিওডর সোয়ান কোষতত্ত্ব প্রণয়নে গুরুত্বপূর্ণ ভূমিকা রাখেন।'},
+{id:'bio-1-5',subject:'biology',paper:0,chapter:0,serial:5,pdfPage:4,q:'প্রাণীকোষ বিষয়ে কোনটি সঠিক?',options:['কোষে সেন্ট্রোসোম থাকে','সাইটোপ্লাজমে প্লাস্টিড থাকে','সঞ্চিত খাদ্য সাধারণত শ্বেতসার','কোষ কেন্দ্রে বড় কোষ গহ্বর থাকে'],answer:0,solution:'উৎসের ব্যাখ্যা অনুযায়ী প্রাণীকোষে সাধারণত সেন্ট্রোসোম থাকে। প্লাস্টিড থাকে না; সঞ্চিত খাদ্য প্রধানত গ্লাইকোজেন।'}
 ];
 
 var KEY='onushiloni_qb_state_v1';
 var state={answers:{},saved:{}};
 try{state=Object.assign(state,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
-var activeSubject='biology',activeChapter=0,filter='all',query='';
+var activeSubject='biology',activePaper=0,activeChapter=0,filter='all',query='';
 
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function letter(i){return ['ক','খ','গ','ঘ'][i]||String(i+1)}
+function activePaperData(){return SUBJECTS[activeSubject].papers[activePaper]}
 
 function renderSubjects(){
   var el=document.getElementById('subjects');
@@ -243,20 +265,27 @@ function renderSubjects(){
     var s=SUBJECTS[k];
     return '<button class="subject '+(k===activeSubject?'active':'')+'" data-subject="'+k+'"><i>'+s.icon+'</i><b>'+s.name+'</b></button>';
   }).join('');
-  el.querySelectorAll('[data-subject]').forEach(function(b){b.onclick=function(){activeSubject=b.dataset.subject;activeChapter=0;renderAll()}})
+  el.querySelectorAll('[data-subject]').forEach(function(b){b.onclick=function(){activeSubject=b.dataset.subject;activePaper=0;activeChapter=0;renderAll()}})
 }
-function chapterLoadedCount(subject,idx){return QUESTIONS.filter(function(q){return q.subject===subject&&q.chapter===idx}).length}
+function renderPapers(){
+  var el=document.getElementById('papers'),s=SUBJECTS[activeSubject];
+  el.innerHTML=s.papers.map(function(p,i){
+    return '<button class="paper-tab '+(i===activePaper?'active':'')+'" data-paper="'+i+'">'+p.short+'</button>';
+  }).join('');
+  el.querySelectorAll('[data-paper]').forEach(function(b){b.onclick=function(){activePaper=Number(b.dataset.paper);activeChapter=0;renderAll()}})
+}
+function chapterLoadedCount(subject,paper,idx){return QUESTIONS.filter(function(q){return q.subject===subject&&(q.paper||0)===paper&&q.chapter===idx}).length}
 function renderChapters(){
-  var s=SUBJECTS[activeSubject],el=document.getElementById('chapters');
-  el.innerHTML=s.chapters.map(function(name,i){
-    var c=chapterLoadedCount(activeSubject,i);
-    return '<button class="chapter '+(i===activeChapter?'active':'')+'" data-ch="'+i+'"><span class="no">'+(i+1)+'</span><span>'+esc(name)+'<small>'+(c?c+' question'+(c>1?'s':'')+' loaded':'QB data pending')+'</small></span></button>';
+  var p=activePaperData(),el=document.getElementById('chapters');
+  el.innerHTML=p.chapters.map(function(name,i){
+    var count=chapterLoadedCount(activeSubject,activePaper,i);
+    return '<button class="chapter '+(i===activeChapter?'active':'')+'" data-ch="'+i+'"><span class="no">'+(i+1)+'</span><span>'+esc(name)+'<small>'+(count?count+' question'+(count>1?'s':'')+' loaded':'QB data pending')+'</small></span></button>';
   }).join('');
   el.querySelectorAll('[data-ch]').forEach(function(b){b.onclick=function(){activeChapter=Number(b.dataset.ch);renderAll();window.scrollTo({top:330,behavior:'smooth'})}})
 }
 function currentQuestions(){
   return QUESTIONS.filter(function(q){
-    if(q.subject!==activeSubject||q.chapter!==activeChapter)return false;
+    if(q.subject!==activeSubject||(q.paper||0)!==activePaper||q.chapter!==activeChapter)return false;
     var a=state.answers[q.id];
     if(query && q.q.toLowerCase().indexOf(query.toLowerCase())===-1 && q.options.join(' ').toLowerCase().indexOf(query.toLowerCase())===-1)return false;
     if(filter==='unanswered'&&a!==undefined)return false;
@@ -283,18 +312,19 @@ function renderQuestion(q){
       '<span class="pill good">Correct: '+letter(q.answer)+'. '+esc(q.options[q.answer])+'</span></div>'+
       '<div class="solution"><div class="s-title">Answer & solution</div><p>'+esc(q.solution)+'</p></div>';
   }
+  var paper=SUBJECTS[q.subject].papers[q.paper||0];
   return '<article class="q" data-qid="'+q.id+'">'+
     '<div class="q-top"><div class="q-id"><div class="serial">'+q.serial+'</div><div class="ref"><b>Retina Onushiloni QB 2026–27</b><br>'+
-    esc(SUBJECTS[q.subject].paper)+' • Ch '+(q.chapter+1)+' • Q'+q.serial+' • PDF p.'+q.pdfPage+'</div></div>'+
+    esc(paper.name)+' • Ch '+(q.chapter+1)+' • Q'+q.serial+' • PDF p.'+q.pdfPage+'</div></div>'+
     '<div class="q-actions"><button class="icon-btn '+(saved?'saved':'')+'" data-save title="Bookmark">'+(saved?'★':'☆')+'</button></div></div>'+
     '<div class="q-text">'+esc(q.q)+'</div><div class="options">'+opts+'</div>'+meta+'</article>';
 }
 function renderQuestions(){
-  var s=SUBJECTS[activeSubject];
-  document.getElementById('chapterTitle').textContent=s.chapters[activeChapter];
-  document.getElementById('chapterMeta').textContent=s.paper+' • Chapter '+(activeChapter+1)+' • '+chapterLoadedCount(activeSubject,activeChapter)+' questions currently loaded';
+  var p=activePaperData();
+  document.getElementById('chapterTitle').textContent=p.chapters[activeChapter];
+  document.getElementById('chapterMeta').textContent=p.name+' • Chapter '+(activeChapter+1)+' • '+chapterLoadedCount(activeSubject,activePaper,activeChapter)+' questions currently loaded';
   var list=currentQuestions(),el=document.getElementById('questions');
-  if(!list.length){el.innerHTML='<div class="empty">'+(chapterLoadedCount(activeSubject,activeChapter)?'No questions match this filter.':'This chapter is ready in the navigation; its scanned QB questions have not yet been structured into interactive cards.')+'</div>';return}
+  if(!list.length){el.innerHTML='<div class="empty">'+(chapterLoadedCount(activeSubject,activePaper,activeChapter)?'No questions match this filter.':'This chapter is ready in the navigation; its scanned QB questions have not yet been structured into interactive cards.')+'</div>';return}
   el.innerHTML=list.map(renderQuestion).join('');
   el.querySelectorAll('.q').forEach(function(card){
     var id=card.dataset.qid,q=QUESTIONS.find(function(x){return x.id===id});
@@ -318,7 +348,7 @@ function renderStats(){
   document.getElementById('stCorrect').textContent=correct;
   document.getElementById('stSaved').textContent=saved;
 }
-function renderAll(){renderSubjects();renderChapters();renderQuestions();renderStats()}
+function renderAll(){renderSubjects();renderPapers();renderChapters();renderQuestions();renderStats()}
 document.getElementById('search').oninput=function(){query=this.value.trim();renderQuestions()}
 document.querySelectorAll('[data-filter]').forEach(function(b){b.onclick=function(){
   filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(function(x){x.classList.toggle('active',x===b)});renderQuestions()
