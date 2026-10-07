@@ -2651,6 +2651,181 @@ html[data-theme="dark"] #pdfDownloadSelected{background:#315d9b!important;border
 .status-chart-card{min-width:0}
 @media(max-width:900px){.schedule-chart-grid{grid-template-columns:1fr!important}}
 
+
+/* ===== DBT UI V5.3 — GLASS SYNC + FAST START ===== */
+:root{
+  --dbt-glass-blur:18px;
+  --dbt-glass-sat:132%;
+}
+html[data-theme="dark"] body{
+  background:#070b12!important;
+  background-image:
+    radial-gradient(circle at 12% 9%,rgba(85,113,215,.11),transparent 24%),
+    radial-gradient(circle at 90% 10%,rgba(170,96,177,.08),transparent 22%),
+    radial-gradient(circle at 78% 62%,rgba(46,151,177,.07),transparent 26%)!important
+}
+html[data-theme="light"] body{
+  background:#f4f7fc!important;
+  background-image:
+    radial-gradient(circle at 10% 7%,rgba(91,121,219,.13),transparent 23%),
+    radial-gradient(circle at 91% 10%,rgba(224,118,157,.11),transparent 22%),
+    radial-gradient(circle at 78% 62%,rgba(69,177,199,.10),transparent 26%)!important
+}
+
+/* shared section glass — same identity in both themes */
+html[data-theme="dark"] .schedule-visuals,
+html[data-theme="dark"] .target-section,
+html[data-theme="dark"] .circular-section,
+html[data-theme="dark"] .calendar-section,
+html[data-theme="dark"] .info-center{
+  background:rgba(13,19,29,.76)!important;
+  border-color:rgba(143,164,196,.15)!important;
+  box-shadow:0 20px 55px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.045)!important;
+  backdrop-filter:blur(var(--dbt-glass-blur)) saturate(var(--dbt-glass-sat))!important;
+  -webkit-backdrop-filter:blur(var(--dbt-glass-blur)) saturate(var(--dbt-glass-sat))!important
+}
+html[data-theme="dark"] .target-section{background:rgba(19,18,35,.76)!important}
+html[data-theme="dark"] .circular-section{background:rgba(29,17,23,.76)!important}
+html[data-theme="dark"] .calendar-section{background:rgba(11,24,30,.76)!important}
+html[data-theme="dark"] .info-center{background:rgba(21,19,32,.76)!important}
+
+html[data-theme="light"] .schedule-visuals,
+html[data-theme="light"] .target-section,
+html[data-theme="light"] .circular-section,
+html[data-theme="light"] .calendar-section,
+html[data-theme="light"] .info-center{
+  background:rgba(255,255,255,.72)!important;
+  border-color:rgba(86,106,140,.13)!important;
+  box-shadow:0 20px 55px rgba(70,87,117,.09),inset 0 1px 0 rgba(255,255,255,.92)!important;
+  backdrop-filter:blur(var(--dbt-glass-blur)) saturate(125%)!important;
+  -webkit-backdrop-filter:blur(var(--dbt-glass-blur)) saturate(125%)!important
+}
+html[data-theme="light"] .target-section{background:rgba(250,247,255,.76)!important}
+html[data-theme="light"] .circular-section{background:rgba(255,248,251,.77)!important}
+html[data-theme="light"] .calendar-section{background:rgba(246,252,255,.76)!important}
+html[data-theme="light"] .info-center{background:rgba(250,248,255,.76)!important}
+
+/* glass cards — subtle category/section color remains visible */
+html[data-theme="dark"] .schedule-chart-card,
+html[data-theme="dark"] .starred-card,
+html[data-theme="dark"] .circular-card,
+html[data-theme="dark"] .circular-group,
+html[data-theme="dark"] .timeline-card,
+html[data-theme="dark"] .calendar-commandbar,
+html[data-theme="dark"] .guide-card,
+html[data-theme="dark"] .guide-panel{
+  background:rgba(18,27,39,.70)!important;
+  border-color:rgba(137,160,194,.13)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important
+}
+html[data-theme="dark"] .starred-card{background:rgba(28,25,46,.69)!important}
+html[data-theme="dark"] .circular-card,
+html[data-theme="dark"] .circular-group{background:rgba(35,24,31,.69)!important}
+html[data-theme="dark"] .timeline-card,
+html[data-theme="dark"] .calendar-commandbar{background:rgba(15,30,37,.70)!important}
+html[data-theme="dark"] .guide-card,
+html[data-theme="dark"] .guide-panel{background:rgba(27,24,40,.70)!important}
+
+html[data-theme="light"] .schedule-chart-card,
+html[data-theme="light"] .starred-card,
+html[data-theme="light"] .circular-card,
+html[data-theme="light"] .circular-group,
+html[data-theme="light"] .timeline-card,
+html[data-theme="light"] .calendar-commandbar,
+html[data-theme="light"] .guide-card,
+html[data-theme="light"] .guide-panel{
+  background:rgba(255,255,255,.70)!important;
+  border-color:rgba(87,106,139,.11)!important;
+  box-shadow:0 8px 24px rgba(64,82,112,.045),inset 0 1px 0 rgba(255,255,255,.95)!important
+}
+html[data-theme="light"] .starred-card{background:rgba(251,248,255,.74)!important}
+html[data-theme="light"] .circular-card,
+html[data-theme="light"] .circular-group{background:rgba(255,249,251,.74)!important}
+html[data-theme="light"] .timeline-card,
+html[data-theme="light"] .calendar-commandbar{background:rgba(247,253,255,.74)!important}
+html[data-theme="light"] .guide-card,
+html[data-theme="light"] .guide-panel{background:rgba(251,249,255,.74)!important}
+
+/* glass modals on both themes */
+html[data-theme="dark"] .pdf-picker-modal,
+html[data-theme="dark"] .day-events-sheet,
+html[data-theme="dark"] .target-picker,
+html[data-theme="dark"] .sync-modal,
+html[data-theme="dark"] .guide-compare-modal,
+html[data-theme="dark"] .event-drawer{
+  background:rgba(10,17,26,.90)!important;
+  backdrop-filter:blur(20px) saturate(130%)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(130%)!important
+}
+html[data-theme="light"] .pdf-picker-modal,
+html[data-theme="light"] .day-events-sheet,
+html[data-theme="light"] .target-picker,
+html[data-theme="light"] .sync-modal,
+html[data-theme="light"] .guide-compare-modal,
+html[data-theme="light"] .event-drawer{
+  background:rgba(252,254,255,.92)!important;
+  border-color:rgba(74,94,127,.14)!important;
+  box-shadow:0 28px 80px rgba(62,78,106,.18)!important;
+  backdrop-filter:blur(20px) saturate(125%)!important;
+  -webkit-backdrop-filter:blur(20px) saturate(125%)!important
+}
+html[data-theme="light"] .pdf-picker-head,
+html[data-theme="light"] .day-events-head,
+html[data-theme="light"] .pdf-picker-foot{
+  background:rgba(247,250,255,.82)!important;border-color:rgba(83,102,134,.11)!important
+}
+
+/* Performance: skip offscreen layout/paint until needed; keep stable placeholder size */
+@supports(content-visibility:auto){
+  .target-section,.circular-section,.calendar-section,.info-center,.schedule-visuals{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 720px
+  }
+}
+
+/* Mobile: glass appearance, no expensive live blur, fewer animations/repaints */
+@media(max-width:700px){
+  :root{--dbt-glass-blur:0px}
+  html[data-theme="dark"] .schedule-visuals,
+  html[data-theme="dark"] .target-section,
+  html[data-theme="dark"] .circular-section,
+  html[data-theme="dark"] .calendar-section,
+  html[data-theme="dark"] .info-center,
+  html[data-theme="dark"] .schedule-chart-card,
+  html[data-theme="dark"] .starred-card,
+  html[data-theme="dark"] .circular-card,
+  html[data-theme="dark"] .circular-group,
+  html[data-theme="dark"] .pdf-picker-modal,
+  html[data-theme="dark"] .day-events-sheet,
+  html[data-theme="dark"] .target-picker,
+  html[data-theme="dark"] .sync-modal,
+  html[data-theme="dark"] .guide-compare-modal,
+  html[data-theme="dark"] .event-drawer,
+  html[data-theme="light"] .schedule-visuals,
+  html[data-theme="light"] .target-section,
+  html[data-theme="light"] .circular-section,
+  html[data-theme="light"] .calendar-section,
+  html[data-theme="light"] .info-center,
+  html[data-theme="light"] .schedule-chart-card,
+  html[data-theme="light"] .starred-card,
+  html[data-theme="light"] .circular-card,
+  html[data-theme="light"] .circular-group,
+  html[data-theme="light"] .pdf-picker-modal,
+  html[data-theme="light"] .day-events-sheet,
+  html[data-theme="light"] .target-picker,
+  html[data-theme="light"] .sync-modal,
+  html[data-theme="light"] .guide-compare-modal,
+  html[data-theme="light"] .event-drawer{
+    backdrop-filter:none!important;-webkit-backdrop-filter:none!important
+  }
+  .schedule-chart-card,.starred-card,.circular-card,.timeline-card,.event,.pdf-exam-row{
+    transition:none!important
+  }
+  .orbit-dot{animation-duration:18s!important}
+  .monthly-bar-item{transition:none!important}
+  .mobile-dock{backdrop-filter:blur(7px)!important;-webkit-backdrop-filter:blur(7px)!important}
+}
+
 </style></head><body>
 <div class="app">
   <nav class="topnav">
@@ -3193,7 +3368,8 @@ function countdown(){
   heroPhase.textContent=ph.name;heroMessage.textContent=ph.msg;
   if(typeof statPhase!=='undefined'&&statPhase){statPhase.textContent=ph.stat;if(typeof statPhaseNote!=='undefined'&&statPhaseNote)statPhaseNote.textContent=ph.note;}
 }const daysEl=document.getElementById('days'),weeksEl=document.getElementById('weeks'),hoursEl=document.getElementById('hours'),minsEl=document.getElementById('mins'),secsEl=document.getElementById('secs'),fill=document.getElementById('fill'),pct=document.getElementById('pct'),passedEl=document.getElementById('passed'),totalEl=document.getElementById('total'); countdown();setInterval(countdown,1000);
-let all=[],view=new Date(2026,11,1),sourceHealth=[];
+const BOOT_EVENTS=${JSON.stringify(CURATED_EVENTS)};
+let all=BOOT_EVENTS.slice(),view=new Date(2026,11,1),sourceHealth=[];
 const STAR_KEY='admissionbydbt-starred-v1';
 const COUNTDOWN_TARGET_KEY='admissionbydbt-countdown-target-v1';
 const HOME_SYNC_CODE_KEY='admissionbydbt-home-sync-code-v1';
@@ -4251,7 +4427,22 @@ addEventListener('keydown',e=>{if(e.key==='Escape'){if(syncModalBackdrop.classLi
 addEventListener('online',()=>{if(validSyncCode(homeSyncCode))pushCloudSync()});
 addEventListener('storage',e=>{if(e.key===HOME_SYNC_STATE_KEY&&e.newValue){try{const s=JSON.parse(e.newValue);if(Number(s.updatedAt||0)>Number(homeSyncState?.updatedAt||0)){applySyncState(s);render()}}catch(err){}}});
 addEventListener('resize',()=>{calendar.dataset.view=calendarView});
-load().then(()=>initializeSecretSync());
+(function hydrateStartupEvents(){
+  try{
+    const cached=JSON.parse(localStorage.getItem(EVENT_CACHE_KEY)||'null');
+    if(cached&&Array.isArray(cached.events)&&cached.events.length){
+      all=cached.events;
+      sourceHealth=Array.isArray(cached.sources)?cached.sources:[];
+      syncStatus.textContent='● '+all.length+' exams • ready';
+    }else{
+      syncStatus.textContent='● '+all.length+' exams • ready';
+    }
+  }catch(e){syncStatus.textContent='● '+all.length+' exams • ready'}
+})();
+render();
+const dbtBackgroundRefresh=()=>load().then(()=>initializeSecretSync());
+if('requestIdleCallback' in window)requestIdleCallback(dbtBackgroundRefresh,{timeout:1200});
+else setTimeout(dbtBackgroundRefresh,120);
 setInterval(updateStarredTimers,1000);
 setInterval(()=>{if(validSyncCode(homeSyncCode)&&navigator.onLine)initializeSecretSync()},30000);
 
@@ -4846,13 +5037,11 @@ function renderAllCategories(){
   addEventListener('resize',onCategoryScroll,{passive:true});
   updateCategoryFromScroll();
 }
-(function initGuideLazy(){
-  const host=document.getElementById('infoCenter');
+(function initGuideWarm(){
   const start=()=>{if(guideInitialized)return;guideInitialized=true;renderAllCategories()};
-  if(!('IntersectionObserver' in window)){start();return}
-  const io=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){start();io.disconnect()}},{rootMargin:'500px 0px'});
-  io.observe(host);
   document.querySelectorAll('a[href="#infoCenter"]').forEach(a=>a.addEventListener('click',start,{once:true}));
+  if('requestIdleCallback' in window)requestIdleCallback(start,{timeout:1600});
+  else setTimeout(start,450);
 })();
 
 (function initCircularCategorySpy(){
