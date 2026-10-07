@@ -54,9 +54,6 @@ async function streamToText(stream){
 }
 
 export default async function handler(req,res){
-  if(!process.env.BLOB_READ_WRITE_TOKEN){
-    return json(res,503,{ok:false,error:'sync_storage_not_configured'});
-  }
   const code=normalizeCode(req.headers['x-dbt-sync-code']);
   if(!validCode(code))return json(res,400,{ok:false,error:'invalid_code'});
 
