@@ -368,6 +368,9 @@ a{color:inherit}
 /* targets */
 .target-section{margin:0 0 22px;padding:22px}
 .target-count{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#efd17c;border:1px solid rgba(242,199,102,.32);background:rgba(74,55,14,.27);border-radius:999px;padding:7px 10px}
+.target-head-actions{display:flex;align-items:center;gap:8px}
+.target-add-btn{height:34px;padding:0 12px;border:1px solid rgba(120,167,255,.18);border-radius:999px;background:rgba(120,167,255,.07);color:#dce8ff;font-size:9px;font-weight:800;cursor:pointer}
+.target-add-btn:hover{background:rgba(120,167,255,.12);border-color:rgba(120,167,255,.30)}
 .starred-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:12px}
 .starred-card{position:relative;overflow:hidden;border:1px solid rgba(242,199,102,.26);background:linear-gradient(150deg,rgba(48,38,15,.47),rgba(10,13,20,.91) 52%,rgba(21,17,9,.78));border-radius:18px;padding:16px;box-shadow:0 14px 42px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,230,163,.07);transition:.18s ease}
 .starred-card:hover{transform:translateY(-2px);border-color:rgba(242,199,102,.45)}
@@ -724,11 +727,6 @@ body{background:#02050a;color:#f5f7fb}
 .starred-card:before{display:none}
 .starred-card:hover{border-color:rgba(255,255,255,.14);transform:translateY(-1px)}
 .target-badge{background:rgba(255,214,107,.06);border-color:rgba(255,214,107,.15)}
-.target-priority-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:11px}
-.target-priority-btn{height:30px;padding:0 10px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.035);color:#8e99aa;font-size:8px;font-weight:800;cursor:pointer;transition:.16s ease}
-.target-priority-btn:hover{background:rgba(255,255,255,.06);color:#fff}
-.target-priority-btn.active{border-color:rgba(242,199,102,.24);background:rgba(242,199,102,.08);color:#f4d985}
-.target-priority-note{font-size:8px;color:#697587}
 .target-time{background:rgba(255,255,255,.028);border-color:rgba(255,255,255,.06)}
 .target-time b{color:#f4f6fa}
 .star-btn{border-radius:50%;background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.08)}
@@ -912,7 +910,7 @@ body{background:#02050a;color:#f5f7fb}
     <section class="target-section" id="targets">
       <div class="target-head">
         <div><div class="section-kicker">YOUR LIST</div><h2>My Exams</h2><div class="sub">Star an exam to keep it here.</div></div>
-        <div class="target-count" id="targetCount">0 STARRED</div>
+        <div class="target-head-actions"><button class="target-add-btn" id="targetAddButton" type="button">＋ Add exams</button><div class="target-count" id="targetCount">0 STARRED</div></div>
       </div>
       <div class="starred-grid" id="starredCards"></div>
     </section>
@@ -987,6 +985,17 @@ body{background:#02050a;color:#f5f7fb}
       <button class="sync-use" id="syncUseButton" type="button">Use code</button>
     </div>
     <div class="sync-warning">Anyone with this code can open and change your saved Home/Calendar choices. Keep it private.</div>
+  </div>
+</div>
+
+<div class="target-picker-backdrop" id="examPickerBackdrop" aria-hidden="true">
+  <div class="target-picker" role="dialog" aria-modal="true" aria-labelledby="examPickerTitle">
+    <div class="target-picker-head">
+      <div><div class="section-kicker">MY EXAMS</div><h3 id="examPickerTitle">Choose exams</h3></div>
+      <button class="target-picker-close" id="examPickerClose" type="button" aria-label="Close">×</button>
+    </div>
+    <input class="target-picker-search" id="examPickerSearch" type="search" placeholder="Search exam or university…">
+    <div class="target-picker-list" id="examPickerList"></div>
   </div>
 </div>
 
@@ -1666,14 +1675,11 @@ function updateDashboardStats(){
   }
 }
 function renderStarredTargets(){
-  const matches=all.filter(isStarred).sort((a,b)=>{
-    const ap=eventKey(a)===countdownTargetKey?0:1,bp=eventKey(b)===countdownTargetKey?0:1;
-    return ap-bp||new Date(a.date)-new Date(b.date);
-  });
+  const matches=all.filter(isStarred).sort((a,b)=>new Date(a.date)-new Date(b.date));
   targetCount.textContent=matches.length+' STARRED';
   updateDashboardStats();
   if(!matches.length){
-    starredCards.innerHTML='<div class="target-empty">☆ Star an exam to keep it here. You can also set your priority exam from this section.</div>';
+    starredCards.innerHTML='<div class="target-empty">No exams selected yet. Tap “Add exams” to choose them here.</div>';
     return;
   }
   starredCards.innerHTML=matches.map((e,i)=>{
@@ -1681,34 +1687,20 @@ function renderStarredTargets(){
     const date=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'});
     const time=eventTimeLabel(e);
     const message=v.done?'Exam time / completed':(v.d<=7?'Final stretch — keep revision tight.':v.d<=30?'Revision matters more than collecting new topics.':'Keep going — '+v.d+' days to this target.');
-    const isPriority=eventKey(e)===countdownTargetKey;
-    return '<article class="starred-card'+(isPriority?' primary-target':'')+'" data-star-key="'+key+'">'+
-      '<div class="target-top"><div>'+ (isPriority?'<div class="target-badge">PRIORITY</div>':'') +'<div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
+    return '<article class="starred-card" data-star-key="'+key+'">'+
+      '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
       '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Exams" title="Remove from My Exams">★</button></div>'+
       '<div class="target-timer">'+
         '<div class="target-time"><b data-part="d">'+String(v.d).padStart(2,'0')+'</b><span>DAYS</span></div>'+
         '<div class="target-time"><b data-part="h">'+String(v.h).padStart(2,'0')+'</b><span>HOURS</span></div>'+
         '<div class="target-time"><b data-part="m">'+String(v.m).padStart(2,'0')+'</b><span>MIN</span></div>'+
         '<div class="target-time"><b data-part="s">'+String(v.s).padStart(2,'0')+'</b><span>SEC</span></div>'+
-      '</div><div class="target-message">'+esc(message)+'</div>'+
-      '<div class="target-priority-row"><span class="target-priority-note">'+(isPriority?'Used for the main countdown':'Make this your main exam')+'</span>'+
-      '<button type="button" class="target-priority-btn'+(isPriority?' active':'')+'" data-priority-key="'+key+'">'+(isPriority?'Priority set':'Set priority')+'</button></div>'+
-      '</article>';
+      '</div><div class="target-message">'+esc(message)+'</div></article>';
   }).join('');
   starredCards.querySelectorAll('.target-unstar').forEach(btn=>{
     btn.onclick=()=>{
       const raw=decodeURIComponent(btn.dataset.starKey||'');
       starred.delete(raw);saveStars();saveLocalSyncState();render();
-    };
-  });
-  starredCards.querySelectorAll('.target-priority-btn').forEach(btn=>{
-    btn.onclick=()=>{
-      const raw=decodeURIComponent(btn.dataset.priorityKey||'');
-      const e=all.find(x=>eventKey(x)===raw);
-      if(!e)return;
-      if(eventKey(e)===countdownTargetKey)setCountdownTarget(null);
-      else setCountdownTarget(e);
-      render();
     };
   });
 }
@@ -1727,6 +1719,31 @@ function updateStarredTimers(){
   });
 }
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function renderExamPicker(){
+  const q=(examPickerSearch.value||'').toLowerCase().trim();
+  const rows=all.filter(e=>new Date(e.date)>new Date()&&(!q||e.title.toLowerCase().includes(q))).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(!rows.length){examPickerList.innerHTML='<div class="target-picker-empty">No exam matches your search.</div>';return}
+  examPickerList.innerHTML=rows.map(e=>{
+    const selected=isStarred(e),d=new Date(e.date),key=encodeURIComponent(eventKey(e));
+    return '<button type="button" class="target-picker-row'+(selected?' active':'')+'" data-exam-pick="'+key+'"><span><strong>'+esc(e.title)+'</strong><small>'+esc(d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'}))+' • '+esc(eventTimeLabel(e))+'</small></span><span class="target-picker-check">'+(selected?'✓':'+')+'</span></button>';
+  }).join('');
+  examPickerList.querySelectorAll('[data-exam-pick]').forEach(btn=>btn.onclick=()=>{
+    const raw=decodeURIComponent(btn.dataset.examPick||'');
+    const e=all.find(x=>eventKey(x)===raw);
+    if(!e)return;
+    if(starred.has(raw))starred.delete(raw);else starred.add(raw);
+    saveStars();saveLocalSyncState();render();renderExamPicker();
+  });
+}
+function openExamPicker(){
+  examPickerSearch.value='';
+  renderExamPicker();
+  examPickerBackdrop.classList.add('open');
+  examPickerBackdrop.setAttribute('aria-hidden','false');
+  setTimeout(()=>examPickerSearch.focus(),30);
+}
+function closeExamPicker(){examPickerBackdrop.classList.remove('open');examPickerBackdrop.setAttribute('aria-hidden','true')}
+
 function renderTargetPicker(){
   const q=(targetPickerSearch.value||'').toLowerCase().trim();
   const rows=all.filter(e=>new Date(e.date)>new Date()&&(!q||e.title.toLowerCase().includes(q))).sort((a,b)=>new Date(a.date)-new Date(b.date));
@@ -1768,12 +1785,16 @@ next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()
 refresh.onclick=()=>load(true);
 search.oninput=render;
 mainTargetButton.onclick=openTargetPicker;
+targetAddButton.onclick=openExamPicker;
 homeSyncButton.onclick=openSyncModal;
 syncModalClose.onclick=closeSyncModal;
 syncModalBackdrop.onclick=e=>{if(e.target===syncModalBackdrop)closeSyncModal()};
 syncCopyButton.onclick=async()=>{try{await navigator.clipboard.writeText(homeSyncCode);syncStatusLine.textContent='Code copied.'}catch(e){syncStatusLine.textContent='Could not copy. Press and hold the code to copy it.'}};
 syncUseButton.onclick=useExistingSyncCode;
 syncExistingInput.oninput=()=>{syncExistingInput.value=syncExistingInput.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')};
+examPickerClose.onclick=closeExamPicker;
+examPickerBackdrop.onclick=e=>{if(e.target===examPickerBackdrop)closeExamPicker()};
+examPickerSearch.oninput=renderExamPicker;
 targetPickerClose.onclick=closeTargetPicker;
 targetPickerBackdrop.onclick=e=>{if(e.target===targetPickerBackdrop)closeTargetPicker()};
 targetPickerSearch.oninput=renderTargetPicker;
@@ -1782,7 +1803,7 @@ calendarFilters.querySelectorAll('[data-calendar-filter]').forEach(btn=>btn.oncl
 eventDrawerClose.onclick=closeEventDrawer;eventDrawerClose2.onclick=closeEventDrawer;
 eventDrawerBackdrop.onclick=e=>{if(e.target===eventDrawerBackdrop)closeEventDrawer()};
 eventDrawerStar.onclick=()=>{if(!drawerEvent)return;const current=drawerEvent;toggleStar(current);drawerEvent=current;openEventDrawer(current)};
-addEventListener('keydown',e=>{if(e.key==='Escape'){if(syncModalBackdrop.classList.contains('open'))closeSyncModal();else if(targetPickerBackdrop.classList.contains('open'))closeTargetPicker();else if(eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()}});
+addEventListener('keydown',e=>{if(e.key==='Escape'){if(syncModalBackdrop.classList.contains('open'))closeSyncModal();else if(examPickerBackdrop.classList.contains('open'))closeExamPicker();else if(targetPickerBackdrop.classList.contains('open'))closeTargetPicker();else if(eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()}});
 addEventListener('online',()=>{if(validSyncCode(homeSyncCode))pushCloudSync()});
 addEventListener('storage',e=>{if(e.key===HOME_SYNC_STATE_KEY&&e.newValue){try{const s=JSON.parse(e.newValue);if(Number(s.updatedAt||0)>Number(homeSyncState?.updatedAt||0)){applySyncState(s);render()}}catch(err){}}});
 addEventListener('resize',()=>{calendar.dataset.view=calendarView});
