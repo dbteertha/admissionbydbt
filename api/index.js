@@ -18,45 +18,45 @@ const CURATED_EVENTS = [
   ['Khulna University C / Humanities','2026-12-17T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
   ['Khulna University A / Science','2026-12-18T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
   ['Khulna University B / Life Science','2026-12-18T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
-  ['MIST C Unit','2026-12-18T10:00:00+06:00','Agree'],
-  ['MIST A & B','2026-12-19T10:00:00+06:00','Agree'],
+  ['MIST C Unit','2026-12-18T10:00:00+06:00','Circular pending — calendar date only; official MIST 2026–27 circular not yet verified','Time TBA'],
+  ['MIST A & B','2026-12-19T10:00:00+06:00','Circular pending — calendar date only; official MIST 2026–27 circular not yet verified','Time TBA'],
   ['Dhaka University B / Arts, Law & Social Science','2026-12-19T11:00:00+06:00','Official — 19 Dec 2026, 11:00 AM–12:30 PM','Official'],
   ['Dhaka University Fine Arts','2026-12-22T11:00:00+06:00','Official — 22 Dec 2026, 11:00 AM–12:30 PM','Official'],
   ['Dhaka University C / Business','2026-12-26T11:00:00+06:00','Official — 26 Dec 2026, 11:00 AM–12:30 PM','Official'],
-  ['Jagannath University A / Science','2027-01-01T10:00:00+06:00','Agree'],
+  ['Jagannath University A / Science','2027-01-01T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
   ['BUP FBS','2027-01-01T10:30:00+06:00','Official/current notice — first FBS date; keep 9 Jan too','Official'],
-  ['Agriculture Cluster','2027-01-02T10:00:00+06:00','Agree'],
+  ['Agriculture Cluster','2027-01-02T10:00:00+06:00','Circular pending — 2026–27 full ACAS circular not yet verified','Time TBA'],
   ['BUP FASS','2027-01-02T15:30:00+06:00','Official/current BUP notice','Official'],
-  ['Jagannath University E / Fine Arts','2027-01-08T10:00:00+06:00','Agree'],
+  ['Jagannath University E / Fine Arts','2027-01-08T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
   ['KUET','2027-01-08T10:00:00+06:00','Official portal/circular — 8 Jan 2027; centres KUET, DU and RUET; MCQ','Official'],
   ['BUP FST','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
   ['BUP FET','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
   ['BUP FMS','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
-  ['Rajshahi University B / Business','2027-01-08T11:00:00+06:00','Agree'],
+  ['Rajshahi University B / Business','2027-01-08T11:00:00+06:00','Circular pending — full official 2026–27 undergraduate circular not yet verified','Time TBA'],
   ['BUP FSSS','2027-01-08T15:30:00+06:00','Current BUP notice','Official'],
-  ['Rajshahi University C / Science','2027-01-09T11:00:00+06:00','Agree'],
+  ['Rajshahi University C / Science','2027-01-09T11:00:00+06:00','Circular pending — full official 2026–27 undergraduate circular not yet verified','Time TBA'],
   ['BUP FBS','2027-01-09T10:30:00+06:00','Official/current notice — second FBS date; intentional, not duplicate','Official'],
   ['BUP BBA General','2027-01-09T15:30:00+06:00','Chorcha visible'],
-  ['RUET','2027-01-14T09:30:00+06:00','Chorcha visible'],
-  ['Jagannath University B / Humanities','2027-01-15T10:00:00+06:00','Agree'],
+  ['RUET','2027-01-14T09:30:00+06:00','Circular pending — calendar date only; RUET official site still shows 2025–26 undergraduate circular','Time TBA'],
+  ['Jagannath University B / Humanities','2027-01-15T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
   ['BUET','2027-01-16T09:00:00+06:00','Date announced — detailed 2026–27 circular pending','Circular pending'],
-  ['Rajshahi University A / Humanities','2027-01-16T11:00:00+06:00','Agree'],
-  ['Jagannath University C / Business','2027-01-22T10:00:00+06:00','Agree'],
-  ['Jagannath University D / Social Science','2027-01-23T10:00:00+06:00','Agree'],
+  ['Rajshahi University A / Humanities','2027-01-16T11:00:00+06:00','Circular pending — full official 2026–27 undergraduate circular not yet verified','Time TBA'],
+  ['Jagannath University C / Business','2027-01-22T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
+  ['Jagannath University D / Social Science','2027-01-23T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
   ['CUET','2027-01-23T10:00:00+06:00','Admission-Calendar visible'],
   ['SUST A','2027-01-26T15:00:00+06:00','Date confirmed — full application/test-plan notice pending','Circular pending'],
   ['SUST B','2027-01-27T15:00:00+06:00','Date confirmed — full application/test-plan notice pending','Circular pending'],
   ['BUTEX','2027-01-29T10:00:00+06:00','Official university announcement — 29 Jan 2027','Official'],
-  ['Chittagong University C / Business','2027-01-29T11:00:00+06:00','Agree'],
-  ['Chittagong University A / Science','2027-01-30T11:00:00+06:00','Agree'],
-  ['Chittagong University B1','2027-02-03T11:00:00+06:00','Agree'],
-  ['Chittagong University B2','2027-02-04T11:00:00+06:00','Agree'],
-  ['Chittagong University B','2027-02-05T11:00:00+06:00','Agree'],
+  ['Chittagong University C / Business','2027-01-29T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
+  ['Chittagong University A / Science','2027-01-30T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
+  ['Chittagong University B1','2027-02-03T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
+  ['Chittagong University B2','2027-02-04T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
+  ['Chittagong University B','2027-02-05T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
   ['Comilla University A','2027-02-05T11:00:00+06:00','Official university press release — 5 Feb 2027','Official'],
-  ['Chittagong University D','2027-02-06T11:00:00+06:00','Agree'],
+  ['Chittagong University D','2027-02-06T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
   ['Comilla University B','2027-02-06T11:00:00+06:00','Official university press release — 6 Feb 2027','Official'],
   ['Comilla University C','2027-02-07T11:00:00+06:00','Official university press release — 7 Feb 2027','Official'],
-  ['Chittagong University D1','2027-02-08T11:00:00+06:00','Agree'],
+  ['Chittagong University D1','2027-02-08T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
   ['GST B / Humanities','2027-03-19T10:00:00+06:00','Date announced — full application circular pending','Circular pending'],
   ['GST C / Business','2027-03-20T10:00:00+06:00','Date announced — full application circular pending','Circular pending'],
   ['GST D / Architecture','2027-03-20T10:00:00+06:00','New separate D / Architecture unit — date announced; full circular pending','Circular pending'],
@@ -233,12 +233,14 @@ const OFFICIAL_CIRCULARS = [
   {name:'AAUB Notice Archive',short:'AAUB Notices',status:'Official notices',url:'https://www.aaub.edu.bd/notice'},
   {name:'Khulna University',short:'KU',status:'Official date notice',url:'https://ku.ac.bd/news-details/2783'},
   {name:'BUTEX Academic Notices',short:'BUTEX',status:'Official notices',url:'https://www.butex.edu.bd/academic-notices/'},
-  {name:'Comilla University Press Releases',short:'CoU',status:'Official press release',url:'https://www.cou.ac.bd/press-releases'}
+  {name:'Comilla University Press Releases',short:'CoU',status:'Official exam dates',url:'https://www.cou.ac.bd/press-releases'},
+  {name:'Jagannath University Admission',short:'JnU',status:'Official 2026–27',url:'https://admission.jnu.ac.bd/'},
+  {name:'Chittagong University Admission',short:'CU',status:'Official 2026–27',url:'https://admission.cu.ac.bd/'}
 ];
 const CIRCULAR_PENDING = [
   'Medical / Dental','BUET detailed circular','RUET','CUET','Rajshahi University',
-  'Jagannath University','Chittagong University','SUST full circular',
-  'Agriculture Cluster','GST full application circular','MIST 2026–27'
+  'SUST full circular','Agriculture Cluster','GST full application circular',
+  'MIST 2026–27','Comilla University detailed circular'
 ];
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -470,7 +472,7 @@ a{color:inherit}
 
     <section class="section circular-section" id="circulars">
       <div class="head">
-        <div><div class="section-kicker">OFFICIAL SOURCES</div><h2>2026–27 Circulars & Notices</h2><div class="sub">Tap a university name to open its current official admission notice or portal.</div></div>
+        <div><div class="section-kicker">OFFICIAL SOURCES</div><h2>2026–27 Circulars & Notices</h2><div class="sub">Tap a university name to open its current official admission notice or portal. Last audited: 7 Oct 2026.</div></div>
       </div>
       <div class="circular-grid">
         ${OFFICIAL_CIRCULARS.map(x=>'<a class="circular-card" href="'+x.url+'" target="_blank" rel="noopener"><div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' • Official source</span></a>').join('')}
@@ -744,7 +746,7 @@ const UNIVERSITY_INFO = {
 
   "RUET": {
     aliases:["Rajshahi University of Engineering and Technology","রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়","রুয়েট"],
-    current:["২০২৬–২৭ ভর্তি পরীক্ষা: ১৪ জানুয়ারি ২০২৭।"],
+    current:["ক্যালেন্ডারে ১৪ জানুয়ারি ২০২৭ পরীক্ষা ট্র্যাক করা হচ্ছে; তবে ৭ অক্টোবর ২০২৬ পর্যন্ত RUET-এর অফিসিয়াল admission material-এ পূর্ণ ২০২৬–২৭ undergraduate circular পাওয়া যায়নি।","অফিসিয়াল সাইটে এখনও ২০২৫–২৬ circular দৃশ্যমান; তাই eligibility, fee, seats, application dates ও detailed exam rules previous-year reference মাত্র।"],
     previous:[
       "২০২৫–২৬ আবেদন: ২ ডিসেম্বর ২০২৫ সকাল ১০টা থেকে ১৩ ডিসেম্বর বিকাল ৫টা।",
       "আবেদন ফি জমার শেষ সময় ছিল ১৫ ডিসেম্বর ২০২৫ দুপুর ১২টা।",
@@ -803,7 +805,7 @@ const UNIVERSITY_INFO = {
 
   "MIST": {
     aliases:["Military Institute of Science and Technology","মিস্ট"],
-    current:["২০২৬–২৭ ক্যালেন্ডার অনুযায়ী C Unit — ১৮ ডিসেম্বর ২০২৬; A & B — ১৯ ডিসেম্বর ২০২৬।"],
+    current:["২০২৬–২৭ ক্যালেন্ডারে C Unit — ১৮ ডিসেম্বর এবং A & B — ১৯ ডিসেম্বর ২০২৬ দেখানো হচ্ছে; তবে ৭ অক্টোবর ২০২৬ পর্যন্ত MIST-এর অফিসিয়াল admission portal এখনও ২০২৫–২৬ cycle দেখাচ্ছে।","তাই ২০২৬–২৭ eligibility, fee, seat, marks distribution ও application dates নতুন অফিসিয়াল circular না আসা পর্যন্ত final নয়।"],
     previous:[
       "২০২৫–২৬ অফিসিয়াল পোর্টালে আবেদন শেষ সময় ছিল ১৯ জানুয়ারি ২০২৬।",
       "Unit A: মোট ২০০ নম্বর, ৩ ঘণ্টা — গণিত ৮০, পদার্থ ৬০, রসায়ন ৪০, ইংরেজি ২০।",
@@ -841,7 +843,7 @@ const UNIVERSITY_INFO = {
 
   "রাজশাহী বিশ্ববিদ্যালয়": {
     aliases:["University of Rajshahi","Rajshahi University","RU","রাবি"],
-    current:["২০২৬–২৭: B/Business — ৮ জানুয়ারি; C/Science — ৯ জানুয়ারি; A/Humanities — ১৬ জানুয়ারি ২০২৭।"],
+    current:["বর্তমান ক্যালেন্ডারে B/Business — ৮ জানুয়ারি, C/Science — ৯ জানুয়ারি এবং A/Humanities — ১৬ জানুয়ারি ২০২৭ ট্র্যাক করা হচ্ছে।","৭ অক্টোবর ২০২৬ পর্যন্ত নতুন পূর্ণ অফিসিয়াল ২০২৬–২৭ undergraduate circular পাওয়া যায়নি; eligibility, fee, seats, application dates ও detailed exam rules তাই pending।"],
     previous:[
       "২০২৫–২৬ অনলাইন আবেদন: ২০ নভেম্বর ২০২৫ দুপুর ১২:০১ থেকে ৭ ডিসেম্বর রাত ১১:৫৯ পর্যন্ত (অফিসিয়াল guideline)।",
       "অফিসিয়াল পোর্টালে Application Guideline, Payment Instructions, Photo/Selfie Instructions, Helpline, FAQ ও Complaint সুবিধা ছিল।",
@@ -858,7 +860,7 @@ const UNIVERSITY_INFO = {
 
   "জগন্নাথ বিশ্ববিদ্যালয়": {
     aliases:["Jagannath University","JnU","জবি"],
-    current:["২০২৬–২৭: A — ১ জানুয়ারি; E — ৮ জানুয়ারি; B — ১৫ জানুয়ারি; C — ২২ জানুয়ারি; D — ২৩ জানুয়ারি ২০২৭।"],
+    current:["২০২৬–২৭ অফিসিয়াল admission schedule available: A — ১ জানুয়ারি; E — ৮ জানুয়ারি; B — ১৫ জানুয়ারি; C — ২২ জানুয়ারি; D — ২৩ জানুয়ারি ২০২৭।","২০২৬–২৭ application information ও eligibility-ও অফিসিয়াল admission source-এ available; current official source-কে previous-year reference-এর ওপর অগ্রাধিকার দিন।"],
     previous:[
       "২০২৫–২৬ আবেদন: ২০ নভেম্বর–৫ ডিসেম্বর ২০২৫।",
       "Admit Card: A Unit ১০–২১ ডিসেম্বর; C Unit ১০–২২ ডিসেম্বর; D Unit ২৫ ডিসেম্বর–৪ জানুয়ারি; E Unit ৭–১১ ডিসেম্বর; B Unit ১৫–২৫ জানুয়ারি।",
@@ -896,7 +898,7 @@ const UNIVERSITY_INFO = {
 
   "SUST": {
     aliases:["Shahjalal University of Science and Technology","শাহজালাল বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়","শাবিপ্রবি"],
-    current:["২০২৬–২৭: A Unit — ২৬ জানুয়ারি; B Unit — ২৭ জানুয়ারি ২০২৭।"],
+    current:["২০২৬–২৭ A Unit — ২৬ জানুয়ারি এবং B Unit — ২৭ জানুয়ারি ২০২৭ তারিখ নিশ্চিত।","পূর্ণ application/test-plan circular ৭ অক্টোবর ২০২৬ পর্যন্ত pending; পুরোনো eligibility, fee বা seat data-কে current হিসেবে ব্যবহার করা যাবে না।"],
     previous:[
       "২০২৫–২৬ অফিসিয়াল admission site department eligibility table প্রকাশ করেছে।",
       "বিভাগে ভর্তির জন্য সংশ্লিষ্ট HSC-Level prerequisite subject-এ সাধারণত কমপক্ষে GPA ৩.০০ লাগত।",
@@ -913,7 +915,7 @@ const UNIVERSITY_INFO = {
 
   "চট্টগ্রাম বিশ্ববিদ্যালয়": {
     aliases:["University of Chittagong","Chittagong University","CU","চবি"],
-    current:["২০২৬–২৭: C — ২৯ জানুয়ারি; A — ৩০ জানুয়ারি; B1 — ৩ ফেব্রুয়ারি; B2 — ৪ ফেব্রুয়ারি; B — ৫ ফেব্রুয়ারি; D — ৬ ফেব্রুয়ারি; D1 — ৮ ফেব্রুয়ারি ২০২৭।"],
+    current:["২০২৬–২৭ অফিসিয়াল schedule/application announcement available: C — ২৯ জানুয়ারি; A — ৩০ জানুয়ারি; B1 — ৩ ফেব্রুয়ারি; B2 — ৪ ফেব্রুয়ারি; B — ৫ ফেব্রুয়ারি; D — ৬ ফেব্রুয়ারি; D1 — ৮ ফেব্রুয়ারি ২০২৭।","Current 2026–27 official admission source-কে previous-year prospectus-এর ওপর অগ্রাধিকার দিন।"],
     previous:[
       "২০২৫–২৬ অফিসিয়াল CU admission portal-এ Prospectus, Admission Notice, Application Process, General Eligibility, Schedule ও Fee Rules আলাদা মেনুতে প্রকাশ করা হয়েছিল।",
       "A Unit-এর helpline আলাদা ছিল Science/Biological Sciences/Engineering/Marine Sciences faculties-এর জন্য।",
@@ -930,7 +932,7 @@ const UNIVERSITY_INFO = {
 
   "কুমিল্লা বিশ্ববিদ্যালয়": {
     aliases:["Comilla University","CoU","কুবি"],
-    current:["২০২৬–২৭ আবেদন: Chorcha অনুযায়ী ১৫ নভেম্বর–১০ ডিসেম্বর ২০২৬।","পরীক্ষা: A — ৫ ফেব্রুয়ারি; B — ৬ ফেব্রুয়ারি; C — ৭ ফেব্রুয়ারি ২০২৭।"],
+    current:["অফিসিয়ালি ঘোষিত ২০২৬–২৭ পরীক্ষার তারিখ: A — ৫ ফেব্রুয়ারি; B — ৬ ফেব্রুয়ারি; C — ৭ ফেব্রুয়ারি ২০২৭।","পূর্ণ detailed circular/application schedule ৭ অক্টোবর ২০২৬ পর্যন্ত pending; aggregator application dates-কে final হিসেবে দেখানো হবে না।"],
     previous:[
       "২০২৫–২৬ অফিসিয়াল ভর্তি বিজ্ঞপ্তি ২৫ নভেম্বর ২০২৫ এবং ভর্তি নির্দেশিকা ২৭ নভেম্বর প্রকাশ হয়েছিল।",
       "আবেদন শুরু হয়েছিল ২৭ নভেম্বর ২০২৫; সময় পরে বাড়ানো হয়েছিল।",
@@ -985,7 +987,7 @@ const UNIVERSITY_INFO = {
 
   "GST গুচ্ছ": {
     aliases:["GST","GST Cluster","General Science and Technology Cluster","গুচ্ছ"],
-    current:["২০২৬–২৭: B/Humanities — ১৯ মার্চ; C/Business ও D/Architecture — ২০ মার্চ; A/Science — ২৭ মার্চ ২০২৭।"],
+    current:["ঘোষিত ২০২৬–২৭ exam dates: B/Humanities — ১৯ মার্চ; C/Business ও D/Architecture — ২০ মার্চ; A/Science — ২৭ মার্চ ২০২৭।","পূর্ণ official application circular ৭ অক্টোবর ২০২৬ পর্যন্ত pending; eligibility, fee, seats ও detailed rules current circular ছাড়া final নয়।"],
     previous:[
       "২০২৫–২৬ official GST portal-এর workflow অনুযায়ী ইউনিটভিত্তিক আবেদন, admit card, centre এবং subject choice এক প্ল্যাটফর্মে পরিচালিত হয়েছে।",
       "গত বছরের participating university/seat matrix ও eligibility session-specific ছিল; তাই ২০২৬–২৭-এ তালিকা পরিবর্তিত হতে পারে।"
@@ -1000,7 +1002,7 @@ const UNIVERSITY_INFO = {
 
   "কৃষি গুচ্ছ": {
     aliases:["Agriculture Cluster","Agri","Agricultural Universities Cluster","ACAS"],
-    current:["২০২৬–২৭ পরীক্ষা: ২ জানুয়ারি ২০২৭।"],
+    current:["ক্যালেন্ডারে ২০২৬–২৭ পরীক্ষা ২ জানুয়ারি ২০২৭ ট্র্যাক করা হচ্ছে।","৭ অক্টোবর ২০২৬ পর্যন্ত নতুন পূর্ণ ২০২৬–২৭ ACAS circular পাওয়া যায়নি; eligibility, fee, seats, application schedule ও exam details pending।"],
     previous:[
       "২০২৫–২৬ কৃষি গুচ্ছে কৃষিবিজ্ঞান বিষয়ে ডিগ্রি প্রদানকারী ৯টি পাবলিক বিশ্ববিদ্যালয় অংশ নিয়েছিল।",
       "অফিসিয়াল ভর্তি বিজ্ঞপ্তি ও ভর্তি নির্দেশিকা প্রকাশ হয়েছিল ২৩ নভেম্বর ২০২৫; সংশোধিত বিজ্ঞপ্তি ১২ ডিসেম্বর।",
@@ -1017,7 +1019,7 @@ const UNIVERSITY_INFO = {
 
   "মেডিকেল ও ডেন্টাল": {
     aliases:["Medical & Dental","Medical","Dental","MBBS","BDS","মেডিকেল","ডেন্টাল"],
-    current:["২০২৬–২৭ ক্যালেন্ডারে MBBS/BDS ভর্তি পরীক্ষা ৪ ডিসেম্বর ২০২৬ সকাল ১০টা দেখানো হয়েছে; DGME/DGHS-এর নতুন domestic circular চূড়ান্ত উৎস।"],
+    current:["২০২৬–২৭ MBBS/BDS-এর ৪ ডিসেম্বর ২০২৬ তারিখটি tentative calendar date; ৭ অক্টোবর ২০২৬ পর্যন্ত final DGME/DGHS domestic admission circular পাওয়া যায়নি।","Final exam date/time, eligibility, fee, seats, application schedule ও marks rules শুধুমাত্র নতুন DGME/DGHS circular প্রকাশের পর current ধরা হবে।"],
     previous:[
       "২০২৫–২৬ MBBS/BDS admission circular DGME ১০ নভেম্বর ২০২৫ প্রকাশ করেছিল।",
       "ভর্তি পরীক্ষা হয়েছিল ১২ ডিসেম্বর ২০২৫ সকাল ১০টা।",
