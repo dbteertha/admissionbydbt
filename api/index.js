@@ -343,7 +343,7 @@ a{color:inherit}
 .target-badge{display:inline-flex;margin-bottom:10px;font-size:8px;letter-spacing:.14em;color:#ffe6a3;border:1px solid rgba(242,199,102,.30);border-radius:999px;padding:5px 7px;background:rgba(95,70,13,.20)}
 .target-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.target-name{font-size:15px;font-weight:850;line-height:1.3}.target-date{font-size:10px;color:#aaa38e;margin-top:5px}
 .target-timer{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}.target-time{background:rgba(5,7,11,.72);border:1px solid rgba(242,199,102,.14);border-radius:12px;padding:9px 5px;text-align:center}.target-time b{display:block;font-size:23px;line-height:1;color:#f8e8b6;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.target-time span{display:block;margin-top:5px;font-size:7px;letter-spacing:.13em;color:#867d64}
-.target-message{font-size:10px;color:#9c957f;margin-top:11px}.target-card-actions{display:flex;gap:7px;margin-top:11px}.countdown-target-btn{flex:1;border:1px solid rgba(120,167,255,.18);background:rgba(72,108,188,.08);color:#a9c3f5;border-radius:10px;padding:8px 10px;font-size:8px;font-weight:900;cursor:pointer}.countdown-target-btn:hover{border-color:rgba(120,167,255,.38);color:#e7f0ff}.countdown-target-btn.active{border-color:rgba(116,230,167,.28);background:rgba(116,230,167,.08);color:#b9ecc9}.target-empty{grid-column:1/-1;border:1px dashed rgba(242,199,102,.22);border-radius:15px;padding:19px;color:#9e9888;font-size:11px;text-align:center;background:rgba(13,13,10,.48)}
+.target-message{font-size:10px;color:#9c957f;margin-top:11px}.target-empty{grid-column:1/-1;border:1px dashed rgba(242,199,102,.22);border-radius:15px;padding:19px;color:#9e9888;font-size:11px;text-align:center;background:rgba(13,13,10,.48)}
 .star-btn{appearance:none;border:1px solid #343c4a;background:#0d1119;color:#778195;width:30px;height:30px;border-radius:10px;display:inline-grid;place-items:center;cursor:pointer;font-size:16px;line-height:1;flex:0 0 auto;transition:.18s ease}.star-btn:hover{transform:translateY(-1px) scale(1.03);border-color:rgba(242,199,102,.42);color:#f5d67d}.star-btn.active{color:#ffd76b;border-color:rgba(242,199,102,.46);background:rgba(86,64,15,.30);box-shadow:0 0 18px rgba(231,185,59,.15)}
 
 /* calendar */
@@ -411,7 +411,19 @@ a{color:inherit}
 .event-status{display:inline-flex;margin-left:5px;padding:2px 5px;border-radius:999px;font-size:6px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
 .event-status.tentative{color:#ffd68b;border:1px solid rgba(255,190,80,.32);background:rgba(255,176,55,.10)}
 .event-status.pending{color:#b7c5db;border:1px solid rgba(150,175,210,.22);background:rgba(120,150,190,.08)}
-.hero-target-note{margin:10px auto 0;width:max-content;max-width:100%;font-size:9px;color:#8f9bad;letter-spacing:.04em}
+.hero-target-note{margin:7px auto 0;width:max-content;max-width:100%;font-size:8px;color:#7f8a9b;letter-spacing:.03em}
+.main-target-control{display:grid;place-items:center;margin-top:12px}
+.main-target-icon{width:38px;height:38px;border-radius:50%;border:1px solid rgba(120,167,255,.22);background:rgba(10,16,27,.78);color:#cfe0ff;display:grid;place-items:center;font-size:20px;line-height:1;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.24),inset 0 0 0 1px rgba(255,255,255,.025);transition:.16s ease}
+.main-target-icon:hover{transform:translateY(-1px) scale(1.04);border-color:rgba(120,167,255,.46);background:#111a29;color:#fff;box-shadow:0 0 24px rgba(99,151,255,.14)}
+.main-target-icon.active{border-color:rgba(116,230,167,.32);color:#b9ecc9;background:rgba(35,92,61,.14)}
+.target-picker-backdrop{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.68);backdrop-filter:blur(8px);display:grid;place-items:center;padding:18px;opacity:0;pointer-events:none;transition:.16s ease}
+.target-picker-backdrop.open{opacity:1;pointer-events:auto}
+.target-picker{width:min(620px,96vw);max-height:min(720px,88vh);display:flex;flex-direction:column;padding:17px;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:linear-gradient(145deg,#0b1018,#070a10);box-shadow:0 28px 90px rgba(0,0,0,.55);transform:translateY(10px) scale(.985);transition:.18s ease}
+.target-picker-backdrop.open .target-picker{transform:translateY(0) scale(1)}
+.target-picker-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.target-picker-head h3{margin:0;font-size:22px;letter-spacing:-.035em}.target-picker-close{width:34px;height:34px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:#10151e;color:#9ca7b7;font-size:19px;cursor:pointer}
+.target-picker-search{width:100%;margin:14px 0 10px;padding:10px 12px;border:1px solid rgba(255,255,255,.09);border-radius:11px;background:#0d121b;color:#edf2f8;outline:none;font-size:10px}.target-picker-search:focus{border-color:rgba(120,167,255,.38);box-shadow:0 0 0 3px rgba(120,167,255,.06)}
+.target-picker-list{overflow:auto;display:grid;gap:6px;padding-right:2px}.target-picker-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 12px;border:1px solid rgba(255,255,255,.065);border-radius:12px;background:#0a0e15;cursor:pointer;text-align:left}.target-picker-row:hover{border-color:rgba(120,167,255,.23);background:#101722}.target-picker-row.active{border-color:rgba(116,230,167,.28);background:rgba(41,95,66,.10)}
+.target-picker-row strong{display:block;color:#e9eef5;font-size:10px}.target-picker-row small{display:block;margin-top:4px;color:#778397;font-size:8px}.target-picker-check{font-size:16px;color:#88a5d7}.target-picker-row.active .target-picker-check{color:#86dfaa}.target-picker-empty{padding:28px;text-align:center;color:#6f7b8e;font-size:9px}
 @media(max-width:700px){.circular-section{padding:14px}.circular-grid{grid-template-columns:1fr 1fr}.circular-card{min-height:92px;padding:11px}.circular-card strong{font-size:11px}}
 /* ===== 2026-27 HOME + CALENDAR COMMAND CENTER ===== */
 .home-audit-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(116,230,167,.18);border-radius:999px;background:rgba(116,230,167,.055);color:#a9d9ba;font-size:8px;font-weight:850;letter-spacing:.06em;white-space:nowrap}
@@ -483,12 +495,15 @@ a{color:inherit}
         <div class="days" id="days">00</div>
         <div class="label">DAYS LEFT</div>
         <div class="hero-message" id="heroMessage">One focused day at a time.</div>
-        <div class="hero-target-note" id="heroCountdownTarget">Choose a target exam below to control this countdown.</div>
         <div class="clock">
           <div><b id="weeks">00W</b><span>WEEKS</span></div>
           <div><b id="hours">00H</b><span>HOURS</span></div>
           <div><b id="mins">00M</b><span>MINUTES</span></div>
           <div><b id="secs">00S</b><span>SECONDS</span></div>
+        </div>
+        <div class="main-target-control">
+          <button class="main-target-icon" id="mainTargetButton" type="button" title="Set main countdown target" aria-label="Set main countdown target">⌖</button>
+          <div class="hero-target-note" id="heroCountdownTarget">Main countdown target: default</div>
         </div>
         <div class="progress-wrap">
           <div class="progress-meta"><div class="passed"><span id="passed">0 Passed</span><i>|</i><span id="total">0 Total</span></div><div class="pct" id="pct">0%</div></div>
@@ -570,6 +585,17 @@ a{color:inherit}
   </main>
 </div>
 
+<div class="target-picker-backdrop" id="targetPickerBackdrop" aria-hidden="true">
+  <div class="target-picker" role="dialog" aria-modal="true" aria-labelledby="targetPickerTitle">
+    <div class="target-picker-head">
+      <div><div class="section-kicker">MAIN COUNTDOWN</div><h3 id="targetPickerTitle">Choose target exam</h3></div>
+      <button class="target-picker-close" id="targetPickerClose" type="button" aria-label="Close">×</button>
+    </div>
+    <input class="target-picker-search" id="targetPickerSearch" type="search" placeholder="Search exam or university…">
+    <div class="target-picker-list" id="targetPickerList"></div>
+  </div>
+</div>
+
 <div class="event-drawer-backdrop" id="eventDrawerBackdrop" aria-hidden="true">
   <aside class="event-drawer" id="eventDrawer">
     <button class="event-drawer-close" id="eventDrawerClose" type="button">×</button>
@@ -632,30 +658,34 @@ function setCountdownTarget(e){
   }catch(err){}
   if(e){
     TARGET=new Date(e.date);
-    if(heroCountdownTarget){
-      heroCountdownTarget.textContent='Countdown target • '+e.title+' • '+new Date(e.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short',year:'numeric'})+' • '+eventTimeLabel(e);
-    }
-  }else if(heroCountdownTarget){
-    heroCountdownTarget.textContent='Choose a target exam below to control this countdown.';
+    if(heroCountdownTarget)heroCountdownTarget.textContent='Main target • '+e.title+' • '+new Date(e.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short',year:'numeric'});
+    if(mainTargetButton)mainTargetButton.classList.add('active');
+  }else{
+    if(heroCountdownTarget)heroCountdownTarget.textContent='Tap ⌖ to set the main countdown target';
+    if(mainTargetButton)mainTargetButton.classList.remove('active');
   }
   countdown();
   renderStarredTargets();
+  if(typeof closeTargetPicker==='function')closeTargetPicker();
 }
 function restoreCountdownTarget(){
   const selected=all.find(e=>eventKey(e)===countdownTargetKey);
-  if(selected){TARGET=new Date(selected.date);if(heroCountdownTarget)heroCountdownTarget.textContent='Countdown target • '+selected.title+' • '+new Date(selected.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short',year:'numeric'})+' • '+eventTimeLabel(selected);countdown();return}
+  if(selected){
+    TARGET=new Date(selected.date);
+    if(heroCountdownTarget)heroCountdownTarget.textContent='Main target • '+selected.title+' • '+new Date(selected.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short',year:'numeric'});
+    if(mainTargetButton)mainTargetButton.classList.add('active');
+    countdown();
+    return;
+  }
   if(countdownTargetKey){countdownTargetKey='';try{localStorage.removeItem(COUNTDOWN_TARGET_KEY)}catch(e){}}
-  const firstStar=all.filter(isStarred).filter(e=>new Date(e.date)>new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date))[0];
-  if(firstStar){countdownTargetKey=eventKey(firstStar);try{localStorage.setItem(COUNTDOWN_TARGET_KEY,countdownTargetKey)}catch(e){}TARGET=new Date(firstStar.date);if(heroCountdownTarget)heroCountdownTarget.textContent='Countdown target • '+firstStar.title+' • '+new Date(firstStar.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short',year:'numeric'})+' • '+eventTimeLabel(firstStar);countdown();}
-  else if(heroCountdownTarget)heroCountdownTarget.textContent='Choose a target exam below to control this countdown.';
+  if(mainTargetButton)mainTargetButton.classList.remove('active');
+  if(heroCountdownTarget)heroCountdownTarget.textContent='Tap ⌖ to set the main countdown target';
 }
 function toggleStar(e){
   const key=eventKey(e);
   const adding=!starred.has(key);
   if(adding) starred.add(key); else starred.delete(key);
   saveStars();
-  if(adding&&!countdownTargetKey){countdownTargetKey=key;try{localStorage.setItem(COUNTDOWN_TARGET_KEY,key)}catch(err){}}
-  if(!adding&&countdownTargetKey===key){countdownTargetKey='';try{localStorage.removeItem(COUNTDOWN_TARGET_KEY)}catch(err){}}
   if(adding&&typeof makeShooter==='function'&&!reduceMotion){
     makeShooter(true,Math.max(80,innerWidth*.72),Math.max(80,innerHeight*.18));
   }
@@ -793,16 +823,15 @@ function renderStarredTargets(){
   targetCount.textContent=matches.length+' STARRED';
   updateDashboardStats();
   if(!matches.length){
-    starredCards.innerHTML='<div class="target-empty">☆ Star an exam from the calendar, then set it as your big countdown target here.</div>';
+    starredCards.innerHTML='<div class="target-empty">☆ Star an exam from the calendar to keep it in My Target Exams.</div>';
     return;
   }
   starredCards.innerHTML=matches.map((e,i)=>{
-    const d=new Date(e.date),v=splitCountdown(e.date),rawKey=eventKey(e),key=encodeURIComponent(rawKey),selected=rawKey===countdownTargetKey;
+    const d=new Date(e.date),v=splitCountdown(e.date),key=encodeURIComponent(eventKey(e));
     const date=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'});
     const time=eventTimeLabel(e);
     const message=v.done?'Exam time / completed':(v.d<=7?'Final stretch — keep revision tight.':v.d<=30?'Revision matters more than collecting new topics.':'Keep going — '+v.d+' days to this target.');
-    return '<article class="starred-card'+(selected?' primary-target':'')+'" data-star-key="'+key+'">'+
-      (selected?'<div class="target-badge">BIG COUNTDOWN TARGET</div>':'')+
+    return '<article class="starred-card" data-star-key="'+key+'">'+
       '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
       '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Target Exams" title="Remove from My Target Exams">★</button></div>'+
       '<div class="target-timer">'+
@@ -810,23 +839,12 @@ function renderStarredTargets(){
         '<div class="target-time"><b data-part="h">'+String(v.h).padStart(2,'0')+'</b><span>HOURS</span></div>'+
         '<div class="target-time"><b data-part="m">'+String(v.m).padStart(2,'0')+'</b><span>MIN</span></div>'+
         '<div class="target-time"><b data-part="s">'+String(v.s).padStart(2,'0')+'</b><span>SEC</span></div>'+
-      '</div><div class="target-message">'+esc(message)+'</div>'+
-      '<div class="target-card-actions"><button type="button" class="countdown-target-btn'+(selected?' active':'')+'" data-countdown-target="'+key+'">'+(selected?'✓ Controls big countdown':'Set as big countdown')+'</button></div>'+
-      '</article>';
+      '</div><div class="target-message">'+esc(message)+'</div></article>';
   }).join('');
   starredCards.querySelectorAll('.target-unstar').forEach(btn=>{
     btn.onclick=()=>{
       const raw=decodeURIComponent(btn.dataset.starKey||'');
-      starred.delete(raw);saveStars();
-      if(countdownTargetKey===raw){countdownTargetKey='';try{localStorage.removeItem(COUNTDOWN_TARGET_KEY)}catch(e){}}
-      render();
-    };
-  });
-  starredCards.querySelectorAll('[data-countdown-target]').forEach(btn=>{
-    btn.onclick=()=>{
-      const raw=decodeURIComponent(btn.dataset.countdownTarget||'');
-      const e=all.find(x=>eventKey(x)===raw);
-      if(e)setCountdownTarget(e);
+      starred.delete(raw);saveStars();render();
     };
   });
 }
@@ -845,6 +863,28 @@ function updateStarredTimers(){
   });
 }
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function renderTargetPicker(){
+  const q=(targetPickerSearch.value||'').toLowerCase().trim();
+  const rows=all.filter(e=>new Date(e.date)>new Date()&&(!q||e.title.toLowerCase().includes(q))).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(!rows.length){targetPickerList.innerHTML='<div class="target-picker-empty">No upcoming exam matches your search.</div>';return}
+  targetPickerList.innerHTML=rows.map(e=>{
+    const active=eventKey(e)===countdownTargetKey,d=new Date(e.date),key=encodeURIComponent(eventKey(e));
+    return '<button type="button" class="target-picker-row'+(active?' active':'')+'" data-main-target="'+key+'"><span><strong>'+esc(e.title)+'</strong><small>'+esc(d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'}))+' • '+esc(eventTimeLabel(e))+'</small></span><span class="target-picker-check">'+(active?'✓':'›')+'</span></button>';
+  }).join('');
+  targetPickerList.querySelectorAll('[data-main-target]').forEach(btn=>btn.onclick=()=>{
+    const raw=decodeURIComponent(btn.dataset.mainTarget||'');
+    const e=all.find(x=>eventKey(x)===raw);
+    if(e)setCountdownTarget(e);
+  });
+}
+function openTargetPicker(){
+  targetPickerSearch.value='';
+  renderTargetPicker();
+  targetPickerBackdrop.classList.add('open');
+  targetPickerBackdrop.setAttribute('aria-hidden','false');
+  setTimeout(()=>targetPickerSearch.focus(),30);
+}
+function closeTargetPicker(){targetPickerBackdrop.classList.remove('open');targetPickerBackdrop.setAttribute('aria-hidden','true')}
 async function load(force=false){
   syncStatus.textContent='● syncing sources…';
   try{
@@ -863,12 +903,16 @@ prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()
 next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};
 refresh.onclick=()=>load(true);
 search.oninput=render;
+mainTargetButton.onclick=openTargetPicker;
+targetPickerClose.onclick=closeTargetPicker;
+targetPickerBackdrop.onclick=e=>{if(e.target===targetPickerBackdrop)closeTargetPicker()};
+targetPickerSearch.oninput=renderTargetPicker;
 calendarViewSwitch.querySelectorAll('[data-calendar-view]').forEach(btn=>btn.onclick=()=>{calendarView=btn.dataset.calendarView;render()});
 calendarFilters.querySelectorAll('[data-calendar-filter]').forEach(btn=>btn.onclick=()=>{calendarFilter=btn.dataset.calendarFilter;render()});
 eventDrawerClose.onclick=closeEventDrawer;eventDrawerClose2.onclick=closeEventDrawer;
 eventDrawerBackdrop.onclick=e=>{if(e.target===eventDrawerBackdrop)closeEventDrawer()};
 eventDrawerStar.onclick=()=>{if(!drawerEvent)return;const current=drawerEvent;toggleStar(current);drawerEvent=current;openEventDrawer(current)};
-addEventListener('keydown',e=>{if(e.key==='Escape'&&eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()});
+addEventListener('keydown',e=>{if(e.key==='Escape'){if(targetPickerBackdrop.classList.contains('open'))closeTargetPicker();else if(eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()}});
 addEventListener('resize',()=>{calendar.dataset.view=(innerWidth<=700&&calendarView==='month')?'timeline':calendarView});
 load();
 setInterval(updateStarredTimers,1000);
