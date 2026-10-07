@@ -9,6 +9,7 @@
     {"source":"/onushiloni","destination":"/api/onushiloni.js"},
     {"source":"/onushiloni/(.*)","destination":"/api/onushiloni.js"},
     {"source":"/api/events","destination":"/api/index.js"},
+    {"source":"/api/home-sync","destination":"/api/home-sync.js"},
     {"source":"/health","destination":"/api/index.js"},
     {"source":"/tracker","destination":"/api/tracker.js"},
     {"source":"/tracker/(.*)","destination":"/api/tracker.js"},
