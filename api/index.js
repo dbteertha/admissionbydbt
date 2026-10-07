@@ -743,8 +743,8 @@ function countdown(){
     passed=Math.max(0,Math.min(total,Math.floor((now-START)/86400000)));
   const days=Math.floor(diff/86400000),weeks=Math.floor(days/7),
     h=Math.floor(diff/3600000)%24,m=Math.floor(diff/60000)%60,s=Math.floor(diff/1000)%60;
-  daysEl.textContent=days;weeksEl.textContent=String(weeks).padStart(2,'0')+'W';
-  hoursEl.textContent=String(h).padStart(2,'0')+'H';minsEl.textContent=String(m).padStart(2,'0')+'M';secsEl.textContent=String(s).padStart(2,'0')+'S';
+  daysEl.textContent=days;weeksEl.textContent=String(weeks).padStart(2,'0');
+  hoursEl.textContent=String(h).padStart(2,'0');minsEl.textContent=String(m).padStart(2,'0');secsEl.textContent=String(s).padStart(2,'0');
   const p=span>0?Math.max(0,Math.min(100,((now-START)/span)*100)):0;
   fill.style.width=p+'%';pct.textContent=p.toFixed(1)+'%';passedEl.textContent=passed+' Passed';totalEl.textContent=total+' Total';
   const ph=phaseFor(days);
