@@ -282,7 +282,14 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
 <script>
 try{
   document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'light';
-}catch(e){document.documentElement.dataset.theme='light'}
+  const savedLang=localStorage.getItem('admissionbydbt-language-v1')||'en';
+  document.documentElement.dataset.lang=savedLang==='bn'?'bn':'en';
+  document.documentElement.lang=savedLang==='bn'?'bn':'en';
+}catch(e){
+  document.documentElement.dataset.theme='light';
+  document.documentElement.dataset.lang='en';
+  document.documentElement.lang='en';
+}
 </script>
 <style>
 :root{
@@ -2370,7 +2377,163 @@ html[data-theme="light"] .local-preview-note{background:#f4f7fb;border-color:#e2
       linear-gradient(150deg,#fff,#f7f9ff 55%,#fbf6ff);
   }
 }
-</style></head><body><canvas id="stars"></canvas>
+
+/* ===== DBT V5 — COLOR, LANGUAGE, MOBILE & SPEED ===== */
+.language-toggle{
+  width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.09);
+  border-radius:50%;background:rgba(255,255,255,.045);color:#e7edfa;cursor:pointer;
+  font-size:12px;font-weight:950;transition:transform .16s ease,background .16s ease,border-color .16s ease;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)
+}
+.language-toggle:hover{transform:translateY(-1px);background:rgba(255,255,255,.08);border-color:rgba(151,124,255,.32)}
+html[data-theme="light"] .language-toggle{
+  background:rgba(255,255,255,.82);border-color:rgba(64,82,113,.12);color:#6756b4;
+  box-shadow:0 5px 16px rgba(74,91,124,.06),inset 0 1px 0 #fff
+}
+html[data-lang="bn"] body{font-family:"Noto Sans Bengali","Hind Siliguri",Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+html[data-lang="bn"] .section-kicker,
+html[data-lang="bn"] .stat-label,
+html[data-lang="bn"] .clock span{letter-spacing:.04em;text-transform:none}
+
+/* no image/canvas background: faster CSS-only color atmosphere */
+#stars{display:none!important}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(circle at 12% 8%,rgba(104,132,255,.13),transparent 26%),
+    radial-gradient(circle at 88% 18%,rgba(255,112,164,.10),transparent 26%),
+    radial-gradient(circle at 72% 80%,rgba(49,202,187,.08),transparent 30%)
+}
+html[data-theme="dark"] body:before{
+  background:
+    radial-gradient(circle at 12% 8%,rgba(83,112,255,.12),transparent 28%),
+    radial-gradient(circle at 88% 18%,rgba(181,96,255,.08),transparent 28%),
+    radial-gradient(circle at 55% 78%,rgba(40,178,211,.06),transparent 34%)
+}
+
+/* stronger, coordinated category cards */
+.mix-bars{gap:9px}
+.mix-row{
+  padding:11px 12px;border:1px solid rgba(255,255,255,.065);border-radius:14px;
+  background:rgba(255,255,255,.025);overflow:hidden;position:relative
+}
+.mix-row:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.65}
+.mix-row.medical:before{background:linear-gradient(100deg,rgba(255,103,140,.10),transparent 64%)}
+.mix-row.engineering:before{background:linear-gradient(100deg,rgba(59,196,235,.11),transparent 64%)}
+.mix-row.university:before{background:linear-gradient(100deg,rgba(156,116,244,.12),transparent 64%)}
+.mix-label,.mix-track{position:relative;z-index:1}
+.mix-label b{min-width:30px;padding:4px 7px;border-radius:999px;text-align:center}
+.mix-row.medical .mix-label b{color:#ff7698;background:rgba(255,103,140,.10)}
+.mix-row.engineering .mix-label b{color:#56d4f5;background:rgba(59,196,235,.10)}
+.mix-row.university .mix-label b{color:#b493ff;background:rgba(156,116,244,.11)}
+.mix-track{height:7px;border-radius:999px}
+html[data-theme="light"] .mix-row{border-color:#e8ebf2;background:#fff}
+html[data-theme="light"] .mix-row.medical{background:linear-gradient(110deg,#fff4f7,#fff 62%)}
+html[data-theme="light"] .mix-row.engineering{background:linear-gradient(110deg,#eefbff,#fff 62%)}
+html[data-theme="light"] .mix-row.university{background:linear-gradient(110deg,#f6f1ff,#fff 62%)}
+
+.status-legend>div{padding:7px 9px;border-radius:10px;background:rgba(255,255,255,.025)}
+html[data-theme="light"] .status-legend>div{background:#f8f9fc}
+.schedule-chart-card{overflow:hidden}
+.schedule-chart-card:after{
+  content:"";position:absolute;width:160px;height:160px;right:-95px;bottom:-110px;border-radius:50%;
+  background:radial-gradient(circle,rgba(118,138,255,.10),transparent 68%);pointer-events:none
+}
+.schedule-chart-card{position:relative}
+
+/* explicit monthly interaction hint */
+.monthly-tap-help{
+  display:inline-flex!important;align-items:center;gap:5px;margin-top:6px!important;
+  color:#8fa3c7!important;font-size:7.5px!important;font-style:normal;font-weight:750
+}
+.monthly-tap-help:before{
+  content:"↳";display:grid;place-items:center;width:16px;height:16px;border-radius:6px;
+  background:rgba(112,139,255,.10);color:#9cb2ff;font-size:10px
+}
+html[data-theme="light"] .monthly-tap-help{color:#647795!important}
+html[data-theme="light"] .monthly-tap-help:before{background:#eef3ff;color:#536fd1}
+.monthly-bar-item{touch-action:manipulation}
+.monthly-bar-item:active{transform:scale(.985)}
+
+/* cleaner color identity for the main sections */
+.schedule-visuals{background:
+  radial-gradient(circle at 5% 0%,rgba(96,128,255,.08),transparent 25%),
+  radial-gradient(circle at 95% 100%,rgba(70,205,205,.06),transparent 28%),
+  linear-gradient(150deg,rgba(18,23,34,.66),rgba(8,12,19,.50))}
+.target-section{background:
+  radial-gradient(circle at 100% 0%,rgba(157,112,245,.075),transparent 28%),
+  linear-gradient(145deg,rgba(13,15,26,.88),rgba(8,10,17,.82))}
+.circular-section{background:
+  radial-gradient(circle at 0% 0%,rgba(255,105,139,.065),transparent 26%),
+  linear-gradient(145deg,rgba(14,16,25,.88),rgba(8,10,17,.82))}
+.calendar-section{background:
+  radial-gradient(circle at 100% 0%,rgba(59,196,235,.07),transparent 28%),
+  linear-gradient(145deg,rgba(12,17,25,.89),rgba(8,10,17,.82))}
+.info-center{background:
+  radial-gradient(circle at 0% 0%,rgba(158,116,244,.07),transparent 27%),
+  linear-gradient(145deg,rgba(14,15,25,.89),rgba(8,10,17,.82))}
+html[data-theme="light"] .schedule-visuals{
+  background:radial-gradient(circle at 4% 0%,rgba(88,124,255,.08),transparent 25%),linear-gradient(150deg,#fff,#f7f9ff)
+}
+html[data-theme="light"] .target-section{
+  background:radial-gradient(circle at 100% 0%,rgba(157,112,245,.09),transparent 28%),linear-gradient(150deg,#fff,#faf7ff)
+}
+html[data-theme="light"] .circular-section{
+  background:radial-gradient(circle at 0% 0%,rgba(255,105,139,.08),transparent 28%),linear-gradient(150deg,#fff,#fff8fa)
+}
+html[data-theme="light"] .calendar-section{
+  background:radial-gradient(circle at 100% 0%,rgba(59,196,235,.09),transparent 28%),linear-gradient(150deg,#fff,#f5fcff)
+}
+html[data-theme="light"] .info-center{
+  background:radial-gradient(circle at 0% 0%,rgba(158,116,244,.08),transparent 28%),linear-gradient(150deg,#fff,#faf8ff)
+}
+
+/* paint containment for repeated cards */
+.stat-card,.schedule-chart-card,.circular-card,.starred-card,.event,.pdf-exam-row{contain:paint}
+.calendar-scroll,.monthly-bars,.weekly-bars{-webkit-overflow-scrolling:touch}
+
+/* mobile first: fewer GPU-heavy effects, larger touch targets, no overflow */
+@media(max-width:700px){
+  .app{padding-left:8px!important;padding-right:8px!important}
+  .topnav{gap:7px;padding:8px 9px!important;backdrop-filter:blur(9px) saturate(110%)!important}
+  .brand-wrap{gap:7px}.brand-orb{width:23px;height:23px}.brand{font-size:9.5px}
+  .nav-actions{gap:4px}
+  .howto-link,.install-app-btn,.theme-toggle,.language-toggle,.msg-link{width:34px!important;height:34px!important;flex:0 0 34px}
+  .sync-link{width:34px!important;height:34px!important;padding:0!important;justify-content:center;border-radius:50%!important}
+  .sync-link span{display:none}
+  .sync-link i{width:8px;height:8px}
+  .panel,.section,.target-section,.info-center,.mission-section,.schedule-visuals,.schedule-chart-card,.stat-card{
+    backdrop-filter:none!important;-webkit-backdrop-filter:none!important
+  }
+  .schedule-visuals{padding:15px 12px!important}
+  .schedule-chart-grid{gap:9px!important}
+  .schedule-chart-card{border-radius:17px!important}
+  .schedule-visual-head{align-items:flex-start}
+  .schedule-live-dot{font-size:7px}
+  .mix-row{padding:10px}
+  .monthly-tap-help{font-size:8px!important;margin-top:7px!important}
+  .monthly-bar-item{flex-basis:58px;min-width:58px}
+  .mobile-dock{
+    bottom:max(8px,env(safe-area-inset-bottom));backdrop-filter:blur(10px)!important;
+    -webkit-backdrop-filter:blur(10px)!important
+  }
+  .mobile-dock a{min-height:48px;display:grid;place-items:center}
+  .btn,.calendar-filter,.calendar-view-btn,.category-tab,.circular-tab,.target-add-btn{min-height:38px}
+  .event-drawer,.sync-modal,.exam-picker-modal,.target-picker-modal,.pdf-picker-modal,.guide-compare-modal{
+    max-width:100%!important
+  }
+}
+@media(max-width:390px){
+  .brand-sub{display:none!important}
+  .brand{max-width:86px;overflow:hidden;text-overflow:ellipsis}
+  .howto-link{display:none!important}
+  .schedule-visual-head h2{font-size:19px!important}
+  .clock{gap:8px!important}.clock div{min-width:49px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .monthly-bar-item,.schedule-chart-card,.stat-card,.circular-card,.starred-card{transition:none!important}
+}
+</style></head><body>
 <div class="app">
   <nav class="topnav">
     <div class="brand-wrap">
@@ -2387,6 +2550,7 @@ html[data-theme="light"] .local-preview-note{background:#f4f7fb;border-color:#e2
     <div class="nav-actions">
       <a class="howto-link" href="/how-to" aria-label="How to use Admission by DBT" title="How to use">?</a>\n      <button class="install-app-btn" id="installAppButton" type="button" hidden aria-label="Install Admission by DBT" title="Install app">↓</button>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span class="theme-sun">☀</span><span class="theme-moon">☾</span></button>
+      <button class="language-toggle" id="languageToggle" type="button" aria-label="বাংলা ভাষায় দেখুন" title="বাংলা ভাষায় দেখুন"><span>অ</span></button>
       <button class="sync-link" id="homeSyncButton" type="button" title="Save your Home and Calendar choices"><i></i><span id="homeSyncText">Save</span></button>
       <a class="msg-link" href="https://wa.me/+8801516560230" target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message on WhatsApp">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18.4 3.8 20l1-3.5A8.4 8.4 0 1 1 7 18.4Z"/><path d="M8.2 8.1c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.8 2c.1.3.1.5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.3 1.7 2.2 2.2.3.2.5.2.7 0l.8-.7c.2-.2.5-.2.7-.1l1.9.9c.3.1.4.3.4.6 0 .8-.4 1.6-1 2-1 .6-2.4.5-4-.2-1.4-.6-2.8-1.7-3.9-3.1-1-1.3-1.7-2.8-1.8-4.1-.1-.8.1-1.4.5-1.7Z"/></svg>
@@ -2448,7 +2612,7 @@ html[data-theme="light"] .local-preview-note{background:#f4f7fb;border-color:#e2
         </article>
         <article class="schedule-chart-card monthly-chart-card">
           <div class="chart-card-head monthly-chart-head">
-            <div><b>Monthly exam distribution</b><span>How busy each month is</span></div>
+            <div><b>Monthly exam distribution</b><span>How busy each month is</span><em class="monthly-tap-help">Tap a month to see its weekly distribution.</em></div>
             <div class="monthly-legend">
               <span><i class="medical"></i>মেডিকেল</span>
               <span><i class="engineering"></i>ইঞ্জিনিয়ারিং</span>
@@ -3741,13 +3905,147 @@ guideCompareBackdrop.onclick=e=>{if(e.target===guideCompareBackdrop)closeGuideCo
 search.oninput=render;
 mainTargetButton.onclick=openTargetPicker;
 targetAddButton.onclick=openExamPicker;
+
+const DBT_LANG_KEY='admissionbydbt-language-v1';
+let currentLang=(document.documentElement.dataset.lang==='bn'?'bn':'en');
+const dbtOriginalText=new WeakMap();
+const dbtOriginalAttrs=new WeakMap();
+const BN_EXACT={
+  'Home':'হোম','My Exams':'আমার পরীক্ষা','Circulars':'সার্কুলার','Calendar':'ক্যালেন্ডার','Admission Guide':'ভর্তি গাইড',
+  'Save':'সেভ','Saved':'সেভ হয়েছে','Saving…':'সেভ হচ্ছে…','Saving...':'সেভ হচ্ছে…','Offline':'অফলাইন',
+  'MISSION CONTROL • 2026–27':'ভর্তি নিয়ন্ত্রণ • ২০২৬–২৭','Admission season 2026–27':'ভর্তি মৌসুম ২০২৬–২৭',
+  'BUILD BASICS':'বেসিক গুছিয়ে নিন','DAYS LEFT':'দিন বাকি','One focused day at a time.':'একদিন করে মনোযোগ দিয়ে এগিয়ে যান।',
+  'WEEKS':'সপ্তাহ','HOURS':'ঘণ্টা','MINUTES':'মিনিট','SECONDS':'সেকেন্ড',
+  'Main countdown target: default':'মূল কাউন্টডাউন: ডিফল্ট','AT A GLANCE':'এক নজরে','Schedule Snapshot':'পরীক্ষার সারসংক্ষেপ',
+  'Live calendar data':'লাইভ ক্যালেন্ডার তথ্য','Category mix':'ক্যাটাগরি অনুযায়ী','Exams by type':'ধরন অনুযায়ী পরীক্ষা',
+  'Date confidence':'তারিখের নিশ্চয়তা','Current schedule status':'বর্তমান সময়সূচির অবস্থা','confirmed':'নিশ্চিত',
+  'Confirmed':'নিশ্চিত','Notice pending':'নোটিশ বাকি','Not confirmed':'নিশ্চিত নয়',
+  'Monthly exam distribution':'মাসভিত্তিক পরীক্ষা','How busy each month is':'কোন মাসে কত পরীক্ষা',
+  'Tap a month to see its weekly distribution.':'সাপ্তাহিক ভাগ দেখতে যেকোনো মাসে ট্যাপ করুন।',
+  'Weekly distribution':'সাপ্তাহিক বণ্টন','YOUR LIST':'আপনার তালিকা','Choose exams to keep them together here.':'পছন্দের পরীক্ষাগুলো এখানে একসাথে রাখুন।',
+  '＋ Add exams':'＋ পরীক্ষা যোগ করুন','SELECTED':'নির্বাচিত','OFFICIAL LINKS':'অফিসিয়াল লিংক',
+  'Official links, grouped for quick access.':'দ্রুত দেখার জন্য অফিসিয়াল লিংকগুলো ক্যাটাগরি অনুযায়ী সাজানো।',
+  'Official':'অফিসিয়াল','Waiting':'অপেক্ষমাণ','Checked':'যাচাই করা','Full notices':'পূর্ণ নোটিশ',
+  'Latest tracked':'সর্বশেষ ট্র্যাক করা','Waiting for full notice':'পূর্ণ নোটিশের অপেক্ষায়',
+  'Official link will appear here when published.':'প্রকাশ হলে অফিসিয়াল লিংক এখানে দেখা যাবে।',
+  'SCHEDULE':'সময়সূচি','Exam dates in one place.':'সব পরীক্ষার তারিখ এক জায়গায়।','Print PDF':'PDF প্রিন্ট',
+  'Refresh':'রিফ্রেশ','Month':'মাস','List':'তালিকা','Next exams':'পরের পরীক্ষা','All':'সব',
+  '★ My Exams':'★ আমার পরীক্ষা','Audited 7 Oct 2026':'যাচাই: ৭ অক্টোবর ২০২৬',
+  'Previous':'আগের','Next':'পরের','Sun':'রবি','Mon':'সোম','Tue':'মঙ্গল','Wed':'বুধ','Thu':'বৃহস্পতি','Fri':'শুক্র','Sat':'শনি',
+  'REFERENCE':'তথ্য','QUICK COMPARE':'দ্রুত তুলনা','Compare admission options':'ভর্তি অপশন তুলনা করুন','Compare':'তুলনা',
+  'Selected':'নির্বাচিত','Details':'বিস্তারিত','Less':'কম দেখুন','Clear':'মুছুন',
+  'CLOUD SAVE':'ক্লাউড সেভ','Your Secret Code':'আপনার গোপন কোড',
+  'Save this secret code somewhere safe. You can use it later to get back your saved exams, countdown target and calendar settings on this or another device.':'এই গোপন কোডটি নিরাপদ জায়গায় সেভ করে রাখুন। পরে এই বা অন্য ডিভাইসে আপনার সেভ করা পরীক্ষা, কাউন্টডাউন ও ক্যালেন্ডার সেটিংস ফেরত পেতে এটি ব্যবহার করতে পারবেন।',
+  'Copy':'কপি','Use an existing code':'আগের কোড ব্যবহার করুন','Use code':'কোড ব্যবহার করুন',
+  'Set main countdown target':'মূল কাউন্টডাউন ঠিক করুন','Add to My Exams':'আমার পরীক্ষায় যোগ করুন','Remove from My Exams':'আমার পরীক্ষা থেকে সরান',
+  'Close':'বন্ধ','Download PDF':'PDF ডাউনলোড','PDF Preview':'PDF প্রিভিউ','Months':'মাস','Categories':'ক্যাটাগরি',
+  'Universities':'বিশ্ববিদ্যালয়','Exams':'পরীক্ষা','Search exams/universities':'পরীক্ষা/বিশ্ববিদ্যালয় খুঁজুন',
+  'All months':'সব মাস','All categories':'সব ক্যাটাগরি','All universities':'সব বিশ্ববিদ্যালয়','All exams':'সব পরীক্ষা',
+  'Search university, unit or topic…':'বিশ্ববিদ্যালয়, ইউনিট বা বিষয় খুঁজুন…',
+  'Search university or unit…':'বিশ্ববিদ্যালয় বা ইউনিট খুঁজুন…','Search exams…':'পরীক্ষা খুঁজুন…',
+  'Build your exam list':'নিজের পরীক্ষার তালিকা বানান','Tap “Add exams” and choose the exams you care about.':'“পরীক্ষা যোগ করুন” ট্যাপ করে আপনার প্রয়োজনীয় পরীক্ষাগুলো বেছে নিন।',
+  'NEXT SELECTED':'সবচেয়ে কাছের নির্বাচন','Exam time / completed':'পরীক্ষার সময় / শেষ','Final stretch — keep revision tight.':'শেষ সময় — রিভিশনে ফোকাস রাখুন।',
+  'Revision matters more than collecting new topics.':'নতুন টপিকের চেয়ে রিভিশন এখন বেশি গুরুত্বপূর্ণ।',
+  'Main countdown target':'মূল কাউন্টডাউন','No next exam':'পরবর্তী পরীক্ষা নেই','No schedule data yet.':'এখনও সময়সূচির তথ্য নেই।',
+  'No exams found.':'কোনো পরীক্ষা পাওয়া যায়নি।','No selected exams in this month.':'এই মাসে নির্বাচিত পরীক্ষা নেই।',
+  'Local preview':'লোকাল প্রিভিউ','Install app':'অ্যাপ ইনস্টল','How to use':'কীভাবে ব্যবহার করবেন',
+  'Switch color theme':'থিম বদলান','Message on WhatsApp':'হোয়াটসঅ্যাপে বার্তা দিন',
+  'Code copied.':'কোড কপি হয়েছে।','Could not copy. Press and hold the code to copy it.':'কপি করা যায়নি। কোডটি চেপে ধরে কপি করুন।',
+  'Medical / Dental':'মেডিকেল / ডেন্টাল','Medical & Dental':'মেডিকেল ও ডেন্টাল','Agriculture Cluster':'কৃষি গুচ্ছ',
+  'Dhaka University':'ঢাকা বিশ্ববিদ্যালয়','Khulna University':'খুলনা বিশ্ববিদ্যালয়','Jagannath University':'জগন্নাথ বিশ্ববিদ্যালয়',
+  'Chittagong University':'চট্টগ্রাম বিশ্ববিদ্যালয়','Comilla University':'কুমিল্লা বিশ্ববিদ্যালয়','Rajshahi University':'রাজশাহী বিশ্ববিদ্যালয়',
+  'Aviation and Aerospace University Bangladesh':'এভিয়েশন অ্যান্ড অ্যারোস্পেস ইউনিভার্সিটি বাংলাদেশ',
+  'Science':'বিজ্ঞান','Humanities':'মানবিক','Business':'ব্যবসায় শিক্ষা','Fine Arts':'চারুকলা','Social Science':'সামাজিক বিজ্ঞান',
+  'Official portal':'অফিসিয়াল পোর্টাল','Official circular':'অফিসিয়াল সার্কুলার','Official notices':'অফিসিয়াল নোটিশ',
+  'Official exam dates':'অফিসিয়াল পরীক্ষার তারিখ','Official date notice':'অফিসিয়াল তারিখের নোটিশ'
+};
+const BN_REPLACE=[
+  [/\bJanuary\b/g,'জানুয়ারি'],[/\bFebruary\b/g,'ফেব্রুয়ারি'],[/\bMarch\b/g,'মার্চ'],[/\bApril\b/g,'এপ্রিল'],[/\bMay\b/g,'মে'],[/\bJune\b/g,'জুন'],[/\bJuly\b/g,'জুলাই'],[/\bAugust\b/g,'আগস্ট'],[/\bSeptember\b/g,'সেপ্টেম্বর'],[/\bOctober\b/g,'অক্টোবর'],[/\bNovember\b/g,'নভেম্বর'],[/\bDecember\b/g,'ডিসেম্বর'],
+  [/\bJan\b/g,'জানু'],[/\bFeb\b/g,'ফেব্রু'],[/\bMar\b/g,'মার্চ'],[/\bApr\b/g,'এপ্রিল'],[/\bJun\b/g,'জুন'],[/\bJul\b/g,'জুলাই'],[/\bAug\b/g,'আগ'],[/\bSep\b/g,'সেপ্ট'],[/\bOct\b/g,'অক্টো'],[/\bNov\b/g,'নভে'],[/\bDec\b/g,'ডিসে'],
+  [/\bSunday\b/g,'রবিবার'],[/\bMonday\b/g,'সোমবার'],[/\bTuesday\b/g,'মঙ্গলবার'],[/\bWednesday\b/g,'বুধবার'],[/\bThursday\b/g,'বৃহস্পতিবার'],[/\bFriday\b/g,'শুক্রবার'],[/\bSaturday\b/g,'শনিবার'],
+  [/Dhaka University/g,'ঢাকা বিশ্ববিদ্যালয়'],[/Khulna University/g,'খুলনা বিশ্ববিদ্যালয়'],[/Jagannath University/g,'জগন্নাথ বিশ্ববিদ্যালয়'],[/Chittagong University/g,'চট্টগ্রাম বিশ্ববিদ্যালয়'],[/Comilla University/g,'কুমিল্লা বিশ্ববিদ্যালয়'],[/Rajshahi University/g,'রাজশাহী বিশ্ববিদ্যালয়'],
+  [/Medical & Dental/g,'মেডিকেল ও ডেন্টাল'],[/Medical \/ Dental/g,'মেডিকেল / ডেন্টাল'],[/Agriculture Cluster/g,'কৃষি গুচ্ছ'],
+  [/\bScience\b/g,'বিজ্ঞান'],[/\bHumanities\b/g,'মানবিক'],[/\bBusiness\b/g,'ব্যবসায় শিক্ষা'],[/Fine Arts/g,'চারুকলা'],[/Social Science/g,'সামাজিক বিজ্ঞান'],
+  [/\bOfficial\b/g,'অফিসিয়াল'],[/\bConfirmed\b/g,'নিশ্চিত'],[/Not confirmed/g,'নিশ্চিত নয়'],[/Notice pending/g,'নোটিশ বাকি'],
+  [/\bWeek (\d+)/g,'সপ্তাহ $1'],[/\b(\d+) exams\b/g,'$1 পরীক্ষা'],[/\b(\d+) days\b/g,'$1 দিন'],[/\b(\d+) official\b/g,'$1 অফিসিয়াল'],[/\b(\d+) waiting\b/g,'$1 অপেক্ষমাণ'],
+  [/\b(\d+) Passed\b/g,'$1 শেষ'],[/\b(\d+) Total\b/g,'$1 মোট'],[/\bTime TBA\b/g,'সময় পরে জানানো হবে']
+];
+function dbtTranslateString(value){
+  const raw=String(value==null?'':value);
+  const trimmed=raw.trim();
+  if(!trimmed)return raw;
+  let out=BN_EXACT[trimmed]||trimmed;
+  for(const pair of BN_REPLACE)out=out.replace(pair[0],pair[1]);
+  return raw.slice(0,raw.indexOf(trimmed))+out+raw.slice(raw.indexOf(trimmed)+trimmed.length);
+}
+function dbtLocalizeRoot(root){
+  if(!root)return;
+  const textNodes=[];
+  if(root.nodeType===3)textNodes.push(root);
+  else if(root.nodeType===1){
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode(node){
+      const p=node.parentElement;
+      if(!p||/^(SCRIPT|STYLE|NOSCRIPT)$/.test(p.tagName))return NodeFilter.FILTER_REJECT;
+      return node.nodeValue&&node.nodeValue.trim()?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_REJECT;
+    }});
+    let n;while((n=walker.nextNode()))textNodes.push(n);
+  }
+  textNodes.forEach(node=>{
+    if(!dbtOriginalText.has(node))dbtOriginalText.set(node,node.nodeValue);
+    const original=dbtOriginalText.get(node);
+    node.nodeValue=currentLang==='bn'?dbtTranslateString(original):original;
+  });
+  const elements=[];
+  if(root.nodeType===1)elements.push(root,...root.querySelectorAll('*'));
+  elements.forEach(el=>{
+    if(/^(SCRIPT|STYLE|NOSCRIPT)$/.test(el.tagName))return;
+    let saved=dbtOriginalAttrs.get(el);
+    if(!saved){saved={};dbtOriginalAttrs.set(el,saved)}
+    ['placeholder','title','aria-label'].forEach(attr=>{
+      if(el.hasAttribute&&el.hasAttribute(attr)){
+        if(saved[attr]===undefined)saved[attr]=el.getAttribute(attr);
+        el.setAttribute(attr,currentLang==='bn'?dbtTranslateString(saved[attr]):saved[attr]);
+      }
+    });
+  });
+}
+function applyLanguage(lang){
+  currentLang=lang==='bn'?'bn':'en';
+  document.documentElement.dataset.lang=currentLang;
+  document.documentElement.lang=currentLang==='bn'?'bn':'en';
+  try{localStorage.setItem(DBT_LANG_KEY,currentLang)}catch(e){}
+  document.title=currentLang==='bn'?'Admission by DBT | ভর্তি তথ্যকেন্দ্র ২০২৬–২৭':'Admission by DBT | Admission Center 2026–27';
+  dbtLocalizeRoot(document.body);
+  const btn=document.getElementById('languageToggle');
+  if(btn){
+    btn.innerHTML='<span>'+(currentLang==='bn'?'EN':'অ')+'</span>';
+    const label=currentLang==='bn'?'View in English':'বাংলা ভাষায় দেখুন';
+    btn.title=label;btn.setAttribute('aria-label',label);
+  }
+  if(typeof themeToggle!=='undefined'&&themeToggle){
+    const next=document.documentElement.dataset.theme==='light'?'dark':'light';
+    themeToggle.title=currentLang==='bn'?(next==='dark'?'ডার্ক থিম চালু করুন':'লাইট থিম চালু করুন'):(next==='dark'?'Switch to dark theme':'Switch to light theme');
+    themeToggle.setAttribute('aria-label',themeToggle.title);
+  }
+}
+const dbtLangObserver=new MutationObserver(records=>{
+  if(currentLang!=='bn')return;
+  records.forEach(r=>r.addedNodes.forEach(n=>{if(n.nodeType===1||n.nodeType===3)dbtLocalizeRoot(n)}));
+});
+dbtLangObserver.observe(document.body,{childList:true,subtree:true});
+applyLanguage(currentLang);
+const dbtLanguageButton=document.getElementById('languageToggle');
+if(dbtLanguageButton)dbtLanguageButton.onclick=()=>applyLanguage(currentLang==='bn'?'en':'bn');
+
 function applyTheme(theme){
   const next=theme==='dark'?'dark':'light';
   document.documentElement.dataset.theme=next;
   const tm=document.getElementById('themeColorMeta');if(tm)tm.content=next==='light'?'#ffffff':'#050810';
   try{localStorage.setItem('admissionbydbt-theme-v1',next)}catch(e){}
   if(typeof themeToggle!=='undefined'&&themeToggle){
-    themeToggle.title=next==='light'?'Switch to dark theme':'Switch to light theme';
+    themeToggle.title=currentLang==='bn'
+      ?(next==='light'?'ডার্ক থিম চালু করুন':'লাইট থিম চালু করুন')
+      :(next==='light'?'Switch to dark theme':'Switch to light theme');
     themeToggle.setAttribute('aria-label',themeToggle.title);
   }
 }
@@ -4489,222 +4787,8 @@ updatePageNavFromScroll();
 
 
 
-const cv=document.getElementById('stars'),ctx=cv.getContext('2d',{alpha:true});
-const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let coarse=matchMedia('(pointer: coarse)').matches;
-let mobileLite=innerWidth<=700||coarse;
-let W=innerWidth,H=innerHeight,dpr=1,stars=[],shooters=[],dust=[];
-let targetX=W*.5,targetY=H*.45,camX=targetX,camY=targetY;
-let lastShot=0,lastFrame=performance.now(),running=true,tapPulse=0;
+// Heavy animated star canvas removed for faster loading and smoother mobile performance.
 
-function rand(min,max){return min+Math.random()*(max-min)}
-
-function resizeSpace(){
-  W=innerWidth;H=innerHeight;
-  coarse=matchMedia('(pointer: coarse)').matches;
-  mobileLite=innerWidth<=700||coarse;
-  dpr=Math.min(devicePixelRatio||1,mobileLite?1:1.6);
-  cv.width=Math.floor(W*dpr);
-  cv.height=Math.floor(H*dpr);
-  cv.style.width=W+'px';
-  cv.style.height=H+'px';
-  ctx.setTransform(dpr,0,0,dpr,0,0);
-  buildSpace();
-}
-
-function buildSpace(){
-  stars=[];
-  dust=[];
-  const count=mobileLite?42:180;
-  const dustCount=mobileLite?8:42;
-
-  for(let i=0;i<count;i++){
-    const depth=Math.random();
-    stars.push({
-      x:Math.random()*W,
-      y:Math.random()*H,
-      depth:depth,
-      size:depth<.55?rand(.35,.85):rand(.7,1.65),
-      speed:rand(.035,.13)+depth*.22,
-      alpha:rand(.28,.92),
-      tw:rand(0,Math.PI*2),
-      tint:Math.random()
-    });
-  }
-
-  for(let i=0;i<dustCount;i++){
-    dust.push({
-      x:Math.random()*W,
-      y:Math.random()*H,
-      depth:rand(.25,1),
-      size:rand(.25,.7),
-      alpha:rand(.04,.15),
-      speed:rand(.02,.07)
-    });
-  }
-}
-
-function setPointer(x,y){
-  targetX=Math.max(0,Math.min(W,x));
-  targetY=Math.max(0,Math.min(H,y));
-}
-
-addEventListener('pointermove',e=>{
-  if(!mobileLite&&(e.pointerType==='mouse'||e.pointerType==='pen')) setPointer(e.clientX,e.clientY);
-},{passive:true});
-
-addEventListener('pointerdown',e=>{
-  if(mobileLite)return;
-  setPointer(e.clientX,e.clientY);
-  tapPulse=1;
-  if(!reduceMotion) makeShooter(true,e.clientX,e.clientY);
-},{passive:true});
-
-addEventListener('resize',()=>{resizeSpace();if(mobileLite)drawSpace(performance.now())},{passive:true});
-
-document.addEventListener('visibilitychange',()=>{
-  running=!document.hidden;
-  if(running&&!reduceMotion){
-    lastFrame=performance.now();
-    requestAnimationFrame(drawSpace);
-  }
-});
-
-function makeShooter(fromTap,x,y){
-  if(shooters.length>(coarse?2:4)) return;
-  const left=fromTap?x:rand(-W*.08,W*.5);
-  const top=fromTap?Math.max(0,y-rand(40,150)):rand(0,H*.35);
-  const speed=coarse?rand(7,10):rand(9,14);
-  shooters.push({
-    x:left,
-    y:top,
-    vx:speed,
-    vy:speed*rand(.26,.42),
-    life:0,
-    max:rand(42,72),
-    len:rand(65,135),
-    alpha:fromTap?.9:rand(.55,.9)
-  });
-}
-
-function drawNebula(t){
-  const shiftX=(camX-W*.5)*.025;
-  const shiftY=(camY-H*.5)*.018;
-
-  let g=ctx.createRadialGradient(W*.18+shiftX,H*.16+shiftY,0,W*.18+shiftX,H*.16+shiftY,Math.max(W,H)*.42);
-  g.addColorStop(0,'rgba(66,105,255,.095)');
-  g.addColorStop(.38,'rgba(49,71,155,.038)');
-  g.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-
-  g=ctx.createRadialGradient(W*.78-shiftX,H*.24-shiftY,0,W*.78-shiftX,H*.24-shiftY,Math.max(W,H)*.36);
-  g.addColorStop(0,'rgba(121,72,255,.065)');
-  g.addColorStop(.45,'rgba(74,43,133,.026)');
-  g.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-
-  const pulse=.5+.5*Math.sin(t*.00022);
-  g=ctx.createRadialGradient(W*.52,H*.74,0,W*.52,H*.74,Math.max(W,H)*.5);
-  g.addColorStop(0,'rgba(31,93,165,'+(0.028+pulse*.012)+')');
-  g.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-}
-
-function drawSpace(t){
-  if(!running) return;
-  const now=t||performance.now();
-  const dt=Math.min(2.2,(now-lastFrame)/16.667||1);
-  lastFrame=now;
-
-  camX+=(targetX-camX)*(coarse?.035:.055);
-  camY+=(targetY-camY)*(coarse?.035:.055);
-  tapPulse*=.93;
-
-  ctx.clearRect(0,0,W,H);
-  ctx.fillStyle='#02040a';
-  ctx.fillRect(0,0,W,H);
-  drawNebula(now);
-
-  const parX=(camX-W*.5)/W;
-  const parY=(camY-H*.5)/H;
-
-  for(const d of dust){
-    d.y+=d.speed*dt;
-    if(d.y>H+4){d.y=-4;d.x=Math.random()*W}
-    const x=d.x-parX*d.depth*9;
-    const y=d.y-parY*d.depth*6;
-    ctx.globalAlpha=d.alpha;
-    ctx.fillStyle='#a8b8d8';
-    ctx.beginPath();ctx.arc(x,y,d.size,0,Math.PI*2);ctx.fill();
-  }
-
-  for(const s of stars){
-    s.y+=s.speed*dt;
-    if(s.y>H+5){
-      s.y=-5;
-      s.x=Math.random()*W;
-      s.alpha=rand(.28,.92);
-    }
-
-    const x=s.x-parX*(5+s.depth*24);
-    const y=s.y-parY*(3+s.depth*15);
-    const tw=reduceMotion?1:(.72+.28*Math.sin(now*.0015+s.tw));
-    const pulseBoost=1+tapPulse*Math.max(0,1-Math.hypot(x-camX,y-camY)/240)*.8;
-    const r=s.size*pulseBoost;
-
-    let color='#ffffff';
-    if(s.tint<.10) color='#c9dcff';
-    else if(s.tint>.94) color='#e7ddff';
-
-    ctx.globalAlpha=s.alpha*tw;
-    ctx.fillStyle=color;
-    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
-
-    if(r>1.15&&!mobileLite){
-      ctx.globalAlpha=s.alpha*.13*tw;
-      ctx.beginPath();ctx.arc(x,y,r*3.8,0,Math.PI*2);ctx.fill();
-    }
-  }
-  ctx.globalAlpha=1;
-
-  if(!mobileLite&&!reduceMotion&&now-lastShot>3200&&Math.random()<.035){
-    makeShooter(false,0,0);
-    lastShot=now;
-  }
-
-  const alive=[];
-  for(const sh of shooters){
-    sh.x+=sh.vx*dt;
-    sh.y+=sh.vy*dt;
-    sh.life+=dt;
-    const p=sh.life/sh.max;
-    const a=Math.max(0,1-p)*sh.alpha;
-    const tailX=sh.x-sh.len;
-    const tailY=sh.y-sh.len*(sh.vy/sh.vx);
-
-    const g=ctx.createLinearGradient(sh.x,sh.y,tailX,tailY);
-    g.addColorStop(0,'rgba(255,255,255,'+a+')');
-    g.addColorStop(.22,'rgba(190,218,255,'+(a*.78)+')');
-    g.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.strokeStyle=g;
-    ctx.lineWidth=1.35;
-    ctx.beginPath();ctx.moveTo(sh.x,sh.y);ctx.lineTo(tailX,tailY);ctx.stroke();
-
-    ctx.globalAlpha=a;
-    ctx.fillStyle='#fff';
-    ctx.beginPath();ctx.arc(sh.x,sh.y,coarse?1.2:1.55,0,Math.PI*2);ctx.fill();
-    ctx.globalAlpha=1;
-
-    if(sh.life<sh.max&&sh.x<W+180&&sh.y<H+180) alive.push(sh);
-  }
-  shooters=alive;
-
-  if(!reduceMotion&&!mobileLite) requestAnimationFrame(drawSpace);
-}
-
-resizeSpace();
-drawSpace(performance.now());
-if(reduceMotion) setTimeout(()=>drawSpace(performance.now()),50);
 
 </script></body></html>`;
 
