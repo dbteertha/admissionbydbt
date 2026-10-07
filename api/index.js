@@ -467,6 +467,8 @@ a{color:inherit}
 @media(max-width:850px){.dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero-upcoming-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){
   body{font-size:15px}
+  .topnav,.panel,.section,.target-section,.info-center,.mission-section,.mobile-dock{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+  .target-picker-backdrop,.event-drawer-backdrop{backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important}
   .app{padding-left:12px!important;padding-right:12px!important}
   .topnav{min-height:50px!important;padding:10px 12px!important}
   .brand{font-size:12px!important;letter-spacing:.11em!important}
@@ -588,7 +590,6 @@ a{color:inherit}
     <div class="navlinks">
       <a class="navlink" href="#dashboard">Dashboard</a>
       <a class="navlink" href="#targets">My Targets</a>
-      <a class="navlink" href="/tracker">Study Tracker</a>
       <a class="navlink" href="#calendar">Calendar</a>
       <a class="navlink" href="#circulars">Circulars</a>
       <a class="navlink" href="#infoCenter">Admission Info</a>
@@ -722,7 +723,7 @@ a{color:inherit}
 <nav class="mobile-dock" aria-label="Quick navigation">
   <a href="#dashboard"><b>⌂</b>Home</a>
   <a href="#targets"><b>★</b>Targets</a>
-  <a href="/tracker"><b>✓</b>Tracker</a>
+  <a href="#circulars"><b>◎</b>Circulars</a>
   <a href="#calendar"><b>▦</b>Calendar</a>
   <a href="#infoCenter"><b>≡</b>Info</a>
 </nav>
@@ -797,7 +798,7 @@ function toggleStar(e){
   const adding=!starred.has(key);
   if(adding) starred.add(key); else starred.delete(key);
   saveStars();
-  if(adding&&typeof makeShooter==='function'&&!reduceMotion){
+  if(adding&&typeof makeShooter==='function'&&!reduceMotion&&!mobileLite){
     makeShooter(true,Math.max(80,innerWidth*.72),Math.max(80,innerHeight*.18));
   }
   render();
@@ -1564,6 +1565,7 @@ renderAllCategories();
 const cv=document.getElementById('stars'),ctx=cv.getContext('2d',{alpha:true});
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let coarse=matchMedia('(pointer: coarse)').matches;
+let mobileLite=innerWidth<=700||coarse;
 let W=innerWidth,H=innerHeight,dpr=1,stars=[],shooters=[],dust=[];
 let targetX=W*.5,targetY=H*.45,camX=targetX,camY=targetY;
 let lastShot=0,lastFrame=performance.now(),running=true,tapPulse=0;
@@ -1573,7 +1575,8 @@ function rand(min,max){return min+Math.random()*(max-min)}
 function resizeSpace(){
   W=innerWidth;H=innerHeight;
   coarse=matchMedia('(pointer: coarse)').matches;
-  dpr=Math.min(devicePixelRatio||1,coarse?1.35:1.8);
+  mobileLite=innerWidth<=700||coarse;
+  dpr=Math.min(devicePixelRatio||1,mobileLite?1:1.6);
   cv.width=Math.floor(W*dpr);
   cv.height=Math.floor(H*dpr);
   cv.style.width=W+'px';
@@ -1585,8 +1588,8 @@ function resizeSpace(){
 function buildSpace(){
   stars=[];
   dust=[];
-  const count=coarse?115:230;
-  const dustCount=coarse?28:55;
+  const count=mobileLite?42:180;
+  const dustCount=mobileLite?8:42;
 
   for(let i=0;i<count;i++){
     const depth=Math.random();
@@ -1620,21 +1623,17 @@ function setPointer(x,y){
 }
 
 addEventListener('pointermove',e=>{
-  if(e.pointerType==='mouse'||e.pointerType==='pen') setPointer(e.clientX,e.clientY);
-},{passive:true});
-
-addEventListener('touchmove',e=>{
-  const t=e.touches&&e.touches[0];
-  if(t) setPointer(t.clientX,t.clientY);
+  if(!mobileLite&&(e.pointerType==='mouse'||e.pointerType==='pen')) setPointer(e.clientX,e.clientY);
 },{passive:true});
 
 addEventListener('pointerdown',e=>{
+  if(mobileLite)return;
   setPointer(e.clientX,e.clientY);
   tapPulse=1;
   if(!reduceMotion) makeShooter(true,e.clientX,e.clientY);
 },{passive:true});
 
-addEventListener('resize',resizeSpace,{passive:true});
+addEventListener('resize',()=>{resizeSpace();if(mobileLite)drawSpace(performance.now())},{passive:true});
 
 document.addEventListener('visibilitychange',()=>{
   running=!document.hidden;
@@ -1734,14 +1733,14 @@ function drawSpace(t){
     ctx.fillStyle=color;
     ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
 
-    if(r>1.15&&!coarse){
+    if(r>1.15&&!mobileLite){
       ctx.globalAlpha=s.alpha*.13*tw;
       ctx.beginPath();ctx.arc(x,y,r*3.8,0,Math.PI*2);ctx.fill();
     }
   }
   ctx.globalAlpha=1;
 
-  if(!reduceMotion&&now-lastShot>(coarse?5200:3200)&&Math.random()<.035){
+  if(!mobileLite&&!reduceMotion&&now-lastShot>3200&&Math.random()<.035){
     makeShooter(false,0,0);
     lastShot=now;
   }
@@ -1761,7 +1760,7 @@ function drawSpace(t){
     g.addColorStop(.22,'rgba(190,218,255,'+(a*.78)+')');
     g.addColorStop(1,'rgba(255,255,255,0)');
     ctx.strokeStyle=g;
-    ctx.lineWidth=coarse?1.05:1.35;
+    ctx.lineWidth=1.35;
     ctx.beginPath();ctx.moveTo(sh.x,sh.y);ctx.lineTo(tailX,tailY);ctx.stroke();
 
     ctx.globalAlpha=a;
@@ -1773,7 +1772,7 @@ function drawSpace(t){
   }
   shooters=alive;
 
-  if(!reduceMotion) requestAnimationFrame(drawSpace);
+  if(!reduceMotion&&!mobileLite) requestAnimationFrame(drawSpace);
 }
 
 resizeSpace();
