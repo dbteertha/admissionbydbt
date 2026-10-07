@@ -196,19 +196,24 @@ function drawMonth(doc,year,month,events,pageNumber,totalPages){
 
     const todays=monthEvents.filter(e=>localParts(e.date).day===day);
     let yy=y+16;
-    const maxVisible=5;
-    for(const e of todays.slice(0,maxVisible)){
+    const usable=Math.max(34,cellH-20);
+    const showCount=Math.min(todays.length,10);
+    const dense=showCount>5;
+    const rowStep=dense?Math.max(6.1,Math.min(9.2,usable/Math.max(1,showCount))):12.3;
+    const boxH=Math.max(5.4,rowStep-1.2);
+    const fontSize=dense?Math.max(4.6,Math.min(5.8,boxH-2.2)):6.3;
+    for(const e of todays.slice(0,showCount)){
       const confirmed=e.status==='confirmed';
-      const boxH=10.5;
-      doc.lineWidth(confirmed?.65:1.45).rect(x+4,yy,cellW-8,boxH).stroke('#000000');
-      doc.font('Helvetica-Bold').fontSize(6.3).fillColor('#000000');
+      doc.lineWidth(confirmed?.65:1.35).rect(x+4,yy,cellW-8,boxH).stroke('#000000');
+      doc.font('Helvetica-Bold').fontSize(fontSize).fillColor('#000000');
       const label=fitText(doc,shortTitle(e.title),cellW-15);
-      doc.text(label,x+7,yy+2.1,{width:cellW-14,height:7.2,lineBreak:false});
-      yy+=12.3;
+      doc.text(label,x+7,yy+Math.max(1,(boxH-fontSize)/2-.2),{width:cellW-14,height:boxH-1,lineBreak:false});
+      yy+=rowStep;
     }
-    if(todays.length>maxVisible){
-      doc.font('Helvetica').fontSize(6).fillColor('#000000')
-        .text('+'+(todays.length-maxVisible)+' more',x+5,Math.min(yy,y+cellH-9),{width:cellW-10});
+    if(todays.length>showCount){
+      const overflow=todays.length-showCount;
+      doc.font('Helvetica-Bold').fontSize(5.2).fillColor('#000000')
+        .text('+'+overflow+' more selected',x+5,Math.min(y+cellH-7,yy),{width:cellW-10,align:'right'});
     }
   }
 
