@@ -244,9 +244,9 @@ const CIRCULAR_PENDING = [
 ];
 
 const CIRCULAR_GROUPS = [
-  {key:'Medical',label:'Medical',icon:'✚'},
-  {key:'Engineering',label:'Engineering',icon:'⌘'},
-  {key:'University',label:'University',icon:'◈'}
+  {key:'Medical',label:'মেডিকেল',icon:'✚'},
+  {key:'Engineering',label:'ইঞ্জিনিয়ারিং',icon:'⌘'},
+  {key:'University',label:'বিশ্ববিদ্যালয়',icon:'◈'}
 ];
 const CIRCULAR_PENDING_GROUPED = {
   Medical:['Medical / Dental'],
@@ -1000,9 +1000,9 @@ body{background:#02050a;color:#f5f7fb}
         <div class="circular-summary-card"><span>Checked</span><b style="font-size:14px">7 Oct</b><small>2026</small></div>
       </div>
       <div class="circular-tabs" id="circularTabs">
-        <button class="circular-tab active" type="button" data-circular-tab="Medical">Medical</button>
-        <button class="circular-tab" type="button" data-circular-tab="Engineering">Engineering</button>
-        <button class="circular-tab" type="button" data-circular-tab="University">University</button>
+        <button class="circular-tab active" type="button" data-circular-tab="Medical">মেডিকেল</button>
+        <button class="circular-tab" type="button" data-circular-tab="Engineering">ইঞ্জিনিয়ারিং</button>
+        <button class="circular-tab" type="button" data-circular-tab="University">বিশ্ববিদ্যালয়</button>
       </div>
       <div class="circular-groups">${renderCircularGroups()}</div>
       <div class="audit-note circular-footnote">Old-year details may change. Use the new official notice when it is published.</div>
@@ -1022,9 +1022,9 @@ body{background:#02050a;color:#f5f7fb}
         <div class="calendar-filter-row" id="calendarFilters">
           <button class="calendar-filter active" data-calendar-filter="all" type="button">All</button>
           <button class="calendar-filter" data-calendar-filter="confirmed" type="button">Confirmed</button>
-          <button class="calendar-filter" data-calendar-filter="engineering" type="button">Engineering</button>
-          <button class="calendar-filter" data-calendar-filter="medical" type="button">Medical</button>
-          <button class="calendar-filter" data-calendar-filter="university" type="button">University</button>
+          <button class="calendar-filter" data-calendar-filter="medical" type="button">মেডিকেল</button>
+          <button class="calendar-filter" data-calendar-filter="engineering" type="button">ইঞ্জিনিয়ারিং</button>
+          <button class="calendar-filter" data-calendar-filter="university" type="button">বিশ্ববিদ্যালয়</button>
           <button class="calendar-filter" data-calendar-filter="starred" type="button">★ Starred</button>
         </div>
         <div class="calendar-audit"><i></i><span>Audited 7 Oct 2026</span></div>
