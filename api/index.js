@@ -1,6 +1,7 @@
 import http from 'node:http';
 import https from 'node:https';
 import { URL } from 'node:url';
+import { HOW_TO_HTML } from '../lib/how-to.js';
 
 const PORT = process.env.PORT || 10000;
 const SOURCES = [
@@ -4605,6 +4606,7 @@ export default async function handler(req,res){
     res.setHeader('access-control-allow-origin','*');
     return res.end(JSON.stringify({updatedAt:new Date(data.at).toISOString(),events:data.events,sources:data.sources}));
   }
+  if(u.pathname==='/how-to'||u.pathname==='/how-to/'){res.statusCode=200;res.setHeader('content-type','text/html; charset=utf-8');res.setHeader('cache-control','no-cache');return res.end(HOW_TO_HTML);}
   if(u.pathname==='/health'){
     res.statusCode=200; res.setHeader('content-type','text/plain'); return res.end('ok');
   }
