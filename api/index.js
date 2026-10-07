@@ -281,6 +281,9 @@ a{color:inherit}
 .navlink{border:0;background:transparent;color:#aab2c0;text-decoration:none;font-size:11px;padding:8px 10px;border-radius:10px;cursor:pointer}
 .navlink:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav-actions{display:flex;align-items:center;gap:7px}
+.msg-link{width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(116,230,167,.18);border-radius:11px;background:rgba(10,18,16,.72);color:#9be7ba;text-decoration:none;transition:.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
+.msg-link:hover{transform:translateY(-1px);border-color:rgba(116,230,167,.42);background:rgba(30,83,53,.18);color:#d5f7e1;box-shadow:0 0 22px rgba(116,230,167,.12)}
+.msg-link svg{width:18px;height:18px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .live{font-size:10px;color:#aab4c5;border:1px solid var(--line);padding:8px 10px;border-radius:999px;background:rgba(12,16,24,.66);white-space:nowrap}
 
 /* hero */
@@ -579,6 +582,7 @@ a{color:inherit}
   .mobile-dock{padding:7px!important;border-radius:18px!important}
   .mobile-dock a,.mobile-dock button{font-size:9px!important;padding:8px 3px!important}
   .mobile-dock b{font-size:17px!important}
+  .msg-link{width:42px!important;height:42px!important;border-radius:13px!important}.msg-link svg{width:20px!important;height:20px!important}
 }
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
@@ -595,6 +599,9 @@ a{color:inherit}
       <a class="navlink" href="#infoCenter">Admission Info</a>
     </div>
     <div class="nav-actions">
+      <a class="msg-link" href="https://wa.me/+8801516560230" target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message on WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18.4 3.8 20l1-3.5A8.4 8.4 0 1 1 7 18.4Z"/><path d="M8.2 8.1c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.8 2c.1.3.1.5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.3 1.7 2.2 2.2.3.2.5.2.7 0l.8-.7c.2-.2.5-.2.7-.1l1.9.9c.3.1.4.3.4.6 0 .8-.4 1.6-1 2-1 .6-2.4.5-4-.2-1.4-.6-2.8-1.7-3.9-3.1-1-1.3-1.7-2.8-1.8-4.1-.1-.8.1-1.4.5-1.7Z"/></svg>
+      </a>
       <div id="syncStatus" class="live">● syncing sources…</div>
     </div>
   </nav>
