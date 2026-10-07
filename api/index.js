@@ -1709,6 +1709,67 @@ html[data-theme="light"] .monthly-bar-shell{
 html[data-theme="light"] .monthly-bar-item>span{color:#526178}
 html[data-theme="light"] .monthly-bar-item>small{color:#9aa4b2}
 
+.monthly-bar-item{cursor:pointer;border-radius:12px;transition:transform .18s ease,background .18s ease,box-shadow .18s ease}
+.monthly-bar-item:hover,.monthly-bar-item:focus-visible{transform:translateY(-2px);background:rgba(255,255,255,.035);outline:none}
+.monthly-bar-item.active{background:rgba(124,104,255,.07);box-shadow:inset 0 0 0 1px rgba(151,124,255,.16)}
+.monthly-bar-item:focus-visible{box-shadow:0 0 0 3px rgba(109,139,255,.18)}
+html[data-theme="light"] .monthly-bar-item:hover,
+html[data-theme="light"] .monthly-bar-item:focus-visible{background:#f7f9fd}
+html[data-theme="light"] .monthly-bar-item.active{background:linear-gradient(180deg,#f7f4ff,#f4fbff);box-shadow:inset 0 0 0 1px #e1daf7}
+
+.weekly-drilldown{
+  margin-top:14px;padding:14px;border-radius:16px;
+  border:1px solid rgba(255,255,255,.075);
+  background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.015));
+  animation:weeklyReveal .22s ease both
+}
+@keyframes weeklyReveal{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.weekly-drilldown-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.weekly-drilldown-head>div{min-width:0}
+.weekly-drilldown-head b{display:block;font-size:11px;color:#e7edf7}
+.weekly-drilldown-head span{display:block;margin-top:3px;font-size:7.5px;color:#7f8ca0}
+.weekly-drilldown-head button{
+  width:30px;height:30px;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(255,255,255,.055);color:#9ba8ba;font-size:18px;line-height:1
+}
+.weekly-bars{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.weekly-bar-item{min-width:0;display:grid;grid-template-rows:16px 92px 15px 13px;align-items:end;text-align:center}
+.weekly-bar-item>b{font-size:9px;color:#dce4ef}
+.weekly-bar-shell{
+  height:88px;display:flex;align-items:flex-end;justify-content:center;padding:4px 4px 0;
+  border-radius:10px 10px 6px 6px;border:1px solid rgba(255,255,255,.045);
+  background:linear-gradient(to top,rgba(255,255,255,.035),rgba(255,255,255,.012))
+}
+.weekly-bar-stack{
+  width:min(28px,68%);min-height:5px;display:flex;flex-direction:column-reverse;overflow:hidden;
+  border-radius:7px 7px 3px 3px
+}
+.weekly-bar-stack i{display:block;width:100%;min-height:2px}
+.weekly-bar-stack i.medical{background:linear-gradient(180deg,#ff91a9,var(--cat-medical))}
+.weekly-bar-stack i.engineering{background:linear-gradient(180deg,#74d9f5,var(--cat-engineering))}
+.weekly-bar-stack i.university{background:linear-gradient(180deg,#c2a8ff,var(--cat-university))}
+.weekly-bar-item>span{font-size:7.5px;font-weight:850;color:#8794a7}
+.weekly-bar-item>small{font-size:6.2px;color:#657286;white-space:nowrap}
+.weekly-empty{grid-column:1/-1;padding:20px;text-align:center;color:#7e899a;font-size:9px}
+
+html[data-theme="light"] .weekly-drilldown{background:linear-gradient(145deg,#fff,#f7f9fd);border-color:#e4e9f1}
+html[data-theme="light"] .weekly-drilldown-head b{color:#3d4d67}
+html[data-theme="light"] .weekly-drilldown-head span{color:#8995a7}
+html[data-theme="light"] .weekly-drilldown-head button{background:#f1f4f9;color:#68768a}
+html[data-theme="light"] .weekly-bar-item>b{color:#40506a}
+html[data-theme="light"] .weekly-bar-shell{background:linear-gradient(to top,#f2f5fa,#fbfcfe);border-color:#e7ecf3}
+html[data-theme="light"] .weekly-bar-item>span{color:#526178}
+html[data-theme="light"] .weekly-bar-item>small{color:#98a3b3}
+
+@media(max-width:700px){
+  .weekly-drilldown{padding:11px 9px 10px;margin-top:10px}
+  .weekly-bars{grid-template-columns:repeat(5,minmax(48px,1fr));gap:6px;overflow-x:auto;padding-bottom:3px}
+  .weekly-bar-item{grid-template-rows:16px 80px 15px 12px}
+  .weekly-bar-shell{height:76px}
+  .weekly-drilldown-head b{font-size:10px}
+  .monthly-bar-item{min-height:0}
+}
+
 /* Empty My Exams should be inviting, never a dark/grey slab */
 .target-empty{
   grid-column:1/-1!important;display:flex!important;align-items:center!important;justify-content:center!important;
@@ -2395,6 +2456,13 @@ html[data-theme="light"] .local-preview-note{background:#f4f7fb;border-color:#e2
             </div>
           </div>
           <div class="monthly-bars" id="monthlyExamBars"></div>
+          <div class="weekly-drilldown" id="weeklyDrilldown" hidden>
+            <div class="weekly-drilldown-head">
+              <div><b id="weeklyDrilldownTitle">Weekly distribution</b><span id="weeklyDrilldownMeta"></span></div>
+              <button type="button" id="weeklyDrilldownClose" aria-label="Close weekly distribution">×</button>
+            </div>
+            <div class="weekly-bars" id="weeklyExamBars"></div>
+          </div>
         </article>
       </div>
     </section>
@@ -3299,7 +3367,7 @@ function renderScheduleVisuals(){
       const med=m.total?m.medical/m.total*100:0;
       const eng=m.total?m.engineering/m.total*100:0;
       const uni=Math.max(0,100-med-eng);
-      return '<div class="monthly-bar-item" title="'+esc(m.label+' '+m.year+' • '+m.total+' exams')+'">'+
+      return '<div class="monthly-bar-item" role="button" tabindex="0" data-month-key="'+m.key+'" aria-label="Show weekly distribution for '+esc(m.label+' '+m.year)+'" title="'+esc(m.label+' '+m.year+' • '+m.total+' exams • tap for weekly view')+'">'+
         '<b>'+m.total+'</b>'+
         '<div class="monthly-bar-shell"><div class="monthly-bar-stack" style="height:'+full+'%">'+
           (m.medical?'<i class="medical" style="height:'+med+'%"></i>':'')+
@@ -3310,6 +3378,57 @@ function renderScheduleVisuals(){
       '</div>';
     }).join('');
     if(!months.length)monthlyExamBars.innerHTML='<div class="monthly-empty">No schedule data yet.</div>';
+
+    const openWeeklyMonth=monthKey=>{
+      const selected=months.find(m=>m.key===monthKey);
+      if(!selected||typeof weeklyDrilldown==='undefined'||!weeklyDrilldown)return;
+      const monthEvents=all.filter(e=>{
+        const d=bdDate(e.date);
+        return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')===monthKey;
+      });
+      const daysInMonth=new Date(selected.year,Number(monthKey.slice(5,7)),0).getDate();
+      const weeks=[0,1,2,3,4].map(i=>({
+        index:i+1,start:i*7+1,end:Math.min(daysInMonth,i*7+7),
+        medical:0,engineering:0,university:0,total:0
+      }));
+      monthEvents.forEach(e=>{
+        const d=bdDate(e.date),idx=Math.min(4,Math.floor((d.getDate()-1)/7));
+        const row=weeks[idx],cat=eventCategory(e);
+        if(row[cat]!==undefined)row[cat]++;
+        row.total++;
+      });
+      const maxWeek=Math.max(1,...weeks.map(w=>w.total));
+      weeklyDrilldownTitle.textContent=selected.label+' '+selected.year+' — Weekly distribution';
+      weeklyDrilldownMeta.textContent=selected.total+' exams • Week 1 = days 1–7';
+      weeklyExamBars.innerHTML=weeks.map(w=>{
+        const full=w.total?Math.max(12,w.total/maxWeek*100):4;
+        const med=w.total?w.medical/w.total*100:0;
+        const eng=w.total?w.engineering/w.total*100:0;
+        const uni=Math.max(0,100-med-eng);
+        return '<div class="weekly-bar-item" title="'+esc('Week '+w.index+' • '+w.start+'–'+w.end+' • '+w.total+' exams')+'">'+
+          '<b>'+w.total+'</b>'+
+          '<div class="weekly-bar-shell"><div class="weekly-bar-stack" style="height:'+full+'%">'+
+            (w.medical?'<i class="medical" style="height:'+med+'%"></i>':'')+
+            (w.engineering?'<i class="engineering" style="height:'+eng+'%"></i>':'')+
+            (w.university?'<i class="university" style="height:'+uni+'%"></i>':'')+
+          '</div></div>'+
+          '<span>Week '+w.index+'</span><small>'+w.start+'–'+w.end+'</small>'+
+        '</div>';
+      }).join('');
+      weeklyDrilldown.hidden=false;
+      monthlyExamBars.querySelectorAll('.monthly-bar-item').forEach(x=>x.classList.toggle('active',x.dataset.monthKey===monthKey));
+      if(innerWidth<=700)weeklyDrilldown.scrollIntoView({behavior:'smooth',block:'nearest'});
+    };
+    monthlyExamBars.querySelectorAll('.monthly-bar-item').forEach(item=>{
+      item.addEventListener('click',()=>openWeeklyMonth(item.dataset.monthKey));
+      item.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openWeeklyMonth(item.dataset.monthKey)}});
+    });
+    if(typeof weeklyDrilldownClose!=='undefined'&&weeklyDrilldownClose){
+      weeklyDrilldownClose.onclick=()=>{
+        weeklyDrilldown.hidden=true;
+        monthlyExamBars.querySelectorAll('.monthly-bar-item').forEach(x=>x.classList.remove('active'));
+      };
+    }
   }
 }
 
