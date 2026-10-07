@@ -509,8 +509,9 @@ a{color:inherit}
 .event:hover{border-color:rgba(120,167,255,.23)!important;background:#111826!important}.event.starred{background:rgba(242,199,102,.065)!important;border-color:rgba(242,199,102,.16)!important}.event .star-btn{position:static!important;width:15px!important;height:15px!important;font-size:10px!important}
 .event-title{font-size:7.2px!important;line-height:1.25!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.event-status{grid-column:2;justify-self:start;margin:0!important;font-size:5.5px!important}
 .calendar-list{display:none}.calendar-section[data-view="timeline"] .calendar-scroll,.calendar-section[data-view="upcoming"] .calendar-scroll,.calendar-section[data-view="timeline"] .calendar-head,.calendar-section[data-view="upcoming"] .calendar-head{display:none}.calendar-section[data-view="timeline"] .calendar-list,.calendar-section[data-view="upcoming"] .calendar-list{display:block}
-.timeline-month{margin:13px 0 6px;color:#78869a;font-size:8px;font-weight:950;letter-spacing:.13em;text-transform:uppercase}.timeline-card{display:grid;grid-template-columns:74px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 12px;border-top:1px solid rgba(255,255,255,.055);background:transparent;cursor:pointer}.timeline-card:first-of-type{border-top:0}.timeline-card:hover{background:rgba(255,255,255,.022)}
+.timeline-month{margin:13px 0 6px;color:#78869a;font-size:8px;font-weight:950;letter-spacing:.13em;text-transform:uppercase}.timeline-card{display:grid;grid-template-columns:74px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:11px 12px;border-top:1px solid rgba(255,255,255,.055);background:transparent;cursor:pointer}.timeline-card:first-of-type{border-top:0}.timeline-card:hover{background:rgba(255,255,255,.022)}
 .timeline-date{text-align:center}.timeline-date b{display:block;color:#f0f3f7;font-size:18px;line-height:1}.timeline-date span{display:block;margin-top:4px;color:#6f7b8c;font-size:7px;font-weight:850}.timeline-main{min-width:0}.timeline-main strong{display:block;color:#e8edf4;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.timeline-main small{display:block;margin-top:4px;color:#758193;font-size:7.5px}
+.timeline-star{width:28px!important;height:28px!important;border-radius:50%!important;font-size:13px!important}
 .timeline-status{display:flex;align-items:center;gap:5px;padding:5px 7px;border:1px solid rgba(116,230,167,.13);border-radius:999px;color:#a6d9b7;font-size:6px;font-weight:900;white-space:nowrap}.timeline-status.pending{border-color:rgba(242,199,102,.16);color:#d7b96d}.timeline-status.tentative{border-color:rgba(255,122,138,.16);color:#e79aa5}
 .timeline-empty{padding:34px 14px;text-align:center;color:#667286;font-size:9px}.calendar-list-shell{border:1px solid rgba(255,255,255,.06);border-radius:14px;background:#070a0f;overflow:hidden}.calendar-mobile-note{display:none}
 .event-drawer-backdrop{position:fixed;inset:0;z-index:105;background:rgba(0,0,0,.58);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:.16s}.event-drawer-backdrop.open{opacity:1;pointer-events:auto}
@@ -612,7 +613,7 @@ a{color:inherit}
   .calendar-section[data-view="timeline"] .calendar-scroll,.calendar-section[data-view="upcoming"] .calendar-scroll,.calendar-section[data-view="timeline"] .calendar-head,.calendar-section[data-view="upcoming"] .calendar-head{display:none!important}
   .calendar-section[data-view="timeline"] .calendar-list,.calendar-section[data-view="upcoming"] .calendar-list{display:block!important}
   .calendar-section[data-view="month"] .calendar-list{display:none!important}
-  .timeline-card{grid-template-columns:54px minmax(0,1fr) auto;gap:9px;padding:12px 10px!important}
+  .timeline-card{grid-template-columns:54px minmax(0,1fr) auto auto;gap:7px;padding:12px 10px!important}
   .timeline-date b{font-size:17px!important}
   .timeline-date span{font-size:8px!important}
   .timeline-main strong{font-size:11px!important}
@@ -1606,11 +1607,20 @@ function renderTimeline(es){
     const state=eventState(e);
     html+='<div class="timeline-card" data-event-key="'+encodeURIComponent(eventKey(e))+'">'+
       '<div class="timeline-date"><b>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit'})+'</b><span>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',month:'short',weekday:'short'})+'</span></div>'+
-      '<div class="timeline-main"><strong>'+esc(calendarShortTitle(e))+'</strong><small>'+esc(eventTimeLabel(e))+(isStarred(e)?' • ★ Target':'')+'</small></div>'+
+      '<div class="timeline-main"><strong>'+esc(calendarShortTitle(e))+'</strong><small>'+esc(eventTimeLabel(e))+(isStarred(e)?' • ★ My Exam':'')+'</small></div>'+
+      '<button type="button" class="star-btn timeline-star'+(isStarred(e)?' active':'')+'" data-list-star="'+encodeURIComponent(eventKey(e))+'" aria-label="'+(isStarred(e)?'Remove from My Exams':'Add to My Exams')+'" title="'+(isStarred(e)?'Remove from My Exams':'Add to My Exams')+'">'+(isStarred(e)?'★':'☆')+'</button>'+
       '<div class="timeline-status '+(state==='confirmed'?'':state)+'">'+(state==='confirmed'?'Confirmed':state==='pending'?'Pending':'Not confirmed')+'</div>'+
     '</div>';
   });
   html+='</div>';calendarList.innerHTML=html;
+  calendarList.querySelectorAll('[data-list-star]').forEach(btn=>{
+    btn.onclick=ev=>{
+      ev.preventDefault();ev.stopPropagation();
+      const k=decodeURIComponent(btn.dataset.listStar||'');
+      const e=all.find(x=>eventKey(x)===k);
+      if(e)toggleStar(e);
+    };
+  });
   calendarList.querySelectorAll('[data-event-key]').forEach(row=>{
     row.onclick=()=>{const k=decodeURIComponent(row.dataset.eventKey||'');const e=all.find(x=>eventKey(x)===k);if(e)openEventDrawer(e)};
   });
@@ -1636,7 +1646,6 @@ function render(){
       el.className='event'+(isStarred(e)?' starred':'');
       el.title=e.title+(e.agreement?' — '+e.agreement:'');
       el.onclick=()=>openEventDrawer(e);
-      el.appendChild(starButton(e));
       const t=document.createElement('span');t.className='event-title';t.textContent=calendarShortTitle(e);el.appendChild(t);
       const state=eventState(e);
       if(state!=='confirmed'){const badge=document.createElement('span');badge.className='event-status '+state;badge.textContent=state==='tentative'?'Not confirmed':'Pending';el.appendChild(badge)}
