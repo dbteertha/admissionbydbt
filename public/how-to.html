@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f9ff">
+<title>How to Use • Admission by DBT</title>
+<meta name="description" content="Step-by-step visual guide for Admission by DBT: sync, cross-device restore, main timer, My Exams, Calendar, PDF, Circulars and Admission Guide.">
+<link rel="icon" href="/app-icon.svg">
+<style>
+:root{
+  --bg:#f7f9ff;--panel:#fff;--panel2:#f8faff;--text:#1f2b45;--muted:#6e7b91;--line:#e2e8f2;
+  --blue:#5875db;--violet:#8d68d8;--cyan:#27a8ca;--pink:#e96388;--green:#2e9b74;--amber:#b77a19;
+  --shadow:0 18px 52px rgba(68,85,119,.10);--radius:24px;
+}
+html[data-theme="dark"]{
+  --bg:#060911;--panel:#0e131e;--panel2:#111824;--text:#f3f6fb;--muted:#97a4b7;--line:#222d3d;
+  --shadow:0 20px 60px rgba(0,0,0,.30)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+  radial-gradient(circle at 10% 5%,rgba(88,117,219,.10),transparent 24%),
+  radial-gradient(circle at 90% 18%,rgba(233,99,136,.08),transparent 24%),
+  radial-gradient(circle at 70% 72%,rgba(39,168,202,.07),transparent 28%),
+  var(--bg);color:var(--text);font-family:Inter,"Noto Sans Bengali",ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+a{color:inherit}
+button{font:inherit}
+.topbar{position:sticky;top:10px;z-index:30;max-width:1180px;margin:10px auto 0;padding:9px 10px 9px 14px;border:1px solid var(--line);border-radius:20px;background:color-mix(in srgb,var(--panel) 92%,transparent);backdrop-filter:blur(20px);box-shadow:var(--shadow);display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:950;letter-spacing:.08em;font-size:12px;white-space:nowrap}
+.orb{width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 36% 32%,#fff 0 8%,#b9ddff 10% 22%,#6f8cff 43%,#b6a6ff 72%,#fff 100%);box-shadow:0 6px 20px rgba(91,112,220,.22)}
+.toplinks{display:flex;gap:4px;margin-left:auto}
+.toplinks a{text-decoration:none;color:var(--muted);font-size:10px;font-weight:800;padding:8px 10px;border-radius:999px}
+.toplinks a:hover{background:var(--panel2);color:var(--text)}
+.iconbtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer}
+.wrap{max-width:1180px;margin:auto;padding:26px 18px 90px}
+.hero{padding:54px 26px 34px;border:1px solid var(--line);border-radius:30px;background:
+  radial-gradient(circle at 50% 18%,rgba(88,117,219,.14),transparent 33%),
+  linear-gradient(145deg,color-mix(in srgb,var(--panel) 96%,#eef3ff 4%),color-mix(in srgb,var(--panel) 94%,#f8efff 6%));box-shadow:var(--shadow);text-align:center;overflow:hidden}
+.kicker{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel);font-size:9px;font-weight:900;letter-spacing:.12em;color:var(--blue);text-transform:uppercase}
+.kicker i{width:7px;height:7px;border-radius:50%;background:var(--green)}
+h1{font-size:clamp(34px,7vw,66px);line-height:1;letter-spacing:-.055em;margin:16px 0 12px}
+.hero p{max-width:690px;margin:0 auto;color:var(--muted);font-size:14px;line-height:1.7}
+.hero-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:1px solid var(--line);border-radius:13px;padding:11px 14px;font-size:10px;font-weight:900;background:var(--panel)}
+.btn.primary{background:linear-gradient(135deg,#5875db,#8d68d8);color:#fff;border-color:transparent}
+.quick{display:flex;gap:7px;overflow:auto;padding:14px 2px 3px;margin-top:16px;scrollbar-width:none}
+.quick::-webkit-scrollbar{display:none}
+.quick a{white-space:nowrap;text-decoration:none;padding:8px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--muted);font-size:9px;font-weight:800}
+.intro{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0 26px}
+.intro .mini{padding:15px;border:1px solid var(--line);border-radius:18px;background:var(--panel)}
+.mini b{display:block;font-size:11px}.mini span{display:block;margin-top:5px;color:var(--muted);font-size:9px;line-height:1.45}
+.guide-section{--accent:var(--blue);position:relative;margin:18px 0;padding:22px;border:1px solid var(--line);border-radius:26px;background:var(--panel);box-shadow:0 12px 34px rgba(67,84,116,.06);overflow:hidden}
+.guide-section:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 45%,#fff))}
+.guide-section.sync{--accent:var(--green)}.guide-section.timer{--accent:var(--blue)}.guide-section.exams{--accent:var(--violet)}.guide-section.calendar{--accent:var(--cyan)}.guide-section.pdf{--accent:var(--amber)}.guide-section.circular{--accent:var(--pink)}.guide-section.guide{--accent:#7458c6}.guide-section.install{--accent:#6c7b90}
+.section-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:17px}
+.num{flex:0 0 auto;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 12%,var(--panel));color:var(--accent);font-size:14px;font-weight:950;border:1px solid color-mix(in srgb,var(--accent) 22%,var(--line))}
+.section-head h2{margin:0;font-size:22px;letter-spacing:-.035em}.section-head p{margin:5px 0 0;color:var(--muted);font-size:11px;line-height:1.5}
+.steps{display:grid;gap:12px}
+.step{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(260px,.92fr);gap:16px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:20px;background:var(--panel2)}
+.step:nth-child(even){grid-template-columns:minmax(260px,.92fr) minmax(0,1.08fr)}
+.step:nth-child(even) .shot{order:2}
+.copy{padding:5px 8px}.stepno{font-size:8px;font-weight:950;letter-spacing:.11em;text-transform:uppercase;color:var(--accent)}.copy h3{margin:6px 0 5px;font-size:17px;letter-spacing:-.025em}.copy p{margin:0;color:var(--muted);font-size:11px;line-height:1.6}.tip{margin-top:10px;padding:9px 10px;border-radius:11px;background:color-mix(in srgb,var(--accent) 8%,var(--panel));border:1px solid color-mix(in srgb,var(--accent) 18%,var(--line));font-size:9px;color:var(--muted)}
+.shot{position:relative;min-height:230px;border-radius:18px;border:1px solid #dfe6f1;background:#f7f9fd;padding:12px;overflow:hidden;box-shadow:0 12px 28px rgba(57,74,106,.09)}
+html[data-theme="dark"] .shot{background:#0a0f18;border-color:#253044}
+.browser{height:18px;display:flex;align-items:center;gap:4px;border-bottom:1px solid #e5eaf2;margin:-2px -2px 10px;padding:0 3px 8px}html[data-theme="dark"] .browser{border-color:#253044}
+.dot{width:6px;height:6px;border-radius:50%;background:#cbd3df}.url{margin-left:5px;flex:1;height:7px;border-radius:999px;background:#e8edf5}html[data-theme="dark"] .url{background:#202a38}
+.mocknav{height:24px;border:1px solid #e0e7f1;background:#fff;border-radius:8px;display:flex;align-items:center;gap:5px;padding:4px 7px;font-size:5px;color:#77849a}html[data-theme="dark"] .mocknav{background:#101722;border-color:#273144;color:#91a0b5}
+.mockbrand{font-weight:950;color:#273754;margin-right:auto}.pill{padding:3px 6px;border-radius:999px;background:#eef3ff;color:#5875db;font-weight:900}.pill.green{background:#eaf8f2;color:#2e9b74}.pill.pink{background:#fff0f4;color:#d8587b}.pill.cyan{background:#eaf9fc;color:#1f8daa}.pill.violet{background:#f4efff;color:#7553b7}.pill.amber{background:#fff7e8;color:#a86f16}
+.screen-title{margin:12px 0 8px;font-weight:950;font-size:12px;color:#273754}html[data-theme="dark"] .screen-title{color:#edf2fa}
+.box{border:1px solid #e0e7f1;border-radius:12px;background:#fff;padding:9px;margin-top:7px}html[data-theme="dark"] .box{background:#101722;border-color:#273144}
+.row{display:flex;align-items:center;gap:7px}.line{height:6px;border-radius:999px;background:#e6ebf3}.line.w1{width:76%}.line.w2{width:55%}.line.w3{width:34%}.line.dark{background:#bcc7d8}html[data-theme="dark"] .line{background:#253044}.avatar{width:23px;height:23px;border-radius:8px;background:linear-gradient(135deg,#dce7ff,#f0e7ff);display:grid;place-items:center;color:#6077bf;font-size:10px;font-weight:950}.avatar.star{background:#f0eaff;color:#7a5ab7}.avatar.cal{background:#e6f7fb;color:#258ea9}.avatar.sync{background:#e9f8f2;color:#2d936f}
+.bigcode{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:17px;font-weight:950;letter-spacing:.1em;color:#324b79;background:#f0f5ff;border:1px dashed #b9c8e6;border-radius:10px;padding:10px;text-align:center}.field{height:28px;border:1px solid #dfe6f1;border-radius:8px;background:#fff;padding:0 8px;display:flex;align-items:center;color:#79879c;font-size:7px}html[data-theme="dark"] .field{background:#0d141f;border-color:#263246}.mockbtn{height:28px;border:0;border-radius:8px;padding:0 9px;background:#5975db;color:#fff;font-size:7px;font-weight:900}.mockbtn.green{background:#2e9b74}.mockbtn.violet{background:#805fc7}.mockbtn.cyan{background:#249dbd}.mockbtn.pink{background:#dc6282}.mockbtn.amber{background:#a97824}
+.arrow{position:absolute;z-index:3;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#ff4f6d;color:#fff;font-size:17px;font-weight:950;box-shadow:0 8px 20px rgba(255,79,109,.28)}.arrow:after{content:"";position:absolute;width:54px;height:54px;border:2px solid rgba(255,79,109,.25);border-radius:50%}
+.arrow.a1{right:19px;top:52px}.arrow.a2{right:35px;bottom:26px}.arrow.a3{left:28px;bottom:32px}
+.countdown{text-align:center;padding:10px 2px}.countdown b{display:block;font-size:40px;line-height:1;color:#31415d}.countdown span{font-size:7px;color:#7c899c;letter-spacing:.14em}.clockrow{display:flex;justify-content:center;gap:6px;margin-top:8px}.clockcell{min-width:36px;padding:5px;border-radius:8px;background:#fff;border:1px solid #e0e7f1;font-size:7px;color:#78869a}.clockcell b{display:block;font-size:13px;color:#344762}
+.examcard{display:flex;gap:8px;align-items:center;border:1px solid #e1e7f0;background:#fff;border-radius:11px;padding:8px;margin-top:6px}html[data-theme="dark"] .examcard{background:#101722;border-color:#273144}.examcard .info{flex:1}.examcard strong{display:block;font-size:8px;color:#33445f}.examcard small{font-size:6px;color:#8a97aa}.starbtn{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:#f3edff;color:#7d5cc0;font-size:11px}
+.monthhead{display:flex;align-items:center;justify-content:space-between;margin:8px 0}.monthhead b{font-size:9px}.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}.day{min-height:27px;border:1px solid #e1e7f0;border-radius:6px;background:#fff;padding:3px;font-size:5px;color:#758298}.day.has{background:#eefaff;border-color:#cfeaf2}.event{margin-top:2px;padding:2px 3px;border-radius:4px;background:#dff3f8;color:#217c96;font-size:4px;font-weight:900;white-space:nowrap;overflow:hidden}.filterrow{display:flex;gap:4px;flex-wrap:wrap}.filter{padding:4px 6px;border-radius:999px;background:#eef3ff;color:#5875db;font-size:5px;font-weight:900}.filter.active{background:#5875db;color:#fff}
+.pdfpage{width:75%;margin:8px auto 0;aspect-ratio:1.414/1;border:1px solid #ccd5e2;background:#fff;border-radius:5px;padding:7px;box-shadow:0 8px 18px rgba(49,65,94,.12)}.pdfpage h4{margin:0 0 4px;font-size:7px}.pdfgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}.pdfgrid i{display:block;height:13px;border:1px solid #d9dee7;border-radius:2px}.official{display:flex;align-items:center;gap:6px;padding:7px;border:1px solid #f0d7df;border-radius:9px;background:#fff5f8;margin-top:5px}.official b{font-size:7px;color:#b84d69}.official span{margin-left:auto;font-size:5px;color:#d8587b}.search{display:flex;align-items:center;gap:5px;height:26px;border:1px solid #e0e7f1;background:#fff;border-radius:8px;padding:0 7px;font-size:6px;color:#8794a7}.compare{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}.cmp{border:1px solid #e4def1;border-radius:9px;background:#faf7ff;padding:6px}.cmp b{font-size:7px;color:#65479f}.cmp p{font-size:5px;color:#8b7ca4;margin:3px 0 0}.phone{width:105px;height:190px;margin:4px auto;border:4px solid #283448;border-radius:22px;background:#eef3fb;padding:8px;position:relative}.phone:before{content:"";position:absolute;width:36px;height:5px;background:#283448;border-radius:999px;left:50%;top:5px;transform:translateX(-50%)}.appicon{width:42px;height:42px;border-radius:12px;margin:35px auto 7px;background:linear-gradient(135deg,#6f8cff,#b092ff);display:grid;place-items:center;color:#fff;font-weight:950}.phonelabel{text-align:center;font-size:6px;color:#43516a}
+.footer{margin-top:24px;padding:22px;text-align:center;border:1px solid var(--line);border-radius:24px;background:var(--panel)}.footer b{display:block;font-size:16px}.footer p{color:var(--muted);font-size:10px;line-height:1.5}.footer .btn{margin:3px}
+@media(max-width:850px){.toplinks{display:none}.intro{grid-template-columns:1fr}.step,.step:nth-child(even){grid-template-columns:1fr}.step:nth-child(even) .shot{order:0}.guide-section{padding:16px}.shot{min-height:210px}.hero{padding:38px 16px 26px}}
+@media(max-width:520px){.topbar{margin:7px 7px 0;top:7px}.brand{font-size:10px}.wrap{padding:18px 9px 82px}.hero{border-radius:24px}.guide-section{border-radius:21px;padding:13px}.step{padding:10px;border-radius:17px}.shot{min-height:205px}.copy h3{font-size:15px}.section-head h2{font-size:19px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'light'}catch(e){}</script>
+</head>
+<body>
+<nav class="topbar">
+  <a class="brand" href="/" style="text-decoration:none"><span class="orb"></span><span>ADMISSION BY DBT</span></a>
+  <div class="toplinks"><a href="#sync">Sync</a><a href="#timer">Timer</a><a href="#exams">My Exams</a><a href="#calendar">Calendar</a><a href="#pdf">PDF</a><a href="#guide">Guide</a></div>
+  <button class="iconbtn" id="theme" aria-label="Switch theme" title="Switch theme">◐</button>
+</nav>
+<main class="wrap">
+<section class="hero">
+  <span class="kicker"><i></i> Visual help center</span>
+  <h1>How to Use<br>Admission by DBT</h1>
+  <p>Follow the pictures. Each step shows exactly what to press and what happens next. No technical knowledge is needed.</p>
+  <div class="hero-actions"><a class="btn primary" href="/">← Open Home</a><a class="btn" href="/#calendar">Open Calendar</a><a class="btn" href="/#targets">Open My Exams</a></div>
+  <div class="quick">
+    <a href="#sync">Save & Sync</a><a href="#cross-device">New device</a><a href="#timer">Main timer</a><a href="#add-exams">Add exams</a><a href="#exams">My Exams</a><a href="#calendar">Calendar</a><a href="#pdf">PDF</a><a href="#circulars">Circulars</a><a href="#guide">Admission Guide</a><a href="#install">Install app</a>
+  </div>
+</section>
+
+<div class="intro">
+  <div class="mini"><b>① Follow the red pointer</b><span>Every visual has a red pointer showing the button or area you should use.</span></div>
+  <div class="mini"><b>② Your code is important</b><span>Your Secret Code restores your Home + Calendar choices on another device.</span></div>
+  <div class="mini"><b>③ Tracker stays separate</b><span>This guide is for the admission Home, My Exams, Circulars, Calendar and Guide.</span></div>
+</div>
+
+<section class="guide-section sync" id="sync">
+  <div class="section-head"><span class="num">1</span><div><h2>Save & Sync your choices</h2><p>Save My Exams, your main timer target and Calendar choices.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="browser"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="url"></span></div><div class="mocknav"><span class="mockbrand">ADMISSION BY DBT</span><span class="pill green">● Save</span></div><div class="screen-title">Home</div><div class="box"><div class="row"><span class="avatar sync">↻</span><div style="flex:1"><div class="line w1 dark"></div><div class="line w2" style="margin-top:5px"></div></div></div></div><span class="arrow a1">↖</span></figure>
+      <div class="copy"><span class="stepno">Step 1</span><h3>Press “Save” at the top</h3><p>On the Home page, press the Save button in the top bar. This opens your sync panel.</p></div>
+    </article>
+    <article class="step">
+      <figure class="shot"><div class="browser"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="url"></span></div><div class="screen-title">Your Secret Code</div><div class="bigcode">DBT-8F4K-2M7Q</div><div class="box"><div class="line w1 dark"></div><div class="line w2" style="margin-top:6px"></div></div><div class="row" style="margin-top:8px"><button class="mockbtn green">Save / Sync</button><span class="pill green">Saved</span></div><span class="arrow a2">↑</span></figure>
+      <div class="copy"><span class="stepno">Step 2</span><h3>Keep your Secret Code</h3><p>Your code is created automatically. Save it somewhere safe. It is the key for restoring your choices later.</p><div class="tip">Important: anyone who knows this code can use the saved Home + Calendar data attached to it.</div></div>
+    </article>
+    <article class="step">
+      <figure class="shot"><div class="browser"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="url"></span></div><div class="mocknav"><span class="mockbrand">ADMISSION BY DBT</span><span class="pill green">● Saved</span></div><div class="box"><div class="row"><span class="avatar star">★</span><div style="flex:1"><div class="line w1 dark"></div><div class="line w3" style="margin-top:5px"></div></div><span class="pill violet">My Exams</span></div></div><div class="box"><div class="row"><span class="avatar cal">▦</span><div style="flex:1"><div class="line w2 dark"></div><div class="line w1" style="margin-top:5px"></div></div></div></div></figure>
+      <div class="copy"><span class="stepno">Step 3</span><h3>It saves automatically</h3><p>After setup, changes to selected exams, main countdown target, Calendar view and Calendar filter are synced automatically.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="guide-section sync" id="cross-device">
+  <div class="section-head"><span class="num">2</span><div><h2>Use the same data on another device</h2><p>Restore your choices on a new phone, tablet or computer.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="browser"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="url"></span></div><div class="screen-title">Connect with your existing code</div><div class="field">DBT-8F4K-2M7Q</div><div class="row" style="margin-top:8px"><button class="mockbtn green">Connect / Restore</button><span class="pill">New device</span></div><span class="arrow a2">↑</span></figure>
+      <div class="copy"><span class="stepno">Step 1</span><h3>Enter your old Secret Code</h3><p>On the new device, open Save/Sync, enter the code you already saved, then connect.</p></div>
+    </article>
+    <article class="step">
+      <figure class="shot"><div class="browser"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="url"></span></div><div class="mocknav"><span class="mockbrand">ADMISSION BY DBT</span><span class="pill green">● Saved</span></div><div class="examcard"><span class="avatar star">★</span><span class="info"><strong>Selected exams restored</strong><small>Main timer + Calendar choices restored</small></span><span class="pill green">✓</span></div><div class="examcard"><span class="avatar cal">▦</span><span class="info"><strong>Calendar restored</strong><small>Your saved view and filter return</small></span><span class="pill green">✓</span></div></figure>
+      <div class="copy"><span class="stepno">Step 2</span><h3>Your choices come back</h3><p>The new device loads the saved My Exams, main timer target and Calendar preferences from the same code.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="guide-section timer" id="timer">
+  <div class="section-head"><span class="num">3</span><div><h2>Set the main countdown timer</h2><p>Choose the exam you want to see as your big target on Home.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="browser"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="url"></span></div><div class="countdown"><b>42</b><span>DAYS TO MAIN TARGET</span><div class="clockrow"><span class="clockcell"><b>08</b>HRS</span><span class="clockcell"><b>21</b>MIN</span><span class="clockcell"><b>55</b>SEC</span></div></div><div class="box"><div class="row"><span class="avatar">◎</span><div style="flex:1"><div class="line w2 dark"></div><div class="line w1" style="margin-top:5px"></div></div><button class="mockbtn">Change target</button></div></div><span class="arrow a2">↑</span></figure>
+      <div class="copy"><span class="stepno">Step 1</span><h3>Choose “Change target”</h3><p>Under the main countdown, press the target control to open the exam picker.</p></div>
+    </article>
+    <article class="step">
+      <figure class="shot"><div class="screen-title">Choose main target</div><div class="examcard"><span class="avatar">M</span><span class="info"><strong>Medical Admission</strong><small>Upcoming exam</small></span><button class="mockbtn">Set</button></div><div class="examcard"><span class="avatar">E</span><span class="info"><strong>Engineering Admission</strong><small>Upcoming exam</small></span><button class="mockbtn">Set</button></div><div class="examcard"><span class="avatar">U</span><span class="info"><strong>University Admission</strong><small>Upcoming exam</small></span><button class="mockbtn">Set</button></div><span class="arrow a2">↑</span></figure>
+      <div class="copy"><span class="stepno">Step 2</span><h3>Select the exam</h3><p>Tap the exam you want. The big Home countdown changes immediately and the choice is included in sync.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="guide-section exams" id="add-exams">
+  <div class="section-head"><span class="num">4</span><div><h2>Add exams to My Exams</h2><p>Keep only the admissions you actually care about.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="screen-title">Upcoming exams</div><div class="examcard"><span class="avatar cal">12</span><span class="info"><strong>Example University A Unit</strong><small>12 Dec • বিশ্ববিদ্যালয়</small></span><span class="starbtn">☆</span></div><div class="examcard"><span class="avatar cal">18</span><span class="info"><strong>Example Engineering Exam</strong><small>18 Dec • ইঞ্জিনিয়ারিং</small></span><span class="starbtn">☆</span></div><span class="arrow a2">↑</span></figure>
+      <div class="copy"><span class="stepno">Step 1</span><h3>Tap the star on an exam</h3><p>In an exam list or event details, tap the star / Add to My Exams control.</p></div>
+    </article>
+    <article class="step">
+      <figure class="shot"><div class="screen-title">My Exams</div><div class="examcard" style="border-color:#dfd5f3;background:#faf7ff"><span class="avatar star">★</span><span class="info"><strong>Example University A Unit</strong><small>Selected • 12 Dec</small></span><span class="pill violet">Added</span></div><div class="box"><div class="line w1 dark"></div><div class="line w3" style="margin-top:5px"></div></div></figure>
+      <div class="copy"><span class="stepno">Step 2</span><h3>It appears in My Exams</h3><p>Your selected exam is now in the My Exams section. Tap the star again if you want to remove it.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="guide-section exams" id="exams">
+  <div class="section-head"><span class="num">5</span><div><h2>Use My Exams</h2><p>Your personal shortlist, grouped by month.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="row"><div class="screen-title" style="margin-right:auto">December</div><span class="pill violet">3 selected</span></div><div class="examcard" style="border-color:#d8c9f1"><span class="avatar star">★</span><span class="info"><strong>NEXT SELECTED • Example A</strong><small>11 days remaining</small></span></div><div class="examcard"><span class="avatar star">★</span><span class="info"><strong>Example B</strong><small>18 Dec</small></span></div><div class="examcard"><span class="avatar star">★</span><span class="info"><strong>Example C</strong><small>24 Dec</small></span></div></figure>
+      <div class="copy"><span class="stepno">What you see</span><h3>Months, nearest exam and countdowns</h3><p>Selected exams are grouped by month. The nearest selected exam is highlighted so you can focus on what comes first.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="guide-section calendar" id="calendar">
+  <div class="section-head"><span class="num">6</span><div><h2>Use the Calendar</h2><p>See real month dates, switch views and filter categories.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="filterrow"><span class="filter active">Month</span><span class="filter">List</span><span class="filter">Next exams</span><span class="filter">★ My Exams</span></div><div class="monthhead"><b>December 2026</b><span class="pill cyan">‹ &nbsp; ›</span></div><div class="calgrid"><div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div><div class="day">5</div><div class="day">6</div><div class="day">7</div><div class="day">8</div><div class="day">9</div><div class="day has">10<div class="event">CU-A</div></div><div class="day">11</div><div class="day">12</div><div class="day has">13<div class="event">CU-A</div></div><div class="day">14</div><div class="day">15</div><div class="day">16</div><div class="day">17</div><div class="day has">18<div class="event">CU-A</div></div><div class="day">19</div><div class="day">20</div><div class="day">21</div><div class="day">22</div><div class="day">23</div><div class="day has">24<div class="event">CU-A</div></div><div class="day">25</div><div class="day">26</div><div class="day">27</div><div class="day">28</div><div class="day">29</div><div class="day">30</div><div class="day">31</div><div class="day">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div></div></figure>
+      <div class="copy"><span class="stepno">Step 1</span><h3>Change view or filter</h3><p>Use Month, List or Next Exams. Use filters to show all exams, only My Exams, or a category.</p></div>
+    </article>
+    <article class="step">
+      <figure class="shot"><div class="monthhead"><b>December 12</b><span class="pill cyan">3 exams</span></div><div class="examcard"><span class="avatar cal">CU</span><span class="info"><strong>CU-A</strong><small>Confirmed</small></span></div><div class="examcard"><span class="avatar cal">BU</span><span class="info"><strong>BU-B</strong><small>Notice pending</small></span></div><div class="examcard"><span class="avatar cal">RU</span><span class="info"><strong>RU-C</strong><small>Not confirmed</small></span></div><span class="arrow a3">↑</span></figure>
+      <div class="copy"><span class="stepno">Step 2</span><h3>Tap a busy date for all exams</h3><p>If many exams are on one date, tap the day / + more control. A sheet opens with every exam on that day.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="guide-section pdf" id="pdf">
+  <div class="section-head"><span class="num">7</span><div><h2>Download Calendar PDF</h2><p>Create a clean black-and-white printable calendar.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="screen-title">Print PDF</div><div class="filterrow"><span class="filter active">Dec 2026</span><span class="filter active">Jan 2027</span><span class="filter">Feb 2027</span></div><div class="box"><div class="row"><span class="pill amber">All categories</span><span class="pill">Individual exams</span></div></div><button class="mockbtn amber" style="margin-top:8px">Preview PDF</button><span class="arrow a2">↑</span></figure>
+      <div class="copy"><span class="stepno">Step 1</span><h3>Choose what to print</h3><p>Press Print PDF in Calendar, then choose months, categories, institutions or individual exams.</p></div>
+    </article>
+    <article class="step">
+      <figure class="shot"><div class="screen-title">PDF preview</div><div class="pdfpage"><h4>December 2026</h4><div class="pdfgrid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><div class="row" style="justify-content:center;margin-top:8px"><button class="mockbtn amber">Download PDF</button></div></figure>
+      <div class="copy"><span class="stepno">Step 2</span><h3>Preview and download</h3><p>Check the selected pages, then download. The PDF is A4 landscape, black and white, with one month per page.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="guide-section circular" id="circulars">
+  <div class="section-head"><span class="num">8</span><div><h2>Use Circulars</h2><p>Open official notices by category.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="filterrow"><span class="filter active" style="background:#e96388">মেডিকেল</span><span class="filter">ইঞ্জিনিয়ারিং</span><span class="filter">বিশ্ববিদ্যালয়</span></div><div class="official"><b>Official circular • Example Medical</b><span>Open ↗</span></div><div class="official"><b>Official circular • Example University</b><span>Open ↗</span></div><div class="official" style="opacity:.65"><b>Notice pending • Example</b><span>Waiting</span></div><span class="arrow a2">↑</span></figure>
+      <div class="copy"><span class="stepno">How to use</span><h3>Choose category, then open the official link</h3><p>Use the category tabs and open the official circular. “Notice pending” means the official notice is still being tracked.</p><div class="tip">Always verify final eligibility, dates and rules from the official circular before applying.</div></div>
+    </article>
+  </div>
+</section>
+
+<section class="guide-section guide" id="guide">
+  <div class="section-head"><span class="num">9</span><div><h2>Use Admission Guide</h2><p>Search, expand details and compare options.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="filterrow"><span class="filter active" style="background:#7458c6">বিশ্ববিদ্যালয়</span><span class="filter">মেডিকেল</span><span class="filter">ইঞ্জিনিয়ারিং</span></div><div class="search">⌕ &nbsp; Search university, unit or topic…</div><div class="examcard"><span class="avatar star">U</span><span class="info"><strong>Example University • A Unit</strong><small>Seats • eligibility • exam • marks</small></span><button class="mockbtn violet">Compare</button></div><span class="arrow a2">↑</span></figure>
+      <div class="copy"><span class="stepno">Step 1</span><h3>Search and select options</h3><p>Choose a category, search by university or unit, then press Compare on up to three options.</p></div>
+    </article>
+    <article class="step">
+      <figure class="shot"><div class="screen-title">Compare</div><div class="compare"><div class="cmp"><b>Option A</b><p>Seats</p><p>Eligibility</p><p>Exam</p><p>Marks</p></div><div class="cmp"><b>Option B</b><p>Seats</p><p>Eligibility</p><p>Exam</p><p>Marks</p></div></div><button class="mockbtn violet" style="margin-top:8px">Close comparison</button></figure>
+      <div class="copy"><span class="stepno">Step 2</span><h3>Compare side by side</h3><p>The comparison view places important fields next to each other so differences are easier to understand.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="guide-section install" id="install">
+  <div class="section-head"><span class="num">10</span><div><h2>Install it like an app</h2><p>If your browser offers Install / Add to Home Screen, you can open Admission by DBT from your phone home screen.</p></div></div>
+  <div class="steps">
+    <article class="step">
+      <figure class="shot"><div class="phone"><div class="appicon">DBT</div><div class="phonelabel">Admission by DBT</div><div class="box" style="margin-top:18px"><div class="line w1 dark"></div><div class="line w2" style="margin-top:6px"></div></div></div></figure>
+      <div class="copy"><span class="stepno">Optional</span><h3>Use the Install button when it appears</h3><p>On supported browsers, press the install button in the top bar. The site can then open from your home screen like an app.</p></div>
+    </article>
+  </div>
+</section>
+
+<section class="footer">
+  <b>Ready to use the site?</b>
+  <p>Open Admission by DBT and follow the guide whenever you need it. This page stays available at <strong>/how-to</strong>.</p>
+  <a class="btn primary" href="/">Open Home</a><a class="btn" href="/#calendar">Open Calendar</a><a class="btn" href="/#targets">Open My Exams</a>
+</section>
+</main>
+<script>
+const b=document.getElementById('theme');
+b.addEventListener('click',()=>{
+  const next=document.documentElement.dataset.theme==='dark'?'light':'dark';
+  document.documentElement.dataset.theme=next;
+  try{localStorage.setItem('admissionbydbt-theme-v1',next)}catch(e){}
+});
+</script>
+</body></html>
