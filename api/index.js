@@ -1558,7 +1558,34 @@ function renderAllCategories(){
 }
 renderAllCategories();
 
-
+function smoothPageJump(target){
+  if(!target)return;
+  const startY=window.scrollY||window.pageYOffset||0;
+  const nav=document.querySelector('.topnav');
+  const offset=(nav?nav.getBoundingClientRect().height:0)+16;
+  const targetY=Math.max(0,target.getBoundingClientRect().top+startY-offset);
+  const distance=targetY-startY;
+  if(Math.abs(distance)<2)return;
+  const duration=Math.min(720,Math.max(360,Math.abs(distance)*0.34));
+  const start=performance.now();
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  function step(now){
+    const p=Math.min(1,(now-start)/duration);
+    window.scrollTo(0,startY+distance*ease(p));
+    if(p<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+document.querySelectorAll('.navlinks a[href^="#"],.mobile-dock a[href^="#"]').forEach(link=>{
+  link.addEventListener('click',ev=>{
+    const sel=link.getAttribute('href');
+    const target=sel&&document.querySelector(sel);
+    if(!target)return;
+    ev.preventDefault();
+    smoothPageJump(target);
+    try{history.replaceState(null,'',sel)}catch(e){}
+  });
+});
 
 
 
