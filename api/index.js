@@ -3575,6 +3575,68 @@ html[data-theme="light"] .mobile-dock{background:rgba(255,255,255,.96)!important
   html[data-theme="light"] .info-center{background:#f3efff!important}
 }
 
+
+/* ===== V6.3 sticky guide/circular + unlimited compare ===== */
+.circular-section,.info-center{overflow:visible!important}
+.circular-tabs,.category-tabs{
+  position:sticky!important;
+  top:78px!important;
+  z-index:36!important;
+  isolation:isolate;
+  box-shadow:0 10px 24px rgba(0,0,0,.12)!important
+}
+html[data-theme="dark"] .circular-tabs,html[data-theme="dark"] .category-tabs{
+  background:rgba(9,12,18,.96)!important;
+  border:1px solid rgba(255,255,255,.08)!important
+}
+html[data-theme="light"] .circular-tabs,html[data-theme="light"] .category-tabs{
+  background:rgba(255,255,255,.97)!important;
+  border:1px solid rgba(28,37,49,.09)!important
+}
+.guide-compare-open[hidden]{display:none!important}
+.guide-compare-open{
+  margin:8px 0 12px!important;
+  min-height:38px!important;
+  padding:0 14px!important;
+  border-radius:11px!important;
+  background:linear-gradient(135deg,#4b78d1,#7a4fd8)!important;
+  border:0!important;color:#fff!important;font-weight:800!important;
+  box-shadow:0 10px 22px rgba(91,79,190,.16)!important
+}
+.guide-compare-tray:empty{display:none!important}
+.guide-compare-tray{margin:8px 0 0!important}
+.guide-compare-toggle{white-space:nowrap}
+.guide-compare-toggle.active{background:rgba(122,79,216,.16)!important;border-color:rgba(122,79,216,.30)!important;color:#cdbdff!important}
+html[data-theme="light"] .guide-compare-toggle.active{background:#eee7ff!important;border-color:#d7c9f5!important;color:#5d429d!important}
+.guide-compare-modal{width:min(1120px,96vw)!important}
+.guide-compare-body{display:block!important;overflow:hidden!important}
+.guide-compare-table-wrap{overflow:auto;max-width:100%;max-height:min(68vh,720px);border:1px solid var(--line);border-radius:14px}
+.guide-compare-table{border-collapse:separate;border-spacing:0;min-width:max-content;width:100%;background:var(--panel)}
+.guide-compare-table th,.guide-compare-table td{
+  min-width:220px;max-width:330px;padding:12px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+  vertical-align:top;text-align:left;font-size:9px;line-height:1.5;white-space:normal
+}
+.guide-compare-table thead th{position:sticky;top:0;z-index:3;background:var(--panel2);font-size:10px;color:var(--text)}
+.guide-compare-table th:first-child{position:sticky;left:0;z-index:2;min-width:150px;max-width:150px;background:var(--panel2);color:var(--text)}
+.guide-compare-table thead th:first-child{z-index:4}
+.guide-compare-table tr:last-child th,.guide-compare-table tr:last-child td{border-bottom:0}
+.guide-compare-table th:last-child,.guide-compare-table td:last-child{border-right:0}
+
+/* gentle entrance only for the two requested sections */
+#circulars.dbt-reveal,#infoCenter.dbt-reveal{opacity:0;transform:translateY(18px) scale(.992)}
+#circulars.dbt-reveal.dbt-in-view,#infoCenter.dbt-reveal.dbt-in-view{
+  opacity:1;transform:none;transition:opacity .52s cubic-bezier(.2,.75,.25,1),transform .52s cubic-bezier(.2,.75,.25,1)
+}
+@media(max-width:700px){
+  .circular-tabs,.category-tabs{top:58px!important}
+  .guide-compare-modal{width:100%!important}
+  .guide-compare-table th,.guide-compare-table td{min-width:190px;padding:10px;font-size:8px}
+  .guide-compare-table th:first-child{min-width:120px;max-width:120px}
+}
+@media(prefers-reduced-motion:reduce){
+  #circulars.dbt-reveal,#infoCenter.dbt-reveal{opacity:1!important;transform:none!important}
+}
+
 </style></head><body>
 <div class="app">
   <nav class="topnav">
@@ -3723,13 +3785,12 @@ html[data-theme="light"] .mobile-dock{background:rgba(255,255,255,.96)!important
 
     <section class="info-center" id="infoCenter">
       <div class="head"><div><div class="section-kicker">REFERENCE</div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্য কণিকা</h2><div class="sub">বিশ্ববিদ্যালয়, ইঞ্জিনিয়ারিং ও মেডিকেল — এই ৩ ক্যাটাগরিতে আসন, যোগ্যতা, পরীক্ষার ধরন, নম্বরবণ্টন ও ফলাফল নির্ণয়।</div></div></div>
-      <div class="guide-stats" id="guideStats"></div>
       <div class="guide-toolbar">
         <label class="guide-search-wrap"><span>⌕</span><input id="guideSearch" type="search" placeholder="Search university, unit or topic…" aria-label="Search Admission Guide"></label>
         <button class="guide-clear" id="guideClearSearch" type="button" hidden>Clear</button>
-        <button class="guide-compare-open" id="guideCompareButton" type="button" disabled>Compare <b id="guideCompareCount">0</b></button>
       </div>
       <div class="guide-compare-tray" id="guideCompareTray" aria-live="polite"></div>
+      <button class="guide-compare-open" id="guideCompareButton" type="button" hidden>Compare selected <b id="guideCompareCount">0</b></button>
       <div class="category-tabs" id="categoryTabs"></div>
       <div id="categoryCharts"></div>
     </section>
@@ -4985,7 +5046,7 @@ const BN_EXACT={
   '★ My Exams':'★ আমার পরীক্ষা','Audited 7 Oct 2026':'যাচাই: ৭ অক্টোবর ২০২৬',
   'Previous':'আগের','Next':'পরের','Sun':'রবি','Mon':'সোম','Tue':'মঙ্গল','Wed':'বুধ','Thu':'বৃহস্পতি','Fri':'শুক্র','Sat':'শনি',
   'REFERENCE':'তথ্য','QUICK COMPARE':'দ্রুত তুলনা','Compare admission options':'ভর্তি অপশন তুলনা করুন','Compare':'তুলনা',
-  'Selected':'নির্বাচিত','Details':'বিস্তারিত','Less':'কম দেখুন','Clear':'মুছুন',
+  'Selected':'নির্বাচিত','Select':'নির্বাচন করুন','Selected ✓':'নির্বাচিত ✓','Compare selected':'নির্বাচিতগুলো তুলনা করুন','Details':'বিস্তারিত','Less':'কম দেখুন','Clear':'মুছুন',
   'CLOUD SAVE':'ক্লাউড সেভ','Your Secret Code':'আপনার গোপন কোড',
   'Save this secret code somewhere safe. You can use it later to get back your saved exams, countdown target and calendar settings on this or another device.':'এই গোপন কোডটি নিরাপদ জায়গায় সেভ করে রাখুন। পরে এই বা অন্য ডিভাইসে আপনার সেভ করা পরীক্ষা, কাউন্টডাউন ও ক্যালেন্ডার সেটিংস ফেরত পেতে এটি ব্যবহার করতে পারবেন।',
   'Copy':'কপি','Use an existing code':'আগের কোড ব্যবহার করুন','Use code':'কোড ব্যবহার করুন',
@@ -5664,6 +5725,7 @@ function renderGuideCompareTray(){
   if(!tray||!btn||!count)return;
   const rows=[...guideCompareKeys].map(guideRowByKey).filter(Boolean);
   count.textContent=rows.length;
+  btn.hidden=rows.length<2;
   btn.disabled=rows.length<2;
   tray.innerHTML=rows.length?'<span>Selected:</span>'+rows.map(r=>'<button type="button" data-guide-remove="'+encodeURIComponent(r.cat+'|'+r.unit)+'">'+esc(r.unit)+' ×</button>').join(''):'';
   tray.querySelectorAll('[data-guide-remove]').forEach(x=>x.onclick=()=>{guideCompareKeys.delete(x.dataset.guideRemove);syncGuideCompareButtons();renderGuideCompareTray()});
@@ -5671,16 +5733,26 @@ function renderGuideCompareTray(){
 function syncGuideCompareButtons(){
   document.querySelectorAll('[data-guide-compare]').forEach(btn=>{
     const on=guideCompareKeys.has(btn.dataset.guideCompare);
-    btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',String(on));btn.textContent=on?'Selected':'Compare';
+    btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',String(on));btn.textContent=on?'Selected ✓':'Select';
   });
 }
 function openGuideCompare(){
   const rows=[...guideCompareKeys].map(guideRowByKey).filter(Boolean);
   if(rows.length<2)return;
-  guideCompareBody.innerHTML=rows.map(r=>{
-    const cls=r.cat==='মেডিকেল ও ডেন্টাল'?'medical':r.cat==='ইঞ্জিনিয়ারিং'?'engineering':'university';
-    return '<article class="guide-compare-card '+cls+'"><h4>'+esc(r.unit)+'</h4><div><b>Seats</b><span>'+esc(r.seats)+'</span></div><div><b>Eligibility</b><span>'+esc(r.elig)+'</span></div><div><b>Exam</b><span>'+esc(r.exam)+'</span></div><div><b>Marks</b><span>'+esc(r.marks)+'</span></div><div><b>Result</b><span>'+esc(r.result)+'</span></div></article>';
-  }).join('');
+  const fields=[
+    ['University / Unit','unit'],
+    ['Category','cat'],
+    ['Seats','seats'],
+    ['Eligibility','elig'],
+    ['Exam','exam'],
+    ['Marks / Questions','marks'],
+    ['Result calculation','result']
+  ];
+  guideCompareBody.innerHTML='<div class="guide-compare-table-wrap"><table class="guide-compare-table"><thead><tr><th>Compare</th>'+
+    rows.map(r=>'<th>'+esc(r.unit)+'</th>').join('')+
+    '</tr></thead><tbody>'+
+    fields.slice(1).map(([label,key])=>'<tr><th>'+esc(label)+'</th>'+rows.map(r=>'<td>'+esc(r[key])+'</td>').join('')+'</tr>').join('')+
+    '</tbody></table></div>';
   guideCompareBackdrop.classList.add('open');guideCompareBackdrop.setAttribute('aria-hidden','false');
 }
 function closeGuideCompare(){guideCompareBackdrop.classList.remove('open');guideCompareBackdrop.setAttribute('aria-hidden','true')}
@@ -5717,7 +5789,7 @@ function renderCategoryTable(cat){
         const key=encodeURIComponent(r.cat+'|'+r.unit);
         const hay=(r.p+' '+r.unit+' '+r.seats+' '+r.elig+' '+r.exam+' '+r.marks+' '+r.result).toLowerCase();
         return '<tr data-guide-key="'+key+'" data-guide-search="'+esc(hay)+'">'+
-        '<td class="admission-name" data-label="বিশ্ববিদ্যালয় / ইউনিট"><span>'+esc(r.unit)+'</span><div class="guide-row-actions"><button class="guide-compare-toggle" type="button" data-guide-compare="'+key+'" aria-pressed="false">Compare</button><button class="guide-row-toggle" type="button" aria-expanded="false">Details</button></div></td>'+
+        '<td class="admission-name" data-label="বিশ্ববিদ্যালয় / ইউনিট"><span>'+esc(r.unit)+'</span><div class="guide-row-actions"><button class="guide-compare-toggle" type="button" data-guide-compare="'+key+'" aria-pressed="false">Select</button><button class="guide-row-toggle" type="button" aria-expanded="false">Details</button></div></td>'+
         '<td data-label="আসন সংখ্যা">'+esc(r.seats)+'</td>'+
         '<td data-label="আবেদন যোগ্যতা">'+esc(r.elig)+'</td>'+
         '<td data-label="পরীক্ষার ধরন">'+esc(r.exam)+'</td>'+
@@ -5731,15 +5803,6 @@ function renderCategoryTable(cat){
 function renderAllCategories(){
   const tabs=document.getElementById('categoryTabs');
   const host=document.getElementById('categoryCharts');
-  const guideStats=document.getElementById('guideStats');
-  if(guideStats){
-    const counts=CATEGORY_ORDER.map(cat=>({cat,count:BOOKLET_ROWS.filter(r=>r.cat===cat).length}));
-    const max=Math.max(1,...counts.map(x=>x.count));
-    guideStats.innerHTML=counts.map(x=>{
-      const cls=x.cat==='মেডিকেল ও ডেন্টাল'?'medical':x.cat==='ইঞ্জিনিয়ারিং'?'engineering':'university';
-      return '<article class="guide-stat '+cls+'"><div class="guide-stat-top"><span><i></i>'+esc(CATEGORY_LABELS[x.cat]||x.cat)+'</span><b>'+x.count+'</b></div><div class="guide-stat-meter"><i style="width:'+(x.count/max*100)+'%"></i></div><small>তথ্য এন্ট্রি</small></article>';
-    }).join('');
-  }
   tabs.innerHTML=CATEGORY_ORDER.map((cat,i)=>'<button class="category-tab'+(i===0?' active':'')+'" data-cat="'+esc(cat)+'">'+esc(CATEGORY_LABELS[cat]||cat)+'</button>').join('');
   host.innerHTML=CATEGORY_ORDER.map(cat=>renderCategoryTable(cat)).join('');
 
@@ -5767,7 +5830,7 @@ function renderAllCategories(){
   host.querySelectorAll('[data-guide-compare]').forEach(btn=>btn.onclick=()=>{
     const key=btn.dataset.guideCompare;
     if(guideCompareKeys.has(key))guideCompareKeys.delete(key);
-    else if(guideCompareKeys.size<3)guideCompareKeys.add(key);
+    else guideCompareKeys.add(key);
     syncGuideCompareButtons();renderGuideCompareTray();
   });
   syncGuideCompareButtons();renderGuideCompareTray();
@@ -5805,6 +5868,19 @@ function renderAllCategories(){
   document.querySelectorAll('a[href="#infoCenter"]').forEach(a=>a.addEventListener('click',start,{once:true}));
   if('requestIdleCallback' in window)requestIdleCallback(start,{timeout:1600});
   else setTimeout(start,450);
+})();
+
+(function initRequestedSectionReveal(){
+  const sections=[document.getElementById('circulars'),document.getElementById('infoCenter')].filter(Boolean);
+  if(!sections.length)return;
+  sections.forEach(s=>s.classList.add('dbt-reveal'));
+  if(!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion: reduce)').matches){
+    sections.forEach(s=>s.classList.add('dbt-in-view'));return;
+  }
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('dbt-in-view');io.unobserve(e.target)}
+  }),{threshold:.08,rootMargin:'0px 0px -8% 0px'});
+  sections.forEach(s=>io.observe(s));
 })();
 
 (function initCircularCategorySpy(){
