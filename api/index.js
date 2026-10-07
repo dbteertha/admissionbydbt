@@ -257,7 +257,7 @@ function renderCircularGroups(){
   return CIRCULAR_GROUPS.map(g=>{
     const links=OFFICIAL_CIRCULARS.filter(x=>x.cat===g.key);
     const pending=CIRCULAR_PENDING_GROUPED[g.key]||[];
-    return '<div class="circular-group">'+
+    return '<div class="circular-group" data-circular-cat="'+g.key+'">'+
       '<div class="circular-group-head"><div class="circular-group-icon">'+g.icon+'</div><div><b>'+g.label+'</b><span>'+links.length+' official link'+(links.length===1?'':'s')+'</span></div></div>'+
       (links.length?'<div class="circular-grid">'+links.map(x=>'<a class="circular-card" href="'+x.url+'" target="_blank" rel="noopener"><div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' <i>↗</i></span></a>').join('')+'</div>':'<div class="circular-empty">Official link will appear here when published.</div>')+
       (pending.length?'<div class="circular-waiting"><span>Waiting for full notice</span><div>'+pending.map(x=>'<em>'+x+'</em>').join('')+'</div></div>':'')+
@@ -872,6 +872,60 @@ body{background:#02050a;color:#f5f7fb}
 }
 .calendar-section[data-view="month"] .event-status,
 .calendar-section[data-view="month"] .event .star-btn{display:none!important}
+
+/* compact circular directory + scroll category spy */
+.circular-section{padding:20px!important}
+.circular-section>.head{margin-bottom:10px!important}
+.circular-summary{margin:8px 0 10px!important;gap:6px!important}
+.circular-summary-card{padding:8px 10px!important;border-radius:12px!important;min-height:0!important}
+.circular-summary-card span{font-size:6.5px!important}
+.circular-summary-card b{font-size:15px!important;margin-top:2px!important}
+.circular-summary-card small{font-size:6.5px!important;margin-top:1px!important}
+.circular-tabs{
+  position:sticky;top:78px;z-index:18;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:4px;
+  margin:8px 0 10px;padding:4px;
+  border:1px solid rgba(255,255,255,.07);border-radius:14px;
+  background:rgba(8,12,19,.78);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)
+}
+.circular-tab{
+  height:32px;border:0;border-radius:10px;background:transparent;
+  color:#7e8999;font-size:8.5px;font-weight:800;cursor:pointer;transition:.16s ease
+}
+.circular-tab:hover{color:#fff;background:rgba(255,255,255,.04)}
+.circular-tab.active{color:#f4f7fb;background:rgba(255,255,255,.09);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+.circular-groups{gap:8px!important}
+.circular-group{
+  padding:10px!important;border-radius:16px!important;
+  scroll-margin-top:132px
+}
+.circular-group-head{margin-bottom:7px!important;gap:8px!important}
+.circular-group-icon{width:28px!important;height:28px!important;border-radius:9px!important;font-size:12px!important}
+.circular-group-head b{font-size:11px!important}
+.circular-group-head span{font-size:7px!important}
+.circular-grid{gap:6px!important}
+.circular-card{min-height:68px!important;padding:9px 10px!important;border-radius:13px!important}
+.circular-card strong{font-size:10.5px!important;margin-top:4px!important}
+.circular-card b{font-size:6.5px!important}
+.circular-card span{font-size:7.5px!important}
+.circular-waiting{margin-top:7px!important;padding-top:7px!important}
+.circular-waiting>span{margin-bottom:5px!important;font-size:7px!important}
+.circular-waiting div{gap:4px!important}
+.circular-waiting em{padding:4px 6px!important;font-size:7px!important}
+.circular-footnote{margin-top:8px!important}
+@media(max-width:700px){
+  .circular-section{padding:12px!important}
+  .circular-tabs{top:64px;margin:7px 0 8px}
+  .circular-tab{height:31px;font-size:8px}
+  .circular-summary{grid-template-columns:repeat(3,1fr)!important}
+  .circular-summary-card{padding:7px 6px!important}
+  .circular-summary-card:last-child{display:block!important}
+  .circular-summary-card b{font-size:13px!important}
+  .circular-group{padding:9px!important}
+  .circular-grid{grid-template-columns:1fr 1fr!important}
+  .circular-card{min-height:62px!important;padding:8px!important}
+  .circular-card strong{font-size:9.5px!important}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -944,6 +998,11 @@ body{background:#02050a;color:#f5f7fb}
         <div class="circular-summary-card"><span>Official</span><b>11</b><small>Checked links</small></div>
         <div class="circular-summary-card"><span>Waiting</span><b>10</b><small>Full notices</small></div>
         <div class="circular-summary-card"><span>Checked</span><b style="font-size:14px">7 Oct</b><small>2026</small></div>
+      </div>
+      <div class="circular-tabs" id="circularTabs">
+        <button class="circular-tab active" type="button" data-circular-tab="Medical">Medical</button>
+        <button class="circular-tab" type="button" data-circular-tab="Engineering">Engineering</button>
+        <button class="circular-tab" type="button" data-circular-tab="University">University</button>
       </div>
       <div class="circular-groups">${renderCircularGroups()}</div>
       <div class="audit-note circular-footnote">Old-year details may change. Use the new official notice when it is published.</div>
@@ -2348,6 +2407,44 @@ function renderAllCategories(){
   updateCategoryFromScroll();
 }
 renderAllCategories();
+
+(function initCircularCategorySpy(){
+  const tabs=document.getElementById('circularTabs');
+  if(!tabs)return;
+  const sections=[...document.querySelectorAll('.circular-group[data-circular-cat]')];
+  if(!sections.length)return;
+  const setActive=cat=>{
+    tabs.querySelectorAll('[data-circular-tab]').forEach(btn=>{
+      btn.classList.toggle('active',btn.dataset.circularTab===cat);
+    });
+  };
+  tabs.querySelectorAll('[data-circular-tab]').forEach(btn=>{
+    btn.onclick=()=>{
+      const sec=sections.find(x=>x.dataset.circularCat===btn.dataset.circularTab);
+      if(!sec)return;
+      setActive(btn.dataset.circularTab);
+      const topnav=document.querySelector('.topnav');
+      const offset=(topnav?topnav.getBoundingClientRect().height:0)+tabs.getBoundingClientRect().height+24;
+      const y=Math.max(0,sec.getBoundingClientRect().top+window.scrollY-offset);
+      window.scrollTo({top:y,behavior:'smooth'});
+    };
+  });
+  let tick=0;
+  const update=()=>{
+    tick=0;
+    const marker=tabs.getBoundingClientRect().bottom+14;
+    let current=sections[0];
+    for(const sec of sections){
+      if(sec.getBoundingClientRect().top<=marker)current=sec;
+      else break;
+    }
+    setActive(current.dataset.circularCat);
+  };
+  const queue=()=>{if(!tick)tick=requestAnimationFrame(update)};
+  addEventListener('scroll',queue,{passive:true});
+  addEventListener('resize',queue,{passive:true});
+  update();
+})();
 
 function smoothPageJump(target){
   if(!target)return;
