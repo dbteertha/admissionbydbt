@@ -6,20 +6,69 @@
     }
   },
   "rewrites": [
-    {"source":"/onushiloni","destination":"/api/onushiloni.js"},
-    {"source":"/onushiloni/(.*)","destination":"/api/onushiloni.js"},
-    {"source":"/api/events","destination":"/api/index.js"},
-    {"source":"/api/home-sync","destination":"/api/home-sync.js"},
-    {"source":"/api/admin-content","destination":"/api/admin-content.js"},
-    {"source":"/health","destination":"/api/index.js"},
-    {"source":"/tracker","destination":"/api/tracker.js"},
-    {"source":"/tracker/(.*)","destination":"/api/tracker.js"},
-    {"source":"/api/google-login","destination":"/api/google-login.js"},
-    {"source":"/api/google-callback","destination":"/api/google-callback.js"},
-    {"source":"/api/google-token","destination":"/api/google-token.js"},
-    {"source":"/api/google-logout","destination":"/api/google-logout.js"},
-    {"source":"/privacy","destination":"/api/privacy.js"},
-    {"source":"/terms","destination":"/api/terms.js"},
-    {"source":"/(.*)","destination":"/api/index.js"}
+    {
+      "source": "/onushiloni",
+      "destination": "/api/onushiloni.js"
+    },
+    {
+      "source": "/onushiloni/(.*)",
+      "destination": "/api/onushiloni.js"
+    },
+    {
+      "source": "/api/events",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/api/home-sync",
+      "destination": "/api/home-sync.js"
+    },
+    {
+      "source": "/api/calendar-pdf",
+      "destination": "/api/calendar-pdf.js"
+    },
+    {
+      "source": "/api/admin-content",
+      "destination": "/api/admin-content.js"
+    },
+    {
+      "source": "/health",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/tracker",
+      "destination": "/api/tracker.js"
+    },
+    {
+      "source": "/tracker/(.*)",
+      "destination": "/api/tracker.js"
+    },
+    {
+      "source": "/api/google-login",
+      "destination": "/api/google-login.js"
+    },
+    {
+      "source": "/api/google-callback",
+      "destination": "/api/google-callback.js"
+    },
+    {
+      "source": "/api/google-token",
+      "destination": "/api/google-token.js"
+    },
+    {
+      "source": "/api/google-logout",
+      "destination": "/api/google-logout.js"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/api/privacy.js"
+    },
+    {
+      "source": "/terms",
+      "destination": "/api/terms.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.js"
+    }
   ]
 }
