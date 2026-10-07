@@ -2371,11 +2371,11 @@ function renderScheduleVisuals(){
   statusConfirmedCount.textContent=states.confirmed;
   statusPendingCount.textContent=states.pending;
   statusTentativeCount.textContent=states.tentative;
-  const confirmedPct=total?Math.round(states.confirmed/total*100):0;
-  const pendingPct=total?states.pending/total*100:0;
-  statusConfirmedPct.textContent=confirmedPct+'%';
-  statusDonut.style.setProperty('--confirmed-stop',confirmedPct+'%');
-  statusDonut.style.setProperty('--pending-stop',(confirmedPct+pendingPct)+'%');
+  const confirmedStop=total?states.confirmed/total*100:0;
+  const pendingStop=total?(states.confirmed+states.pending)/total*100:0;
+  statusConfirmedPct.textContent=Math.round(confirmedStop)+'%';
+  statusDonut.style.setProperty('--confirmed-stop',confirmedStop+'%');
+  statusDonut.style.setProperty('--pending-stop',pendingStop+'%');
 }
 
 function updateDashboardStats(){
@@ -2539,9 +2539,22 @@ function renderPdfPicker(){
   }).join(''):'<div class="target-picker-empty">No exams match these choices.</div>';
 
   const selected=pdfSelectedEvents();
+  const pageMonths=new Set(selected.map(pdfMonthKey));
   pdfSelectedCount.textContent=selected.length+' exam'+(selected.length===1?'':'s');
-  pdfSelectedMonths.textContent=pdfPickMonths.size+' month'+(pdfPickMonths.size===1?'':'s');
-  pdfDownloadSelected.disabled=!selected.length||!pdfPickMonths.size;
+  pdfSelectedMonths.textContent=pageMonths.size+' PDF page'+(pageMonths.size===1?'':'s');
+  pdfDownloadSelected.disabled=!selected.length||!pageMonths.size;
+
+  const monthAll=document.querySelector('[data-pdf-action="months-all"]');
+  const catAll=document.querySelector('[data-pdf-action="cats-all"]');
+  const varsityAll=document.querySelector('[data-pdf-action="varsities-all"]');
+  const examAll=document.querySelector('[data-pdf-action="exams-all"]');
+  if(monthAll)monthAll.textContent=pdfPickMonths.size===months.length&&months.length?'Clear':'All';
+  if(catAll)catAll.textContent=pdfPickCats.size===3?'Clear':'All';
+  const allVarsities=pdfAllVarsities();
+  if(varsityAll)varsityAll.textContent=pdfPickVarsities.size===allVarsities.length&&allVarsities.length?'Clear':'All';
+  const eligibleKeys=all.filter(pdfEligibleBase).map(eventKey);
+  const allEligibleExcluded=eligibleKeys.length&&eligibleKeys.every(k=>pdfPickExcluded.has(k));
+  if(examAll)examAll.textContent=allEligibleExcluded?'All':'Clear';
 
   pdfMonthChips.querySelectorAll('[data-pdf-month]').forEach(btn=>btn.onclick=()=>{const k=btn.dataset.pdfMonth;pdfPickMonths.has(k)?pdfPickMonths.delete(k):pdfPickMonths.add(k);renderPdfPicker()});
   pdfVarsityChips.querySelectorAll('[data-pdf-varsity]').forEach(btn=>btn.onclick=()=>{const v=decodeURIComponent(btn.dataset.pdfVarsity||'');pdfPickVarsities.has(v)?pdfPickVarsities.delete(v):pdfPickVarsities.add(v);renderPdfPicker()});
@@ -2560,7 +2573,7 @@ function closePdfPicker(){pdfPickerBackdrop.classList.remove('open');pdfPickerBa
 
 async function downloadCalendarPdf(){
   const chosen=pdfSelectedEvents();
-  const months=[...pdfPickMonths].sort();
+  const months=[...new Set(chosen.map(pdfMonthKey))].sort();
   if(!chosen.length||!months.length)return;
   const btn=document.getElementById('pdfDownloadSelected');
   const old=btn?btn.textContent:'Download PDF';
@@ -2610,10 +2623,23 @@ pdfExamSearch.oninput=renderPdfPicker;
 pdfCategoryChips.querySelectorAll('[data-pdf-cat]').forEach(btn=>btn.onclick=()=>{const cat=btn.dataset.pdfCat;pdfPickCats.has(cat)?pdfPickCats.delete(cat):pdfPickCats.add(cat);renderPdfPicker()});
 document.querySelectorAll('[data-pdf-action]').forEach(btn=>btn.onclick=()=>{
   const a=btn.dataset.pdfAction;
-  if(a==='months-all')pdfPickMonths=new Set(pdfAllMonths());
-  if(a==='cats-all')pdfPickCats=new Set(['medical','engineering','university']);
-  if(a==='varsities-all')pdfPickVarsities=new Set(pdfAllVarsities());
-  if(a==='exams-all')pdfPickExcluded.clear();
+  if(a==='months-all'){
+    const vals=pdfAllMonths();
+    pdfPickMonths=pdfPickMonths.size===vals.length?new Set():new Set(vals);
+  }
+  if(a==='cats-all'){
+    pdfPickCats=pdfPickCats.size===3?new Set():new Set(['medical','engineering','university']);
+  }
+  if(a==='varsities-all'){
+    const vals=pdfAllVarsities();
+    pdfPickVarsities=pdfPickVarsities.size===vals.length?new Set():new Set(vals);
+  }
+  if(a==='exams-all'){
+    const eligible=all.filter(pdfEligibleBase).map(eventKey);
+    const allOff=eligible.length&&eligible.every(k=>pdfPickExcluded.has(k));
+    if(allOff)eligible.forEach(k=>pdfPickExcluded.delete(k));
+    else eligible.forEach(k=>pdfPickExcluded.add(k));
+  }
   renderPdfPicker();
 });
 pdfDownloadSelected.onclick=downloadCalendarPdf;
