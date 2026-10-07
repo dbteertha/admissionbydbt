@@ -2064,7 +2064,6 @@ html[data-theme="light"] .install-app-btn:hover{background:#eef3ff}
 @media(prefers-reduced-motion:reduce){.circular-tab.active,.category-tab.active,.calendar-view-btn.active{transform:none}}
 
 /* ===== DBT UI V4 — PERFORMANCE / MOBILE / COMPONENTS ===== */
-.category-section,.circular-group{content-visibility:auto;contain-intrinsic-size:1px 520px}
 .schedule-chart-card,.starred-card,.circular-card{contain:paint}
 
 /* circulars v2 */
@@ -2221,6 +2220,15 @@ html[data-theme="light"] .pdf-preview-pages article i{background:#eef3ff;color:#
 @media(prefers-reduced-motion:reduce){
   .calendar-scroll.month-enter-next,.calendar-scroll.month-enter-prev{animation:none!important}
   .day-events-sheet,.guide-compare-modal{transition:none!important}
+}
+
+/* V4 readability + overflow safety */
+.target-name,.circular-card strong,.admission-table td,.guide-compare-card span,.day-event-row b{overflow-wrap:anywhere}
+.controls,.calendar-commandbar,.target-head,.circular-group-head,.guide-toolbar{max-width:100%}
+.stat-label,.section-kicker{letter-spacing:.07em}
+@media(min-width:701px){
+  .stat-label{font-size:8px}.stat-note{font-size:8px}
+  .week div{font-size:8px}
 }
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
@@ -2776,6 +2784,7 @@ const STAR_KEY='admissionbydbt-starred-v1';
 const COUNTDOWN_TARGET_KEY='admissionbydbt-countdown-target-v1';
 const HOME_SYNC_CODE_KEY='admissionbydbt-home-sync-code-v1';
 const HOME_SYNC_STATE_KEY='admissionbydbt-home-sync-state-v1';
+const EVENT_CACHE_KEY='admissionbydbt-events-cache-v1';
 let homeSyncCode='';
 try{homeSyncCode=localStorage.getItem(HOME_SYNC_CODE_KEY)||''}catch(e){}
 let homeSyncState=null;
@@ -3062,7 +3071,7 @@ function openEventDrawer(e){
   const d=new Date(e.date),state=eventState(e);
   eventDrawerTitle.textContent=e.title;
   eventDrawerDate.textContent=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'})+' • '+eventTimeLabel(e);
-  eventDrawerStatus.textContent=state==='confirmed'?'Confirmed / official date':state==='pending'?'Date announced / circular pending':'Not confirmed';
+  eventDrawerStatus.textContent=state==='confirmed'?'Confirmed / official date':state==='pending'?'Date announced / notice pending':'Not confirmed';
   eventDrawerStatus.className='event-drawer-status '+(state==='confirmed'?'':state);
   eventDrawerNote.textContent=e.agreement||'Use the latest official university notice for final details.';
   eventDrawerStar.textContent=isStarred(e)?(eventKey(e)===countdownTargetKey?'★ Countdown target':'★ In My Exams'):'☆ Add to My Exams';
@@ -3084,7 +3093,7 @@ function renderTimeline(es){
       '<div class="timeline-date"><b>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit'})+'</b><span>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',month:'short',weekday:'short'})+'</span></div>'+
       '<div class="timeline-main"><strong>'+esc(calendarShortTitle(e))+'</strong><small>'+esc(eventTimeLabel(e))+(isStarred(e)?' • ★ My Exam':'')+'</small></div>'+
       '<button type="button" class="star-btn timeline-star'+(isStarred(e)?' active':'')+'" data-list-star="'+encodeURIComponent(eventKey(e))+'" aria-label="'+(isStarred(e)?'Remove from My Exams':'Add to My Exams')+'" title="'+(isStarred(e)?'Remove from My Exams':'Add to My Exams')+'">'+(isStarred(e)?'★':'☆')+'</button>'+
-      '<div class="timeline-status '+(state==='confirmed'?'':state)+'">'+(state==='confirmed'?'Confirmed':state==='pending'?'Pending':'Not confirmed')+'</div>'+
+      '<div class="timeline-status '+(state==='confirmed'?'':state)+'">'+(state==='confirmed'?'Confirmed':state==='pending'?'Notice pending':'Not confirmed')+'</div>'+
     '</div>';
   });
   html+='</div>';calendarList.innerHTML=html;
@@ -3487,14 +3496,21 @@ async function downloadCalendarPdf(){
 async function load(force=false){
   syncStatus.textContent='● checking dates…';
   try{
-    const r=await fetch('/api/events'+(force?'?refresh=1':''));
+    const r=await fetch('/api/events'+(force?'?refresh=1':''),{cache:'no-store'});
+    if(!r.ok)throw new Error('events_failed');
     const j=await r.json();
     all=j.events||[];
     sourceHealth=j.sources||[];
+    try{localStorage.setItem(EVENT_CACHE_KEY,JSON.stringify({events:all,sources:sourceHealth,updatedAt:j.updatedAt||Date.now()}))}catch(e){}
     syncStatus.textContent='● '+all.length+' exams • updated '+new Date(j.updatedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
     render();
   }catch(e){
-    syncStatus.textContent='● could not check dates';
+    let cached=null;
+    try{cached=JSON.parse(localStorage.getItem(EVENT_CACHE_KEY)||'null')}catch(err){}
+    if(cached&&Array.isArray(cached.events)&&cached.events.length){
+      all=cached.events;sourceHealth=Array.isArray(cached.sources)?cached.sources:[];
+      syncStatus.textContent='● offline • showing '+all.length+' saved exams';
+    }else syncStatus.textContent='● could not check dates';
     render();
   }
 }
