@@ -3174,6 +3174,188 @@ html[data-theme="light"] input{background:rgba(255,255,255,.82)!important;border
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
 }
 
+
+/* ===== DBT UI V6.1 — DEEP SOOTHING PALETTE SYNC ===== */
+:root{
+  --tone-slate:#68879b;
+  --tone-teal:#5f9692;
+  --tone-mauve:#817594;
+  --tone-rose:#9b6d79;
+  --tone-green:#6f9782;
+  --tone-amber:#a68b60;
+}
+html[data-theme="dark"]{
+  --bg:#081016!important;--panel:#0e1820!important;--panel2:#13212a!important;--text:#e7edf1!important;--muted:#91a0a8!important;
+  --line:rgba(139,158,169,.14)!important;
+  --cat-medical:#bd7c8c!important;--cat-engineering:#6ea09f!important;--cat-university:#9284a5!important;
+  --status-confirmed:#729b85!important;--status-pending:#a98c61!important;--status-tentative:#a36e79!important;
+}
+html[data-theme="light"]{
+  --bg:#f2f5f6!important;--panel:#fafbfb!important;--panel2:#f5f7f8!important;--text:#2c3940!important;--muted:#73828a!important;
+  --line:rgba(66,84,94,.13)!important;
+  --cat-medical:#895b67!important;--cat-engineering:#4d7d7b!important;--cat-university:#6d627f!important;
+  --status-confirmed:#577d69!important;--status-pending:#866f4e!important;--status-tentative:#805762!important;
+}
+
+/* one restrained background language */
+html[data-theme="dark"] body{
+  background-color:#081016!important;
+  background-image:radial-gradient(circle at 10% 7%,rgba(80,108,126,.12),transparent 26%),radial-gradient(circle at 90% 10%,rgba(112,89,117,.09),transparent 23%),radial-gradient(circle at 76% 72%,rgba(62,109,106,.08),transparent 27%)!important;
+}
+html[data-theme="light"] body{
+  background-color:#f2f5f6!important;
+  background-image:radial-gradient(circle at 10% 7%,rgba(83,109,125,.10),transparent 26%),radial-gradient(circle at 90% 10%,rgba(129,103,131,.07),transparent 23%),radial-gradient(circle at 76% 72%,rgba(74,121,116,.07),transparent 27%)!important;
+}
+html[data-theme="dark"] .topnav{background:rgba(10,18,24,.88)!important;border-color:rgba(131,151,163,.14)!important}
+html[data-theme="light"] .topnav{background:rgba(248,250,250,.90)!important;border-color:rgba(66,84,94,.12)!important}
+
+/* section identity: dark/desaturated palette, same mapping in both themes */
+.schedule-visuals{--section-accent:var(--tone-slate)!important;--section-soft:rgba(104,135,155,.10)!important}
+.target-section{--section-accent:var(--tone-mauve)!important;--section-soft:rgba(129,117,148,.10)!important}
+.circular-section{--section-accent:var(--tone-rose)!important;--section-soft:rgba(155,109,121,.10)!important}
+.calendar-section{--section-accent:var(--tone-teal)!important;--section-soft:rgba(95,150,146,.10)!important}
+.info-center{--section-accent:#746b86!important;--section-soft:rgba(116,107,134,.10)!important}
+
+html[data-theme="dark"] .schedule-visuals{background:rgba(14,25,32,.84)!important;border-color:rgba(104,135,155,.17)!important}
+html[data-theme="dark"] .target-section{background:rgba(22,21,29,.84)!important;border-color:rgba(129,117,148,.17)!important}
+html[data-theme="dark"] .circular-section{background:rgba(29,21,24,.84)!important;border-color:rgba(155,109,121,.16)!important}
+html[data-theme="dark"] .calendar-section{background:rgba(14,27,29,.84)!important;border-color:rgba(95,150,146,.16)!important}
+html[data-theme="dark"] .info-center{background:rgba(22,21,28,.84)!important;border-color:rgba(116,107,134,.16)!important}
+
+html[data-theme="light"] .schedule-visuals{background:rgba(246,249,250,.88)!important;border-color:rgba(86,109,122,.15)!important}
+html[data-theme="light"] .target-section{background:rgba(248,247,250,.90)!important;border-color:rgba(112,101,128,.14)!important}
+html[data-theme="light"] .circular-section{background:rgba(250,247,248,.90)!important;border-color:rgba(133,91,103,.13)!important}
+html[data-theme="light"] .calendar-section{background:rgba(246,250,249,.90)!important;border-color:rgba(76,121,117,.14)!important}
+html[data-theme="light"] .info-center{background:rgba(248,247,250,.90)!important;border-color:rgba(104,95,120,.14)!important}
+
+/* cards and controls stay neutral; accents carry meaning */
+html[data-theme="dark"] .schedule-chart-card,
+html[data-theme="dark"] .starred-card.compact-target,
+html[data-theme="dark"] .circular-card,
+html[data-theme="dark"] .circular-group,
+html[data-theme="dark"] .calendar-commandbar,
+html[data-theme="dark"] .timeline-card,
+html[data-theme="dark"] .guide-card,
+html[data-theme="dark"] .guide-panel{background:rgba(16,27,34,.78)!important;border-color:rgba(134,153,164,.12)!important}
+html[data-theme="light"] .schedule-chart-card,
+html[data-theme="light"] .starred-card.compact-target,
+html[data-theme="light"] .circular-card,
+html[data-theme="light"] .circular-group,
+html[data-theme="light"] .calendar-commandbar,
+html[data-theme="light"] .timeline-card,
+html[data-theme="light"] .guide-card,
+html[data-theme="light"] .guide-panel{background:rgba(251,252,252,.88)!important;border-color:rgba(67,84,94,.10)!important}
+
+html[data-theme="dark"] .starred-card.compact-target{background:rgba(24,24,31,.82)!important}
+html[data-theme="dark"] .circular-card,html[data-theme="dark"] .circular-group{background:rgba(30,23,26,.80)!important}
+html[data-theme="dark"] .calendar-commandbar,html[data-theme="dark"] .timeline-card{background:rgba(16,29,30,.80)!important}
+html[data-theme="dark"] .guide-card,html[data-theme="dark"] .guide-panel{background:rgba(24,23,29,.80)!important}
+
+/* category colors: same tone everywhere */
+.category-medical .admission-name,
+.circular-cat-medical .circular-card strong,
+.calendar-section .category-medical .event-title,
+.calendar-section .timeline-card.category-medical .timeline-main strong,
+.starred-card.category-medical .target-name{color:var(--cat-medical)!important}
+.category-engineering .admission-name,
+.circular-cat-engineering .circular-card strong,
+.calendar-section .category-engineering .event-title,
+.calendar-section .timeline-card.category-engineering .timeline-main strong,
+.starred-card.category-engineering .target-name{color:var(--cat-engineering)!important}
+.category-university .admission-name,
+.circular-cat-university .circular-card strong,
+.calendar-section .category-university .event-title,
+.calendar-section .timeline-card.category-university .timeline-main strong,
+.starred-card.category-university .target-name{color:var(--cat-university)!important}
+.category-medical h3{color:var(--cat-medical)!important}.category-engineering h3{color:var(--cat-engineering)!important}.category-university h3{color:var(--cat-university)!important}
+
+/* charts: remove candy/neon gradients */
+.monthly-bar-stack i.medical,.weekly-bar-stack i.medical{background:var(--cat-medical)!important}
+.monthly-bar-stack i.engineering,.weekly-bar-stack i.engineering{background:var(--cat-engineering)!important}
+.monthly-bar-stack i.university,.weekly-bar-stack i.university{background:var(--cat-university)!important}
+html[data-theme="dark"] .monthly-bar-shell,html[data-theme="dark"] .weekly-bar-shell{background:#101b22!important;border-color:rgba(135,153,164,.11)!important}
+html[data-theme="light"] .monthly-bar-shell,html[data-theme="light"] .weekly-bar-shell{background:#eef2f3!important;border-color:#dde4e6!important}
+html[data-theme="dark"] .status-donut:after{background:#0e1820!important;border-color:rgba(139,158,169,.11)!important}
+html[data-theme="light"] .status-donut:after{background:#f8faf9!important;border-color:#e2e7e7!important}
+
+/* active navigation, tabs and filters */
+.navlink[href="#dashboard"].active{color:#c5d0d6!important;background:rgba(104,135,155,.12)!important}
+.navlink[href="#targets"].active{color:#c8c0d2!important;background:rgba(129,117,148,.12)!important}
+.navlink[href="#circulars"].active{color:#d2b6bd!important;background:rgba(155,109,121,.12)!important}
+.navlink[href="#calendar"].active{color:#b8d1cf!important;background:rgba(95,150,146,.12)!important}
+.navlink[href="#infoCenter"].active{color:#c5becd!important;background:rgba(116,107,134,.12)!important}
+html[data-theme="light"] .navlink[href="#dashboard"].active{color:#4e6573!important;background:#e8edef!important}
+html[data-theme="light"] .navlink[href="#targets"].active{color:#665c77!important;background:#efedf1!important}
+html[data-theme="light"] .navlink[href="#circulars"].active{color:#7d5560!important;background:#f2ebed!important}
+html[data-theme="light"] .navlink[href="#calendar"].active{color:#456f6c!important;background:#e9f0ef!important}
+html[data-theme="light"] .navlink[href="#infoCenter"].active{color:#625a72!important;background:#efedf1!important}
+
+.calendar-view-btn.active,.calendar-filter.active,.circular-tab.active,.category-tab.active,.pdf-chip.active{
+  color:var(--text)!important;background:color-mix(in srgb,var(--section-accent, var(--tone-slate)) 12%,var(--panel2))!important;
+  border-color:color-mix(in srgb,var(--section-accent, var(--tone-slate)) 28%,var(--line))!important;
+  box-shadow:none!important
+}
+.target-count{color:#c6bdcf!important;background:rgba(129,117,148,.10)!important;border-color:rgba(129,117,148,.22)!important}
+html[data-theme="light"] .target-count{color:#655b75!important;background:#efedf1!important;border-color:#ddd7e2!important}
+.target-add-btn,.btn,.sync-copy,.sync-use{
+  background:color-mix(in srgb,var(--tone-slate) 12%,var(--panel2))!important;
+  border-color:color-mix(in srgb,var(--tone-slate) 24%,var(--line))!important;color:var(--text)!important
+}
+#pdfDownloadSelected{background:#506d7f!important;border-color:#607f92!important;color:#f7fafb!important}
+html[data-theme="light"] #pdfDownloadSelected{background:#566f7e!important;border-color:#566f7e!important;color:#fff!important}
+
+/* category chips and group icons */
+.circular-cat-medical .circular-group-icon{color:var(--cat-medical)!important;background:color-mix(in srgb,var(--cat-medical) 10%,transparent)!important;border-color:color-mix(in srgb,var(--cat-medical) 22%,transparent)!important}
+.circular-cat-engineering .circular-group-icon{color:var(--cat-engineering)!important;background:color-mix(in srgb,var(--cat-engineering) 10%,transparent)!important;border-color:color-mix(in srgb,var(--cat-engineering) 22%,transparent)!important}
+.circular-cat-university .circular-group-icon{color:var(--cat-university)!important;background:color-mix(in srgb,var(--cat-university) 10%,transparent)!important;border-color:color-mix(in srgb,var(--cat-university) 22%,transparent)!important}
+.pdf-category-chips .pdf-chip[data-pdf-cat="medical"].active,.calendar-filter[data-calendar-filter="medical"].active{color:var(--cat-medical)!important;background:color-mix(in srgb,var(--cat-medical) 10%,transparent)!important;border-color:color-mix(in srgb,var(--cat-medical) 24%,transparent)!important}
+.pdf-category-chips .pdf-chip[data-pdf-cat="engineering"].active,.calendar-filter[data-calendar-filter="engineering"].active{color:var(--cat-engineering)!important;background:color-mix(in srgb,var(--cat-engineering) 10%,transparent)!important;border-color:color-mix(in srgb,var(--cat-engineering) 24%,transparent)!important}
+.pdf-category-chips .pdf-chip[data-pdf-cat="university"].active,.calendar-filter[data-calendar-filter="university"].active{color:var(--cat-university)!important;background:color-mix(in srgb,var(--cat-university) 10%,transparent)!important;border-color:color-mix(in srgb,var(--cat-university) 24%,transparent)!important}
+
+/* countdown + gaps use the same muted family */
+.target-countdown-track i{background:var(--cat-university)!important}
+.category-medical .target-countdown-track i{background:var(--cat-medical)!important}
+.category-engineering .target-countdown-track i{background:var(--cat-engineering)!important}
+.exam-gap-bridge b{color:#aab6bc!important;background:rgba(104,135,155,.08)!important;border-color:rgba(104,135,155,.18)!important}
+html[data-theme="light"] .exam-gap-bridge b{color:#61727b!important;background:#e9edef!important;border-color:#d9e0e3!important}
+
+/* modal + bottom dock */
+html[data-theme="dark"] .pdf-picker-modal,
+html[data-theme="dark"] .day-events-sheet,
+html[data-theme="dark"] .target-picker,
+html[data-theme="dark"] .sync-modal,
+html[data-theme="dark"] .guide-compare-modal,
+html[data-theme="dark"] .event-drawer{background:rgba(10,18,24,.94)!important;border-color:rgba(133,152,163,.16)!important}
+html[data-theme="light"] .pdf-picker-modal,
+html[data-theme="light"] .day-events-sheet,
+html[data-theme="light"] .target-picker,
+html[data-theme="light"] .sync-modal,
+html[data-theme="light"] .guide-compare-modal,
+html[data-theme="light"] .event-drawer{background:rgba(249,251,251,.96)!important;border-color:rgba(66,84,94,.13)!important}
+html[data-theme="dark"] .modal-x,html[data-theme="dark"] .sync-close,html[data-theme="dark"] .target-picker-close,html[data-theme="dark"] .event-drawer-close{background:#16232b!important;border-color:#2a3d47!important;color:#b8c4c9!important}
+html[data-theme="light"] .modal-x,html[data-theme="light"] .sync-close,html[data-theme="light"] .target-picker-close,html[data-theme="light"] .event-drawer-close{background:#edf1f2!important;border-color:#dae2e4!important;color:#5f7179!important}
+html[data-theme="dark"] .mobile-dock{background:rgba(9,17,23,.94)!important;border-color:rgba(133,152,163,.15)!important}
+html[data-theme="light"] .mobile-dock{background:rgba(249,251,251,.96)!important;border-color:rgba(66,84,94,.12)!important}
+.mobile-dock a[href="#dashboard"].active b{color:var(--tone-slate)!important}
+.mobile-dock a[href="#targets"].active b{color:var(--tone-mauve)!important}
+.mobile-dock a[href="#circulars"].active b{color:var(--tone-rose)!important}
+.mobile-dock a[href="#calendar"].active b{color:var(--tone-teal)!important}
+.mobile-dock a[href="#infoCenter"].active b{color:#746b86!important}
+
+/* mobile keeps the same palette without extra GPU work */
+@media(max-width:700px){
+  html[data-theme="dark"] .schedule-visuals{background:#0e1920!important}
+  html[data-theme="dark"] .target-section{background:#17151d!important}
+  html[data-theme="dark"] .circular-section{background:#1e171a!important}
+  html[data-theme="dark"] .calendar-section{background:#0e1b1d!important}
+  html[data-theme="dark"] .info-center{background:#17151c!important}
+  html[data-theme="light"] .schedule-visuals{background:#f6f9fa!important}
+  html[data-theme="light"] .target-section{background:#f8f7fa!important}
+  html[data-theme="light"] .circular-section{background:#faf7f8!important}
+  html[data-theme="light"] .calendar-section{background:#f6faf9!important}
+  html[data-theme="light"] .info-center{background:#f8f7fa!important}
+}
+
 </style></head><body>
 <div class="app">
   <nav class="topnav">
@@ -4739,7 +4921,7 @@ if(dbtLanguageButton)dbtLanguageButton.onclick=()=>applyLanguage(currentLang==='
 function applyTheme(theme){
   const next=theme==='dark'?'dark':'light';
   document.documentElement.dataset.theme=next;
-  const tm=document.getElementById('themeColorMeta');if(tm)tm.content=next==='light'?'#f3f6fb':'#07101a';
+  const tm=document.getElementById('themeColorMeta');if(tm)tm.content=next==='light'?'#f2f5f6':'#081016';
   try{localStorage.setItem('admissionbydbt-theme-v1',next)}catch(e){}
   if(typeof themeToggle!=='undefined'&&themeToggle){
     themeToggle.title=currentLang==='bn'
