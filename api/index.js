@@ -18,34 +18,34 @@ const CURATED_EVENTS = [
   ['Khulna University C / Humanities','2026-12-17T12:00:00+06:00','Confirmed date — time and instructions are not out yet','Time TBA'],
   ['Khulna University A / Science','2026-12-18T12:00:00+06:00','Confirmed date — time and instructions are not out yet','Time TBA'],
   ['Khulna University B / Life Science','2026-12-18T12:00:00+06:00','Confirmed date — time and instructions are not out yet','Time TBA'],
-  ['MIST C Unit','2026-12-18T10:00:00+06:00','Date listed — full official MIST 2026–27 notice is not out yet','Time TBA'],
-  ['MIST A & B','2026-12-19T10:00:00+06:00','Date listed — full official MIST 2026–27 notice is not out yet','Time TBA'],
+  ['MIST C Unit','2026-12-18','Date announced — 18 Dec 2026; detailed 2026–27 circular/application information and exact time are still pending — Full notice not out','Time TBA'],
+  ['MIST A & B','2026-12-19','Date announced — 19 Dec 2026; detailed 2026–27 circular/application information and exact unit times are still pending — Full notice not out','Time TBA'],
   ['Dhaka University B / Arts, Law & Social Science','2026-12-19T11:00:00+06:00','Official — 19 Dec 2026, 11:00 AM–12:30 PM','Official'],
   ['Dhaka University Fine Arts','2026-12-22T11:00:00+06:00','Official — 22 Dec 2026, 11:00 AM–12:30 PM','Official'],
   ['Dhaka University C / Business','2026-12-26T11:00:00+06:00','Official — 26 Dec 2026, 11:00 AM–12:30 PM','Official'],
   ['Jagannath University A / Science','2027-01-01T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
-  ['BUP FBS','2027-01-01T10:30:00+06:00','Official/current notice — first FBS date; keep 9 Jan too','Official'],
-  ['Agriculture Cluster','2027-01-02T10:00:00+06:00','Date listed — full 2026–27 ACAS notice is not out yet','Time TBA'],
-  ['BUP FASS','2027-01-02T15:30:00+06:00','Official/current BUP notice','Official'],
+  ['BUP FBS','2027-01-01','Official/current notice — first FBS date; keep 9 Jan too; exact time should be checked in the current detailed notice','Time TBA'],
+  ['Agriculture Cluster','2027-01-02','Date listed — 2 Jan 2027; full 2026–27 ACAS notice and exact time are not out yet','Time TBA'],
+  ['BUP FASS','2027-01-02','Official/current BUP notice — date tracked; exact time should be checked in the current detailed notice','Time TBA'],
   ['Jagannath University E / Fine Arts','2027-01-08T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
   ['KUET','2027-01-08T10:00:00+06:00','Official portal/circular — 8 Jan 2027; centres KUET, DU and RUET; MCQ','Official'],
-  ['BUP FST','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
-  ['BUP FET','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
-  ['BUP FMS','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
+  ['BUP FST','2027-01-08','Official/current BUP notice — date tracked; exact time should be checked in the current detailed notice','Time TBA'],
+  ['BUP FET','2027-01-08','Official/current BUP notice — date tracked; exact time should be checked in the current detailed notice','Time TBA'],
+  ['BUP FMS','2027-01-08','Official/current BUP notice — date tracked; exact time should be checked in the current detailed notice','Time TBA'],
   ['Rajshahi University B / Business','2027-01-08T11:00:00+06:00','Date listed — full official 2026–27 admission notice is not out yet','Time TBA'],
-  ['BUP FSSS','2027-01-08T15:30:00+06:00','Current BUP notice','Official'],
+  ['BUP FSSS','2027-01-08','Current BUP notice — date tracked; exact time should be checked in the current detailed notice','Time TBA'],
   ['Rajshahi University C / Science','2027-01-09T11:00:00+06:00','Date listed — full official 2026–27 admission notice is not out yet','Time TBA'],
-  ['BUP FBS','2027-01-09T10:30:00+06:00','Official/current notice — second FBS date; intentional, not duplicate','Official'],
-  ['BUP BBA General','2027-01-09T15:30:00+06:00','Chorcha visible'],
-  ['RUET','2027-01-14T09:30:00+06:00','Date listed — RUET still shows the 2025–26 admission notice','Time TBA'],
+  ['BUP FBS','2027-01-09','Official/current notice — second FBS date; intentional, not duplicate; exact time should be checked in the current detailed notice','Time TBA'],
+  ['BUP BBA General','2027-01-09','Date tracked for 9 Jan 2027; exact time should be checked in the current BUP detailed notice','Time TBA'],
+  ['RUET','2027-01-14','Date tracked — 14 Jan 2027; exact time is not established by the current 2026–27 material','Time TBA'],
   ['Jagannath University B / Humanities','2027-01-15T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
   ['BUET','2027-01-16T09:00:00+06:00','Date announced — full 2026–27 notice is not out yet','Full notice not out'],
   ['Rajshahi University A / Humanities','2027-01-16T11:00:00+06:00','Date listed — full official 2026–27 admission notice is not out yet','Time TBA'],
   ['Jagannath University C / Business','2027-01-22T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
   ['Jagannath University D / Social Science','2027-01-23T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
-  ['CUET','2027-01-23T10:00:00+06:00','Admission-Calendar visible'],
-  ['SUST A','2027-01-26T15:00:00+06:00','Date confirmed — full application and exam details are not out yet','Full notice not out'],
-  ['SUST B','2027-01-27T15:00:00+06:00','Date confirmed — full application and exam details are not out yet','Full notice not out'],
+  ['CUET','2027-01-23','Not confirmed — CUET describes 23 Jan 2027 as a probable/tentative admission-test date; exact time is not established','Time TBA'],
+  ['SUST Admission Test (unit allocation pending)','2027-01-26','Only 26–27 Jan 2027 test days are established; A/B unit-wise day allocation is not yet established — Full notice not out','Time TBA'],
+  ['SUST Admission Test (unit allocation pending)','2027-01-27','Only 26–27 Jan 2027 test days are established; A/B unit-wise day allocation is not yet established — Full notice not out','Time TBA'],
   ['BUTEX','2027-01-29T10:00:00+06:00','Official university announcement — 29 Jan 2027','Official'],
   ['Chittagong University C / Business','2027-01-29T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
   ['Chittagong University A / Science','2027-01-30T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
@@ -57,15 +57,16 @@ const CURATED_EVENTS = [
   ['Comilla University B','2027-02-06T11:00:00+06:00','Official university press release — 6 Feb 2027','Official'],
   ['Comilla University C','2027-02-07T11:00:00+06:00','Official university press release — 7 Feb 2027','Official'],
   ['Chittagong University D1','2027-02-08T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
-  ['GST B / Humanities','2027-03-19T10:00:00+06:00','Date announced — full application notice is not out yet','Full notice not out'],
-  ['GST C / Business','2027-03-20T10:00:00+06:00','Date announced — full application notice is not out yet','Full notice not out'],
-  ['GST D / Architecture','2027-03-20T10:00:00+06:00','New D / Architecture unit — date announced; full notice is not out yet','Full notice not out'],
-  ['GST A / Science','2027-03-27T10:00:00+06:00','Date announced — full application notice is not out yet','Full notice not out']
+  ['GST B / Humanities','2027-03-19T11:00:00+06:00','Committee schedule announced — 19 Mar 2027, 11:00 AM–12:00 PM; full application circular is still pending — Full notice not out','11:00 AM–12:00 PM'],
+  ['GST C / Business','2027-03-20T11:00:00+06:00','Committee schedule announced — 20 Mar 2027, 11:00 AM–12:00 PM; full application circular is still pending — Full notice not out','11:00 AM–12:00 PM'],
+  ['GST D / Architecture','2027-03-20T15:00:00+06:00','Committee schedule announced — 20 Mar 2027, 3:00–4:00 PM; full application circular is still pending — Full notice not out','3:00–4:00 PM'],
+  ['GST A / Science','2027-03-27T11:00:00+06:00','Committee schedule announced — 27 Mar 2027, 11:00 AM–12:00 PM; full application circular is still pending — Full notice not out','11:00 AM–12:00 PM']
 ].map(([title,date,agreement,displayTime])=>({
   title,
   date:new Date(date).toISOString(),
   agreement,
   ...(displayTime?{displayTime}:{}),
+  ...( /^\d{4}-\d{2}-\d{2}$/.test(date)?{dateOnly:true}:{} ),
   ...(agreement&&agreement.startsWith('Not confirmed')?{status:'tentative'}:{}),
   ...(agreement&&agreement.includes('Full notice not out')?{status:'pending'}:{})
 }));
@@ -234,7 +235,7 @@ const OFFICIAL_CIRCULARS = [
   {name:'Khulna University',short:'KU',status:'Official date notice',cat:'University',url:'https://ku.ac.bd/news-details/2783'},
   {name:'BUTEX Academic Notices',short:'BUTEX',status:'Official notices',cat:'Engineering',url:'https://www.butex.edu.bd/academic-notices/'},
   {name:'Comilla University Press Releases',short:'CoU',status:'Official exam dates',cat:'University',url:'https://www.cou.ac.bd/press-releases'},
-  {name:'Jagannath University Admission',short:'JnU',status:'Official 2026–27',cat:'University',url:'https://admission.jnu.ac.bd/'},
+  {name:'Jagannath University 2026–27 Admission Announcement',short:'JnU',status:'Official 2026–27',cat:'University',url:'https://jnu.ac.bd/newsite/newsdetails/138749'},
   {name:'Chittagong University Admission',short:'CU',status:'Official 2026–27',cat:'University',url:'https://admission.cu.ac.bd/'}
 ];
 const CIRCULAR_PENDING = [
@@ -3131,8 +3132,7 @@ function calendarShortTitle(e){
     'Comilla University A':'CoU-A',
     'Comilla University B':'CoU-B',
     'Comilla University C':'CoU-C',
-    'SUST A':'SUST-A',
-    'SUST B':'SUST-B',
+    'SUST Admission Test (unit allocation pending)':'SUST',
     'BUP BBA General':'BUP-BBA',
     'GST A / Science':'GST-A',
     'GST B / Humanities':'GST-B',
@@ -3776,7 +3776,7 @@ const UNIVERSITY_INFO = {
 
   "CUET": {
     aliases:["Chittagong University of Engineering and Technology","চট্টগ্রাম প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়","চুয়েট"],
-    current:["২০২৬–২৭ পরীক্ষা: ২৩ জানুয়ারি ২০২৭।"],
+    current:["২০২৬–২৭ ভর্তি পরীক্ষার ২৩ জানুয়ারি ২০২৭ তারিখটি CUET-এর অফিসিয়াল ঘোষণায় সম্ভাব্য/টেন্টেটিভ হিসেবে দেওয়া হয়েছে; এটি এখনও চূড়ান্ত তারিখ নয়।","এই ঘোষণায় সুনির্দিষ্ট পরীক্ষার সময় প্রতিষ্ঠিত নয়; তাই ক্যালেন্ডারে Time TBA দেখানো হবে।"],
     previous:[
       "২০২৫–২৬ আবেদন: ১৫ ডিসেম্বর ২০২৫ সকাল ৯টা থেকে ৩১ ডিসেম্বর রাত ১১:৫৯।",
       "আবেদন ফি জমার শেষ সময় ১ জানুয়ারি ২০২৬ রাত ১১:৫৯।",
@@ -3784,7 +3784,7 @@ const UNIVERSITY_INFO = {
       "ভর্তি পরীক্ষা ১৭ জানুয়ারি ২০২৬।",
       "বাংলাদেশি শিক্ষার্থীদের জন্য HSC Math+Physics+Chemistry মোট গ্রেড পয়েন্ট কমপক্ষে ১৪.০০ এবং English-এ ৩.০০; Biomedical Engineering-এর জন্য Biology-তে ৪.০০ লাগত।"
     ],
-    eligibility:["২০২৬–২৭ নতুন সার্কুলার চূড়ান্ত; ২০২৫–২৬ রেফারেন্সে Math+Physics+Chemistry মোট ১৪.০০ এবং English ৩.০০ ছিল।"],
+    eligibility:["২০২৬–২৭ পূর্ণ সার্কুলার প্রকাশ হলে সেটিই চূড়ান্ত; ২০২৫–২৬ রেফারেন্সে Math+Physics+Chemistry মোট ১৪.০০ এবং English ৩.০০ ছিল।"],
     format:["বর্তমান পরীক্ষার পূর্ণ নম্বরবণ্টন নতুন সার্কুলারে যাচাই করতে হবে।"],
     seats:"বর্তমান আসন তালিকা নতুন সার্কুলার থেকে নেওয়া হবে।",
     fee:"বর্তমান ফি অপেক্ষমাণ।",
@@ -3794,7 +3794,7 @@ const UNIVERSITY_INFO = {
 
   "MIST": {
     aliases:["Military Institute of Science and Technology","মিস্ট"],
-    current:["২০২৬–২৭ ক্যালেন্ডারে C Unit — ১৮ ডিসেম্বর এবং A & B — ১৯ ডিসেম্বর ২০২৬ দেখানো হচ্ছে; তবে ৭ অক্টোবর ২০২৬ পর্যন্ত MIST-এর অফিসিয়াল admission portal এখনও ২০২৫–২৬ cycle দেখাচ্ছে।","তাই ২০২৬–২৭ eligibility, fee, seat, marks distribution ও application dates নতুন অফিসিয়াল circular না আসা পর্যন্ত final নয়।"],
+    current:["২০২৬–২৭ পরীক্ষার তারিখ এখন ঘোষিত: C Unit — ১৮ ডিসেম্বর; A & B — ১৯ ডিসেম্বর ২০২৬।","বর্তমান রিপোর্ট অনুযায়ী ১৮ ডিসেম্বরের পরীক্ষা সকালে এবং ১৯ ডিসেম্বরের পরীক্ষাগুলো সকাল/বিকেলে হবে, কিন্তু unit-wise exact times ও পূর্ণ ২০২৬–২৭ circular/application details এখনও pending; MIST admission portal-এ পুরোনো cycle দেখা যাচ্ছে।"],
     previous:[
       "২০২৫–২৬ অফিসিয়াল পোর্টালে আবেদন শেষ সময় ছিল ১৯ জানুয়ারি ২০২৬।",
       "Unit A: মোট ২০০ নম্বর, ৩ ঘণ্টা — গণিত ৮০, পদার্থ ৬০, রসায়ন ৪০, ইংরেজি ২০।",
@@ -3814,7 +3814,7 @@ const UNIVERSITY_INFO = {
 
   "BUP": {
     aliases:["Bangladesh University of Professionals","বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস"],
-    current:["BUP ১ সেপ্টেম্বর ২০২৬ তারিখে ২০২৬–২৭ সেশনের অফিসিয়াল Admission Notice প্রকাশ করেছে।","ক্যালেন্ডারে FASS, FST, FET, FMS, FSSS, FBS ও BBA General-এর আলাদা পরীক্ষার তারিখ আছে।"],
+    current:["BUP ১ সেপ্টেম্বর ২০২৬ তারিখে ২০২৬–২৭ সেশনের অফিসিয়াল Admission Notice প্রকাশ করেছে।","ক্যালেন্ডারে FASS, FST, FET, FMS, FSSS, FBS ও BBA General-এর তারিখ ট্র্যাক করা হচ্ছে; exact exam times কেবল বর্তমান বিস্তারিত নোটিশে স্পষ্টভাবে থাকলে final ধরা হবে।"],
     previous:[
       "পূর্ববর্তী আন্ডারগ্র্যাজুয়েট রেফারেন্সে আবেদন প্রসেসিং ফি ছিল প্রতি faculty-তে ১,১০০ টাকা।",
       "ভর্তি পরীক্ষা ছিল MCQ ভিত্তিক; প্রতিটি ভুল উত্তরে ০.৫০ নম্বর কাটা হতো।",
@@ -3861,7 +3861,7 @@ const UNIVERSITY_INFO = {
     seats:"বর্তমান seat matrix নতুন prospectus/guideline থেকে নেওয়া হবে।",
     fee:"বর্তমান fee অপেক্ষমাণ।",
     documents:["SSC/HSC তথ্য","ছবি/স্বাক্ষর","কোটা/সমমান কাগজ","প্রবেশপত্র"],
-    links:[["JnU ভর্তি পোর্টাল","https://admission.jnu.ac.bd/"],["২০২৫–২৬ Prospectus Page","https://admission.jnu.ac.bd/preliminary/prospectus/5789b26bc53ff5bcd6ef80e542440c797167aa97.jsp"]]
+    links:[["JnU ২০২৬–২৭ অফিসিয়াল ভর্তি ঘোষণা","https://jnu.ac.bd/newsite/newsdetails/138749"],["JnU ভর্তি পোর্টাল (পুরোনো cycle দেখা যেতে পারে)","https://admission.jnu.ac.bd/"]]
   },
 
   "খুলনা বিশ্ববিদ্যালয়": {
@@ -3887,7 +3887,7 @@ const UNIVERSITY_INFO = {
 
   "SUST": {
     aliases:["Shahjalal University of Science and Technology","শাহজালাল বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়","শাবিপ্রবি"],
-    current:["২০২৬–২৭ A Unit — ২৬ জানুয়ারি এবং B Unit — ২৭ জানুয়ারি ২০২৭ তারিখ নিশ্চিত।","পূর্ণ application/test-plan circular ৭ অক্টোবর ২০২৬ পর্যন্ত pending; পুরোনো eligibility, fee বা seat data-কে current হিসেবে ব্যবহার করা যাবে না।"],
+    current:["২০২৬–২৭ ভর্তি পরীক্ষা ২৬–২৭ জানুয়ারি ২০২৭—এই দুই test day প্রতিষ্ঠিত।","A Unit কোন দিন এবং B Unit কোন দিন—unit-wise allocation এখনও প্রতিষ্ঠিত নয়; তাই ক্যালেন্ডারে A=26 / B=27 হিসেবে দেখানো হবে না। পূর্ণ application/test-plan circular pending।"],
     previous:[
       "২০২৫–২৬ অফিসিয়াল admission site department eligibility table প্রকাশ করেছে।",
       "বিভাগে ভর্তির জন্য সংশ্লিষ্ট HSC-Level prerequisite subject-এ সাধারণত কমপক্ষে GPA ৩.০০ লাগত।",
@@ -3976,7 +3976,7 @@ const UNIVERSITY_INFO = {
 
   "GST গুচ্ছ": {
     aliases:["GST","GST Cluster","General Science and Technology Cluster","গুচ্ছ"],
-    current:["ঘোষিত ২০২৬–২৭ exam dates: B/Humanities — ১৯ মার্চ; C/Business ও D/Architecture — ২০ মার্চ; A/Science — ২৭ মার্চ ২০২৭।","পূর্ণ official application circular ৭ অক্টোবর ২০২৬ পর্যন্ত pending; eligibility, fee, seats ও detailed rules current circular ছাড়া final নয়।"],
+    current:["ঘোষিত ২০২৬–২৭ GST schedule: B/Humanities — ১৯ মার্চ ১১টা–১২টা; C/Business — ২০ মার্চ ১১টা–১২টা; D/Architecture — ২০ মার্চ ৩টা–৪টা; A/Science — ২৭ মার্চ ১১টা–১২টা।","পূর্ণ official application circular এখনও pending; eligibility, fee, seats ও detailed rules current circular ছাড়া final নয়।"],
     previous:[
       "২০২৫–২৬ official GST portal-এর workflow অনুযায়ী ইউনিটভিত্তিক আবেদন, admit card, centre এবং subject choice এক প্ল্যাটফর্মে পরিচালিত হয়েছে।",
       "গত বছরের participating university/seat matrix ও eligibility session-specific ছিল; তাই ২০২৬–২৭-এ তালিকা পরিবর্তিত হতে পারে।"
