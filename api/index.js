@@ -1532,6 +1532,74 @@ html[data-theme="light"] .pdf-exam-row:not(.off){border-color:#dfe6f3!important;
   #calendarPdfButton{font-size:8px!important;padding-left:10px!important;padding-right:10px!important}
   .circular-summary-card b{font-size:14px!important}
 }
+
+/* ===== LIGHT THEME COMPLETENESS FIX ===== */
+html[data-theme="light"] .main-target-icon{
+  background:linear-gradient(145deg,#ffffff,#eef4ff);border-color:#d9e3f7;color:#5572ba;
+  box-shadow:0 8px 22px rgba(69,91,139,.10),inset 0 1px 0 #fff
+}
+html[data-theme="light"] .main-target-icon:hover{background:#f4f7ff;color:#405fa9;border-color:#cbd9f4}
+html[data-theme="light"] .main-target-icon.active{background:#effaf4;color:#2f805f;border-color:#d4eadf}
+html[data-theme="light"] .hero-target-note{color:#7e8b9d}
+
+html[data-theme="light"] .sync-code{color:#314564}
+html[data-theme="light"] .sync-note,
+html[data-theme="light"] .sync-status-line,
+html[data-theme="light"] .sync-existing-label{color:#7c899c}
+html[data-theme="light"] .sync-warning{color:#9b6875}
+html[data-theme="light"] .sync-divider{background:#e8edf3}
+html[data-theme="light"] .sync-close,
+html[data-theme="light"] .target-picker-close,
+html[data-theme="light"] .event-drawer-close,
+html[data-theme="light"] .modal-x{
+  background:#f7f9fc!important;border-color:#e1e7ef!important;color:#66758b!important
+}
+html[data-theme="light"] .sync-close:hover,
+html[data-theme="light"] .target-picker-close:hover,
+html[data-theme="light"] .event-drawer-close:hover,
+html[data-theme="light"] .modal-x:hover{background:#eef3f8!important;color:#33445e!important}
+html[data-theme="light"] .sync-copy{
+  background:#eef3ff;border-color:#dce5f8;color:#4e68a2
+}
+html[data-theme="light"] .sync-existing-input,
+html[data-theme="light"] .target-picker-search{
+  background:#fff!important;border-color:#dfe6ef!important;color:#31415a!important;
+  box-shadow:inset 0 1px 2px rgba(70,86,116,.025)
+}
+html[data-theme="light"] .sync-existing-input:focus,
+html[data-theme="light"] .target-picker-search:focus{
+  border-color:#bfcff0!important;box-shadow:0 0 0 3px rgba(93,122,204,.09)!important
+}
+html[data-theme="light"] .sync-use{
+  background:linear-gradient(135deg,#edf3ff,#f5f0ff);border-color:#dbe4f5;color:#536aa0
+}
+html[data-theme="light"] .target-picker-empty{color:#7f8c9e}
+html[data-theme="light"] .target-picker-check{color:#6f83af}
+html[data-theme="light"] .target-picker-row.active .target-picker-check{color:#2f8b64}
+
+html[data-theme="light"] .event-drawer h3{color:#26364f}
+html[data-theme="light"] .event-drawer-kicker{color:#8794a7}
+html[data-theme="light"] .event-drawer-date{color:#6f7e93}
+html[data-theme="light"] .event-drawer-note{color:#69778c!important}
+html[data-theme="light"] .event-drawer-status{color:#2d7e5b;background:#eef9f4;border-color:#d5ebdf}
+html[data-theme="light"] .event-drawer-status.pending{color:#956b1f;background:#fff8e8;border-color:#efdfb6}
+html[data-theme="light"] .event-drawer-status.tentative{color:#a4564d;background:#fff1ed;border-color:#f1d7d0}
+
+html[data-theme="light"] .timeline-empty{color:#7b889b}
+html[data-theme="light"] .calendar-list-shell{background:#fff;border-color:#e7ebf2}
+html[data-theme="light"] .timeline-date b{color:#35445c}
+html[data-theme="light"] .timeline-month{color:#7f8da1}
+
+/* old mobile dark !important rules must never leak into the white theme */
+@media(max-width:700px){
+  html[data-theme="light"] .calendar-scroll{background:#fff!important;border-color:#e5eaf1!important}
+  html[data-theme="light"] .grid{background:#fff!important}
+  html[data-theme="light"] .day{background:#fff!important;border-color:#edf0f4!important}
+  html[data-theme="light"] .day.today{background:#f1f5ff!important}
+  html[data-theme="light"] .event.verified{background:#edf9f3!important;border-color:#cdebdc!important}
+  html[data-theme="light"] .event.unverified{background:#fff8e8!important;border-color:#f1dfad!important}
+  html[data-theme="light"] .calendar-list-shell{background:#fff!important}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
