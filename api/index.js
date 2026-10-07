@@ -258,8 +258,11 @@ function renderCircularGroups(){
     const links=OFFICIAL_CIRCULARS.filter(x=>x.cat===g.key);
     const pending=CIRCULAR_PENDING_GROUPED[g.key]||[];
     return '<div class="circular-group circular-cat-'+g.key.toLowerCase()+'" data-circular-cat="'+g.key+'">'+
-      '<div class="circular-group-head"><div class="circular-group-icon">'+g.icon+'</div><div><b>'+g.label+'</b><span>'+links.length+' official link'+(links.length===1?'':'s')+'</span></div></div>'+
-      (links.length?'<div class="circular-grid">'+links.map(x=>'<a class="circular-card" href="'+x.url+'" target="_blank" rel="noopener"><div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' <i>↗</i></span></a>').join('')+'</div>':'<div class="circular-empty">Official link will appear here when published.</div>')+
+      '<div class="circular-group-head"><div class="circular-group-icon">'+g.icon+'</div><div class="circular-group-title"><b>'+g.label+'</b><span>Official notices and tracked links</span></div>'+
+      '<div class="circular-group-counts"><i class="official">'+links.length+' official</i><i class="waiting">'+pending.length+' waiting</i></div></div>'+
+      (links.length?'<div class="circular-grid">'+links.map((x,i)=>'<a class="circular-card'+(i===0?' circular-featured':'')+'" href="'+x.url+'" target="_blank" rel="noopener">'+
+        (i===0?'<span class="circular-featured-label">Latest tracked</span>':'')+
+        '<div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' <i>↗</i></span></a>').join('')+'</div>':'<div class="circular-empty">Official link will appear here when published.</div>')+
       (pending.length?'<div class="circular-waiting"><span>Waiting for full notice</span><div>'+pending.map(x=>'<em>'+x+'</em>').join('')+'</div></div>':'')+
     '</div>';
   }).join('');
@@ -267,6 +270,13 @@ function renderCircularGroups(){
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admission by DBT | ভর্তি তথ্যকেন্দ্র ২০২৬–২৭</title>
+<meta name="theme-color" content="#ffffff" id="themeColorMeta">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Admission DBT">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/app-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/app-icon.svg">
 <script>
 try{
   document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'light';
@@ -2016,6 +2026,202 @@ html[data-theme="light"] .mobile-dock{
 @media(hover:none){
   .schedule-chart-card:hover,.timeline-card:hover,.circular-card:hover,.starred-card:hover{transform:none!important}
 }
+
+/* ===== DBT UI V4 — SECTION IDENTITIES ===== */
+.target-section,.circular-section,.calendar-section,.info-center,.schedule-visuals{--section-accent:#7f91ff;--section-soft:rgba(127,145,255,.10)}
+.target-section{--section-accent:#9a76e8;--section-soft:rgba(154,118,232,.11)}
+.circular-section{--section-accent:#e96388;--section-soft:rgba(233,99,136,.10)}
+.calendar-section{--section-accent:#27a8ca;--section-soft:rgba(39,168,202,.10)}
+.info-center{--section-accent:#7458c6;--section-soft:rgba(116,88,198,.10)}
+.schedule-visuals{--section-accent:#5875db;--section-soft:rgba(88,117,219,.10)}
+.target-head h2,.circular-section>.head h2,.command-section-head h2,.info-title,.schedule-visual-head h2{display:flex;align-items:center;gap:9px}
+.target-head h2:before,.circular-section>.head h2:before,.command-section-head h2:before,.info-title:before,.schedule-visual-head h2:before{
+  width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:10px;
+  color:var(--section-accent);background:var(--section-soft);border:1px solid color-mix(in srgb,var(--section-accent) 18%,transparent);
+  font-size:14px;font-weight:900;box-shadow:inset 0 1px 0 rgba(255,255,255,.35)
+}
+.target-head h2:before{content:"★"}
+.circular-section>.head h2:before{content:"◎"}
+.command-section-head h2:before{content:"▦"}
+.info-title:before{content:"≡"}
+.schedule-visual-head h2:before{content:"◫"}
+html[data-theme="light"] .target-section,
+html[data-theme="light"] .circular-section,
+html[data-theme="light"] .calendar-section,
+html[data-theme="light"] .info-center,
+html[data-theme="light"] .schedule-visuals{border-color:color-mix(in srgb,var(--section-accent) 13%,#e4e9f0)}
+.install-app-btn{
+  width:36px;height:36px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.045);color:#cfd9ea;font-size:16px;font-weight:900;cursor:pointer
+}
+.install-app-btn:hover{transform:translateY(-1px);background:rgba(111,139,255,.10);color:#fff}
+html[data-theme="light"] .install-app-btn{background:#fff;color:#5670aa;border-color:#dfe6f0;box-shadow:0 5px 16px rgba(74,91,124,.06)}
+html[data-theme="light"] .install-app-btn:hover{background:#eef3ff}
+
+/* animated active controls */
+.circular-tab,.category-tab,.calendar-view-btn,.calendar-filter{transition:background .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease,border-color .18s ease}
+.circular-tab.active,.category-tab.active,.calendar-view-btn.active{transform:translateY(-1px)}
+@media(prefers-reduced-motion:reduce){.circular-tab.active,.category-tab.active,.calendar-view-btn.active{transform:none}}
+
+/* ===== DBT UI V4 — PERFORMANCE / MOBILE / COMPONENTS ===== */
+.category-section,.circular-group{content-visibility:auto;contain-intrinsic-size:1px 520px}
+.schedule-chart-card,.starred-card,.circular-card{contain:paint}
+
+/* circulars v2 */
+.circular-group-head{display:flex;align-items:center;gap:9px}
+.circular-group-title{min-width:0;flex:1}
+.circular-group-counts{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px;margin-left:auto}
+.circular-group-counts i{font-style:normal;padding:5px 7px;border-radius:999px;font-size:6.5px;font-weight:900;white-space:nowrap}
+.circular-group-counts .official{color:#65d6a0;background:rgba(85,213,154,.08);border:1px solid rgba(85,213,154,.14)}
+.circular-group-counts .waiting{color:#e5ba64;background:rgba(243,189,88,.07);border:1px solid rgba(243,189,88,.14)}
+.circular-card{position:relative}
+.circular-featured{border-color:color-mix(in srgb,var(--section-accent) 25%,transparent)!important}
+.circular-featured-label{position:absolute;right:9px;top:8px!important;display:inline-flex!important;width:auto!important;padding:3px 6px;border-radius:999px;background:rgba(108,137,255,.09);color:#8ba8ef!important;font-size:6px!important;font-style:normal}
+html[data-theme="light"] .circular-group-counts .official{color:#287b59;background:#edf9f3;border-color:#d9ede3}
+html[data-theme="light"] .circular-group-counts .waiting{color:#986c1f;background:#fff8e8;border-color:#f0dfb4}
+html[data-theme="light"] .circular-featured-label{background:#eef3ff;color:#506aa8!important}
+
+/* my exams v2 */
+.starred-grid{display:block!important}
+.target-month-group{margin-top:14px}
+.target-month-group:first-child{margin-top:0}
+.target-month-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:0 2px 8px}
+.target-month-head>div:first-child b{display:block;font-size:11px;color:#cbd4e2}
+.target-month-head>div:first-child span{display:block;margin-top:2px;font-size:7px;color:#727f92}
+.target-month-cats{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px}
+.target-month-cats i{font-style:normal;font-size:6px;font-weight:850;padding:4px 6px;border-radius:999px}
+.target-month-cats .medical{color:var(--cat-medical);background:color-mix(in srgb,var(--cat-medical) 9%,transparent)}
+.target-month-cats .engineering{color:var(--cat-engineering);background:color-mix(in srgb,var(--cat-engineering) 9%,transparent)}
+.target-month-cats .university{color:var(--cat-university);background:color-mix(in srgb,var(--cat-university) 9%,transparent)}
+.target-month-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+.starred-card.nearest{box-shadow:0 16px 42px rgba(106,126,220,.12),inset 0 0 0 1px color-mix(in srgb,var(--section-accent) 18%,transparent)}
+.target-nearest-badge{display:inline-flex;margin:-2px 0 9px;padding:4px 6px;border-radius:999px;background:rgba(108,137,255,.09);color:#93acf3;font-size:6px;font-weight:950;letter-spacing:.08em}
+.target-countdown-track{height:5px;margin-top:10px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.045)}
+.target-countdown-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--cat-university),var(--cat-engineering));transition:width .45s ease}
+.category-medical .target-countdown-track i{background:linear-gradient(90deg,#f07391,#ffad83)}
+.category-engineering .target-countdown-track i{background:linear-gradient(90deg,#2eb1d4,#6bd8f1)}
+html[data-theme="light"] .target-month-head>div:first-child b{color:#3c4c65}
+html[data-theme="light"] .target-month-head>div:first-child span{color:#8995a6}
+html[data-theme="light"] .target-countdown-track{background:#e9eef5}
+html[data-theme="light"] .target-nearest-badge{background:#edf3ff;color:#4f69aa}
+
+/* calendar v2 */
+.calendar-scroll.month-enter-next{animation:monthNext .22s ease}
+.calendar-scroll.month-enter-prev{animation:monthPrev .22s ease}
+@keyframes monthNext{0%{opacity:.45;transform:translateX(8px)}100%{opacity:1;transform:none}}
+@keyframes monthPrev{0%{opacity:.45;transform:translateX(-8px)}100%{opacity:1;transform:none}}
+.calendar-more{
+  width:100%;margin-top:4px;padding:3px 4px;border:0;border-radius:6px;background:rgba(116,141,255,.08);color:#8ea7e9;
+  font-size:6px;font-weight:850;cursor:pointer;text-align:left
+}
+.calendar-more:hover{background:rgba(116,141,255,.13)}
+html[data-theme="light"] .calendar-more{background:#eef3ff;color:#516aa6}
+.day-events-backdrop,.guide-compare-backdrop{
+  position:fixed;inset:0;z-index:130;display:flex;align-items:center;justify-content:center;padding:18px;
+  background:rgba(0,0,0,.62);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:.16s ease
+}
+.day-events-backdrop.open,.guide-compare-backdrop.open{opacity:1;pointer-events:auto}
+.day-events-sheet,.guide-compare-modal{
+  width:min(680px,96vw);max-height:min(82vh,760px);overflow:hidden;display:flex;flex-direction:column;
+  border:1px solid rgba(255,255,255,.10);border-radius:22px;background:#0b1018;box-shadow:0 28px 90px rgba(0,0,0,.48);
+  transform:translateY(10px) scale(.985);transition:.18s ease
+}
+.day-events-backdrop.open .day-events-sheet,.guide-compare-backdrop.open .guide-compare-modal{transform:none}
+.day-events-head,.guide-compare-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:17px;border-bottom:1px solid rgba(255,255,255,.07)}
+.day-events-head h3,.guide-compare-head h3{margin:2px 0 0;font-size:20px}
+.day-events-head p{margin:5px 0 0;color:#7d899b;font-size:9px}
+.day-events-list{display:grid;gap:6px;overflow:auto;padding:12px 14px 16px}
+.day-event-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:11px 12px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:rgba(255,255,255,.025);color:#dfe6ef;text-align:left;cursor:pointer}
+.day-event-row b{display:block;font-size:10px}.day-event-row small{display:block;margin-top:3px;color:#778497;font-size:8px}.day-event-row>i{font-style:normal;font-size:17px;color:#7182a2}
+.day-event-row.category-medical b{color:var(--cat-medical)}.day-event-row.category-engineering b{color:var(--cat-engineering)}.day-event-row.category-university b{color:var(--cat-university)}
+html[data-theme="light"] .day-events-backdrop,html[data-theme="light"] .guide-compare-backdrop{background:rgba(67,80,103,.22)}
+html[data-theme="light"] .day-events-sheet,html[data-theme="light"] .guide-compare-modal{background:#fff;border-color:#dfe6ef;box-shadow:0 26px 80px rgba(58,74,105,.18)}
+html[data-theme="light"] .day-events-head,html[data-theme="light"] .guide-compare-head{border-color:#e9edf3}
+html[data-theme="light"] .day-events-head h3,html[data-theme="light"] .guide-compare-head h3{color:#2a3a52}
+html[data-theme="light"] .day-event-row{background:#fbfcfe;border-color:#e7ecf2;color:#33445c}
+
+/* guide v2 */
+.guide-toolbar{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:7px;margin:4px 0 8px}
+.guide-search-wrap{display:flex;align-items:center;gap:7px;min-width:0;padding:0 11px;border:1px solid var(--surface-line);border-radius:12px;background:var(--surface-soft)}
+.guide-search-wrap>span{color:#7f8da1;font-size:15px}
+.guide-search-wrap input{width:100%;min-width:0;height:40px;border:0;outline:0;background:transparent;color:#e7edf5;font-size:10px}
+.guide-clear,.guide-compare-open,.guide-compare-toggle,.guide-row-toggle{
+  border:1px solid var(--surface-line);border-radius:10px;background:var(--surface-soft);color:#8e9aab;cursor:pointer;font-size:8px;font-weight:850
+}
+.guide-clear,.guide-compare-open{min-height:40px;padding:0 11px}
+.guide-compare-open:not(:disabled){color:#b49aff;border-color:rgba(170,137,255,.22);background:rgba(170,137,255,.07)}
+.guide-compare-open:disabled{opacity:.45;cursor:not-allowed}
+.guide-compare-open b{margin-left:4px}
+.guide-compare-tray{display:flex;flex-wrap:wrap;align-items:center;gap:5px;min-height:0;margin-bottom:8px}
+.guide-compare-tray:empty{display:none}
+.guide-compare-tray>span{font-size:7px;color:#748195}
+.guide-compare-tray button{border:1px solid rgba(170,137,255,.16);border-radius:999px;padding:5px 7px;background:rgba(170,137,255,.06);color:#b5a0ec;font-size:7px;cursor:pointer}
+.guide-row-actions{display:flex;gap:5px;margin-top:7px}
+.guide-compare-toggle,.guide-row-toggle{padding:5px 7px}
+.guide-compare-toggle.active{color:#b69cff;background:rgba(170,137,255,.08);border-color:rgba(170,137,255,.20)}
+.guide-row-toggle{display:none}
+.category-section.guide-no-results{opacity:.45}
+.category-section.guide-no-results tbody:after{content:"No matching entries";display:block;padding:22px;color:#7d899a;font-size:9px}
+.guide-compare-body{overflow:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:9px;padding:12px 14px 16px}
+.guide-compare-card{padding:13px;border:1px solid rgba(255,255,255,.07);border-radius:16px;background:rgba(255,255,255,.025)}
+.guide-compare-card h4{margin:0 0 10px;font-size:13px}.guide-compare-card>div{display:grid;gap:3px;padding:8px 0;border-top:1px solid rgba(255,255,255,.055)}.guide-compare-card>div b{font-size:7px;color:#78869a;text-transform:uppercase;letter-spacing:.06em}.guide-compare-card>div span{font-size:9px;line-height:1.45;color:#c2cad6}
+.guide-compare-card.medical h4{color:var(--cat-medical)}.guide-compare-card.engineering h4{color:var(--cat-engineering)}.guide-compare-card.university h4{color:var(--cat-university)}
+html[data-theme="light"] .guide-search-wrap{background:#fff;border-color:#e1e7ef}
+html[data-theme="light"] .guide-search-wrap input{color:#33435b}
+html[data-theme="light"] .guide-clear,html[data-theme="light"] .guide-compare-open,html[data-theme="light"] .guide-compare-toggle,html[data-theme="light"] .guide-row-toggle{background:#fff;border-color:#e2e8ef;color:#65758b}
+html[data-theme="light"] .guide-compare-open:not(:disabled),html[data-theme="light"] .guide-compare-toggle.active{background:#f5f1ff;border-color:#e2d8f7;color:#6e54a8}
+html[data-theme="light"] .guide-compare-tray button{background:#f5f1ff;border-color:#e2d8f7;color:#6e54a8}
+html[data-theme="light"] .guide-compare-card{background:#fbfcfe;border-color:#e7ecf2}
+html[data-theme="light"] .guide-compare-card>div{border-color:#edf0f4}
+html[data-theme="light"] .guide-compare-card>div span{color:#59687d}
+
+/* pdf v2 preview */
+.pdf-preview{display:grid;gap:8px;padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:15px;background:rgba(255,255,255,.02)}
+.pdf-preview-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.pdf-preview-head b{display:block;font-size:10px}.pdf-preview-head span{display:block;margin-top:3px;color:#748195;font-size:7px}.pdf-preview-head strong{font-size:10px;color:#9fb5ef}
+.pdf-preview-pages{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px}
+.pdf-preview-pages article{padding:9px;border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(255,255,255,.018)}
+.pdf-preview-pages article>b{display:block;font-size:8.5px}.pdf-preview-pages article>span{display:block;margin-top:2px;color:#748195;font-size:7px}.pdf-preview-pages article>div{display:flex;flex-wrap:wrap;gap:3px;margin-top:7px}.pdf-preview-pages article i{font-style:normal;padding:3px 5px;border-radius:999px;background:rgba(111,139,255,.07);color:#9eafe0;font-size:6px}
+html[data-theme="light"] .pdf-preview{background:linear-gradient(145deg,#fbfdff,#f5f8ff);border-color:#e1e8f2}
+html[data-theme="light"] .pdf-preview-head b{color:#34455f}
+html[data-theme="light"] .pdf-preview-pages article{background:#fff;border-color:#e6ebf2}
+html[data-theme="light"] .pdf-preview-pages article>b{color:#42526b}
+html[data-theme="light"] .pdf-preview-pages article i{background:#eef3ff;color:#536ba7}
+
+/* mobile-first bottom sheets + safe areas */
+@media(max-width:700px){
+  body{padding-bottom:env(safe-area-inset-bottom)}
+  .app{padding-bottom:calc(92px + env(safe-area-inset-bottom))!important}
+  .mobile-dock{bottom:calc(8px + env(safe-area-inset-bottom))!important}
+  .day-events-backdrop,.guide-compare-backdrop,.target-picker-backdrop,.sync-modal-backdrop,.pdf-picker-backdrop{align-items:flex-end!important;padding:8px!important}
+  .day-events-sheet,.guide-compare-modal,.target-picker,.sync-modal,.pdf-picker-modal{
+    width:100%!important;max-width:none!important;max-height:92dvh!important;border-radius:22px 22px 14px 14px!important;
+    transform:translateY(18px)!important
+  }
+  .day-events-backdrop.open .day-events-sheet,.guide-compare-backdrop.open .guide-compare-modal,.target-picker-backdrop.open .target-picker,.sync-modal-backdrop.open .sync-modal{transform:none!important}
+  .event-drawer{top:auto!important;bottom:0!important;height:auto!important;max-height:88dvh!important;border-radius:22px 22px 0 0!important;transform:translateY(100%)!important}
+  .event-drawer-backdrop.open .event-drawer{transform:none!important}
+  .event-drawer-close{position:sticky;top:0;float:right;z-index:2}
+  .target-month-grid{grid-template-columns:1fr}
+  .target-month-head{align-items:flex-start;flex-direction:column;gap:6px}
+  .target-month-cats{justify-content:flex-start}
+  .circular-group-counts{width:100%;justify-content:flex-start;margin-left:39px}
+  .guide-toolbar{grid-template-columns:minmax(0,1fr) auto}
+  .guide-compare-open{grid-column:1/-1}
+  .guide-row-toggle{display:inline-flex;align-items:center}
+  .admission-table tr:not(.expanded) td:nth-child(n+3){display:none!important}
+  .admission-table tr.expanded td:nth-child(n+3){display:grid!important}
+  .guide-row-actions{margin-top:8px}
+  .guide-compare-body{grid-template-columns:1fr}
+  .pdf-preview-pages{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:390px){
+  .pdf-preview-pages{grid-template-columns:1fr}
+  .circular-group-counts{margin-left:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .calendar-scroll.month-enter-next,.calendar-scroll.month-enter-prev{animation:none!important}
+  .day-events-sheet,.guide-compare-modal{transition:none!important}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -2031,6 +2237,7 @@ html[data-theme="light"] .mobile-dock{
       <a class="navlink" href="#infoCenter">Admission Guide</a>
     </div>
     <div class="nav-actions">
+      <button class="install-app-btn" id="installAppButton" type="button" hidden aria-label="Install Admission by DBT" title="Install app">↓</button>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span class="theme-sun">☀</span><span class="theme-moon">☾</span></button>
       <button class="sync-link" id="homeSyncButton" type="button" title="Save your Home and Calendar choices"><i></i><span id="homeSyncText">Save</span></button>
       <a class="msg-link" href="https://wa.me/+8801516560230" target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message on WhatsApp">
@@ -2125,8 +2332,8 @@ html[data-theme="light"] .mobile-dock{
         <div><div class="section-kicker">OFFICIAL LINKS</div><h2>Circulars</h2><div class="sub">Official links, grouped for quick access.</div></div>
       </div>
       <div class="circular-summary">
-        <div class="circular-summary-card"><span>Official</span><b>11</b><small>Checked links</small></div>
-        <div class="circular-summary-card"><span>Waiting</span><b>10</b><small>Full notices</small></div>
+        <div class="circular-summary-card"><span>Official</span><b>${OFFICIAL_CIRCULARS.length}</b><small>Checked links</small></div>
+        <div class="circular-summary-card"><span>Waiting</span><b>${CIRCULAR_PENDING.length}</b><small>Full notices</small></div>
         <div class="circular-summary-card"><span>Checked</span><b style="font-size:14px">7 Oct</b><small>2026</small></div>
       </div>
       <div class="circular-tabs" id="circularTabs">
@@ -2141,7 +2348,7 @@ html[data-theme="light"] .mobile-dock{
     <section class="section calendar-section" id="calendar" data-view="month">
       <div class="command-section-head">
         <div><div class="section-kicker">SCHEDULE</div><h2>Calendar</h2><div class="sub">Exam dates in one place.</div></div>
-        <div class="controls"><input id="search" placeholder="Search university or unit…"><button class="btn" id="calendarPdfButton" type="button">Print PDF</button><button class="btn" id="refresh">Refresh</button></div>
+        <div class="controls"><input id="search" type="search" aria-label="Search calendar exams" placeholder="Search university or unit…"><button class="btn" id="calendarPdfButton" type="button">Print PDF</button><button class="btn" id="refresh" type="button" aria-label="Refresh exam dates">Refresh</button></div>
       </div>
       <div class="calendar-commandbar">
         <div class="calendar-view-switch" id="calendarViewSwitch">
@@ -2171,10 +2378,23 @@ html[data-theme="light"] .mobile-dock{
     <section class="info-center" id="infoCenter">
       <div class="head"><div><div class="section-kicker">REFERENCE</div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্য কণিকা</h2><div class="sub">বিশ্ববিদ্যালয়, ইঞ্জিনিয়ারিং ও মেডিকেল — এই ৩ ক্যাটাগরিতে আসন, যোগ্যতা, পরীক্ষার ধরন, নম্বরবণ্টন ও ফলাফল নির্ণয়।</div></div></div>
       <div class="guide-stats" id="guideStats"></div>
+      <div class="guide-toolbar">
+        <label class="guide-search-wrap"><span>⌕</span><input id="guideSearch" type="search" placeholder="Search university, unit or topic…" aria-label="Search Admission Guide"></label>
+        <button class="guide-clear" id="guideClearSearch" type="button" hidden>Clear</button>
+        <button class="guide-compare-open" id="guideCompareButton" type="button" disabled>Compare <b id="guideCompareCount">0</b></button>
+      </div>
+      <div class="guide-compare-tray" id="guideCompareTray" aria-live="polite"></div>
       <div class="category-tabs" id="categoryTabs"></div>
       <div id="categoryCharts"></div>
     </section>
   </main>
+</div>
+
+<div class="guide-compare-backdrop" id="guideCompareBackdrop" aria-hidden="true">
+  <div class="guide-compare-modal" role="dialog" aria-modal="true" aria-labelledby="guideCompareTitle">
+    <div class="guide-compare-head"><div><div class="section-kicker">QUICK COMPARE</div><h3 id="guideCompareTitle">Compare admission options</h3></div><button class="modal-x" id="guideCompareClose" type="button" aria-label="Close comparison">×</button></div>
+    <div class="guide-compare-body" id="guideCompareBody"></div>
+  </div>
 </div>
 
 <div class="sync-modal-backdrop" id="syncModalBackdrop" aria-hidden="true">
@@ -2246,9 +2466,10 @@ html[data-theme="light"] .mobile-dock{
         </section>
         <section class="pdf-pick-section pdf-exam-section">
           <div class="pdf-pick-title"><b>Exams</b><button type="button" data-pdf-action="exams-all">All</button></div>
-          <input class="pdf-exam-search" id="pdfExamSearch" placeholder="Search exam or university…">
+          <input class="pdf-exam-search" id="pdfExamSearch" placeholder="Search exam or university…" aria-label="Search exams for PDF">
           <div class="pdf-exam-list" id="pdfExamList"></div>
         </section>
+        <section class="pdf-preview" id="pdfPreview" aria-live="polite"></section>
       </div>
       <div class="pdf-picker-foot">
         <div><b id="pdfSelectedCount">0 exams</b><span id="pdfSelectedMonths">0 months</span></div>
@@ -2257,9 +2478,16 @@ html[data-theme="light"] .mobile-dock{
     </div>
   </div>
 
-  <div class="event-drawer-backdrop" id="eventDrawerBackdrop" aria-hidden="true">
+  <div class="day-events-backdrop" id="dayEventsBackdrop" aria-hidden="true">
+  <div class="day-events-sheet" role="dialog" aria-modal="true" aria-labelledby="dayEventsTitle">
+    <div class="day-events-head"><div><div class="section-kicker">DAY SCHEDULE</div><h3 id="dayEventsTitle">Exams</h3><p id="dayEventsDate"></p></div><button class="modal-x" id="dayEventsClose" type="button" aria-label="Close day schedule">×</button></div>
+    <div class="day-events-list" id="dayEventsList"></div>
+  </div>
+</div>
+
+<div class="event-drawer-backdrop" id="eventDrawerBackdrop" aria-hidden="true">
   <aside class="event-drawer" id="eventDrawer">
-    <button class="event-drawer-close" id="eventDrawerClose" type="button">×</button>
+    <button class="event-drawer-close" id="eventDrawerClose" type="button" aria-label="Close event details">×</button>
     <div class="event-drawer-kicker">ADMISSION EVENT</div>
     <h3 id="eventDrawerTitle">—</h3>
     <div class="event-drawer-date" id="eventDrawerDate">—</div>
@@ -2872,6 +3100,23 @@ function renderTimeline(es){
     row.onclick=()=>{const k=decodeURIComponent(row.dataset.eventKey||'');const e=all.find(x=>eventKey(x)===k);if(e)openEventDrawer(e)};
   });
 }
+function animateCalendarMonth(direction){
+  const shell=document.querySelector('#calendar .calendar-scroll');if(!shell)return;
+  shell.classList.remove('month-enter-next','month-enter-prev');
+  void shell.offsetWidth;
+  shell.classList.add(direction>0?'month-enter-next':'month-enter-prev');
+  setTimeout(()=>shell.classList.remove('month-enter-next','month-enter-prev'),240);
+}
+function openDayEvents(events,date){
+  if(!events?.length)return;
+  dayEventsTitle.textContent=events.length+' exam'+(events.length===1?'':'s');
+  dayEventsDate.textContent=date.toLocaleDateString('en-BD',{dateStyle:'full'});
+  dayEventsList.innerHTML=events.map(e=>'<button type="button" class="day-event-row category-'+eventCategory(e)+'" data-day-event="'+encodeURIComponent(eventKey(e))+'"><span><b>'+esc(calendarShortTitle(e))+'</b><small>'+esc(eventTimeLabel(e))+'</small></span><i>›</i></button>').join('');
+  dayEventsList.querySelectorAll('[data-day-event]').forEach(btn=>btn.onclick=()=>{const key=decodeURIComponent(btn.dataset.dayEvent||'');const e=all.find(x=>eventKey(x)===key);closeDayEvents();if(e)openEventDrawer(e)});
+  dayEventsBackdrop.classList.add('open');dayEventsBackdrop.setAttribute('aria-hidden','false');
+}
+function closeDayEvents(){dayEventsBackdrop.classList.remove('open');dayEventsBackdrop.setAttribute('aria-hidden','true')}
+
 function render(){
   calendar.dataset.view=calendarView;
   document.querySelectorAll('[data-calendar-view]').forEach(b=>b.classList.toggle('active',b.dataset.calendarView===calendarView));
@@ -2898,7 +3143,7 @@ function render(){
       const t=document.createElement('span');t.className='event-title';t.textContent=calendarShortTitle(e);el.appendChild(t);
       cell.appendChild(el);
     });
-    if(todays.length>4){const more=document.createElement('div');more.className='event-status pending';more.textContent='+'+(todays.length-4)+' more';cell.appendChild(more)}
+    if(todays.length>4){const more=document.createElement('button');more.type='button';more.className='calendar-more';more.textContent='+'+(todays.length-4)+' more';more.setAttribute('aria-label','Show '+todays.length+' exams on '+d.toLocaleDateString());more.onclick=ev=>{ev.stopPropagation();openDayEvents(todays,d)};cell.appendChild(more)}
     grid.appendChild(cell);
   }
   renderTimeline(es);
@@ -2916,6 +3161,17 @@ function splitCountdown(target){
     done:false
   };
 }
+function animateNumberText(el,value,suffix=''){
+  if(!el)return;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const from=Number(el.dataset.numberValue||0),to=Number(value||0);
+  el.dataset.numberValue=String(to);
+  if(reduce||Math.abs(to-from)>150){el.textContent=to+suffix;return}
+  const start=performance.now(),duration=260;
+  const tick=now=>{const p=Math.min(1,(now-start)/duration),v=Math.round(from+(to-from)*(1-Math.pow(1-p,3)));el.textContent=v+suffix;if(p<1)requestAnimationFrame(tick)};
+  requestAnimationFrame(tick);
+}
+
 function renderScheduleVisuals(){
   if(typeof mixTotal==='undefined'||!mixTotal)return;
   const counts={medical:0,engineering:0,university:0};
@@ -2928,17 +3184,17 @@ function renderScheduleVisuals(){
   });
   const total=all.length||0;
   const max=Math.max(1,counts.medical,counts.engineering,counts.university);
-  mixTotal.textContent=total;
-  mixMedicalCount.textContent=counts.medical;
-  mixEngineeringCount.textContent=counts.engineering;
-  mixUniversityCount.textContent=counts.university;
+  animateNumberText(mixTotal,total);
+  animateNumberText(mixMedicalCount,counts.medical);
+  animateNumberText(mixEngineeringCount,counts.engineering);
+  animateNumberText(mixUniversityCount,counts.university);
   mixMedicalBar.style.width=(counts.medical/max*100)+'%';
   mixEngineeringBar.style.width=(counts.engineering/max*100)+'%';
   mixUniversityBar.style.width=(counts.university/max*100)+'%';
 
-  statusConfirmedCount.textContent=states.confirmed;
-  statusPendingCount.textContent=states.pending;
-  statusTentativeCount.textContent=states.tentative;
+  animateNumberText(statusConfirmedCount,states.confirmed);
+  animateNumberText(statusPendingCount,states.pending);
+  animateNumberText(statusTentativeCount,states.tentative);
   const confirmedStop=total?states.confirmed/total*100:0;
   const pendingStop=total?(states.confirmed+states.pending)/total*100:0;
   statusConfirmedPct.textContent=Math.round(confirmedStop)+'%';
@@ -2982,11 +3238,11 @@ function updateDashboardStats(){
   const now=new Date();
   const future=all.filter(e=>new Date(e.date)>now).sort((a,b)=>new Date(a.date)-new Date(b.date));
   const next=future[0];
-  statStarred.textContent=all.filter(isStarred).length;
-  if(typeof statConfirmed!=='undefined'&&statConfirmed)statConfirmed.textContent=all.filter(e=>eventState(e)==='confirmed').length;
+  animateNumberText(statStarred,all.filter(isStarred).length);
+  if(typeof statConfirmed!=='undefined'&&statConfirmed)animateNumberText(statConfirmed,all.filter(e=>eventState(e)==='confirmed').length);
   if(next){
     const d=new Date(next.date),left=Math.max(0,Math.ceil((d-now)/86400000));
-    statNext.textContent=left+' days';
+    animateNumberText(statNext,left,' days');
     statNextNote.textContent=next.title;
   }else{
     statNext.textContent='—';statNextNote.textContent='No next exam';
@@ -3000,20 +3256,38 @@ function renderStarredTargets(){
     starredCards.innerHTML='<div class="target-empty"><div class="target-empty-icon">★</div><div class="target-empty-copy"><b>Build your exam list</b><span>Tap “Add exams” and choose the exams you care about.</span><div class="target-empty-pills"><i class="medical">মেডিকেল</i><i class="engineering">ইঞ্জিনিয়ারিং</i><i class="university">বিশ্ববিদ্যালয়</i></div></div></div>';
     return;
   }
-  starredCards.innerHTML=matches.map((e,i)=>{
-    const d=new Date(e.date),v=splitCountdown(e.date),key=encodeURIComponent(eventKey(e));
-    const date=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'});
-    const time=eventTimeLabel(e);
-    const message=v.done?'Exam time / completed':(v.d<=7?'Final stretch — keep revision tight.':v.d<=30?'Revision matters more than collecting new topics.':'Keep going — '+v.d+' days to this target.');
-    return '<article class="starred-card category-'+eventCategory(e)+'" data-star-key="'+key+'">'+
-      '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
-      '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Exams" title="Remove from My Exams">★</button></div>'+
-      '<div class="target-timer">'+
-        '<div class="target-time"><b data-part="d">'+String(v.d).padStart(2,'0')+'</b><span>DAYS</span></div>'+
-        '<div class="target-time"><b data-part="h">'+String(v.h).padStart(2,'0')+'</b><span>HOURS</span></div>'+
-        '<div class="target-time"><b data-part="m">'+String(v.m).padStart(2,'0')+'</b><span>MIN</span></div>'+
-        '<div class="target-time"><b data-part="s">'+String(v.s).padStart(2,'0')+'</b><span>SEC</span></div>'+
-      '</div><div class="target-message">'+esc(message)+'</div></article>';
+  const now=new Date();
+  const future=matches.filter(e=>new Date(e.date)>=now);
+  const nearestKey=future.length?eventKey(future[0]):eventKey(matches[0]);
+  const groups=new Map();
+  matches.forEach(e=>{
+    const d=bdDate(e.date);
+    const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+    if(!groups.has(key))groups.set(key,{label:d.toLocaleDateString('en-BD',{month:'long',year:'numeric'}),events:[]});
+    groups.get(key).events.push(e);
+  });
+  starredCards.innerHTML=[...groups.entries()].map(([monthKey,g])=>{
+    const catCounts={medical:0,engineering:0,university:0};
+    g.events.forEach(e=>catCounts[eventCategory(e)]++);
+    const chips=['medical','engineering','university'].filter(k=>catCounts[k]).map(k=>'<i class="'+k+'">'+(k==='medical'?'মেডিকেল':k==='engineering'?'ইঞ্জিনিয়ারিং':'বিশ্ববিদ্যালয়')+' '+catCounts[k]+'</i>').join('');
+    const cards=g.events.map(e=>{
+      const d=new Date(e.date),v=splitCountdown(e.date),key=encodeURIComponent(eventKey(e));
+      const date=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'});
+      const time=eventTimeLabel(e),nearest=eventKey(e)===nearestKey;
+      const message=v.done?'Exam time / completed':(v.d<=7?'Final stretch — keep revision tight.':v.d<=30?'Revision matters more than collecting new topics.':'Keep going — '+v.d+' days to this exam.');
+      const urgency=Math.max(6,100-Math.min(100,(v.d/90)*100));
+      return '<article class="starred-card category-'+eventCategory(e)+(nearest?' nearest':'')+'" data-star-key="'+key+'">'+
+        (nearest?'<div class="target-nearest-badge">NEXT SELECTED</div>':'')+
+        '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
+        '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Exams" title="Remove from My Exams">★</button></div>'+
+        '<div class="target-timer">'+
+          '<div class="target-time"><b data-part="d">'+String(v.d).padStart(2,'0')+'</b><span>DAYS</span></div>'+
+          '<div class="target-time"><b data-part="h">'+String(v.h).padStart(2,'0')+'</b><span>HOURS</span></div>'+
+          '<div class="target-time"><b data-part="m">'+String(v.m).padStart(2,'0')+'</b><span>MIN</span></div>'+
+          '<div class="target-time"><b data-part="s">'+String(v.s).padStart(2,'0')+'</b><span>SEC</span></div>'+
+        '</div><div class="target-countdown-track"><i style="width:'+urgency+'%"></i></div><div class="target-message">'+esc(message)+'</div></article>';
+    }).join('');
+    return '<section class="target-month-group" data-target-month="'+monthKey+'"><div class="target-month-head"><div><b>'+esc(g.label)+'</b><span>'+g.events.length+' exam'+(g.events.length===1?'':'s')+'</span></div><div class="target-month-cats">'+chips+'</div></div><div class="target-month-grid">'+cards+'</div></section>';
   }).join('');
   starredCards.querySelectorAll('.target-unstar').forEach(btn=>{
     btn.onclick=()=>{
@@ -3139,6 +3413,16 @@ function renderPdfPicker(){
 
   const selected=pdfSelectedEvents();
   const pageMonths=new Set(selected.map(pdfMonthKey));
+  if(typeof pdfPreview!=='undefined'&&pdfPreview){
+    const pages=[...pageMonths].sort().map(key=>{
+      const [y,m]=key.split('-').map(Number);
+      const monthEvents=selected.filter(e=>pdfMonthKey(e)===key);
+      const label=new Date(y,m-1,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+      const sample=monthEvents.slice(0,4).map(e=>'<i>'+esc(calendarShortTitle(e))+'</i>').join('');
+      return '<article><b>'+label+'</b><span>'+monthEvents.length+' exam'+(monthEvents.length===1?'':'s')+'</span><div>'+sample+(monthEvents.length>4?'<i>+'+(monthEvents.length-4)+' more</i>':'')+'</div></article>';
+    }).join('');
+    pdfPreview.innerHTML='<div class="pdf-preview-head"><div><b>PDF preview</b><span>A4 landscape • black & white • one month per page</span></div><strong>'+pageMonths.size+' page'+(pageMonths.size===1?'':'s')+'</strong></div><div class="pdf-preview-pages">'+(pages||'<p>No pages selected yet.</p>')+'</div>';
+  }
   pdfSelectedCount.textContent=selected.length+' exam'+(selected.length===1?'':'s');
   pdfSelectedMonths.textContent=pageMonths.size+' PDF page'+(pageMonths.size===1?'':'s');
   pdfDownloadSelected.disabled=!selected.length||!pageMonths.size;
@@ -3187,7 +3471,9 @@ async function downloadCalendarPdf(){
     const blob=await r.blob();
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
-    a.href=url;a.download='Admission-Calendar-Selected.pdf';
+    const niceMonth=k=>{const [y,m]=k.split('-').map(Number);return new Date(y,m-1,1).toLocaleDateString('en-US',{month:'short',year:'numeric'}).replace(' ','-')};
+    const filename=months.length===1?'DBT-Admission-Calendar-'+niceMonth(months[0])+'.pdf':'DBT-Admission-Calendar-'+niceMonth(months[0])+'_to_'+niceMonth(months[months.length-1])+'.pdf';
+    a.href=url;a.download=filename;
     document.body.appendChild(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),2000);
     closePdfPicker();
@@ -3212,8 +3498,8 @@ async function load(force=false){
     render();
   }
 }
-prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};
-next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};
+prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render();animateCalendarMonth(-1)};
+next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render();animateCalendarMonth(1)};
 refresh.onclick=()=>load(true);
 calendarPdfButton.onclick=openPdfPicker;
 pdfPickerClose.onclick=closePdfPicker;
@@ -3242,12 +3528,17 @@ document.querySelectorAll('[data-pdf-action]').forEach(btn=>btn.onclick=()=>{
   renderPdfPicker();
 });
 pdfDownloadSelected.onclick=downloadCalendarPdf;
+dayEventsClose.onclick=closeDayEvents;
+dayEventsBackdrop.onclick=e=>{if(e.target===dayEventsBackdrop)closeDayEvents()};
+guideCompareClose.onclick=closeGuideCompare;
+guideCompareBackdrop.onclick=e=>{if(e.target===guideCompareBackdrop)closeGuideCompare()};
 search.oninput=render;
 mainTargetButton.onclick=openTargetPicker;
 targetAddButton.onclick=openExamPicker;
 function applyTheme(theme){
   const next=theme==='dark'?'dark':'light';
   document.documentElement.dataset.theme=next;
+  const tm=document.getElementById('themeColorMeta');if(tm)tm.content=next==='light'?'#ffffff':'#050810';
   try{localStorage.setItem('admissionbydbt-theme-v1',next)}catch(e){}
   if(typeof themeToggle!=='undefined'&&themeToggle){
     themeToggle.title=next==='light'?'Switch to dark theme':'Switch to light theme';
@@ -3256,6 +3547,22 @@ function applyTheme(theme){
 }
 applyTheme(document.documentElement.dataset.theme||'light');
 themeToggle.onclick=()=>applyTheme(document.documentElement.dataset.theme==='light'?'dark':'light');
+let deferredInstallPrompt=null;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;installAppButton.hidden=false});
+installAppButton.onclick=async()=>{if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;installAppButton.hidden=true};
+addEventListener('appinstalled',()=>{deferredInstallPrompt=null;installAppButton.hidden=true});
+if('serviceWorker' in navigator&&!DBT_ADMIN_MODE)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+
+function initRovingTabs(rootSelector,itemSelector){
+  const root=document.querySelector(rootSelector);if(!root)return;
+  root.setAttribute('role','tablist');
+  const sync=()=>{const items=[...root.querySelectorAll(itemSelector)];items.forEach(x=>{x.setAttribute('role','tab');x.setAttribute('aria-selected',String(x.classList.contains('active')));x.tabIndex=x.classList.contains('active')?0:-1})};
+  sync();
+  root.addEventListener('click',()=>setTimeout(sync,0));
+  root.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;const items=[...root.querySelectorAll(itemSelector)],cur=document.activeElement,idx=items.indexOf(cur);if(idx<0)return;e.preventDefault();const next=items[(idx+(e.key==='ArrowRight'?1:-1)+items.length)%items.length];next.focus();next.click()});
+}
+initRovingTabs('#calendarViewSwitch','[data-calendar-view]');
+initRovingTabs('#circularTabs','[data-circular-tab]');
 
 homeSyncButton.onclick=openSyncModal;
 syncModalClose.onclick=closeSyncModal;
@@ -3274,7 +3581,7 @@ calendarFilters.querySelectorAll('[data-calendar-filter]').forEach(btn=>btn.oncl
 eventDrawerClose.onclick=closeEventDrawer;eventDrawerClose2.onclick=closeEventDrawer;
 eventDrawerBackdrop.onclick=e=>{if(e.target===eventDrawerBackdrop)closeEventDrawer()};
 eventDrawerStar.onclick=()=>{if(!drawerEvent)return;const current=drawerEvent;toggleStar(current);drawerEvent=current;openEventDrawer(current)};
-addEventListener('keydown',e=>{if(e.key==='Escape'){if(syncModalBackdrop.classList.contains('open'))closeSyncModal();else if(examPickerBackdrop.classList.contains('open'))closeExamPicker();else if(targetPickerBackdrop.classList.contains('open'))closeTargetPicker();else if(eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()}});
+addEventListener('keydown',e=>{if(e.key==='Escape'){if(syncModalBackdrop.classList.contains('open'))closeSyncModal();else if(examPickerBackdrop.classList.contains('open'))closeExamPicker();else if(targetPickerBackdrop.classList.contains('open'))closeTargetPicker();else if(pdfPickerBackdrop.classList.contains('open'))closePdfPicker();else if(dayEventsBackdrop.classList.contains('open'))closeDayEvents();else if(guideCompareBackdrop.classList.contains('open'))closeGuideCompare();else if(eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()}});
 addEventListener('online',()=>{if(validSyncCode(homeSyncCode))pushCloudSync()});
 addEventListener('storage',e=>{if(e.key===HOME_SYNC_STATE_KEY&&e.newValue){try{const s=JSON.parse(e.newValue);if(Number(s.updatedAt||0)>Number(homeSyncState?.updatedAt||0)){applySyncState(s);render()}}catch(err){}}});
 addEventListener('resize',()=>{calendar.dataset.view=calendarView});
@@ -3723,6 +4030,54 @@ const CATEGORY_LABELS = {
   "ইঞ্জিনিয়ারিং":"ইঞ্জিনিয়ারিং",
   "মেডিকেল ও ডেন্টাল":"মেডিকেল"
 };
+let guideCompareKeys=new Set();
+let guideInitialized=false;
+
+function guideRowByKey(key){
+  const raw=decodeURIComponent(key||'');
+  return BOOKLET_ROWS.find(r=>(r.cat+'|'+r.unit)===raw)||null;
+}
+function renderGuideCompareTray(){
+  const tray=document.getElementById('guideCompareTray');
+  const btn=document.getElementById('guideCompareButton');
+  const count=document.getElementById('guideCompareCount');
+  if(!tray||!btn||!count)return;
+  const rows=[...guideCompareKeys].map(guideRowByKey).filter(Boolean);
+  count.textContent=rows.length;
+  btn.disabled=rows.length<2;
+  tray.innerHTML=rows.length?'<span>Selected:</span>'+rows.map(r=>'<button type="button" data-guide-remove="'+encodeURIComponent(r.cat+'|'+r.unit)+'">'+esc(r.unit)+' ×</button>').join(''):'';
+  tray.querySelectorAll('[data-guide-remove]').forEach(x=>x.onclick=()=>{guideCompareKeys.delete(x.dataset.guideRemove);syncGuideCompareButtons();renderGuideCompareTray()});
+}
+function syncGuideCompareButtons(){
+  document.querySelectorAll('[data-guide-compare]').forEach(btn=>{
+    const on=guideCompareKeys.has(btn.dataset.guideCompare);
+    btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',String(on));btn.textContent=on?'Selected':'Compare';
+  });
+}
+function openGuideCompare(){
+  const rows=[...guideCompareKeys].map(guideRowByKey).filter(Boolean);
+  if(rows.length<2)return;
+  guideCompareBody.innerHTML=rows.map(r=>{
+    const cls=r.cat==='মেডিকেল ও ডেন্টাল'?'medical':r.cat==='ইঞ্জিনিয়ারিং'?'engineering':'university';
+    return '<article class="guide-compare-card '+cls+'"><h4>'+esc(r.unit)+'</h4><div><b>Seats</b><span>'+esc(r.seats)+'</span></div><div><b>Eligibility</b><span>'+esc(r.elig)+'</span></div><div><b>Exam</b><span>'+esc(r.exam)+'</span></div><div><b>Marks</b><span>'+esc(r.marks)+'</span></div><div><b>Result</b><span>'+esc(r.result)+'</span></div></article>';
+  }).join('');
+  guideCompareBackdrop.classList.add('open');guideCompareBackdrop.setAttribute('aria-hidden','false');
+}
+function closeGuideCompare(){guideCompareBackdrop.classList.remove('open');guideCompareBackdrop.setAttribute('aria-hidden','true')}
+function applyGuideSearch(){
+  const input=document.getElementById('guideSearch');if(!input)return;
+  const q=input.value.trim().toLowerCase();
+  guideClearSearch.hidden=!q;
+  document.querySelectorAll('.category-section').forEach(sec=>{
+    let visible=0;
+    sec.querySelectorAll('tbody tr').forEach(row=>{
+      const show=!q||(row.dataset.guideSearch||'').includes(q);
+      row.hidden=!show;if(show)visible++;
+    });
+    sec.classList.toggle('guide-no-results',visible===0);
+    const count=sec.querySelector('.cat-count');if(count)count.textContent=visible+'টি তথ্য';
+  });
+}
 
 function renderCategoryTable(cat){
   const rows=BOOKLET_ROWS.filter(r=>r.cat===cat);
@@ -3738,14 +4093,18 @@ function renderCategoryTable(cat){
         '<th>বিষয়ভিত্তিক নম্বর / প্রশ্ন</th>'+
         '<th>ফলাফল নির্ণয় পদ্ধতি</th>'+
       '</tr></thead><tbody>'+
-      rows.map(r=>'<tr>'+
-        '<td class="admission-name" data-label="বিশ্ববিদ্যালয় / ইউনিট">'+esc(r.unit)+'</td>'+
+      rows.map(r=>{
+        const key=encodeURIComponent(r.cat+'|'+r.unit);
+        const hay=(r.p+' '+r.unit+' '+r.seats+' '+r.elig+' '+r.exam+' '+r.marks+' '+r.result).toLowerCase();
+        return '<tr data-guide-key="'+key+'" data-guide-search="'+esc(hay)+'">'+
+        '<td class="admission-name" data-label="বিশ্ববিদ্যালয় / ইউনিট"><span>'+esc(r.unit)+'</span><div class="guide-row-actions"><button class="guide-compare-toggle" type="button" data-guide-compare="'+key+'" aria-pressed="false">Compare</button><button class="guide-row-toggle" type="button" aria-expanded="false">Details</button></div></td>'+
         '<td data-label="আসন সংখ্যা">'+esc(r.seats)+'</td>'+
         '<td data-label="আবেদন যোগ্যতা">'+esc(r.elig)+'</td>'+
         '<td data-label="পরীক্ষার ধরন">'+esc(r.exam)+'</td>'+
         '<td data-label="নম্বর / প্রশ্ন">'+esc(r.marks)+'</td>'+
         '<td data-label="ফলাফল নির্ণয়">'+esc(r.result)+'</td>'+
-      '</tr>').join('')+
+      '</tr>';
+      }).join('')+
       '</tbody></table></div></section>';
 }
 
@@ -3768,13 +4127,34 @@ function renderAllCategories(){
     tabs.querySelectorAll('.category-tab').forEach(x=>x.classList.toggle('active',x.dataset.cat===cat));
   };
 
-  tabs.querySelectorAll('.category-tab').forEach(btn=>{
+  tabs.setAttribute('role','tablist');
+  tabs.querySelectorAll('.category-tab').forEach((btn,i)=>{
+    btn.setAttribute('role','tab');btn.setAttribute('aria-selected',String(i===0));
     btn.onclick=()=>{
       setActiveCategory(btn.dataset.cat);
+      tabs.querySelectorAll('.category-tab').forEach(x=>x.setAttribute('aria-selected',String(x===btn)));
       const sec=[...host.querySelectorAll('.category-section')].find(x=>x.dataset.cat===btn.dataset.cat);
       if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
     };
+    btn.onkeydown=e=>{
+      if(!['ArrowLeft','ArrowRight'].includes(e.key))return;
+      e.preventDefault();const arr=[...tabs.querySelectorAll('.category-tab')],idx=arr.indexOf(btn),next=arr[(idx+(e.key==='ArrowRight'?1:-1)+arr.length)%arr.length];next.focus();next.click();
+    };
   });
+  host.querySelectorAll('.guide-row-toggle').forEach(btn=>btn.onclick=()=>{
+    const row=btn.closest('tr');const open=row.classList.toggle('expanded');btn.textContent=open?'Less':'Details';btn.setAttribute('aria-expanded',String(open));
+  });
+  host.querySelectorAll('[data-guide-compare]').forEach(btn=>btn.onclick=()=>{
+    const key=btn.dataset.guideCompare;
+    if(guideCompareKeys.has(key))guideCompareKeys.delete(key);
+    else if(guideCompareKeys.size<3)guideCompareKeys.add(key);
+    syncGuideCompareButtons();renderGuideCompareTray();
+  });
+  syncGuideCompareButtons();renderGuideCompareTray();
+  const gs=document.getElementById('guideSearch');
+  if(gs){gs.oninput=applyGuideSearch;guideClearSearch.onclick=()=>{gs.value='';applyGuideSearch();gs.focus()}}
+  if(typeof guideCompareButton!=='undefined'&&guideCompareButton)guideCompareButton.onclick=openGuideCompare;
+  applyGuideSearch();
 
   // Scroll-spy: keep the sticky category buttons matched to the section
   // currently under them, in both scroll directions.
@@ -3800,7 +4180,14 @@ function renderAllCategories(){
   addEventListener('resize',onCategoryScroll,{passive:true});
   updateCategoryFromScroll();
 }
-renderAllCategories();
+(function initGuideLazy(){
+  const host=document.getElementById('infoCenter');
+  const start=()=>{if(guideInitialized)return;guideInitialized=true;renderAllCategories()};
+  if(!('IntersectionObserver' in window)){start();return}
+  const io=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){start();io.disconnect()}},{rootMargin:'500px 0px'});
+  io.observe(host);
+  document.querySelectorAll('a[href="#infoCenter"]').forEach(a=>a.addEventListener('click',start,{once:true}));
+})();
 
 (function initCircularCategorySpy(){
   const tabs=document.getElementById('circularTabs');
