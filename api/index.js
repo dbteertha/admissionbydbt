@@ -4845,7 +4845,8 @@ updatePageNavFromScroll();
 // Heavy animated star canvas removed for faster loading and smoother mobile performance.
 
 
-</script></body></html>`;
+</script><script defer src="/_vercel/insights/script.js"></script>
+</body></html>`;
 
 export default async function handler(req,res){
   const u=new URL(req.url,'https://admissionbydbt.vercel.app');
