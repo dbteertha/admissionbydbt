@@ -724,6 +724,11 @@ body{background:#02050a;color:#f5f7fb}
 .starred-card:before{display:none}
 .starred-card:hover{border-color:rgba(255,255,255,.14);transform:translateY(-1px)}
 .target-badge{background:rgba(255,214,107,.06);border-color:rgba(255,214,107,.15)}
+.target-priority-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:11px}
+.target-priority-btn{height:30px;padding:0 10px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.035);color:#8e99aa;font-size:8px;font-weight:800;cursor:pointer;transition:.16s ease}
+.target-priority-btn:hover{background:rgba(255,255,255,.06);color:#fff}
+.target-priority-btn.active{border-color:rgba(242,199,102,.24);background:rgba(242,199,102,.08);color:#f4d985}
+.target-priority-note{font-size:8px;color:#697587}
 .target-time{background:rgba(255,255,255,.028);border-color:rgba(255,255,255,.06)}
 .target-time b{color:#f4f6fa}
 .star-btn{border-radius:50%;background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.08)}
@@ -1661,11 +1666,14 @@ function updateDashboardStats(){
   }
 }
 function renderStarredTargets(){
-  const matches=all.filter(isStarred).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const matches=all.filter(isStarred).sort((a,b)=>{
+    const ap=eventKey(a)===countdownTargetKey?0:1,bp=eventKey(b)===countdownTargetKey?0:1;
+    return ap-bp||new Date(a.date)-new Date(b.date);
+  });
   targetCount.textContent=matches.length+' STARRED';
   updateDashboardStats();
   if(!matches.length){
-    starredCards.innerHTML='<div class="target-empty">☆ Star an exam from the calendar to keep it in My Target Exams.</div>';
+    starredCards.innerHTML='<div class="target-empty">☆ Star an exam to keep it here. You can also set your priority exam from this section.</div>';
     return;
   }
   starredCards.innerHTML=matches.map((e,i)=>{
@@ -1673,20 +1681,34 @@ function renderStarredTargets(){
     const date=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'});
     const time=eventTimeLabel(e);
     const message=v.done?'Exam time / completed':(v.d<=7?'Final stretch — keep revision tight.':v.d<=30?'Revision matters more than collecting new topics.':'Keep going — '+v.d+' days to this target.');
-    return '<article class="starred-card" data-star-key="'+key+'">'+
-      '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
-      '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Target Exams" title="Remove from My Target Exams">★</button></div>'+
+    const isPriority=eventKey(e)===countdownTargetKey;
+    return '<article class="starred-card'+(isPriority?' primary-target':'')+'" data-star-key="'+key+'">'+
+      '<div class="target-top"><div>'+ (isPriority?'<div class="target-badge">PRIORITY</div>':'') +'<div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
+      '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Exams" title="Remove from My Exams">★</button></div>'+
       '<div class="target-timer">'+
         '<div class="target-time"><b data-part="d">'+String(v.d).padStart(2,'0')+'</b><span>DAYS</span></div>'+
         '<div class="target-time"><b data-part="h">'+String(v.h).padStart(2,'0')+'</b><span>HOURS</span></div>'+
         '<div class="target-time"><b data-part="m">'+String(v.m).padStart(2,'0')+'</b><span>MIN</span></div>'+
         '<div class="target-time"><b data-part="s">'+String(v.s).padStart(2,'0')+'</b><span>SEC</span></div>'+
-      '</div><div class="target-message">'+esc(message)+'</div></article>';
+      '</div><div class="target-message">'+esc(message)+'</div>'+
+      '<div class="target-priority-row"><span class="target-priority-note">'+(isPriority?'Used for the main countdown':'Make this your main exam')+'</span>'+
+      '<button type="button" class="target-priority-btn'+(isPriority?' active':'')+'" data-priority-key="'+key+'">'+(isPriority?'Priority set':'Set priority')+'</button></div>'+
+      '</article>';
   }).join('');
   starredCards.querySelectorAll('.target-unstar').forEach(btn=>{
     btn.onclick=()=>{
       const raw=decodeURIComponent(btn.dataset.starKey||'');
-      starred.delete(raw);saveStars();render();
+      starred.delete(raw);saveStars();saveLocalSyncState();render();
+    };
+  });
+  starredCards.querySelectorAll('.target-priority-btn').forEach(btn=>{
+    btn.onclick=()=>{
+      const raw=decodeURIComponent(btn.dataset.priorityKey||'');
+      const e=all.find(x=>eventKey(x)===raw);
+      if(!e)return;
+      if(eventKey(e)===countdownTargetKey)setCountdownTarget(null);
+      else setCountdownTarget(e);
+      render();
     };
   });
 }
