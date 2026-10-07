@@ -281,6 +281,13 @@ a{color:inherit}
 .navlink{border:0;background:transparent;color:#aab2c0;text-decoration:none;font-size:11px;padding:8px 10px;border-radius:10px;cursor:pointer}
 .navlink:hover{background:rgba(255,255,255,.06);color:#fff}
 .nav-actions{display:flex;align-items:center;gap:7px}
+.sync-link{height:36px;display:inline-flex;align-items:center;gap:7px;padding:0 10px;border:1px solid rgba(120,167,255,.22);border-radius:11px;background:rgba(10,16,27,.74);color:#cfe0ff;font-size:9px;font-weight:850;letter-spacing:.02em;cursor:pointer;transition:.16s ease;white-space:nowrap}
+.sync-link:hover{transform:translateY(-1px);border-color:rgba(120,167,255,.44);background:#111827;color:#fff}
+.sync-link i{width:7px;height:7px;border-radius:50%;background:#7ea8ff;box-shadow:0 0 12px rgba(126,168,255,.42)}
+.sync-link.saved{border-color:rgba(116,230,167,.24);color:#bcecca;background:rgba(28,76,52,.12)}
+.sync-link.saved i{background:#74e6a7;box-shadow:0 0 12px rgba(116,230,167,.42)}
+.sync-link.saving{border-color:rgba(242,199,102,.24);color:#e9cf8f}
+.sync-link.offline{border-color:rgba(255,122,138,.20);color:#e9a3ad}
 .msg-link{width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(116,230,167,.18);border-radius:11px;background:rgba(10,18,16,.72);color:#9be7ba;text-decoration:none;transition:.16s ease;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
 .msg-link:hover{transform:translateY(-1px);border-color:rgba(116,230,167,.42);background:rgba(30,83,53,.18);color:#d5f7e1;box-shadow:0 0 22px rgba(116,230,167,.12)}
 .msg-link svg{width:18px;height:18px;display:block;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
@@ -419,6 +426,23 @@ a{color:inherit}
 .main-target-icon{width:38px;height:38px;border-radius:50%;border:1px solid rgba(120,167,255,.22);background:rgba(10,16,27,.78);color:#cfe0ff;display:grid;place-items:center;font-size:20px;line-height:1;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.24),inset 0 0 0 1px rgba(255,255,255,.025);transition:.16s ease}
 .main-target-icon:hover{transform:translateY(-1px) scale(1.04);border-color:rgba(120,167,255,.46);background:#111a29;color:#fff;box-shadow:0 0 24px rgba(99,151,255,.14)}
 .main-target-icon.active{border-color:rgba(116,230,167,.32);color:#b9ecc9;background:rgba(35,92,61,.14)}
+.sync-modal-backdrop{position:fixed;inset:0;z-index:135;background:rgba(0,0,0,.70);backdrop-filter:blur(8px);display:grid;place-items:center;padding:18px;opacity:0;pointer-events:none;transition:.16s ease}
+.sync-modal-backdrop.open{opacity:1;pointer-events:auto}
+.sync-modal{width:min(520px,96vw);padding:18px;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:linear-gradient(145deg,#0b1018,#070a10);box-shadow:0 28px 90px rgba(0,0,0,.55);transform:translateY(10px) scale(.985);transition:.18s ease}
+.sync-modal-backdrop.open .sync-modal{transform:translateY(0) scale(1)}
+.sync-modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.sync-modal-head h3{margin:0;font-size:22px;letter-spacing:-.035em}
+.sync-close{width:34px;height:34px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:#10151e;color:#9ca7b7;font-size:19px;cursor:pointer}
+.sync-note{margin:8px 0 14px;color:#8d98aa;font-size:10px;line-height:1.55}
+.sync-code-box{display:flex;align-items:center;gap:8px;padding:10px;border:1px solid rgba(120,167,255,.18);border-radius:14px;background:rgba(8,13,22,.82)}
+.sync-code{flex:1;min-width:0;font:800 15px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;color:#eef4ff;overflow-wrap:anywhere}
+.sync-copy{border:1px solid rgba(255,255,255,.09);background:#101722;color:#cdd8ea;border-radius:10px;padding:8px 10px;font-size:9px;font-weight:800;cursor:pointer}
+.sync-status-line{margin-top:9px;font-size:9px;color:#738097;min-height:14px}
+.sync-divider{height:1px;background:rgba(255,255,255,.07);margin:15px 0}
+.sync-existing-label{font-size:9px;letter-spacing:.10em;text-transform:uppercase;color:#718096;margin-bottom:7px}
+.sync-existing-row{display:flex;gap:8px}
+.sync-existing-input{flex:1;min-width:0;padding:10px 11px;border:1px solid rgba(255,255,255,.09);border-radius:11px;background:#090d14;color:#edf2fa;font:750 12px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;text-transform:uppercase}
+.sync-use{border:1px solid rgba(120,167,255,.24);border-radius:11px;background:rgba(43,72,126,.16);color:#dbe7ff;padding:0 12px;font-size:9px;font-weight:850;cursor:pointer}
+.sync-warning{margin-top:10px;color:#8a7280;font-size:8px;line-height:1.45}
 .target-picker-backdrop{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.68);backdrop-filter:blur(8px);display:grid;place-items:center;padding:18px;opacity:0;pointer-events:none;transition:.16s ease}
 .target-picker-backdrop.open{opacity:1;pointer-events:auto}
 .target-picker{width:min(620px,96vw);max-height:min(720px,88vh);display:flex;flex-direction:column;padding:17px;border:1px solid rgba(255,255,255,.10);border-radius:20px;background:linear-gradient(145deg,#0b1018,#070a10);box-shadow:0 28px 90px rgba(0,0,0,.55);transform:translateY(10px) scale(.985);transition:.18s ease}
@@ -583,6 +607,7 @@ a{color:inherit}
   .mobile-dock a,.mobile-dock button{font-size:9px!important;padding:8px 3px!important}
   .mobile-dock b{font-size:17px!important}
   .msg-link{width:42px!important;height:42px!important;border-radius:13px!important}.msg-link svg{width:20px!important;height:20px!important}
+  .sync-link{height:42px!important;padding:0 9px!important;border-radius:13px!important}.sync-link span{font-size:9px!important}.sync-modal{padding:15px!important}.sync-code{font-size:13px!important;letter-spacing:.055em!important}
 }
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
@@ -599,6 +624,7 @@ a{color:inherit}
       <a class="navlink" href="#infoCenter">Admission Info</a>
     </div>
     <div class="nav-actions">
+      <button class="sync-link" id="homeSyncButton" type="button" title="Sync personal Home and Calendar choices"><i></i><span id="homeSyncText">Sync</span></button>
       <a class="msg-link" href="https://wa.me/+8801516560230" target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message on WhatsApp">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18.4 3.8 20l1-3.5A8.4 8.4 0 1 1 7 18.4Z"/><path d="M8.2 8.1c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.8 2c.1.3.1.5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.3 1.7 2.2 2.2.3.2.5.2.7 0l.8-.7c.2-.2.5-.2.7-.1l1.9.9c.3.1.4.3.4.6 0 .8-.4 1.6-1 2-1 .6-2.4.5-4-.2-1.4-.6-2.8-1.7-3.9-3.1-1-1.3-1.7-2.8-1.8-4.1-.1-.8.1-1.4.5-1.7Z"/></svg>
       </a>
@@ -704,6 +730,28 @@ a{color:inherit}
   </main>
 </div>
 
+<div class="sync-modal-backdrop" id="syncModalBackdrop" aria-hidden="true">
+  <div class="sync-modal" role="dialog" aria-modal="true" aria-labelledby="syncModalTitle">
+    <div class="sync-modal-head">
+      <div><div class="section-kicker">PERSONAL SYNC</div><h3 id="syncModalTitle">Your DBT sync code</h3></div>
+      <button class="sync-close" id="syncModalClose" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="sync-note">This code stays the same on this device. Use the same code on another device to sync your starred exams, main countdown target and calendar preferences.</div>
+    <div class="sync-code-box">
+      <div class="sync-code" id="syncCodeText">—</div>
+      <button class="sync-copy" id="syncCopyButton" type="button">Copy</button>
+    </div>
+    <div class="sync-status-line" id="syncStatusLine">Saved locally on this device.</div>
+    <div class="sync-divider"></div>
+    <div class="sync-existing-label">Use an existing code</div>
+    <div class="sync-existing-row">
+      <input class="sync-existing-input" id="syncExistingInput" maxlength="24" placeholder="DBT-XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false">
+      <button class="sync-use" id="syncUseButton" type="button">Use code</button>
+    </div>
+    <div class="sync-warning">Anyone who has this code can load and change these Home/Calendar choices. Keep it private.</div>
+  </div>
+</div>
+
 <div class="target-picker-backdrop" id="targetPickerBackdrop" aria-hidden="true">
   <div class="target-picker" role="dialog" aria-modal="true" aria-labelledby="targetPickerTitle">
     <div class="target-picker-head">
@@ -761,6 +809,13 @@ function countdown(){
 let all=[],view=new Date(2026,11,1),sourceHealth=[];
 const STAR_KEY='admissionbydbt-starred-v1';
 const COUNTDOWN_TARGET_KEY='admissionbydbt-countdown-target-v1';
+const HOME_SYNC_CODE_KEY='admissionbydbt-home-sync-code-v1';
+const HOME_SYNC_STATE_KEY='admissionbydbt-home-sync-state-v1';
+let homeSyncCode='';
+try{homeSyncCode=localStorage.getItem(HOME_SYNC_CODE_KEY)||''}catch(e){}
+let homeSyncState=null;
+try{homeSyncState=JSON.parse(localStorage.getItem(HOME_SYNC_STATE_KEY)||'null')}catch(e){homeSyncState=null}
+let homeSyncTimer=null,homeSyncApplying=false,homeSyncConfigured=true;
 let countdownTargetKey='';
 try{countdownTargetKey=localStorage.getItem(COUNTDOWN_TARGET_KEY)||''}catch(e){}
 let starred=new Set();
@@ -769,6 +824,145 @@ try{starred=new Set(JSON.parse(localStorage.getItem(STAR_KEY)||'[]'))}catch(e){s
 function eventKey(e){return e.title+'|'+e.date}
 function isStarred(e){return starred.has(eventKey(e))}
 function saveStars(){localStorage.setItem(STAR_KEY,JSON.stringify([...starred]))}
+function normalizeSyncCode(v){
+  const raw=String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(!raw)return '';
+  const body=raw.startsWith('DBT')?raw.slice(3):raw;
+  return 'DBT-'+body.slice(0,4)+'-'+body.slice(4,8)+'-'+body.slice(8,12)+'-'+body.slice(12,16);
+}
+function compactSyncCode(v){return String(v||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}
+function validSyncCode(v){return /^DBT[A-HJ-NP-Z2-9]{16}$/.test(compactSyncCode(v))}
+function generateSyncCode(){
+  const alphabet='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',bytes=new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  let body='';for(let i=0;i<16;i++)body+=alphabet[bytes[i]%alphabet.length];
+  return normalizeSyncCode('DBT'+body);
+}
+function ensureSyncCode(){
+  if(validSyncCode(homeSyncCode))return normalizeSyncCode(homeSyncCode);
+  homeSyncCode=generateSyncCode();
+  try{localStorage.setItem(HOME_SYNC_CODE_KEY,homeSyncCode)}catch(e){}
+  return homeSyncCode;
+}
+function currentSyncState(updatedAt=Date.now()){
+  return {version:1,updatedAt,starred:[...starred],countdownTargetKey,calendarView,calendarFilter};
+}
+function saveLocalSyncState(updatedAt=Date.now()){
+  if(homeSyncApplying)return;
+  const state=currentSyncState(updatedAt);
+  homeSyncState=state;
+  try{localStorage.setItem(HOME_SYNC_STATE_KEY,JSON.stringify(state))}catch(e){}
+  queueCloudSync();
+}
+function setSyncUi(mode,text){
+  const b=document.getElementById('homeSyncButton'),t=document.getElementById('homeSyncText');
+  if(!b||!t)return;
+  b.classList.remove('saved','saving','offline');
+  if(mode)b.classList.add(mode);
+  t.textContent=text||'Sync';
+}
+function applySyncState(state){
+  if(!state||typeof state!=='object')return;
+  homeSyncApplying=true;
+  if(Array.isArray(state.starred)){
+    starred=new Set(state.starred);
+    try{localStorage.setItem(STAR_KEY,JSON.stringify([...starred]))}catch(e){}
+  }
+  countdownTargetKey=String(state.countdownTargetKey||'');
+  try{
+    if(countdownTargetKey)localStorage.setItem(COUNTDOWN_TARGET_KEY,countdownTargetKey);
+    else localStorage.removeItem(COUNTDOWN_TARGET_KEY);
+  }catch(e){}
+  if(['month','timeline','upcoming'].includes(state.calendarView))calendarView=state.calendarView;
+  if(['all','confirmed','engineering','medical','university','starred'].includes(state.calendarFilter))calendarFilter=state.calendarFilter;
+  homeSyncState=state;
+  try{localStorage.setItem(HOME_SYNC_STATE_KEY,JSON.stringify(state))}catch(e){}
+  homeSyncApplying=false;
+}
+async function fetchCloudSync(){
+  if(!validSyncCode(homeSyncCode))return null;
+  const r=await fetch('/api/home-sync',{headers:{'x-dbt-sync-code':homeSyncCode},cache:'no-store'});
+  if(r.status===404)return null;
+  if(r.status===503){homeSyncConfigured=false;throw new Error('storage_not_configured')}
+  if(!r.ok)throw new Error('sync_load_failed');
+  const j=await r.json();
+  return j&&j.state?j.state:null;
+}
+async function pushCloudSync(){
+  if(!validSyncCode(homeSyncCode)||homeSyncApplying)return;
+  try{
+    setSyncUi('saving','Saving…');
+    const state=currentSyncState(Date.now());
+    homeSyncState=state;
+    try{localStorage.setItem(HOME_SYNC_STATE_KEY,JSON.stringify(state))}catch(e){}
+    const r=await fetch('/api/home-sync',{method:'PUT',headers:{'Content-Type':'application/json','x-dbt-sync-code':homeSyncCode},body:JSON.stringify(state),cache:'no-store'});
+    const j=await r.json().catch(()=>({}));
+    if(r.status===409&&j.state){
+      applySyncState(j.state);render();setSyncUi('saved','Saved');return;
+    }
+    if(r.status===503){homeSyncConfigured=false;setSyncUi('offline','Local');return}
+    if(!r.ok)throw new Error('sync_save_failed');
+    setSyncUi('saved','Saved');
+  }catch(e){
+    setSyncUi('offline',navigator.onLine?'Local':'Offline');
+  }
+}
+function queueCloudSync(){
+  if(!validSyncCode(homeSyncCode))return;
+  clearTimeout(homeSyncTimer);
+  homeSyncTimer=setTimeout(pushCloudSync,550);
+}
+async function initializeSecretSync(){
+  if(!validSyncCode(homeSyncCode)){setSyncUi('','Sync');return}
+  homeSyncCode=normalizeSyncCode(homeSyncCode);
+  try{localStorage.setItem(HOME_SYNC_CODE_KEY,homeSyncCode)}catch(e){}
+  try{
+    const cloud=await fetchCloudSync();
+    const local=homeSyncState;
+    if(cloud&&(!local||Number(cloud.updatedAt||0)>=Number(local.updatedAt||0))){
+      applySyncState(cloud);render();
+    }else if(local&&(!cloud||Number(local.updatedAt||0)>Number(cloud.updatedAt||0))){
+      await pushCloudSync();
+    }else if(!cloud){
+      await pushCloudSync();
+    }
+    if(homeSyncConfigured)setSyncUi('saved','Saved');
+  }catch(e){
+    setSyncUi('offline',navigator.onLine?'Local':'Offline');
+  }
+}
+function openSyncModal(){
+  homeSyncCode=ensureSyncCode();
+  syncCodeText.textContent=homeSyncCode;
+  syncExistingInput.value='';
+  syncStatusLine.textContent=homeSyncConfigured?(navigator.onLine?'Your choices sync automatically when they change.':'Offline — changes stay saved locally until internet returns.'):'Cloud sync storage is not connected yet; choices remain saved locally.';
+  syncModalBackdrop.classList.add('open');syncModalBackdrop.setAttribute('aria-hidden','false');
+  if(!homeSyncState)saveLocalSyncState();
+}
+function closeSyncModal(){syncModalBackdrop.classList.remove('open');syncModalBackdrop.setAttribute('aria-hidden','true')}
+async function useExistingSyncCode(){
+  const code=normalizeSyncCode(syncExistingInput.value);
+  if(!validSyncCode(code)){syncStatusLine.textContent='That code is not valid.';return}
+  syncUseButton.disabled=true;syncStatusLine.textContent='Loading this code…';
+  try{
+    const oldCode=homeSyncCode;
+    homeSyncCode=code;
+    const cloud=await fetchCloudSync();
+    if(!cloud){
+      homeSyncCode=oldCode;
+      syncStatusLine.textContent='No saved data was found for that code.';
+      return;
+    }
+    try{localStorage.setItem(HOME_SYNC_CODE_KEY,homeSyncCode)}catch(e){}
+    applySyncState(cloud);render();
+    syncCodeText.textContent=homeSyncCode;
+    syncExistingInput.value='';
+    setSyncUi('saved','Saved');
+    syncStatusLine.textContent='Synced. This device will keep using this code.';
+  }catch(e){
+    syncStatusLine.textContent='Could not load that code right now.';
+  }finally{syncUseButton.disabled=false}
+}
 function setCountdownTarget(e){
   countdownTargetKey=e?eventKey(e):'';
   try{
@@ -785,6 +979,7 @@ function setCountdownTarget(e){
   }
   countdown();
   renderStarredTargets();
+  saveLocalSyncState();
   if(typeof closeTargetPicker==='function')closeTargetPicker();
 }
 function restoreCountdownTarget(){
@@ -805,6 +1000,7 @@ function toggleStar(e){
   const adding=!starred.has(key);
   if(adding) starred.add(key); else starred.delete(key);
   saveStars();
+  saveLocalSyncState();
   if(adding&&typeof makeShooter==='function'&&!reduceMotion&&!mobileLite){
     makeShooter(true,Math.max(80,innerWidth*.72),Math.max(80,innerHeight*.18));
   }
@@ -821,7 +1017,7 @@ function starButton(e,extraClass=''){
   return b;
 }
 function bdDate(iso){return new Date(new Date(iso).toLocaleString('en-US',{timeZone:'Asia/Dhaka'}))}
-let calendarView='month',calendarFilter='all',drawerEvent=null;
+let calendarView=(homeSyncState&&['month','timeline','upcoming'].includes(homeSyncState.calendarView)?homeSyncState.calendarView:'month'),calendarFilter=(homeSyncState&&['all','confirmed','engineering','medical','university','starred'].includes(homeSyncState.calendarFilter)?homeSyncState.calendarFilter:'all'),drawerEvent=null;
 function eventState(e){return e.status==='tentative'?'tentative':e.status==='pending'?'pending':'confirmed'}
 function eventCategory(e){
   const t=(e.title||'').toLowerCase();
@@ -1069,18 +1265,28 @@ next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()
 refresh.onclick=()=>load(true);
 search.oninput=render;
 mainTargetButton.onclick=openTargetPicker;
+homeSyncButton.onclick=openSyncModal;
+syncModalClose.onclick=closeSyncModal;
+syncModalBackdrop.onclick=e=>{if(e.target===syncModalBackdrop)closeSyncModal()};
+syncCopyButton.onclick=async()=>{try{await navigator.clipboard.writeText(homeSyncCode);syncStatusLine.textContent='Code copied.'}catch(e){syncStatusLine.textContent='Copy failed — press and hold the code to copy it.'}};
+syncUseButton.onclick=useExistingSyncCode;
+syncExistingInput.oninput=()=>{syncExistingInput.value=normalizeSyncCode(syncExistingInput.value)};
 targetPickerClose.onclick=closeTargetPicker;
 targetPickerBackdrop.onclick=e=>{if(e.target===targetPickerBackdrop)closeTargetPicker()};
 targetPickerSearch.oninput=renderTargetPicker;
-calendarViewSwitch.querySelectorAll('[data-calendar-view]').forEach(btn=>btn.onclick=()=>{calendarView=btn.dataset.calendarView;render()});
-calendarFilters.querySelectorAll('[data-calendar-filter]').forEach(btn=>btn.onclick=()=>{calendarFilter=btn.dataset.calendarFilter;render()});
+calendarViewSwitch.querySelectorAll('[data-calendar-view]').forEach(btn=>btn.onclick=()=>{calendarView=btn.dataset.calendarView;saveLocalSyncState();render()});
+calendarFilters.querySelectorAll('[data-calendar-filter]').forEach(btn=>btn.onclick=()=>{calendarFilter=btn.dataset.calendarFilter;saveLocalSyncState();render()});
 eventDrawerClose.onclick=closeEventDrawer;eventDrawerClose2.onclick=closeEventDrawer;
 eventDrawerBackdrop.onclick=e=>{if(e.target===eventDrawerBackdrop)closeEventDrawer()};
 eventDrawerStar.onclick=()=>{if(!drawerEvent)return;const current=drawerEvent;toggleStar(current);drawerEvent=current;openEventDrawer(current)};
-addEventListener('keydown',e=>{if(e.key==='Escape'){if(targetPickerBackdrop.classList.contains('open'))closeTargetPicker();else if(eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()}});
+addEventListener('keydown',e=>{if(e.key==='Escape'){if(syncModalBackdrop.classList.contains('open'))closeSyncModal();else if(targetPickerBackdrop.classList.contains('open'))closeTargetPicker();else if(eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()}});
+addEventListener('online',()=>{if(validSyncCode(homeSyncCode))pushCloudSync()});
+addEventListener('storage',e=>{if(e.key===HOME_SYNC_STATE_KEY&&e.newValue){try{const s=JSON.parse(e.newValue);if(Number(s.updatedAt||0)>Number(homeSyncState?.updatedAt||0)){applySyncState(s);render()}}catch(err){}}});
 addEventListener('resize',()=>{calendar.dataset.view=calendarView});
 load();
+initializeSecretSync();
 setInterval(updateStarredTimers,1000);
+setInterval(()=>{if(validSyncCode(homeSyncCode)&&navigator.onLine)initializeSecretSync()},30000);
 
 const UNIVERSITY_INFO = {
   "ঢাকা বিশ্ববিদ্যালয়": {
