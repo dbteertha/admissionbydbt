@@ -260,7 +260,7 @@ function renderCircularGroups(){
     const links=OFFICIAL_CIRCULARS.filter(x=>x.cat===g.key);
     const pending=CIRCULAR_PENDING_GROUPED[g.key]||[];
     return '<div class="circular-group circular-cat-'+g.key.toLowerCase()+'" data-circular-cat="'+g.key+'">'+
-      '<div class="circular-group-head"><div class="circular-group-icon">'+g.icon+'</div><div class="circular-group-title"><b>'+g.label+'</b><span>Official notices and tracked links</span></div>'+
+      '<div class="circular-group-head"><div class="circular-group-icon">'+g.icon+'</div><div class="circular-group-title"><b>'+g.label+'</b></div>'+
       '<div class="circular-group-counts"><i class="official">'+links.length+' official</i><i class="waiting">'+pending.length+' waiting</i></div></div>'+
       (links.length?'<div class="circular-grid">'+links.map((x,i)=>'<a class="circular-card'+(i===0?' circular-featured':'')+'" href="'+x.url+'" target="_blank" rel="noopener">'+
         (i===0?'<span class="circular-featured-label">Latest tracked</span>':'')+
