@@ -2360,13 +2360,6 @@ html[data-theme="light"] .local-preview-note{background:#f4f7fb;border-color:#e2
       </div>
     </section>
 
-    <section class="dashboard-stats">
-      <div class="stat-card"><div class="stat-label">Next exam</div><div class="stat-value" id="statNext">—</div><div class="stat-note" id="statNextNote">Waiting for schedule</div></div>
-      <div class="stat-card"><div class="stat-label">My Exams</div><div class="stat-value" id="statStarred">0</div><div class="stat-note">Exams you selected</div></div>
-      <div class="stat-card"><div class="stat-label">Study stage</div><div class="stat-value" id="statPhase">Build</div><div class="stat-note" id="statPhaseNote">Study every day</div></div>
-      <div class="stat-card"><div class="stat-label">Confirmed exams</div><div class="stat-value" id="statConfirmed">0</div><div class="stat-note">Dates confirmed by official sources</div></div>
-    </section>
-
     <section class="schedule-visuals" id="scheduleVisuals" aria-label="Schedule overview">
       <div class="schedule-visual-head">
         <div><div class="section-kicker">AT A GLANCE</div><h2>Schedule Snapshot</h2></div>
@@ -2856,7 +2849,7 @@ function countdown(){
   fill.style.width=p+'%';pct.textContent=p.toFixed(1)+'%';passedEl.textContent=passed+' Passed';totalEl.textContent=total+' Total';
   const ph=phaseFor(days);
   heroPhase.textContent=ph.name;heroMessage.textContent=ph.msg;
-  statPhase.textContent=ph.stat;statPhaseNote.textContent=ph.note;
+  if(typeof statPhase!=='undefined'&&statPhase){statPhase.textContent=ph.stat;if(typeof statPhaseNote!=='undefined'&&statPhaseNote)statPhaseNote.textContent=ph.note;}
 }const daysEl=document.getElementById('days'),weeksEl=document.getElementById('weeks'),hoursEl=document.getElementById('hours'),minsEl=document.getElementById('mins'),secsEl=document.getElementById('secs'),fill=document.getElementById('fill'),pct=document.getElementById('pct'),passedEl=document.getElementById('passed'),totalEl=document.getElementById('total'); countdown();setInterval(countdown,1000);
 let all=[],view=new Date(2026,11,1),sourceHealth=[];
 const STAR_KEY='admissionbydbt-starred-v1';
@@ -3325,14 +3318,14 @@ function updateDashboardStats(){
   const now=new Date();
   const future=all.filter(e=>new Date(e.date)>now).sort((a,b)=>new Date(a.date)-new Date(b.date));
   const next=future[0];
-  animateNumberText(statStarred,all.filter(isStarred).length);
+  if(typeof statStarred!=='undefined'&&statStarred)animateNumberText(statStarred,all.filter(isStarred).length);
   if(typeof statConfirmed!=='undefined'&&statConfirmed)animateNumberText(statConfirmed,all.filter(e=>eventState(e)==='confirmed').length);
   if(next){
     const d=new Date(next.date),left=Math.max(0,Math.ceil((d-now)/86400000));
-    animateNumberText(statNext,left,' days');
-    statNextNote.textContent=next.title;
+    if(typeof statNext!=='undefined'&&statNext)animateNumberText(statNext,left,' days');
+    if(typeof statNextNote!=='undefined'&&statNextNote)statNextNote.textContent=next.title;
   }else{
-    statNext.textContent='—';statNextNote.textContent='No next exam';
+    if(typeof statNext!=='undefined'&&statNext)statNext.textContent='—';if(typeof statNextNote!=='undefined'&&statNextNote)statNextNote.textContent='No next exam';
   }
 }
 function renderStarredTargets(){
