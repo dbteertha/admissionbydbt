@@ -3960,22 +3960,26 @@ const BN_EXACT={
   'Official exam dates':'অফিসিয়াল পরীক্ষার তারিখ','Official date notice':'অফিসিয়াল তারিখের নোটিশ'
 };
 const BN_REPLACE=[
-  [/\bJanuary\b/g,'জানুয়ারি'],[/\bFebruary\b/g,'ফেব্রুয়ারি'],[/\bMarch\b/g,'মার্চ'],[/\bApril\b/g,'এপ্রিল'],[/\bMay\b/g,'মে'],[/\bJune\b/g,'জুন'],[/\bJuly\b/g,'জুলাই'],[/\bAugust\b/g,'আগস্ট'],[/\bSeptember\b/g,'সেপ্টেম্বর'],[/\bOctober\b/g,'অক্টোবর'],[/\bNovember\b/g,'নভেম্বর'],[/\bDecember\b/g,'ডিসেম্বর'],
-  [/\bJan\b/g,'জানু'],[/\bFeb\b/g,'ফেব্রু'],[/\bMar\b/g,'মার্চ'],[/\bApr\b/g,'এপ্রিল'],[/\bJun\b/g,'জুন'],[/\bJul\b/g,'জুলাই'],[/\bAug\b/g,'আগ'],[/\bSep\b/g,'সেপ্ট'],[/\bOct\b/g,'অক্টো'],[/\bNov\b/g,'নভে'],[/\bDec\b/g,'ডিসে'],
-  [/\bSunday\b/g,'রবিবার'],[/\bMonday\b/g,'সোমবার'],[/\bTuesday\b/g,'মঙ্গলবার'],[/\bWednesday\b/g,'বুধবার'],[/\bThursday\b/g,'বৃহস্পতিবার'],[/\bFriday\b/g,'শুক্রবার'],[/\bSaturday\b/g,'শনিবার'],
-  [/Dhaka University/g,'ঢাকা বিশ্ববিদ্যালয়'],[/Khulna University/g,'খুলনা বিশ্ববিদ্যালয়'],[/Jagannath University/g,'জগন্নাথ বিশ্ববিদ্যালয়'],[/Chittagong University/g,'চট্টগ্রাম বিশ্ববিদ্যালয়'],[/Comilla University/g,'কুমিল্লা বিশ্ববিদ্যালয়'],[/Rajshahi University/g,'রাজশাহী বিশ্ববিদ্যালয়'],
-  [/Medical & Dental/g,'মেডিকেল ও ডেন্টাল'],[/Medical \/ Dental/g,'মেডিকেল / ডেন্টাল'],[/Agriculture Cluster/g,'কৃষি গুচ্ছ'],
-  [/\bScience\b/g,'বিজ্ঞান'],[/\bHumanities\b/g,'মানবিক'],[/\bBusiness\b/g,'ব্যবসায় শিক্ষা'],[/Fine Arts/g,'চারুকলা'],[/Social Science/g,'সামাজিক বিজ্ঞান'],
-  [/\bOfficial\b/g,'অফিসিয়াল'],[/\bConfirmed\b/g,'নিশ্চিত'],[/Not confirmed/g,'নিশ্চিত নয়'],[/Notice pending/g,'নোটিশ বাকি'],
-  [/\bWeek (\d+)/g,'সপ্তাহ $1'],[/\b(\d+) exams\b/g,'$1 পরীক্ষা'],[/\b(\d+) days\b/g,'$1 দিন'],[/\b(\d+) official\b/g,'$1 অফিসিয়াল'],[/\b(\d+) waiting\b/g,'$1 অপেক্ষমাণ'],
-  [/\b(\d+) Passed\b/g,'$1 শেষ'],[/\b(\d+) Total\b/g,'$1 মোট'],[/\bTime TBA\b/g,'সময় পরে জানানো হবে']
+  ['January','জানুয়ারি'],['February','ফেব্রুয়ারি'],['March','মার্চ'],['April','এপ্রিল'],['May','মে'],['June','জুন'],['July','জুলাই'],['August','আগস্ট'],['September','সেপ্টেম্বর'],['October','অক্টোবর'],['November','নভেম্বর'],['December','ডিসেম্বর'],
+  ['Sunday','রবিবার'],['Monday','সোমবার'],['Tuesday','মঙ্গলবার'],['Wednesday','বুধবার'],['Thursday','বৃহস্পতিবার'],['Friday','শুক্রবার'],['Saturday','শনিবার'],
+  ['Dhaka University','ঢাকা বিশ্ববিদ্যালয়'],['Khulna University','খুলনা বিশ্ববিদ্যালয়'],['Jagannath University','জগন্নাথ বিশ্ববিদ্যালয়'],['Chittagong University','চট্টগ্রাম বিশ্ববিদ্যালয়'],['Comilla University','কুমিল্লা বিশ্ববিদ্যালয়'],['Rajshahi University','রাজশাহী বিশ্ববিদ্যালয়'],
+  ['Medical & Dental','মেডিকেল ও ডেন্টাল'],['Medical / Dental','মেডিকেল / ডেন্টাল'],['Agriculture Cluster','কৃষি গুচ্ছ'],
+  ['Fine Arts','চারুকলা'],['Social Science','সামাজিক বিজ্ঞান'],['Science','বিজ্ঞান'],['Humanities','মানবিক'],['Business','ব্যবসায় শিক্ষা'],
+  ['Not confirmed','নিশ্চিত নয়'],['Notice pending','নোটিশ বাকি'],['Confirmed','নিশ্চিত'],['Official','অফিসিয়াল'],['Time TBA','সময় পরে জানানো হবে']
 ];
 function dbtTranslateString(value){
   const raw=String(value==null?'':value);
   const trimmed=raw.trim();
   if(!trimmed)return raw;
   let out=BN_EXACT[trimmed]||trimmed;
-  for(const pair of BN_REPLACE)out=out.replace(pair[0],pair[1]);
+  for(const pair of BN_REPLACE)out=out.split(pair[0]).join(pair[1]);
+  out=out.replace(/Week ([0-9]+)/g,'সপ্তাহ $1')
+    .replace(/([0-9]+) exams/g,'$1 পরীক্ষা')
+    .replace(/([0-9]+) days/g,'$1 দিন')
+    .replace(/([0-9]+) official/g,'$1 অফিসিয়াল')
+    .replace(/([0-9]+) waiting/g,'$1 অপেক্ষমাণ')
+    .replace(/([0-9]+) Passed/g,'$1 শেষ')
+    .replace(/([0-9]+) Total/g,'$1 মোট');
   return raw.slice(0,raw.indexOf(trimmed))+out+raw.slice(raw.indexOf(trimmed)+trimmed.length);
 }
 function dbtLocalizeRoot(root){
