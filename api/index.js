@@ -3637,6 +3637,32 @@ html[data-theme="light"] .guide-compare-toggle.active{background:#eee7ff!importa
   #circulars.dbt-reveal,#infoCenter.dbt-reveal{opacity:1!important;transform:none!important}
 }
 
+
+/* ===== V6.4 always-visible compare control ===== */
+.info-center .guide-compare-open{
+  position:sticky!important;
+  top:78px!important;
+  z-index:38!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:8px 0!important
+}
+.info-center .guide-compare-open:disabled{
+  opacity:.48!important;
+  cursor:not-allowed!important;
+  filter:saturate(.65)!important;
+  box-shadow:none!important
+}
+.info-center .category-tabs{top:126px!important}
+@media(max-width:700px){
+  .info-center .guide-compare-open{top:58px!important;width:100%!important}
+  .info-center .category-tabs{top:104px!important}
+}
+
 </style></head><body>
 <div class="app">
   <nav class="topnav">
@@ -3790,7 +3816,7 @@ html[data-theme="light"] .guide-compare-toggle.active{background:#eee7ff!importa
         <button class="guide-clear" id="guideClearSearch" type="button" hidden>Clear</button>
       </div>
       <div class="guide-compare-tray" id="guideCompareTray" aria-live="polite"></div>
-      <button class="guide-compare-open" id="guideCompareButton" type="button" hidden>Compare selected <b id="guideCompareCount">0</b></button>
+      <button class="guide-compare-open" id="guideCompareButton" type="button" disabled>Compare <b id="guideCompareCount">0</b></button>
       <div class="category-tabs" id="categoryTabs"></div>
       <div id="categoryCharts"></div>
     </section>
@@ -5046,7 +5072,7 @@ const BN_EXACT={
   '★ My Exams':'★ আমার পরীক্ষা','Audited 7 Oct 2026':'যাচাই: ৭ অক্টোবর ২০২৬',
   'Previous':'আগের','Next':'পরের','Sun':'রবি','Mon':'সোম','Tue':'মঙ্গল','Wed':'বুধ','Thu':'বৃহস্পতি','Fri':'শুক্র','Sat':'শনি',
   'REFERENCE':'তথ্য','QUICK COMPARE':'দ্রুত তুলনা','Compare admission options':'ভর্তি অপশন তুলনা করুন','Compare':'তুলনা',
-  'Selected':'নির্বাচিত','Select':'নির্বাচন করুন','Selected ✓':'নির্বাচিত ✓','Compare selected':'নির্বাচিতগুলো তুলনা করুন','Details':'বিস্তারিত','Less':'কম দেখুন','Clear':'মুছুন',
+  'Selected':'নির্বাচিত','Select':'নির্বাচন করুন','Selected ✓':'নির্বাচিত ✓','Compare selected':'নির্বাচিতগুলো তুলনা করুন','Compare':'তুলনা','Details':'বিস্তারিত','Less':'কম দেখুন','Clear':'মুছুন',
   'CLOUD SAVE':'ক্লাউড সেভ','Your Secret Code':'আপনার গোপন কোড',
   'Save this secret code somewhere safe. You can use it later to get back your saved exams, countdown target and calendar settings on this or another device.':'এই গোপন কোডটি নিরাপদ জায়গায় সেভ করে রাখুন। পরে এই বা অন্য ডিভাইসে আপনার সেভ করা পরীক্ষা, কাউন্টডাউন ও ক্যালেন্ডার সেটিংস ফেরত পেতে এটি ব্যবহার করতে পারবেন।',
   'Copy':'কপি','Use an existing code':'আগের কোড ব্যবহার করুন','Use code':'কোড ব্যবহার করুন',
@@ -5725,7 +5751,6 @@ function renderGuideCompareTray(){
   if(!tray||!btn||!count)return;
   const rows=[...guideCompareKeys].map(guideRowByKey).filter(Boolean);
   count.textContent=rows.length;
-  btn.hidden=rows.length<2;
   btn.disabled=rows.length<2;
   tray.innerHTML=rows.length?'<span>Selected:</span>'+rows.map(r=>'<button type="button" data-guide-remove="'+encodeURIComponent(r.cat+'|'+r.unit)+'">'+esc(r.unit)+' ×</button>').join(''):'';
   tray.querySelectorAll('[data-guide-remove]').forEach(x=>x.onclick=()=>{guideCompareKeys.delete(x.dataset.guideRemove);syncGuideCompareButtons();renderGuideCompareTray()});
@@ -5733,7 +5758,7 @@ function renderGuideCompareTray(){
 function syncGuideCompareButtons(){
   document.querySelectorAll('[data-guide-compare]').forEach(btn=>{
     const on=guideCompareKeys.has(btn.dataset.guideCompare);
-    btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',String(on));btn.textContent=on?'Selected ✓':'Select';
+    btn.classList.toggle('active',on);btn.setAttribute('aria-pressed',String(on));btn.textContent=on?'Selected ✓':'Compare';
   });
 }
 function openGuideCompare(){
@@ -5789,7 +5814,7 @@ function renderCategoryTable(cat){
         const key=encodeURIComponent(r.cat+'|'+r.unit);
         const hay=(r.p+' '+r.unit+' '+r.seats+' '+r.elig+' '+r.exam+' '+r.marks+' '+r.result).toLowerCase();
         return '<tr data-guide-key="'+key+'" data-guide-search="'+esc(hay)+'">'+
-        '<td class="admission-name" data-label="বিশ্ববিদ্যালয় / ইউনিট"><span>'+esc(r.unit)+'</span><div class="guide-row-actions"><button class="guide-compare-toggle" type="button" data-guide-compare="'+key+'" aria-pressed="false">Select</button><button class="guide-row-toggle" type="button" aria-expanded="false">Details</button></div></td>'+
+        '<td class="admission-name" data-label="বিশ্ববিদ্যালয় / ইউনিট"><span>'+esc(r.unit)+'</span><div class="guide-row-actions"><button class="guide-compare-toggle" type="button" data-guide-compare="'+key+'" aria-pressed="false">Compare</button><button class="guide-row-toggle" type="button" aria-expanded="false">Details</button></div></td>'+
         '<td data-label="আসন সংখ্যা">'+esc(r.seats)+'</td>'+
         '<td data-label="আবেদন যোগ্যতা">'+esc(r.elig)+'</td>'+
         '<td data-label="পরীক্ষার ধরন">'+esc(r.exam)+'</td>'+
