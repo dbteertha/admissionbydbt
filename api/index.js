@@ -4641,6 +4641,12 @@ Object.assign(BN_EXACT,{
   '● checking dates…':'● তারিখ দেখা হচ্ছে…','● could not check dates':'● তারিখ দেখা যায়নি',
   'Use the latest official university notice for final details.':'চূড়ান্ত তথ্যের জন্য সর্বশেষ অফিসিয়াল বিশ্ববিদ্যালয় নোটিশ দেখুন।'
 });
+Object.assign(BN_EXACT,{
+  'DAYS':'দিন','HOURS':'ঘণ্টা','MIN':'মিনিট','SEC':'সেকেন্ড',
+  'Medical':'মেডিকেল','Engineering':'ইঞ্জিনিয়ারিং','University':'বিশ্ববিদ্যালয়',
+  'Final stretch — revise smart.':'শেষ সময় — স্মার্ট রিভিশন করুন।',
+  'Revision mode — stay consistent.':'রিভিশন মোড — নিয়মিত থাকুন।'
+});
 const BN_REPLACE=[
   ['January','জানুয়ারি'],['February','ফেব্রুয়ারি'],['March','মার্চ'],['April','এপ্রিল'],['May','মে'],['June','জুন'],['July','জুলাই'],['August','আগস্ট'],['September','সেপ্টেম্বর'],['October','অক্টোবর'],['November','নভেম্বর'],['December','ডিসেম্বর'],
   ['Sunday','রবিবার'],['Monday','সোমবার'],['Tuesday','মঙ্গলবার'],['Wednesday','বুধবার'],['Thursday','বৃহস্পতিবার'],['Friday','শুক্রবার'],['Saturday','শনিবার'],
@@ -4648,7 +4654,7 @@ const BN_REPLACE=[
   ['Medical & Dental','মেডিকেল ও ডেন্টাল'],['Medical / Dental','মেডিকেল / ডেন্টাল'],['Agriculture Cluster','কৃষি গুচ্ছ'],
   ['Fine Arts','চারুকলা'],['Social Science','সামাজিক বিজ্ঞান'],['Science','বিজ্ঞান'],['Humanities','মানবিক'],['Business','ব্যবসায় শিক্ষা'],
   ['Not confirmed','নিশ্চিত নয়'],['Notice pending','নোটিশ বাকি'],['Confirmed','নিশ্চিত'],['Official','অফিসিয়াল'],['Time TBA','সময় পরে জানানো হবে'],
-  ['Main countdown target:','মূল কাউন্টডাউন:'],['saved exams','সেভ করা পরীক্ষা'],['local preview','লোকাল প্রিভিউ'],['offline','অফলাইন'],['showing','দেখানো হচ্ছে'],['exams • updated','পরীক্ষা • আপডেট'],['updated','আপডেট']
+  ['Main countdown target:','মূল কাউন্টডাউন:'],['saved exams','সেভ করা পরীক্ষা'],['local preview','লোকাল প্রিভিউ'],['days left','দিন বাকি'],['offline','অফলাইন'],['showing','দেখানো হচ্ছে'],['exams • updated','পরীক্ষা • আপডেট'],['updated','আপডেট']
 ];
 function dbtTranslateString(value){
   const raw=String(value==null?'':value);
@@ -4666,7 +4672,9 @@ function dbtTranslateString(value){
     .replace(/([0-9]+) exam([^A-Za-z]|$)/g,'$1 পরীক্ষা$2')
     .replace(/([0-9]+) page([^A-Za-z]|$)/g,'$1 পেজ$2')
     .replace(/days ([0-9]+–[0-9]+)/g,'দিন $1')
-    .replace(/[+]([0-9]+) more/g,'+$1 আরও');
+    .replace(/[+]([0-9]+) more/g,'+$1 আরও')
+    .replace(/([0-9]+) DAY GAP/g,'$1 দিনের ব্যবধান')
+    .replace(/([0-9]+) DAYS GAP/g,'$1 দিনের ব্যবধান');
   return raw.slice(0,raw.indexOf(trimmed))+out+raw.slice(raw.indexOf(trimmed)+trimmed.length);
 }
 function dbtLocalizeRoot(root){
@@ -4731,7 +4739,7 @@ if(dbtLanguageButton)dbtLanguageButton.onclick=()=>applyLanguage(currentLang==='
 function applyTheme(theme){
   const next=theme==='dark'?'dark':'light';
   document.documentElement.dataset.theme=next;
-  const tm=document.getElementById('themeColorMeta');if(tm)tm.content=next==='light'?'#ffffff':'#050810';
+  const tm=document.getElementById('themeColorMeta');if(tm)tm.content=next==='light'?'#f3f6fb':'#07101a';
   try{localStorage.setItem('admissionbydbt-theme-v1',next)}catch(e){}
   if(typeof themeToggle!=='undefined'&&themeToggle){
     themeToggle.title=currentLang==='bn'
