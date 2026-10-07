@@ -257,7 +257,7 @@ function renderCircularGroups(){
   return CIRCULAR_GROUPS.map(g=>{
     const links=OFFICIAL_CIRCULARS.filter(x=>x.cat===g.key);
     const pending=CIRCULAR_PENDING_GROUPED[g.key]||[];
-    return '<div class="circular-group" data-circular-cat="'+g.key+'">'+
+    return '<div class="circular-group circular-cat-'+g.key.toLowerCase()+'" data-circular-cat="'+g.key+'">'+
       '<div class="circular-group-head"><div class="circular-group-icon">'+g.icon+'</div><div><b>'+g.label+'</b><span>'+links.length+' official link'+(links.length===1?'':'s')+'</span></div></div>'+
       (links.length?'<div class="circular-grid">'+links.map(x=>'<a class="circular-card" href="'+x.url+'" target="_blank" rel="noopener"><div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' <i>↗</i></span></a>').join('')+'</div>':'<div class="circular-empty">Official link will appear here when published.</div>')+
       (pending.length?'<div class="circular-waiting"><span>Waiting for full notice</span><div>'+pending.map(x=>'<em>'+x+'</em>').join('')+'</div></div>':'')+
@@ -926,6 +926,18 @@ body{background:#02050a;color:#f5f7fb}
   .circular-card{min-height:62px!important;padding:8px!important}
   .circular-card strong{font-size:9.5px!important}
 }
+
+/* category name colors: same meaning everywhere */
+.category-medical .admission-name,
+.circular-cat-medical .circular-card strong{color:#ff9fae!important}
+.category-engineering .admission-name,
+.circular-cat-engineering .circular-card strong{color:#8fdcff!important}
+.category-university .admission-name,
+.circular-cat-university .circular-card strong{color:#c9b6ff!important}
+
+.category-medical h3{color:#ffb1bd}
+.category-engineering h3{color:#9fe3ff}
+.category-university h3{color:#d3c5ff}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -2342,7 +2354,8 @@ const CATEGORY_LABELS = {
 
 function renderCategoryTable(cat){
   const rows=BOOKLET_ROWS.filter(r=>r.cat===cat);
-  return '<section class="category-section" data-cat="'+esc(cat)+'">'+
+  const catClass=cat==='মেডিকেল ও ডেন্টাল'?'medical':cat==='ইঞ্জিনিয়ারিং'?'engineering':'university';
+  return '<section class="category-section category-'+catClass+'" data-cat="'+esc(cat)+'">'+
     '<h3>'+esc(CATEGORY_LABELS[cat]||cat)+' <span class="cat-count">'+rows.length+'টি তথ্য</span></h3>'+
     '<div class="table-wrap"><table class="admission-table">'+
       '<thead><tr>'+
@@ -2354,7 +2367,7 @@ function renderCategoryTable(cat){
         '<th>ফলাফল নির্ণয় পদ্ধতি</th>'+
       '</tr></thead><tbody>'+
       rows.map(r=>'<tr>'+
-        '<td data-label="বিশ্ববিদ্যালয় / ইউনিট">'+esc(r.unit)+'</td>'+
+        '<td class="admission-name" data-label="বিশ্ববিদ্যালয় / ইউনিট">'+esc(r.unit)+'</td>'+
         '<td data-label="আসন সংখ্যা">'+esc(r.seats)+'</td>'+
         '<td data-label="আবেদন যোগ্যতা">'+esc(r.elig)+'</td>'+
         '<td data-label="পরীক্ষার ধরন">'+esc(r.exam)+'</td>'+
