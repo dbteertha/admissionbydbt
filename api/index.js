@@ -225,23 +225,45 @@ async function sync(force=false){
 }
 
 const OFFICIAL_CIRCULARS = [
-  {name:'Dhaka University',short:'DU',status:'Official 2026–27',url:'https://www.du.ac.bd/du_post_details/post/28137'},
-  {name:'BUP Admission Notice',short:'BUP',status:'Official 2026–27',url:'https://www.bup.edu.bd/notice/details/1061'},
-  {name:'BUP Admission Portal',short:'BUP Portal',status:'Official portal',url:'https://admission.bup.edu.bd/Admission/Home'},
-  {name:'KUET Undergraduate Admission',short:'KUET',status:'Official circular',url:'https://admission.kuet.ac.bd/'},
-  {name:'AAUB Admission Information',short:'AAUB',status:'Official 2026–27',url:'https://www.aaub.edu.bd/public/content/admission-info'},
-  {name:'AAUB Notice Archive',short:'AAUB Notices',status:'Official notices',url:'https://www.aaub.edu.bd/notice'},
-  {name:'Khulna University',short:'KU',status:'Official date notice',url:'https://ku.ac.bd/news-details/2783'},
-  {name:'BUTEX Academic Notices',short:'BUTEX',status:'Official notices',url:'https://www.butex.edu.bd/academic-notices/'},
-  {name:'Comilla University Press Releases',short:'CoU',status:'Official exam dates',url:'https://www.cou.ac.bd/press-releases'},
-  {name:'Jagannath University Admission',short:'JnU',status:'Official 2026–27',url:'https://admission.jnu.ac.bd/'},
-  {name:'Chittagong University Admission',short:'CU',status:'Official 2026–27',url:'https://admission.cu.ac.bd/'}
+  {name:'Dhaka University',short:'DU',status:'Official 2026–27',cat:'University',url:'https://www.du.ac.bd/du_post_details/post/28137'},
+  {name:'BUP Admission Notice',short:'BUP',status:'Official 2026–27',cat:'University',url:'https://www.bup.edu.bd/notice/details/1061'},
+  {name:'BUP Admission Portal',short:'BUP Portal',status:'Official portal',cat:'University',url:'https://admission.bup.edu.bd/Admission/Home'},
+  {name:'KUET Undergraduate Admission',short:'KUET',status:'Official circular',cat:'Engineering',url:'https://admission.kuet.ac.bd/'},
+  {name:'AAUB Admission Information',short:'AAUB',status:'Official 2026–27',cat:'Engineering',url:'https://www.aaub.edu.bd/public/content/admission-info'},
+  {name:'AAUB Notice Archive',short:'AAUB Notices',status:'Official notices',cat:'Engineering',url:'https://www.aaub.edu.bd/notice'},
+  {name:'Khulna University',short:'KU',status:'Official date notice',cat:'University',url:'https://ku.ac.bd/news-details/2783'},
+  {name:'BUTEX Academic Notices',short:'BUTEX',status:'Official notices',cat:'Engineering',url:'https://www.butex.edu.bd/academic-notices/'},
+  {name:'Comilla University Press Releases',short:'CoU',status:'Official exam dates',cat:'University',url:'https://www.cou.ac.bd/press-releases'},
+  {name:'Jagannath University Admission',short:'JnU',status:'Official 2026–27',cat:'University',url:'https://admission.jnu.ac.bd/'},
+  {name:'Chittagong University Admission',short:'CU',status:'Official 2026–27',cat:'University',url:'https://admission.cu.ac.bd/'}
 ];
 const CIRCULAR_PENDING = [
   'Medical / Dental','BUET detailed circular','RUET','CUET','Rajshahi University',
   'SUST full circular','Agriculture Cluster','GST full application circular',
   'MIST 2026–27','Comilla University detailed circular'
 ];
+
+const CIRCULAR_GROUPS = [
+  {key:'Medical',label:'Medical',icon:'✚'},
+  {key:'Engineering',label:'Engineering',icon:'⌘'},
+  {key:'University',label:'University',icon:'◈'}
+];
+const CIRCULAR_PENDING_GROUPED = {
+  Medical:['Medical / Dental'],
+  Engineering:['BUET detailed circular','RUET','CUET','MIST 2026–27'],
+  University:['Rajshahi University','SUST full circular','Agriculture Cluster','GST full application circular','Comilla University detailed circular']
+};
+function renderCircularGroups(){
+  return CIRCULAR_GROUPS.map(g=>{
+    const links=OFFICIAL_CIRCULARS.filter(x=>x.cat===g.key);
+    const pending=CIRCULAR_PENDING_GROUPED[g.key]||[];
+    return '<div class="circular-group">'+
+      '<div class="circular-group-head"><div class="circular-group-icon">'+g.icon+'</div><div><b>'+g.label+'</b><span>'+links.length+' official link'+(links.length===1?'':'s')+'</span></div></div>'+
+      (links.length?'<div class="circular-grid">'+links.map(x=>'<a class="circular-card" href="'+x.url+'" target="_blank" rel="noopener"><div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' <i>↗</i></span></a>').join('')+'</div>':'<div class="circular-empty">Official link will appear here when published.</div>')+
+      (pending.length?'<div class="circular-waiting"><span>Waiting for full notice</span><div>'+pending.map(x=>'<em>'+x+'</em>').join('')+'</div></div>':'')+
+    '</div>';
+  }).join('');
+}
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admission by DBT | ভর্তি তথ্যকেন্দ্র ২০২৬–২৭</title>
@@ -628,6 +650,204 @@ body.admin-mode [data-admin-hidden="1"]{display:initial!important;opacity:.28!im
 body.admin-mode [data-admin-editing="1"]{outline:2px solid #74e6a7!important;outline-offset:3px!important;cursor:text!important}
 .admin-help{width:100%;font-size:8px;color:#718096;line-height:1.35}
 @media(max-width:700px){.admin-editor{left:7px;right:7px;bottom:74px;padding:8px}.admin-editor input{min-width:130px;flex:1}.admin-editor button{padding:0 8px}.admin-editor .admin-status{width:100%;margin-left:0}}
+
+/* ===== DBT QUIET GLASS UI ===== */
+:root{
+  --glass:rgba(14,18,27,.56);
+  --glass-strong:rgba(18,23,34,.74);
+  --glass-line:rgba(255,255,255,.095);
+  --glass-hi:rgba(255,255,255,.055);
+  --quiet:#8d98a8;
+  --radius:26px;
+  --shadow:0 24px 70px rgba(0,0,0,.30);
+}
+body{background:#02050a;color:#f5f7fb}
+.app{max-width:1180px;padding-left:22px;padding-right:22px}
+.app:before{background:
+  radial-gradient(circle at 18% 8%,rgba(95,130,255,.115),transparent 31%),
+  radial-gradient(circle at 82% 30%,rgba(110,191,255,.075),transparent 28%),
+  radial-gradient(circle at 55% 78%,rgba(130,108,255,.065),transparent 35%)}
+.topnav{
+  top:14px;padding:9px 10px 9px 14px;border-radius:22px;
+  border:1px solid var(--glass-line);
+  background:rgba(10,14,22,.58);
+  backdrop-filter:blur(34px) saturate(155%);
+  -webkit-backdrop-filter:blur(34px) saturate(155%);
+  box-shadow:0 18px 54px rgba(0,0,0,.22),inset 0 1px 0 var(--glass-hi)
+}
+.brand-orb{width:22px;height:22px;box-shadow:0 0 20px rgba(115,156,255,.28)}
+.brand{font-size:11px;letter-spacing:.14em}.brand-sub{opacity:.65}
+.navlinks{gap:2px}
+.navlink{padding:8px 11px;border-radius:999px;color:#8d97a7;transition:.2s ease}
+.navlink:hover{background:rgba(255,255,255,.045)}
+.navlink.active{background:rgba(255,255,255,.075);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);color:#f7f9fc}
+.sync-link,.msg-link,.live{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.sync-link{border-radius:999px}.msg-link{border-radius:50%}
+
+.hero{min-height:535px!important}
+.hero-inner{padding-top:54px!important}
+.orbit-shell{opacity:.58}
+.hero-eyebrow,.hero-phase{background:rgba(255,255,255,.038);border-color:rgba(255,255,255,.075)}
+.days{text-shadow:0 18px 60px rgba(0,0,0,.32);font-weight:900}
+.hero-message{color:#8b96a7}
+.clock{margin-top:22px}
+.clock div{padding:3px 10px}.clock span{color:#647083}
+.main-target-icon{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.09);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.progress{height:7px;background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.07)}
+.fill{background:linear-gradient(90deg,#82a8ff,#9ee6ff);box-shadow:none}
+
+.panel,.section,.target-section,.info-center,.mission-section,.stat-card{
+  border:1px solid var(--glass-line);
+  background:linear-gradient(150deg,rgba(18,23,34,.63),rgba(8,12,19,.48));
+  backdrop-filter:blur(28px) saturate(135%);
+  -webkit-backdrop-filter:blur(28px) saturate(135%);
+  box-shadow:var(--shadow),inset 0 1px 0 var(--glass-hi)
+}
+.section,.target-section,.info-center{padding:26px;border-radius:28px}
+.target-section,.circular-section,.calendar-section{margin-bottom:26px}
+.head,.target-head{margin-bottom:20px}
+.head h2,.target-head h2,.info-title{font-size:26px;font-weight:720;letter-spacing:-.035em}
+.section-kicker{font-size:8px;color:#778398;letter-spacing:.14em}
+.sub{font-size:11px;color:#7f8a9b;line-height:1.45}
+
+.dashboard-stats{gap:12px!important;margin-bottom:26px}
+.stat-card{min-height:82px;padding:15px 16px;border-radius:20px}
+.stat-card:after{display:none}
+.stat-label{font-size:8px;color:#6f7a8b}.stat-value{font-size:17px;font-weight:720}.stat-note{font-size:9px;color:#727e90}
+
+.starred-grid{gap:10px}
+.starred-card{
+  border-color:rgba(255,255,255,.075);
+  background:rgba(255,255,255,.032);
+  border-radius:20px;box-shadow:none
+}
+.starred-card:before{display:none}
+.starred-card:hover{border-color:rgba(255,255,255,.14);transform:translateY(-1px)}
+.target-badge{background:rgba(255,214,107,.06);border-color:rgba(255,214,107,.15)}
+.target-time{background:rgba(255,255,255,.028);border-color:rgba(255,255,255,.06)}
+.target-time b{color:#f4f6fa}
+.star-btn{border-radius:50%;background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.08)}
+
+.circular-summary{gap:10px;margin:12px 0 18px}
+.circular-summary-card{
+  padding:12px 14px;border-radius:17px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.028)
+}
+.circular-summary-card span{color:#697587}.circular-summary-card b{font-weight:720}
+.circular-groups{display:grid;gap:14px}
+.circular-group{
+  padding:16px;border:1px solid rgba(255,255,255,.07);border-radius:22px;
+  background:rgba(255,255,255,.022)
+}
+.circular-group-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.circular-group-icon{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+  color:#dbe8ff;background:rgba(125,165,255,.09);border:1px solid rgba(140,177,255,.12);
+  font-size:14px
+}
+.circular-group-head b{display:block;font-size:13px;font-weight:720}
+.circular-group-head span{display:block;margin-top:2px;font-size:8px;color:#6f7b8d}
+.circular-grid{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))!important;gap:8px!important}
+.circular-card{
+  min-height:92px!important;padding:13px!important;border-radius:16px!important;
+  border-color:rgba(255,255,255,.065)!important;
+  background:rgba(255,255,255,.026)!important;box-shadow:none!important
+}
+.circular-card:after{display:none}
+.circular-card:hover{transform:translateY(-1px);background:rgba(255,255,255,.045)!important;border-color:rgba(255,255,255,.13)!important}
+.circular-card b{padding:0!important;border:0!important;background:transparent!important;color:#85cda2!important;font-size:7px!important}
+.circular-card strong{font-size:12px!important;font-weight:650;margin-top:6px!important}
+.circular-card span{display:flex;align-items:center;justify-content:space-between;color:#728094}
+.circular-card span i{font-style:normal;color:#9ba8ba}
+.circular-waiting{margin-top:12px;padding-top:11px;border-top:1px solid rgba(255,255,255,.055)}
+.circular-waiting>span{display:block;margin-bottom:7px;font-size:8px;color:#7d8796}
+.circular-waiting div{display:flex;flex-wrap:wrap;gap:6px}
+.circular-waiting em{
+  font-style:normal;font-size:8px;color:#8c96a5;padding:6px 8px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.025)
+}
+.circular-empty{padding:13px;border-radius:14px;background:rgba(255,255,255,.02);color:#707b8b;font-size:9px}
+.circular-footnote{text-align:center;margin-top:12px}
+
+.calendar-section{padding:24px!important}
+.controls input,.btn,.calendar-view-switch,.calendar-filter,.calendar-head,.calendar-scroll,.calendar-list-shell{
+  border-color:rgba(255,255,255,.07)!important
+}
+.controls input{background:rgba(255,255,255,.035);border-radius:14px}
+.btn{background:rgba(255,255,255,.04);border-radius:12px}
+.calendar-commandbar{gap:12px}
+.calendar-view-switch{background:rgba(255,255,255,.025);border-radius:13px}
+.calendar-view-btn.active{background:rgba(255,255,255,.075);box-shadow:none}
+.calendar-filter{background:rgba(255,255,255,.025)}
+.calendar-filter.active{background:rgba(128,165,255,.09)}
+.calendar-head{background:rgba(255,255,255,.022);border-radius:14px}
+.calendar-scroll{background:rgba(255,255,255,.016)}
+.week{background:rgba(255,255,255,.02)!important}
+.grid,.day{background:transparent!important}
+.day.today{background:rgba(120,165,255,.06)!important}
+.event{background:rgba(255,255,255,.035)!important;border-color:rgba(255,255,255,.055)!important}
+.event:hover{background:rgba(255,255,255,.055)!important}
+.timeline-card{border-color:rgba(255,255,255,.05)}
+
+.info-center{margin-top:26px}
+.category-tabs{
+  padding:5px;gap:4px;border-radius:16px;
+  background:rgba(7,11,18,.72);border-color:rgba(255,255,255,.07);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)
+}
+.category-tab{border:0;background:transparent;border-radius:12px;color:#798596;padding:10px 13px}
+.category-tab.active{background:rgba(255,255,255,.10);color:#f5f8fb;box-shadow:none}
+.table-wrap{border-radius:20px;border-color:rgba(255,255,255,.065);background:rgba(255,255,255,.018)}
+.admission-table th{background:#10151e}.admission-table td:first-child{background:#0c1118}
+.admission-table td{color:#9ba5b4}
+
+.sync-modal,.target-picker,.event-drawer{
+  background:rgba(11,15,23,.88)!important;
+  backdrop-filter:blur(34px) saturate(145%);-webkit-backdrop-filter:blur(34px) saturate(145%);
+  border-color:rgba(255,255,255,.10)!important;border-radius:26px!important
+}
+.sync-code-box,.target-picker-row,.event-drawer-note{background:rgba(255,255,255,.035)!important}
+
+.mobile-dock{
+  background:rgba(10,14,22,.72)!important;border-color:rgba(255,255,255,.09)!important;
+  backdrop-filter:blur(30px) saturate(150%)!important;-webkit-backdrop-filter:blur(30px) saturate(150%)!important;
+  box-shadow:0 16px 50px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.045)!important
+}
+.mobile-dock a.active{background:rgba(255,255,255,.085)!important}
+
+@media(max-width:700px){
+  .app{padding:9px 9px 92px}
+  .topnav{border-radius:19px;padding:8px 9px}
+  .brand{font-size:9.5px}.sync-link{height:36px}.msg-link{width:36px;height:36px}
+  .hero{min-height:500px!important}.hero-inner{padding:42px 6px 26px!important}
+  .days{font-size:clamp(96px,31vw,142px)}
+  .hero-message{font-size:11px}
+  .clock{gap:5px}.clock div{min-width:0;flex:1;padding:0}.clock b{font-size:24px}.clock span{font-size:7px}
+  .section,.target-section,.info-center{padding:14px!important;border-radius:22px!important}
+  .dashboard-stats{gap:7px!important}.stat-card{padding:12px;border-radius:16px;min-height:74px}
+  .head,.target-head{margin-bottom:14px}.head h2,.target-head h2,.info-title{font-size:21px}
+  .sub{font-size:9.5px}
+  .circular-summary{grid-template-columns:repeat(3,1fr);gap:6px}
+  .circular-summary-card{padding:10px 8px;border-radius:14px}.circular-summary-card small{display:none}
+  .circular-groups{gap:9px}.circular-group{padding:11px;border-radius:17px}
+  .circular-group-head{margin-bottom:9px}.circular-group-icon{width:30px;height:30px;border-radius:10px}
+  .circular-grid{grid-template-columns:1fr!important}.circular-card{min-height:76px!important;padding:11px!important}
+  .circular-waiting div{gap:5px}.circular-waiting em{font-size:7.5px}
+  .calendar-section{padding:13px!important}
+  .calendar-commandbar{gap:8px}.calendar-filter-row{gap:4px}
+  .calendar-filter{height:28px;padding:0 8px;font-size:7px}
+  .calendar-view-btn{height:29px;padding:0 9px}
+  .calendar-head .btn{padding:8px 9px;font-size:9px}
+  .day{min-height:74px!important;padding:4px!important}
+  .event{padding:3px 4px!important;margin-top:3px!important}
+  .category-tabs{top:65px;padding:4px!important;gap:3px!important}
+  .category-tab{min-height:36px!important;padding:7px 5px!important;font-size:9px!important}
+  .admission-table tbody{gap:8px}.admission-table tr{border-radius:16px;padding:4px 10px}
+  .admission-table td,.admission-table td:first-child{grid-template-columns:102px 1fr;padding:9px 0}
+  .mobile-dock{bottom:8px;width:calc(100% - 14px);border-radius:20px!important;padding:5px!important}
+  .mobile-dock a{border-radius:14px!important}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -686,7 +906,7 @@ body.admin-mode [data-admin-editing="1"]{outline:2px solid #74e6a7!important;out
 
     <section class="target-section" id="targets">
       <div class="target-head">
-        <div><div class="section-kicker">TARGETS</div><h2>★ My Target Exams</h2><div class="sub">Star exams you want to follow.</div></div>
+        <div><div class="section-kicker">YOUR LIST</div><h2>My Exams</h2><div class="sub">Star an exam to keep it here.</div></div>
         <div class="target-count" id="targetCount">0 STARRED</div>
       </div>
       <div class="starred-grid" id="starredCards"></div>
@@ -694,26 +914,20 @@ body.admin-mode [data-admin-editing="1"]{outline:2px solid #74e6a7!important;out
 
     <section class="section circular-section" id="circulars">
       <div class="head">
-        <div><div class="section-kicker">OFFICIAL LINKS</div><h2>2026–27 Circulars & Notices</h2><div class="sub">Tap a university name to open its latest official admission notice or website. Last checked: 7 Oct 2026.</div></div>
+        <div><div class="section-kicker">OFFICIAL LINKS</div><h2>Circulars</h2><div class="sub">Official links, grouped for quick access.</div></div>
       </div>
       <div class="circular-summary">
-        <div class="circular-summary-card"><span>Official links</span><b>11</b><small>Checked official links</small></div>
-        <div class="circular-summary-card"><span>Full notices not out</span><b>10</b><small>Full 2026–27 notice not found yet</small></div>
-        <div class="circular-summary-card"><span>Last checked</span><b style="font-size:14px">7 Oct 2026</b><small>Old-year information is kept separate</small></div>
+        <div class="circular-summary-card"><span>Official</span><b>11</b><small>Checked links</small></div>
+        <div class="circular-summary-card"><span>Waiting</span><b>10</b><small>Full notices</small></div>
+        <div class="circular-summary-card"><span>Checked</span><b style="font-size:14px">7 Oct</b><small>2026</small></div>
       </div>
-      <div class="circular-grid">
-        ${OFFICIAL_CIRCULARS.map(x=>'<a class="circular-card" href="'+x.url+'" target="_blank" rel="noopener"><div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' • Official source</span></a>').join('')}
-      </div>
-      <div class="circular-pending">
-        <div class="circular-pending-title">2026–27 full notice is not out yet</div>
-        <div class="circular-pending-list">${CIRCULAR_PENDING.map(x=>'<span class="circular-pending-chip">'+x+'</span>').join('')}</div>
-        <div class="audit-note">Old-year rules, fees, seats and exam details may change. Use them only after a new official 2026–27 notice is published.</div>
-      </div>
+      <div class="circular-groups">${renderCircularGroups()}</div>
+      <div class="audit-note circular-footnote">Old-year details may change. Use the new official notice when it is published.</div>
     </section>
 
     <section class="section calendar-section" id="calendar" data-view="month">
       <div class="command-section-head">
-        <div><div class="section-kicker">SCHEDULE</div><h2>Admission Calendar</h2><div class="sub">Verified exam dates and status.</div></div>
+        <div><div class="section-kicker">SCHEDULE</div><h2>Calendar</h2><div class="sub">Exam dates in one place.</div></div>
         <div class="controls"><input id="search" placeholder="Search university or unit…"><button class="btn" id="refresh">Refresh</button></div>
       </div>
       <div class="calendar-commandbar">
