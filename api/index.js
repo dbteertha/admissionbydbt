@@ -272,7 +272,7 @@ function renderCircularGroups(){
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admission by DBT | ভর্তি তথ্যকেন্দ্র ২০২৬–২৭</title>
-<meta name="theme-color" content="#ffffff" id="themeColorMeta">
+<meta name="theme-color" content="#07090d" id="themeColorMeta">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Admission DBT">
@@ -281,12 +281,12 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
 <link rel="apple-touch-icon" href="/app-icon.svg">
 <script>
 try{
-  document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'light';
+  document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'dark';
   const savedLang=localStorage.getItem('admissionbydbt-language-v1')||'en';
   document.documentElement.dataset.lang=savedLang==='bn'?'bn':'en';
   document.documentElement.lang=savedLang==='bn'?'bn':'en';
 }catch(e){
-  document.documentElement.dataset.theme='light';
+  document.documentElement.dataset.theme='dark';
   document.documentElement.dataset.lang='en';
   document.documentElement.lang='en';
 }
@@ -5149,7 +5149,7 @@ function applyTheme(theme){
     themeToggle.setAttribute('aria-label',themeToggle.title);
   }
 }
-applyTheme(document.documentElement.dataset.theme||'light');
+applyTheme(document.documentElement.dataset.theme||'dark');
 themeToggle.onclick=()=>applyTheme(document.documentElement.dataset.theme==='light'?'dark':'light');
 let deferredInstallPrompt=null;
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;installAppButton.hidden=false});
