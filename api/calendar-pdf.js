@@ -129,7 +129,7 @@ function fitText(doc,text,width){
   return out+'…';
 }
 
-function drawMonth(doc,year,month,events){
+function drawMonth(doc,year,month,events,pageNumber,totalPages){
   doc.addPage(PAGE);
 
   const pageW=doc.page.width,pageH=doc.page.height;
@@ -214,7 +214,9 @@ function drawMonth(doc,year,month,events){
 
   const footer='Thin border = confirmed • Thick border = notice pending / not confirmed • Always check the latest official notice before the exam.';
   doc.font('Helvetica').fontSize(6.4).fillColor('#000000')
-    .text(footer,left,pageH-17,{width:contentW,align:'center'});
+    .text(footer,left,pageH-17,{width:contentW-90,align:'left'});
+  doc.font('Helvetica-Bold').fontSize(6.4)
+    .text('Page '+pageNumber+' of '+totalPages,left,pageH-17,{width:contentW,align:'right'});
 }
 
 export default async function handler(req,res){
@@ -247,7 +249,7 @@ export default async function handler(req,res){
       doc.on('error',reject);
     });
 
-    for(const m of months)drawMonth(doc,m.year,m.month,events);
+    months.forEach((m,i)=>drawMonth(doc,m.year,m.month,events,i+1,months.length));
     doc.end();
     await done;
 
