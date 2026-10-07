@@ -378,7 +378,7 @@ a{color:inherit}
 }
 @media(max-width:700px){
   .app{padding:10px 10px 88px}.topnav{top:8px;border-radius:15px;padding:9px 10px}.brand-sub,.live{display:none}.brand{font-size:10px;letter-spacing:.13em}
-  .hero{min-height:520px}.hero-inner{padding:48px 8px 28px}.orbit-shell{width:86vw}.orbit-dot{display:none}.days{font-size:clamp(102px,31vw,150px);margin-top:18px}.hero-message{font-size:11px;padding:0 12px}.clock{gap:10px}.clock div{min-width:50px}.clock b{font-size:24px}.clock span{font-size:7px}
+  .hero{min-height:520px}.hero-inner{padding:48px 8px 28px}.orbit-shell{width:86vw}.orbit-dot{display:block}.days{font-size:clamp(108px,32vw,154px);margin-top:18px}.hero-message{font-size:13px;padding:0 12px}.clock{gap:12px}.clock div{min-width:54px}.clock b{font-size:27px}.clock span{font-size:8px}
   .dashboard-stats{grid-template-columns:repeat(2,1fr);gap:7px}.stat-card{min-height:78px;padding:12px;border-radius:14px}.stat-value{font-size:15px}.stat-note{font-size:9px}
   .section,.target-section,.info-center,.mission-section{padding:14px;border-radius:18px}.head h2,.target-head h2,.info-title{font-size:22px}.sub{font-size:10px}.mission-actions{flex-wrap:wrap}.mission-input{flex-basis:100%}
   .starred-grid{grid-template-columns:1fr}.target-timer{gap:5px}.target-time b{font-size:21px}.star-btn{width:34px;height:34px}.event .star-btn{width:20px;height:20px}
@@ -466,36 +466,117 @@ a{color:inherit}
 .event-drawer-note{margin-top:14px;padding:12px;border:1px solid rgba(255,255,255,.065);border-radius:12px;background:#0b1017;color:#8794a6;font-size:9px;line-height:1.55}.event-drawer-actions{display:flex;gap:7px;margin-top:15px}.event-drawer-actions .btn{flex:1}
 @media(max-width:850px){.dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero-upcoming-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){
-  .hero{min-height:0!important}.hero-inner{padding:32px 4px 22px!important}.hero-upcoming-strip,.hero-next-card{display:none!important}
-  .dashboard-stats{gap:6px!important}.stat-card{padding:9px!important;min-height:68px!important}.stat-note{display:none}.stat-label{font-size:7px!important}.stat-value{font-size:14px!important}
-  .section-kicker,.command-section-head .sub,.target-head .sub,.circular-section>.head .sub,.info-center>.head .sub,.footer,.audit-note{display:none!important}
-  .circular-summary{grid-template-columns:1fr 1fr;margin:9px 0!important}.circular-summary-card{padding:9px!important}.circular-summary-card:last-child{display:none}.circular-summary-card small{display:none}
-  .circular-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}.circular-card{min-height:76px!important;padding:9px!important}.circular-card span{display:none!important}.circular-card strong{font-size:9px!important}.circular-card b{font-size:6px!important}
-  .circular-pending{padding:9px!important}.circular-pending-title{margin-bottom:6px!important}.circular-pending-chip{padding:4px 6px!important;font-size:7px!important}
-  .calendar-section{padding:10px!important}
-  .command-section-head{align-items:center!important}.command-section-head h2{font-size:20px!important}
-  .controls{width:100%;gap:5px!important}.controls input{flex:1;min-width:0;padding:8px 9px!important;font-size:9px!important}.controls .btn{padding:8px 9px!important;font-size:9px!important}
-  .calendar-commandbar{align-items:stretch;margin:9px 0 7px!important;gap:7px!important}
-  .calendar-view-switch{width:100%;order:1}.calendar-view-btn{flex:1;height:28px!important;padding:0 7px!important;font-size:7px!important}
-  .calendar-filter-row{order:2;width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:none}.calendar-filter-row::-webkit-scrollbar{display:none}
-  .calendar-filter{flex:0 0 auto;height:27px!important;padding:0 8px!important;font-size:7px!important}
+  body{font-size:15px}
+  .app{padding-left:12px!important;padding-right:12px!important}
+  .topnav{min-height:50px!important;padding:10px 12px!important}
+  .brand{font-size:12px!important;letter-spacing:.11em!important}
+
+  /* calmer, readable hero */
+  .hero{min-height:520px!important;overflow:visible!important}
+  .hero-inner{padding:42px 6px 28px!important}
+  .hero-eyebrow{font-size:9px!important;padding:7px 10px!important}
+  .hero-phase{font-size:10px!important;padding:7px 10px!important}
+  .days{font-size:clamp(112px,32vw,156px)!important;line-height:.86!important;margin:22px 0 10px!important}
+  .label{font-size:12px!important;letter-spacing:.16em!important}
+  .hero-message{font-size:13px!important;line-height:1.5!important;max-width:330px!important}
+  .clock{gap:12px!important;margin:22px 0 18px!important}
+  .clock div{min-width:55px!important}
+  .clock b{font-size:28px!important}
+  .clock span{font-size:8px!important;letter-spacing:.10em!important}
+  .main-target-control{margin-top:12px!important}
+  .main-target-icon{width:44px!important;height:44px!important;font-size:22px!important}
+  .hero-target-note{font-size:10px!important;line-height:1.35!important;max-width:300px!important}
+
+  /* keep the timer orbit visible on phones */
+  .orbit-shell{display:block!important;top:43%!important;width:min(360px,92vw)!important;border-color:rgba(128,163,255,.16)!important;opacity:.95}
+  .orbit-shell:before{border-color:rgba(148,179,255,.14)!important}
+  .orbit-shell:after{border-color:rgba(255,255,255,.08)!important}
+  .orbit-dot{display:block!important;width:8px!important;height:8px!important;top:-5px!important;box-shadow:0 0 18px #7eafff!important;animation:orbit 13s linear infinite!important;transform-origin:0 46vw!important}
+
+  /* readable dashboard */
+  .dashboard-stats{gap:8px!important;margin-top:0!important}
+  .stat-card{padding:12px!important;min-height:82px!important;border-radius:15px!important;background:linear-gradient(145deg,rgba(16,21,32,.94),rgba(9,13,20,.90))!important}
+  .stat-label{font-size:9px!important;letter-spacing:.08em!important}
+  .stat-value{font-size:18px!important;margin-top:7px!important}
+  .stat-note{display:none!important}
+
+  .section,.target-section,.info-center{padding:15px!important;border-radius:18px!important}
+  .head h2,.target-head h2,.info-title,.command-section-head h2{font-size:23px!important;line-height:1.15!important}
+  .section-kicker{font-size:8px!important;margin-bottom:5px!important}
+  .command-section-head .sub,.target-head .sub,.circular-section>.head .sub,.info-center>.head .sub,.footer,.audit-note{display:none!important}
+
+  /* circulars: fewer tiny words, bigger tap areas */
+  .circular-summary{grid-template-columns:1fr 1fr;margin:11px 0!important;gap:8px!important}
+  .circular-summary-card{padding:12px!important;border-radius:13px!important}
+  .circular-summary-card:last-child{display:none}
+  .circular-summary-card span{font-size:8px!important}
+  .circular-summary-card b{font-size:19px!important}
+  .circular-summary-card small{display:none}
+  .circular-grid{grid-template-columns:1fr!important;gap:8px!important}
+  .circular-card{min-height:76px!important;padding:13px 14px!important;border-radius:14px!important}
+  .circular-card strong{font-size:13px!important;line-height:1.3!important}
+  .circular-card b{font-size:8px!important}
+  .circular-card span{display:none!important}
+  .circular-pending{padding:11px!important;border-radius:13px!important}
+  .circular-pending-title{font-size:8px!important;line-height:1.35!important}
+  .circular-pending-list{gap:5px!important}
+  .circular-pending-chip{padding:6px 8px!important;font-size:8px!important}
+
+  /* calendar controls */
+  .calendar-section{padding:12px!important}
+  .command-section-head{align-items:center!important;gap:9px!important}
+  .controls{width:100%;gap:7px!important}
+  .controls input{flex:1;min-width:0;padding:10px 11px!important;font-size:11px!important;border-radius:11px!important}
+  .controls .btn{min-height:40px!important;padding:9px 12px!important;font-size:10px!important}
+  .calendar-commandbar{align-items:stretch;margin:10px 0 8px!important;gap:8px!important}
+  .calendar-view-switch{width:100%;order:1;padding:4px!important}
+  .calendar-view-btn{flex:1;min-height:38px!important;padding:0 8px!important;font-size:9px!important;border-radius:9px!important}
+  .calendar-filter-row{order:2;width:100%;overflow-x:auto;flex-wrap:nowrap;padding:1px 0 4px;scrollbar-width:none}
+  .calendar-filter-row::-webkit-scrollbar{display:none}
+  .calendar-filter{flex:0 0 auto;min-height:36px!important;padding:0 12px!important;font-size:9px!important}
   .calendar-audit{display:none!important}
-  .calendar-head{display:flex!important;margin:6px 0!important;padding:6px!important;border-radius:10px!important}
-  .calendar-head .btn{padding:6px 8px!important;font-size:0!important}.calendar-head .btn:first-child:after{content:"‹";font-size:16px}.calendar-head .btn:last-child:after{content:"›";font-size:16px}
-  .calendar-head .month{font-size:13px!important}
-  .calendar-scroll{display:block!important;margin:0!important;overflow:hidden!important;border-radius:11px!important}
+  .calendar-head{display:flex!important;margin:8px 0!important;padding:7px 8px!important;border-radius:11px!important}
+  .calendar-head .btn{width:40px!important;height:38px!important;padding:0!important;font-size:0!important}
+  .calendar-head .btn:first-child:after{content:"‹";font-size:22px}
+  .calendar-head .btn:last-child:after{content:"›";font-size:22px}
+  .calendar-head .month{font-size:15px!important}
+
+  /* actual month grid, still fits without turning into a list */
+  .calendar-scroll{display:block!important;margin:0!important;overflow:hidden!important;border-radius:12px!important;background:#080c12!important}
   .week,.grid{min-width:0!important;width:100%!important;grid-template-columns:repeat(7,minmax(0,1fr))!important}
-  .week div{padding:5px 1px!important;font-size:5.5px!important;letter-spacing:.03em!important}
-  .day{min-height:68px!important;padding:3px!important}
-  .day .num{width:18px!important;height:18px!important;font-size:7px!important;border-radius:6px!important}
-  .event{grid-template-columns:8px minmax(0,1fr)!important;gap:2px!important;margin-top:3px!important;padding:3px 2px!important;border-radius:5px!important;min-height:15px}
-  .event .star-btn{width:8px!important;height:8px!important;font-size:6px!important;border:0!important;background:transparent!important}
-  .event-title{font-size:5.5px!important;line-height:1.05!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .week div{padding:7px 1px!important;font-size:7px!important;letter-spacing:.02em!important;color:#8995a6!important}
+  .day{min-height:82px!important;padding:4px!important;background:#080c12!important}
+  .day .num{width:21px!important;height:21px!important;font-size:9px!important;border-radius:7px!important}
+  .day.today .num{font-size:9px!important}
+  .event{grid-template-columns:10px minmax(0,1fr)!important;gap:3px!important;margin-top:4px!important;padding:4px 3px!important;border-radius:6px!important;min-height:19px!important;background:#0f151f!important}
+  .event .star-btn{width:10px!important;height:10px!important;font-size:7px!important;border:0!important;background:transparent!important}
+  .event-title{font-size:6.7px!important;line-height:1.15!important;font-weight:700!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
   .event-status{display:none!important}
+
   .calendar-section[data-view="timeline"] .calendar-scroll,.calendar-section[data-view="upcoming"] .calendar-scroll,.calendar-section[data-view="timeline"] .calendar-head,.calendar-section[data-view="upcoming"] .calendar-head{display:none!important}
   .calendar-section[data-view="timeline"] .calendar-list,.calendar-section[data-view="upcoming"] .calendar-list{display:block!important}
   .calendar-section[data-view="month"] .calendar-list{display:none!important}
-  .timeline-card{grid-template-columns:48px minmax(0,1fr) auto;gap:7px;padding:9px 7px}.timeline-date b{font-size:14px}.timeline-status{font-size:5px;padding:4px 5px}
+  .timeline-card{grid-template-columns:54px minmax(0,1fr) auto;gap:9px;padding:12px 10px!important}
+  .timeline-date b{font-size:17px!important}
+  .timeline-date span{font-size:8px!important}
+  .timeline-main strong{font-size:11px!important}
+  .timeline-main small{font-size:9px!important}
+  .timeline-status{font-size:7px!important;padding:5px 7px!important}
+
+  /* target cards + info tables */
+  .target-count{font-size:9px!important;padding:7px 9px!important}
+  .target-name{font-size:16px!important}.target-date{font-size:11px!important}
+  .target-message{font-size:11px!important}
+  .target-time b{font-size:23px!important}.target-time span{font-size:8px!important}
+  .category-tabs{top:67px;grid-template-columns:repeat(3,1fr)!important;padding:7px!important;gap:6px!important}
+  .category-tab{min-height:39px!important;border-radius:10px!important;font-size:10px!important;padding:8px!important}
+  .admission-table td,.admission-table td:first-child{grid-template-columns:102px 1fr!important;gap:11px!important;padding:11px 0!important;font-size:12px!important;line-height:1.5!important}
+  .admission-table td:before{font-size:9px!important}
+  .admission-table td:first-child{font-size:15px!important}
+
+  .mobile-dock{padding:7px!important;border-radius:18px!important}
+  .mobile-dock a,.mobile-dock button{font-size:9px!important;padding:8px 3px!important}
+  .mobile-dock b{font-size:17px!important}
 }
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
