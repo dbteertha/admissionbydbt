@@ -733,10 +733,10 @@ a{color:inherit}
 <div class="sync-modal-backdrop" id="syncModalBackdrop" aria-hidden="true">
   <div class="sync-modal" role="dialog" aria-modal="true" aria-labelledby="syncModalTitle">
     <div class="sync-modal-head">
-      <div><div class="section-kicker">PERSONAL SYNC</div><h3 id="syncModalTitle">Your DBT sync code</h3></div>
+      <div><div class="section-kicker">PERSONAL SYNC</div><h3 id="syncModalTitle">Your Secret Code</h3></div>
       <button class="sync-close" id="syncModalClose" type="button" aria-label="Close">×</button>
     </div>
-    <div class="sync-note">This code stays the same on this device. Use the same code on another device to sync your starred exams, main countdown target and calendar preferences.</div>
+    <div class="sync-note">Save this secret code somewhere safe. You can use it anytime to recover or sync your starred exams, main countdown target and calendar preferences on another device.</div>
     <div class="sync-code-box">
       <div class="sync-code" id="syncCodeText">—</div>
       <button class="sync-copy" id="syncCopyButton" type="button">Copy</button>
