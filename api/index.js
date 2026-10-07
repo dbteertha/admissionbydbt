@@ -1764,14 +1764,41 @@ function renderAllCategories(){
   tabs.innerHTML=CATEGORY_ORDER.map((cat,i)=>'<button class="category-tab'+(i===0?' active':'')+'" data-cat="'+esc(cat)+'">'+esc(CATEGORY_LABELS[cat]||cat)+'</button>').join('');
   host.innerHTML=CATEGORY_ORDER.map(cat=>renderCategoryTable(cat)).join('');
 
+  const setActiveCategory=cat=>{
+    tabs.querySelectorAll('.category-tab').forEach(x=>x.classList.toggle('active',x.dataset.cat===cat));
+  };
+
   tabs.querySelectorAll('.category-tab').forEach(btn=>{
     btn.onclick=()=>{
-      tabs.querySelectorAll('.category-tab').forEach(x=>x.classList.remove('active'));
-      btn.classList.add('active');
+      setActiveCategory(btn.dataset.cat);
       const sec=[...host.querySelectorAll('.category-section')].find(x=>x.dataset.cat===btn.dataset.cat);
       if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'});
     };
   });
+
+  // Scroll-spy: keep the sticky category buttons matched to the section
+  // currently under them, in both scroll directions.
+  const sections=[...host.querySelectorAll('.category-section')];
+  let scrollSpyTick=0;
+  const updateCategoryFromScroll=()=>{
+    scrollSpyTick=0;
+    if(!sections.length)return;
+    const stickyBottom=tabs.getBoundingClientRect().bottom;
+    const marker=stickyBottom+18;
+    let current=sections[0];
+    for(const sec of sections){
+      if(sec.getBoundingClientRect().top<=marker) current=sec;
+      else break;
+    }
+    setActiveCategory(current.dataset.cat);
+  };
+  const onCategoryScroll=()=>{
+    if(scrollSpyTick)return;
+    scrollSpyTick=requestAnimationFrame(updateCategoryFromScroll);
+  };
+  addEventListener('scroll',onCategoryScroll,{passive:true});
+  addEventListener('resize',onCategoryScroll,{passive:true});
+  updateCategoryFromScroll();
 }
 renderAllCategories();
 
