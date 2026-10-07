@@ -10,64 +10,64 @@ const SOURCES = [
 ];
 
 const CURATED_EVENTS = [
-  ['Medical & Dental','2026-12-04T10:00:00+06:00','Tentative — 4 Dec depends on HSC-result timing','Tentative'],
+  ['Medical & Dental','2026-12-04T10:00:00+06:00','Not confirmed — 4 Dec depends on when the HSC result is published','Not confirmed'],
   ['DU IBA','2026-12-05T10:00:00+06:00','Official — 5 Dec 2026, 10:00 AM–12:00 PM','Official'],
   ['Aviation and Aerospace University Bangladesh (AAUB)','2026-12-05T10:00:00+06:00','Official — undergraduate test 5 Dec 2026','Official'],
   ['Dhaka University A / Science','2026-12-12T11:00:00+06:00','Official — 12 Dec 2026, 11:00 AM–12:30 PM','Official'],
-  ['Khulna University D / Business','2026-12-17T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
-  ['Khulna University C / Humanities','2026-12-17T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
-  ['Khulna University A / Science','2026-12-18T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
-  ['Khulna University B / Life Science','2026-12-18T12:00:00+06:00','Official date — detailed time/instructions pending','Time TBA'],
-  ['MIST C Unit','2026-12-18T10:00:00+06:00','Circular pending — calendar date only; official MIST 2026–27 circular not yet verified','Time TBA'],
-  ['MIST A & B','2026-12-19T10:00:00+06:00','Circular pending — calendar date only; official MIST 2026–27 circular not yet verified','Time TBA'],
+  ['Khulna University D / Business','2026-12-17T12:00:00+06:00','Confirmed date — time and instructions are not out yet','Time TBA'],
+  ['Khulna University C / Humanities','2026-12-17T12:00:00+06:00','Confirmed date — time and instructions are not out yet','Time TBA'],
+  ['Khulna University A / Science','2026-12-18T12:00:00+06:00','Confirmed date — time and instructions are not out yet','Time TBA'],
+  ['Khulna University B / Life Science','2026-12-18T12:00:00+06:00','Confirmed date — time and instructions are not out yet','Time TBA'],
+  ['MIST C Unit','2026-12-18T10:00:00+06:00','Date listed — full official MIST 2026–27 notice is not out yet','Time TBA'],
+  ['MIST A & B','2026-12-19T10:00:00+06:00','Date listed — full official MIST 2026–27 notice is not out yet','Time TBA'],
   ['Dhaka University B / Arts, Law & Social Science','2026-12-19T11:00:00+06:00','Official — 19 Dec 2026, 11:00 AM–12:30 PM','Official'],
   ['Dhaka University Fine Arts','2026-12-22T11:00:00+06:00','Official — 22 Dec 2026, 11:00 AM–12:30 PM','Official'],
   ['Dhaka University C / Business','2026-12-26T11:00:00+06:00','Official — 26 Dec 2026, 11:00 AM–12:30 PM','Official'],
-  ['Jagannath University A / Science','2027-01-01T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
+  ['Jagannath University A / Science','2027-01-01T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
   ['BUP FBS','2027-01-01T10:30:00+06:00','Official/current notice — first FBS date; keep 9 Jan too','Official'],
-  ['Agriculture Cluster','2027-01-02T10:00:00+06:00','Circular pending — 2026–27 full ACAS circular not yet verified','Time TBA'],
+  ['Agriculture Cluster','2027-01-02T10:00:00+06:00','Date listed — full 2026–27 ACAS notice is not out yet','Time TBA'],
   ['BUP FASS','2027-01-02T15:30:00+06:00','Official/current BUP notice','Official'],
-  ['Jagannath University E / Fine Arts','2027-01-08T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
+  ['Jagannath University E / Fine Arts','2027-01-08T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
   ['KUET','2027-01-08T10:00:00+06:00','Official portal/circular — 8 Jan 2027; centres KUET, DU and RUET; MCQ','Official'],
   ['BUP FST','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
   ['BUP FET','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
   ['BUP FMS','2027-01-08T10:30:00+06:00','Official/current BUP notice','Official'],
-  ['Rajshahi University B / Business','2027-01-08T11:00:00+06:00','Circular pending — full official 2026–27 undergraduate circular not yet verified','Time TBA'],
+  ['Rajshahi University B / Business','2027-01-08T11:00:00+06:00','Date listed — full official 2026–27 admission notice is not out yet','Time TBA'],
   ['BUP FSSS','2027-01-08T15:30:00+06:00','Current BUP notice','Official'],
-  ['Rajshahi University C / Science','2027-01-09T11:00:00+06:00','Circular pending — full official 2026–27 undergraduate circular not yet verified','Time TBA'],
+  ['Rajshahi University C / Science','2027-01-09T11:00:00+06:00','Date listed — full official 2026–27 admission notice is not out yet','Time TBA'],
   ['BUP FBS','2027-01-09T10:30:00+06:00','Official/current notice — second FBS date; intentional, not duplicate','Official'],
   ['BUP BBA General','2027-01-09T15:30:00+06:00','Chorcha visible'],
-  ['RUET','2027-01-14T09:30:00+06:00','Circular pending — calendar date only; RUET official site still shows 2025–26 undergraduate circular','Time TBA'],
-  ['Jagannath University B / Humanities','2027-01-15T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
-  ['BUET','2027-01-16T09:00:00+06:00','Date announced — detailed 2026–27 circular pending','Circular pending'],
-  ['Rajshahi University A / Humanities','2027-01-16T11:00:00+06:00','Circular pending — full official 2026–27 undergraduate circular not yet verified','Time TBA'],
-  ['Jagannath University C / Business','2027-01-22T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
-  ['Jagannath University D / Social Science','2027-01-23T10:00:00+06:00','Official 2026–27 schedule / admission information available','Official date'],
+  ['RUET','2027-01-14T09:30:00+06:00','Date listed — RUET still shows the 2025–26 admission notice','Time TBA'],
+  ['Jagannath University B / Humanities','2027-01-15T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
+  ['BUET','2027-01-16T09:00:00+06:00','Date announced — full 2026–27 notice is not out yet','Full notice not out'],
+  ['Rajshahi University A / Humanities','2027-01-16T11:00:00+06:00','Date listed — full official 2026–27 admission notice is not out yet','Time TBA'],
+  ['Jagannath University C / Business','2027-01-22T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
+  ['Jagannath University D / Social Science','2027-01-23T10:00:00+06:00','Official 2026–27 schedule / admission information available','Confirmed date'],
   ['CUET','2027-01-23T10:00:00+06:00','Admission-Calendar visible'],
-  ['SUST A','2027-01-26T15:00:00+06:00','Date confirmed — full application/test-plan notice pending','Circular pending'],
-  ['SUST B','2027-01-27T15:00:00+06:00','Date confirmed — full application/test-plan notice pending','Circular pending'],
+  ['SUST A','2027-01-26T15:00:00+06:00','Date confirmed — full application and exam details are not out yet','Full notice not out'],
+  ['SUST B','2027-01-27T15:00:00+06:00','Date confirmed — full application and exam details are not out yet','Full notice not out'],
   ['BUTEX','2027-01-29T10:00:00+06:00','Official university announcement — 29 Jan 2027','Official'],
-  ['Chittagong University C / Business','2027-01-29T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
-  ['Chittagong University A / Science','2027-01-30T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
-  ['Chittagong University B1','2027-02-03T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
-  ['Chittagong University B2','2027-02-04T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
-  ['Chittagong University B','2027-02-05T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
+  ['Chittagong University C / Business','2027-01-29T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
+  ['Chittagong University A / Science','2027-01-30T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
+  ['Chittagong University B1','2027-02-03T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
+  ['Chittagong University B2','2027-02-04T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
+  ['Chittagong University B','2027-02-05T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
   ['Comilla University A','2027-02-05T11:00:00+06:00','Official university press release — 5 Feb 2027','Official'],
-  ['Chittagong University D','2027-02-06T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
+  ['Chittagong University D','2027-02-06T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
   ['Comilla University B','2027-02-06T11:00:00+06:00','Official university press release — 6 Feb 2027','Official'],
   ['Comilla University C','2027-02-07T11:00:00+06:00','Official university press release — 7 Feb 2027','Official'],
-  ['Chittagong University D1','2027-02-08T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Official date'],
-  ['GST B / Humanities','2027-03-19T10:00:00+06:00','Date announced — full application circular pending','Circular pending'],
-  ['GST C / Business','2027-03-20T10:00:00+06:00','Date announced — full application circular pending','Circular pending'],
-  ['GST D / Architecture','2027-03-20T10:00:00+06:00','New separate D / Architecture unit — date announced; full circular pending','Circular pending'],
-  ['GST A / Science','2027-03-27T10:00:00+06:00','Date announced — full application circular pending','Circular pending']
+  ['Chittagong University D1','2027-02-08T11:00:00+06:00','Official 2026–27 schedule / application announcement available','Confirmed date'],
+  ['GST B / Humanities','2027-03-19T10:00:00+06:00','Date announced — full application notice is not out yet','Full notice not out'],
+  ['GST C / Business','2027-03-20T10:00:00+06:00','Date announced — full application notice is not out yet','Full notice not out'],
+  ['GST D / Architecture','2027-03-20T10:00:00+06:00','New D / Architecture unit — date announced; full notice is not out yet','Full notice not out'],
+  ['GST A / Science','2027-03-27T10:00:00+06:00','Date announced — full application notice is not out yet','Full notice not out']
 ].map(([title,date,agreement,displayTime])=>({
   title,
   date:new Date(date).toISOString(),
   agreement,
   ...(displayTime?{displayTime}:{}),
-  ...(agreement&&agreement.startsWith('Tentative')?{status:'tentative'}:{}),
-  ...(agreement&&agreement.includes('Circular pending')?{status:'pending'}:{})
+  ...(agreement&&agreement.startsWith('Not confirmed')?{status:'tentative'}:{}),
+  ...(agreement&&agreement.includes('Full notice not out')?{status:'pending'}:{})
 }));
 
 let cache = { at: 0, events: [], sources: [] };
@@ -617,18 +617,18 @@ a{color:inherit}
       <div><div class="brand">ADMISSION BY DBT</div><div class="brand-sub">MISSION CONTROL • 2026–27</div></div>
     </div>
     <div class="navlinks">
-      <a class="navlink" href="#dashboard">Dashboard</a>
-      <a class="navlink" href="#targets">My Targets</a>
+      <a class="navlink" href="#dashboard">Home</a>
+      <a class="navlink" href="#targets">My Exams</a>
       <a class="navlink" href="#calendar">Calendar</a>
       <a class="navlink" href="#circulars">Circulars</a>
-      <a class="navlink" href="#infoCenter">Admission Info</a>
+      <a class="navlink" href="#infoCenter">Admission Guide</a>
     </div>
     <div class="nav-actions">
-      <button class="sync-link" id="homeSyncButton" type="button" title="Sync personal Home and Calendar choices"><i></i><span id="homeSyncText">Sync</span></button>
+      <button class="sync-link" id="homeSyncButton" type="button" title="Save your Home and Calendar choices"><i></i><span id="homeSyncText">Save</span></button>
       <a class="msg-link" href="https://wa.me/+8801516560230" target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message on WhatsApp">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18.4 3.8 20l1-3.5A8.4 8.4 0 1 1 7 18.4Z"/><path d="M8.2 8.1c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.8 2c.1.3.1.5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.3 1.7 2.2 2.2.3.2.5.2.7 0l.8-.7c.2-.2.5-.2.7-.1l1.9.9c.3.1.4.3.4.6 0 .8-.4 1.6-1 2-1 .6-2.4.5-4-.2-1.4-.6-2.8-1.7-3.9-3.1-1-1.3-1.7-2.8-1.8-4.1-.1-.8.1-1.4.5-1.7Z"/></svg>
       </a>
-      <div id="syncStatus" class="live">● syncing sources…</div>
+      <div id="syncStatus" class="live">● checking dates…</div>
     </div>
   </nav>
 
@@ -637,7 +637,7 @@ a{color:inherit}
       <div class="hero-inner">
         <div class="orbit-shell"><div class="orbit-dot"></div></div>
         <div class="hero-eyebrow"><i></i> Admission season 2026–27</div>
-        <div class="hero-phase" id="heroPhase">BUILD PHASE</div>
+        <div class="hero-phase" id="heroPhase">BUILD BASICS</div>
         <div class="days" id="days">00</div>
         <div class="label">DAYS LEFT</div>
         <div class="hero-message" id="heroMessage">One focused day at a time.</div>
@@ -661,8 +661,8 @@ a{color:inherit}
     <section class="dashboard-stats">
       <div class="stat-card"><div class="stat-label">Next exam</div><div class="stat-value" id="statNext">—</div><div class="stat-note" id="statNextNote">Waiting for schedule</div></div>
       <div class="stat-card"><div class="stat-label">Starred targets</div><div class="stat-value" id="statStarred">0</div><div class="stat-note">Your personal exam list</div></div>
-      <div class="stat-card"><div class="stat-label">Current phase</div><div class="stat-value" id="statPhase">Build</div><div class="stat-note" id="statPhaseNote">Consistency first</div></div>
-      <div class="stat-card"><div class="stat-label">Verified schedule</div><div class="stat-value" id="statConfirmed">0</div><div class="stat-note">Confirmed / official-date exams</div></div>
+      <div class="stat-card"><div class="stat-label">Study stage</div><div class="stat-value" id="statPhase">Build</div><div class="stat-note" id="statPhaseNote">Study every day</div></div>
+      <div class="stat-card"><div class="stat-label">Confirmed exams</div><div class="stat-value" id="statConfirmed">0</div><div class="stat-note">Dates confirmed by official sources</div></div>
     </section>
 
     <section class="target-section" id="targets">
@@ -675,20 +675,20 @@ a{color:inherit}
 
     <section class="section circular-section" id="circulars">
       <div class="head">
-        <div><div class="section-kicker">OFFICIAL SOURCES</div><h2>2026–27 Circulars & Notices</h2><div class="sub">Tap a university name to open its current official admission notice or portal. Last audited: 7 Oct 2026.</div></div>
+        <div><div class="section-kicker">OFFICIAL LINKS</div><h2>2026–27 Circulars & Notices</h2><div class="sub">Tap a university name to open its latest official admission notice or website. Last checked: 7 Oct 2026.</div></div>
       </div>
       <div class="circular-summary">
-        <div class="circular-summary-card"><span>Published / official sources</span><b>11</b><small>Current verified links</small></div>
-        <div class="circular-summary-card"><span>Still pending</span><b>10</b><small>Full 2026–27 circular not verified</small></div>
-        <div class="circular-summary-card"><span>Last source audit</span><b style="font-size:14px">7 Oct 2026</b><small>Previous-cycle data stays clearly separated</small></div>
+        <div class="circular-summary-card"><span>Official links</span><b>11</b><small>Checked official links</small></div>
+        <div class="circular-summary-card"><span>Full notices not out</span><b>10</b><small>Full 2026–27 notice not found yet</small></div>
+        <div class="circular-summary-card"><span>Last checked</span><b style="font-size:14px">7 Oct 2026</b><small>Old-year information is kept separate</small></div>
       </div>
       <div class="circular-grid">
         ${OFFICIAL_CIRCULARS.map(x=>'<a class="circular-card" href="'+x.url+'" target="_blank" rel="noopener"><div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' • Official source</span></a>').join('')}
       </div>
       <div class="circular-pending">
-        <div class="circular-pending-title">2026–27 full circular still pending / not verified as published</div>
+        <div class="circular-pending-title">2026–27 full notice is not out yet</div>
         <div class="circular-pending-list">${CIRCULAR_PENDING.map(x=>'<span class="circular-pending-chip">'+x+'</span>').join('')}</div>
-        <div class="audit-note">Do not treat previous-cycle eligibility, fees, seats or detailed exam plans as confirmed for 2026–27 until a current official circular is published.</div>
+        <div class="audit-note">Old-year rules, fees, seats and exam details may change. Use them only after a new official 2026–27 notice is published.</div>
       </div>
     </section>
 
@@ -700,8 +700,8 @@ a{color:inherit}
       <div class="calendar-commandbar">
         <div class="calendar-view-switch" id="calendarViewSwitch">
           <button class="calendar-view-btn active" data-calendar-view="month" type="button">Month</button>
-          <button class="calendar-view-btn" data-calendar-view="timeline" type="button">Timeline</button>
-          <button class="calendar-view-btn" data-calendar-view="upcoming" type="button">Upcoming</button>
+          <button class="calendar-view-btn" data-calendar-view="timeline" type="button">List</button>
+          <button class="calendar-view-btn" data-calendar-view="upcoming" type="button">Next exams</button>
         </div>
         <div class="calendar-filter-row" id="calendarFilters">
           <button class="calendar-filter active" data-calendar-filter="all" type="button">All</button>
@@ -733,22 +733,22 @@ a{color:inherit}
 <div class="sync-modal-backdrop" id="syncModalBackdrop" aria-hidden="true">
   <div class="sync-modal" role="dialog" aria-modal="true" aria-labelledby="syncModalTitle">
     <div class="sync-modal-head">
-      <div><div class="section-kicker">PERSONAL SYNC</div><h3 id="syncModalTitle">Your Secret Code</h3></div>
+      <div><div class="section-kicker">CLOUD SAVE</div><h3 id="syncModalTitle">Your Secret Code</h3></div>
       <button class="sync-close" id="syncModalClose" type="button" aria-label="Close">×</button>
     </div>
-    <div class="sync-note">Save this secret code somewhere safe. You can use it anytime to recover or sync your starred exams, main countdown target and calendar preferences on another device.</div>
+    <div class="sync-note">Save this secret code somewhere safe. You can use it later to get back your saved exams, countdown target and calendar settings on this or another device.</div>
     <div class="sync-code-box">
       <div class="sync-code" id="syncCodeText">—</div>
       <button class="sync-copy" id="syncCopyButton" type="button">Copy</button>
     </div>
-    <div class="sync-status-line" id="syncStatusLine">Saved locally on this device.</div>
+    <div class="sync-status-line" id="syncStatusLine">Saved on this device.</div>
     <div class="sync-divider"></div>
-    <div class="sync-existing-label">Use an existing code</div>
+    <div class="sync-existing-label">Use a saved code</div>
     <div class="sync-existing-row">
       <input class="sync-existing-input" id="syncExistingInput" maxlength="24" placeholder="DBT-XXXX-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false">
       <button class="sync-use" id="syncUseButton" type="button">Use code</button>
     </div>
-    <div class="sync-warning">Anyone who has this code can load and change these Home/Calendar choices. Keep it private.</div>
+    <div class="sync-warning">Anyone with this code can open and change your saved Home/Calendar choices. Keep it private.</div>
   </div>
 </div>
 
@@ -788,9 +788,9 @@ function phaseFor(days){
   if(days<=1)return {name:'EXAM MODE',stat:'Exam',note:'Stay calm. Execute.',msg:'You prepared for this. Keep your head clear and execute one question at a time.'};
   if(days<=7)return {name:'FINAL SPRINT',stat:'Final sprint',note:'Revise. Rest. Execute.',msg:'Protect your confidence. Revise what matters, sleep properly, and keep moving.'};
   if(days<=14)return {name:'MOCK SPRINT',stat:'Mocks',note:'Practice > new topics',msg:'The fastest gains now come from timed practice, mistakes, and focused revision.'};
-  if(days<=30)return {name:'REVISION PHASE',stat:'Revision',note:'Turn knowledge into recall',msg:'Reduce passive study. Recall, solve, review mistakes, repeat.'};
+  if(days<=30)return {name:'REVIEW STAGE',stat:'Revision',note:'Test what you remember',msg:'Test yourself, solve questions, check mistakes, and try again.'};
   if(days<=60)return {name:'BUILD + REVISE',stat:'Build + revise',note:'Consistency compounds',msg:'A strong day does not need to be perfect. Finish the important work and come back tomorrow.'};
-  return {name:'FOUNDATION PHASE',stat:'Build',note:'Consistency first',msg:'Build the base now so revision feels lighter later. One focused day at a time.'};
+  return {name:'BUILD BASICS',stat:'Build',note:'Study every day',msg:'Learn the basics now. Study one focused day at a time.'};
 }
 function countdown(){
   const now=new Date(), diff=Math.max(0,TARGET-now), span=(TARGET-START),
@@ -859,7 +859,7 @@ function setSyncUi(mode,text){
   if(!b||!t)return;
   b.classList.remove('saved','saving','offline');
   if(mode)b.classList.add(mode);
-  t.textContent=text||'Sync';
+  t.textContent=text||'Save';
 }
 function applySyncState(state){
   if(!state||typeof state!=='object')return;
@@ -937,7 +937,7 @@ function openSyncModal(){
   homeSyncCode=ensureSyncCode();
   syncCodeText.textContent=homeSyncCode;
   syncExistingInput.value='';
-  syncStatusLine.textContent=homeSyncConfigured?(navigator.onLine?'Your choices sync automatically when they change.':'Offline — changes stay saved locally until internet returns.'):'Cloud sync storage is not connected yet; choices remain saved locally.';
+  syncStatusLine.textContent=homeSyncConfigured?(navigator.onLine?'Your choices save automatically when they change.':'No internet — changes stay on this device and will save online later.'):'Online save is not connected yet. Your choices are still saved on this device.';
   syncModalBackdrop.classList.add('open');syncModalBackdrop.setAttribute('aria-hidden','false');
   if(!homeSyncState)saveLocalSyncState();
   else if(navigator.onLine)pushCloudSync();
@@ -945,15 +945,15 @@ function openSyncModal(){
 function closeSyncModal(){syncModalBackdrop.classList.remove('open');syncModalBackdrop.setAttribute('aria-hidden','true')}
 async function useExistingSyncCode(){
   const code=normalizeSyncCode(syncExistingInput.value);
-  if(!validSyncCode(code)){syncStatusLine.textContent='That code is not valid.';return}
-  syncUseButton.disabled=true;syncStatusLine.textContent='Loading this code…';
+  if(!validSyncCode(code)){syncStatusLine.textContent='That code does not look right.';return}
+  syncUseButton.disabled=true;syncStatusLine.textContent='Opening this code…';
   try{
     const oldCode=homeSyncCode;
     homeSyncCode=code;
     const cloud=await fetchCloudSync();
     if(!cloud){
       homeSyncCode=oldCode;
-      syncStatusLine.textContent='No saved data was found for that code.';
+      syncStatusLine.textContent='Nothing was saved with that code.';
       return;
     }
     try{localStorage.setItem(HOME_SYNC_CODE_KEY,homeSyncCode)}catch(e){}
@@ -961,11 +961,11 @@ async function useExistingSyncCode(){
     syncCodeText.textContent=homeSyncCode;
     syncExistingInput.value='';
     setSyncUi('saved','Saved');
-    syncStatusLine.textContent='Synced. This device will keep using this code.';
+    syncStatusLine.textContent='Saved. This device will keep using this code.';
   }catch(e){
     syncStatusLine.textContent=e&&e.message==='storage_not_configured'
-      ?'Cloud sync is not connected yet. This device is saving locally only.'
-      :'Could not load that code right now.';
+      ?'Online save is not connected yet. This device is saving only on this device.'
+      :'Could not open that code right now.';
   }finally{syncUseButton.disabled=false}
 }
 function setCountdownTarget(e){
@@ -1097,7 +1097,7 @@ function openEventDrawer(e){
   const d=new Date(e.date),state=eventState(e);
   eventDrawerTitle.textContent=e.title;
   eventDrawerDate.textContent=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'})+' • '+eventTimeLabel(e);
-  eventDrawerStatus.textContent=state==='confirmed'?'Confirmed / official date':state==='pending'?'Date announced / circular pending':'Tentative';
+  eventDrawerStatus.textContent=state==='confirmed'?'Confirmed / official date':state==='pending'?'Date announced / circular pending':'Not confirmed';
   eventDrawerStatus.className='event-drawer-status '+(state==='confirmed'?'':state);
   eventDrawerNote.textContent=e.agreement||'Use the latest official university notice for final details.';
   eventDrawerStar.textContent=isStarred(e)?(eventKey(e)===countdownTargetKey?'★ Countdown target':'★ In My Targets'):'☆ Add to targets';
@@ -1108,7 +1108,7 @@ function renderHeroNext(){restoreCountdownTarget()}
 function renderTimeline(es){
   const now=new Date();
   let rows=calendarView==='upcoming'?es.filter(e=>new Date(e.date)>=now).slice(0,14):es;
-  if(!rows.length){calendarList.innerHTML='<div class="calendar-list-shell"><div class="timeline-empty">No admission events match these filters.</div></div>';return}
+  if(!rows.length){calendarList.innerHTML='<div class="calendar-list-shell"><div class="timeline-empty">No exams match these filters.</div></div>';return}
   let lastMonth='',html='<div class="calendar-list-shell">';
   rows.forEach(e=>{
     const d=new Date(e.date),monthKey=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',month:'long',year:'numeric'});
@@ -1117,7 +1117,7 @@ function renderTimeline(es){
     html+='<div class="timeline-card" data-event-key="'+encodeURIComponent(eventKey(e))+'">'+
       '<div class="timeline-date"><b>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit'})+'</b><span>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',month:'short',weekday:'short'})+'</span></div>'+
       '<div class="timeline-main"><strong>'+esc(calendarShortTitle(e))+'</strong><small>'+esc(eventTimeLabel(e))+(isStarred(e)?' • ★ Target':'')+'</small></div>'+
-      '<div class="timeline-status '+(state==='confirmed'?'':state)+'">'+(state==='confirmed'?'Confirmed':state==='pending'?'Pending':'Tentative')+'</div>'+
+      '<div class="timeline-status '+(state==='confirmed'?'':state)+'">'+(state==='confirmed'?'Confirmed':state==='pending'?'Pending':'Not confirmed')+'</div>'+
     '</div>';
   });
   html+='</div>';calendarList.innerHTML=html;
@@ -1149,7 +1149,7 @@ function render(){
       el.appendChild(starButton(e));
       const t=document.createElement('span');t.className='event-title';t.textContent=calendarShortTitle(e);el.appendChild(t);
       const state=eventState(e);
-      if(state!=='confirmed'){const badge=document.createElement('span');badge.className='event-status '+state;badge.textContent=state==='tentative'?'Tentative':'Pending';el.appendChild(badge)}
+      if(state!=='confirmed'){const badge=document.createElement('span');badge.className='event-status '+state;badge.textContent=state==='tentative'?'Not confirmed':'Pending';el.appendChild(badge)}
       cell.appendChild(el);
     });
     if(todays.length>4){const more=document.createElement('div');more.className='event-status pending';more.textContent='+'+(todays.length-4)+' more';cell.appendChild(more)}
@@ -1181,7 +1181,7 @@ function updateDashboardStats(){
     statNext.textContent=left+' days';
     statNextNote.textContent=next.title;
   }else{
-    statNext.textContent='—';statNextNote.textContent='No upcoming exam';
+    statNext.textContent='—';statNextNote.textContent='No next exam';
   }
 }
 function renderStarredTargets(){
@@ -1232,7 +1232,7 @@ function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','
 function renderTargetPicker(){
   const q=(targetPickerSearch.value||'').toLowerCase().trim();
   const rows=all.filter(e=>new Date(e.date)>new Date()&&(!q||e.title.toLowerCase().includes(q))).sort((a,b)=>new Date(a.date)-new Date(b.date));
-  if(!rows.length){targetPickerList.innerHTML='<div class="target-picker-empty">No upcoming exam matches your search.</div>';return}
+  if(!rows.length){targetPickerList.innerHTML='<div class="target-picker-empty">No next exam matches your search.</div>';return}
   targetPickerList.innerHTML=rows.map(e=>{
     const active=eventKey(e)===countdownTargetKey,d=new Date(e.date),key=encodeURIComponent(eventKey(e));
     return '<button type="button" class="target-picker-row'+(active?' active':'')+'" data-main-target="'+key+'"><span><strong>'+esc(e.title)+'</strong><small>'+esc(d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'}))+' • '+esc(eventTimeLabel(e))+'</small></span><span class="target-picker-check">'+(active?'✓':'›')+'</span></button>';
@@ -1252,7 +1252,7 @@ function openTargetPicker(){
 }
 function closeTargetPicker(){targetPickerBackdrop.classList.remove('open');targetPickerBackdrop.setAttribute('aria-hidden','true')}
 async function load(force=false){
-  syncStatus.textContent='● syncing sources…';
+  syncStatus.textContent='● checking dates…';
   try{
     const r=await fetch('/api/events'+(force?'?refresh=1':''));
     const j=await r.json();
@@ -1261,7 +1261,7 @@ async function load(force=false){
     syncStatus.textContent='● '+all.length+' exams • updated '+new Date(j.updatedAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
     render();
   }catch(e){
-    syncStatus.textContent='● sync unavailable';
+    syncStatus.textContent='● could not check dates';
     render();
   }
 }
@@ -1273,7 +1273,7 @@ mainTargetButton.onclick=openTargetPicker;
 homeSyncButton.onclick=openSyncModal;
 syncModalClose.onclick=closeSyncModal;
 syncModalBackdrop.onclick=e=>{if(e.target===syncModalBackdrop)closeSyncModal()};
-syncCopyButton.onclick=async()=>{try{await navigator.clipboard.writeText(homeSyncCode);syncStatusLine.textContent='Code copied.'}catch(e){syncStatusLine.textContent='Copy failed — press and hold the code to copy it.'}};
+syncCopyButton.onclick=async()=>{try{await navigator.clipboard.writeText(homeSyncCode);syncStatusLine.textContent='Code copied.'}catch(e){syncStatusLine.textContent='Could not copy. Press and hold the code to copy it.'}};
 syncUseButton.onclick=useExistingSyncCode;
 syncExistingInput.oninput=()=>{syncExistingInput.value=syncExistingInput.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')};
 targetPickerClose.onclick=closeTargetPicker;
@@ -1345,7 +1345,7 @@ const UNIVERSITY_INFO = {
 
   "RUET": {
     aliases:["Rajshahi University of Engineering and Technology","রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়","রুয়েট"],
-    current:["ক্যালেন্ডারে ১৪ জানুয়ারি ২০২৭ পরীক্ষা ট্র্যাক করা হচ্ছে; তবে ৭ অক্টোবর ২০২৬ পর্যন্ত RUET-এর অফিসিয়াল admission material-এ পূর্ণ ২০২৬–২৭ undergraduate circular পাওয়া যায়নি।","অফিসিয়াল সাইটে এখনও ২০২৫–২৬ circular দৃশ্যমান; তাই eligibility, fee, seats, application dates ও detailed exam rules previous-year reference মাত্র।"],
+    current:["ক্যালেন্ডারে ১৪ জানুয়ারি ২০২৭ পরীক্ষা ট্র্যাক করা হচ্ছে; তবে ৭ অক্টোবর ২০২৬ পর্যন্ত RUET-এর অফিসিয়াল admission material-এ পূর্ণ ২০২৬–২৭ undergraduate circular পাওয়া যায়নি।","অফিসিয়াল সাইটে এখনও ২০২৫–২৬ circular দৃশ্যমান; তাই eligibility, fee, seats, application dates ও detailed exam rules আগের বছরের তথ্য মাত্র।"],
     previous:[
       "২০২৫–২৬ আবেদন: ২ ডিসেম্বর ২০২৫ সকাল ১০টা থেকে ১৩ ডিসেম্বর বিকাল ৫টা।",
       "আবেদন ফি জমার শেষ সময় ছিল ১৫ ডিসেম্বর ২০২৫ দুপুর ১২টা।",
@@ -1442,7 +1442,7 @@ const UNIVERSITY_INFO = {
 
   "রাজশাহী বিশ্ববিদ্যালয়": {
     aliases:["University of Rajshahi","Rajshahi University","RU","রাবি"],
-    current:["বর্তমান ক্যালেন্ডারে B/Business — ৮ জানুয়ারি, C/Science — ৯ জানুয়ারি এবং A/Humanities — ১৬ জানুয়ারি ২০২৭ ট্র্যাক করা হচ্ছে।","৭ অক্টোবর ২০২৬ পর্যন্ত নতুন পূর্ণ অফিসিয়াল ২০২৬–২৭ undergraduate circular পাওয়া যায়নি; eligibility, fee, seats, application dates ও detailed exam rules তাই pending।"],
+    current:["বর্তমান ক্যালেন্ডারে B/Business — ৮ জানুয়ারি, C/Science — ৯ জানুয়ারি এবং A/Humanities — ১৬ জানুয়ারি ২০২৭ ট্র্যাক করা হচ্ছে।","৭ অক্টোবর ২০২৬ পর্যন্ত নতুন পূর্ণ অফিসিয়াল ২০২৬–২৭ undergraduate circular পাওয়া যায়নি; eligibility, fee, seats, application dates ও detailed exam rules তাই এখনও প্রকাশ হয়নি।"],
     previous:[
       "২০২৫–২৬ অনলাইন আবেদন: ২০ নভেম্বর ২০২৫ দুপুর ১২:০১ থেকে ৭ ডিসেম্বর রাত ১১:৫৯ পর্যন্ত (অফিসিয়াল guideline)।",
       "অফিসিয়াল পোর্টালে Application Guideline, Payment Instructions, Photo/Selfie Instructions, Helpline, FAQ ও Complaint সুবিধা ছিল।",
@@ -1459,7 +1459,7 @@ const UNIVERSITY_INFO = {
 
   "জগন্নাথ বিশ্ববিদ্যালয়": {
     aliases:["Jagannath University","JnU","জবি"],
-    current:["২০২৬–২৭ অফিসিয়াল admission schedule available: A — ১ জানুয়ারি; E — ৮ জানুয়ারি; B — ১৫ জানুয়ারি; C — ২২ জানুয়ারি; D — ২৩ জানুয়ারি ২০২৭।","২০২৬–২৭ application information ও eligibility-ও অফিসিয়াল admission source-এ available; current official source-কে previous-year reference-এর ওপর অগ্রাধিকার দিন।"],
+    current:["২০২৬–২৭ অফিসিয়াল admission schedule available: A — ১ জানুয়ারি; E — ৮ জানুয়ারি; B — ১৫ জানুয়ারি; C — ২২ জানুয়ারি; D — ২৩ জানুয়ারি ২০২৭।","২০২৬–২৭ আবেদন তথ্য ও যোগ্যতাও অফিসিয়াল ভর্তি সূত্রে দেওয়া আছে; বর্তমান অফিসিয়াল তথ্য-কে আগের বছরের তথ্য-এর ওপর অগ্রাধিকার দিন।"],
     previous:[
       "২০২৫–২৬ আবেদন: ২০ নভেম্বর–৫ ডিসেম্বর ২০২৫।",
       "Admit Card: A Unit ১০–২১ ডিসেম্বর; C Unit ১০–২২ ডিসেম্বর; D Unit ২৫ ডিসেম্বর–৪ জানুয়ারি; E Unit ৭–১১ ডিসেম্বর; B Unit ১৫–২৫ জানুয়ারি।",
@@ -1531,7 +1531,7 @@ const UNIVERSITY_INFO = {
 
   "কুমিল্লা বিশ্ববিদ্যালয়": {
     aliases:["Comilla University","CoU","কুবি"],
-    current:["অফিসিয়ালি ঘোষিত ২০২৬–২৭ পরীক্ষার তারিখ: A — ৫ ফেব্রুয়ারি; B — ৬ ফেব্রুয়ারি; C — ৭ ফেব্রুয়ারি ২০২৭।","পূর্ণ detailed circular/application schedule ৭ অক্টোবর ২০২৬ পর্যন্ত pending; aggregator application dates-কে final হিসেবে দেখানো হবে না।"],
+    current:["অফিসিয়ালি ঘোষিত ২০২৬–২৭ পরীক্ষার তারিখ: A — ৫ ফেব্রুয়ারি; B — ৬ ফেব্রুয়ারি; C — ৭ ফেব্রুয়ারি ২০২৭।","পূর্ণ বিস্তারিত ভর্তি বিজ্ঞপ্তি/আবেদনের সময়সূচি ৭ অক্টোবর ২০২৬ পর্যন্ত pending; aggregator application dates-কে final হিসেবে দেখানো হবে না।"],
     previous:[
       "২০২৫–২৬ অফিসিয়াল ভর্তি বিজ্ঞপ্তি ২৫ নভেম্বর ২০২৫ এবং ভর্তি নির্দেশিকা ২৭ নভেম্বর প্রকাশ হয়েছিল।",
       "আবেদন শুরু হয়েছিল ২৭ নভেম্বর ২০২৫; সময় পরে বাড়ানো হয়েছিল।",
@@ -1601,7 +1601,7 @@ const UNIVERSITY_INFO = {
 
   "কৃষি গুচ্ছ": {
     aliases:["Agriculture Cluster","Agri","Agricultural Universities Cluster","ACAS"],
-    current:["ক্যালেন্ডারে ২০২৬–২৭ পরীক্ষা ২ জানুয়ারি ২০২৭ ট্র্যাক করা হচ্ছে।","৭ অক্টোবর ২০২৬ পর্যন্ত নতুন পূর্ণ ২০২৬–২৭ ACAS circular পাওয়া যায়নি; eligibility, fee, seats, application schedule ও exam details pending।"],
+    current:["ক্যালেন্ডারে ২০২৬–২৭ পরীক্ষা ২ জানুয়ারি ২০২৭ ট্র্যাক করা হচ্ছে।","৭ অক্টোবর ২০২৬ পর্যন্ত নতুন পূর্ণ ২০২৬–২৭ ACAS circular পাওয়া যায়নি; eligibility, fee, seats, application schedule ও exam details এখনও প্রকাশ হয়নি।"],
     previous:[
       "২০২৫–২৬ কৃষি গুচ্ছে কৃষিবিজ্ঞান বিষয়ে ডিগ্রি প্রদানকারী ৯টি পাবলিক বিশ্ববিদ্যালয় অংশ নিয়েছিল।",
       "অফিসিয়াল ভর্তি বিজ্ঞপ্তি ও ভর্তি নির্দেশিকা প্রকাশ হয়েছিল ২৩ নভেম্বর ২০২৫; সংশোধিত বিজ্ঞপ্তি ১২ ডিসেম্বর।",
@@ -1618,7 +1618,7 @@ const UNIVERSITY_INFO = {
 
   "মেডিকেল ও ডেন্টাল": {
     aliases:["Medical & Dental","Medical","Dental","MBBS","BDS","মেডিকেল","ডেন্টাল"],
-    current:["২০২৬–২৭ MBBS/BDS-এর ৪ ডিসেম্বর ২০২৬ তারিখটি tentative calendar date; ৭ অক্টোবর ২০২৬ পর্যন্ত final DGME/DGHS domestic admission circular পাওয়া যায়নি।","Final exam date/time, eligibility, fee, seats, application schedule ও marks rules শুধুমাত্র নতুন DGME/DGHS circular প্রকাশের পর current ধরা হবে।"],
+    current:["২০২৬–২৭ MBBS/BDS-এর ৪ ডিসেম্বর ২০২৬ তারিখটি সম্ভাব্য তারিখ; ৭ অক্টোবর ২০২৬ পর্যন্ত চূড়ান্ত DGME/DGHS ভর্তি বিজ্ঞপ্তি পাওয়া যায়নি।","পরীক্ষার চূড়ান্ত তারিখ/সময়, যোগ্যতা, ফি, আসন, আবেদনের সময়সূচি ও নম্বরের নিয়ম শুধুমাত্র নতুন DGME/DGHS circular প্রকাশের পর current ধরা হবে।"],
     previous:[
       "২০২৫–২৬ MBBS/BDS admission circular DGME ১০ নভেম্বর ২০২৫ প্রকাশ করেছিল।",
       "ভর্তি পরীক্ষা হয়েছিল ১২ ডিসেম্বর ২০২৫ সকাল ১০টা।",
