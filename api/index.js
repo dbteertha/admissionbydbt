@@ -1723,9 +1723,9 @@ const BOOKLET_ROWS = [
 
 
 const CATEGORY_ORDER = [
-  "বিশ্ববিদ্যালয়",
+  "মেডিকেল ও ডেন্টাল",
   "ইঞ্জিনিয়ারিং",
-  "মেডিকেল ও ডেন্টাল"
+  "বিশ্ববিদ্যালয়"
 ];
 
 const CATEGORY_LABELS = {
