@@ -2230,6 +2230,83 @@ html[data-theme="light"] .pdf-preview-pages article i{background:#eef3ff;color:#
   .stat-label{font-size:8px}.stat-note{font-size:8px}
   .week div{font-size:8px}
 }
+
+/* ===== V4.1 LIGHT HERO / LOCAL PREVIEW FIX ===== */
+html[data-theme="light"] #stars{display:none!important}
+html[data-theme="light"] body{
+  background:
+    radial-gradient(circle at 8% 9%,rgba(99,132,255,.16),transparent 24%),
+    radial-gradient(circle at 91% 12%,rgba(255,119,165,.13),transparent 23%),
+    radial-gradient(circle at 76% 58%,rgba(70,202,183,.08),transparent 26%),
+    linear-gradient(180deg,#fdfefe 0%,#f7f9fe 42%,#fbf8ff 72%,#f7fbff 100%)!important;
+}
+html[data-theme="light"] .topnav{
+  background:rgba(255,255,255,.94)!important;
+  border-color:#dfe6f0!important;
+  box-shadow:0 14px 38px rgba(67,84,116,.11),inset 0 1px 0 #fff!important;
+}
+html[data-theme="light"] .hero{
+  min-height:535px!important;
+  margin-bottom:18px;
+  border:1px solid rgba(76,96,132,.10);
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 50% 34%,rgba(116,139,255,.14),transparent 31%),
+    radial-gradient(circle at 22% 18%,rgba(74,196,226,.08),transparent 27%),
+    radial-gradient(circle at 82% 76%,rgba(232,113,169,.07),transparent 28%),
+    linear-gradient(150deg,rgba(255,255,255,.98),rgba(246,249,255,.97) 50%,rgba(252,247,255,.96));
+  box-shadow:0 24px 70px rgba(72,88,121,.09),inset 0 1px 0 #fff;
+}
+html[data-theme="light"] .hero:after{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:
+    linear-gradient(90deg,transparent,rgba(109,135,255,.10),rgba(236,123,174,.08),rgba(66,190,220,.08),transparent) top/100% 3px no-repeat;
+}
+html[data-theme="light"] .hero:before{
+  opacity:1!important;filter:none!important;
+  background:radial-gradient(ellipse at center,rgba(103,136,255,.12),rgba(112,205,226,.06) 43%,rgba(255,142,177,.035) 58%,transparent 74%)!important;
+}
+html[data-theme="light"] .days{color:#263754!important;text-shadow:0 15px 42px rgba(76,95,139,.12)!important}
+html[data-theme="light"] .label{color:#53627a!important}
+html[data-theme="light"] .hero-message{color:#6f7d91!important}
+html[data-theme="light"] .clock b{color:#31415d!important}
+html[data-theme="light"] .clock span{color:#8895a8!important}
+html[data-theme="light"] .hero-eyebrow{
+  color:#536178!important;background:rgba(255,255,255,.86)!important;border-color:#dfe6f0!important;
+  box-shadow:0 8px 22px rgba(76,91,122,.06)!important
+}
+html[data-theme="light"] .hero-phase{
+  color:#526fa9!important;background:linear-gradient(135deg,#edf3ff,#f5efff)!important;border-color:#dbe4f5!important
+}
+html[data-theme="light"] .orbit-shell{border-color:rgba(94,118,184,.16)!important}
+html[data-theme="light"] .orbit-shell:before{border-color:rgba(98,126,201,.12)!important}
+html[data-theme="light"] .orbit-shell:after{border-color:rgba(128,111,188,.10)!important}
+html[data-theme="light"] .orbit-dot{background:#6f88ec!important;box-shadow:0 0 18px rgba(91,117,219,.30)!important}
+html[data-theme="light"] .passed{color:#3e4d67!important}
+html[data-theme="light"] .progress-meta,
+html[data-theme="light"] .pct{color:#68768b!important}
+html[data-theme="light"] .main-target-icon{
+  background:linear-gradient(145deg,#fff,#eef3ff)!important;color:#5a72b0!important;border-color:#d9e3f5!important
+}
+html[data-theme="light"] .hero-target-note{color:#7b8798!important}
+
+/* local preview should look intentional, not like a production error */
+.local-preview-note{
+  display:inline-flex;align-items:center;gap:6px;margin-left:6px;padding:5px 8px;border-radius:999px;
+  font-size:7px;font-weight:850;color:#6f7d92;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07)
+}
+html[data-theme="light"] .local-preview-note{background:#f4f7fb;border-color:#e2e8ef;color:#68778c}
+
+@media(max-width:700px){
+  html[data-theme="light"] .hero{
+    min-height:500px!important;border-radius:24px;margin-bottom:14px;
+    background:
+      radial-gradient(circle at 50% 28%,rgba(116,139,255,.14),transparent 32%),
+      radial-gradient(circle at 10% 85%,rgba(75,198,226,.07),transparent 27%),
+      radial-gradient(circle at 90% 78%,rgba(232,113,169,.06),transparent 27%),
+      linear-gradient(150deg,#fff,#f7f9ff 55%,#fbf6ff);
+  }
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -2874,7 +2951,7 @@ async function pushCloudSync(){
     if(r.status===409&&j.state){
       applySyncState(j.state);render();setSyncUi('saved','Saved');return;
     }
-    if(r.status===503){homeSyncConfigured=false;setSyncUi('offline','Local');return}
+    if(r.status===503){homeSyncConfigured=false;setSyncUi('offline',location.hostname==='localhost'||location.hostname==='127.0.0.1'?'Local preview':'Local');return}
     if(!r.ok)throw new Error('sync_save_failed');
     setSyncUi('saved','Saved');
   }catch(e){
@@ -3509,7 +3586,7 @@ async function load(force=false){
     try{cached=JSON.parse(localStorage.getItem(EVENT_CACHE_KEY)||'null')}catch(err){}
     if(cached&&Array.isArray(cached.events)&&cached.events.length){
       all=cached.events;sourceHealth=Array.isArray(cached.sources)?cached.sources:[];
-      syncStatus.textContent='● offline • showing '+all.length+' saved exams';
+      syncStatus.textContent=(location.hostname==='localhost'||location.hostname==='127.0.0.1'?'● local preview • ':'● offline • ')+'showing '+all.length+' saved exams';
     }else syncStatus.textContent='● could not check dates';
     render();
   }
