@@ -1755,6 +1755,267 @@ html[data-theme="light"] .target-empty-copy>span{color:#7e899b}
   .monthly-bar-shell{height:108px}
   .monthly-bar-item{flex-basis:52px;min-width:52px}
 }
+
+/* ===== DBT UI V3 — COMPLETE POLISH PASS ===== */
+:root{
+  --surface-soft:rgba(255,255,255,.035);
+  --surface-line:rgba(255,255,255,.075);
+}
+html[data-theme="light"]{
+  --surface-soft:rgba(248,250,255,.92);
+  --surface-line:rgba(66,83,113,.10);
+}
+html{scroll-padding-top:104px}
+body{-webkit-tap-highlight-color:transparent}
+button,a,input{touch-action:manipulation}
+button{user-select:none}
+.app,.section,.target-section,.info-center,.schedule-visuals,.calendar-section,.circular-section{min-width:0}
+.section,.target-section,.info-center,.schedule-visuals{isolation:isolate}
+.section-kicker{font-weight:900}
+.head h2,.target-head h2,.info-title,.command-section-head h2,.schedule-visual-head h2{letter-spacing:-.045em}
+
+/* Top navigation: clearer but calm */
+.topnav{overflow:hidden}
+.topnav:after{
+  content:"";position:absolute;left:10%;right:10%;bottom:-1px;height:1px;
+  background:linear-gradient(90deg,transparent,#728fff,#ef77ae,#51c8d9,transparent);opacity:.45
+}
+html[data-theme="light"] .topnav{
+  background:rgba(255,255,255,.84);
+  border-color:rgba(69,85,116,.11);
+  box-shadow:0 14px 38px rgba(62,78,109,.10),inset 0 1px 0 #fff
+}
+html[data-theme="light"] .theme-toggle:hover{background:#f2f5fb}
+html[data-theme="light"] .sync-link:hover{background:#f2f6ff;color:#3d5686;border-color:#d7e1f3}
+html[data-theme="light"] .msg-link:hover{background:#eef9f3;color:#237554;border-color:#d3eadf}
+
+/* Hero gains subtle multi-color depth */
+.hero-eyebrow{box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.hero-phase{font-weight:800}
+html[data-theme="light"] .hero-eyebrow{
+  background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(244,248,255,.92))
+}
+html[data-theme="light"] .hero-phase{
+  background:linear-gradient(135deg,#eef3ff,#f4efff 55%,#ecfbff)
+}
+html[data-theme="light"] .progress{
+  background:linear-gradient(90deg,#edf2fb,#f7f2fb,#edf8f5)
+}
+
+/* Stat cards: stronger identity + decorative glow */
+.stat-card{position:relative;isolation:isolate}
+.stat-card:after{
+  display:block!important;content:"";position:absolute!important;right:-28px!important;bottom:-32px!important;
+  width:92px!important;height:92px!important;border-radius:50%!important;opacity:.24!important;z-index:-1!important
+}
+.stat-card:nth-child(1):after{background:radial-gradient(circle,#58c9f2,transparent 68%)!important}
+.stat-card:nth-child(2):after{background:radial-gradient(circle,#e877bb,transparent 68%)!important}
+.stat-card:nth-child(3):after{background:radial-gradient(circle,#55d59a,transparent 68%)!important}
+.stat-card:nth-child(4):after{background:radial-gradient(circle,#f2b84e,transparent 68%)!important}
+html[data-theme="light"] .stat-card{border-color:rgba(67,83,112,.09)}
+html[data-theme="light"] .dashboard-stats .stat-card:nth-child(1){background:linear-gradient(135deg,#fff,#edf5ff 60%,#eafaff)!important}
+html[data-theme="light"] .dashboard-stats .stat-card:nth-child(2){background:linear-gradient(135deg,#fff,#fff1f7 58%,#f8f0ff)!important}
+html[data-theme="light"] .dashboard-stats .stat-card:nth-child(3){background:linear-gradient(135deg,#fff,#eefaf4 60%,#effcf8)!important}
+html[data-theme="light"] .dashboard-stats .stat-card:nth-child(4){background:linear-gradient(135deg,#fff,#fff8e8 60%,#fff1ef)!important}
+
+/* Snapshot charts */
+.schedule-visuals{overflow:hidden}
+.schedule-visuals:after{
+  content:"";position:absolute;right:-80px;top:-90px;width:230px;height:230px;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(106,133,255,.09),rgba(172,116,255,.04) 42%,transparent 70%)
+}
+.schedule-chart-card{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.schedule-chart-card:hover{transform:translateY(-1px);border-color:rgba(124,151,255,.16)}
+html[data-theme="light"] .schedule-chart-card:hover{box-shadow:0 12px 30px rgba(62,79,112,.075)}
+.mix-track>i{box-shadow:0 3px 10px rgba(0,0,0,.10)}
+.status-donut{box-shadow:0 10px 30px rgba(36,129,92,.10)}
+
+/* My Exams: colorful by category */
+.starred-card{overflow:hidden;position:relative}
+.starred-card:after{
+  content:"";position:absolute;right:-38px;bottom:-42px;width:120px;height:120px;border-radius:50%;opacity:.10;pointer-events:none
+}
+.starred-card.category-medical:after{background:var(--cat-medical)}
+.starred-card.category-engineering:after{background:var(--cat-engineering)}
+.starred-card.category-university:after{background:var(--cat-university)}
+html[data-theme="light"] .starred-card.category-medical{background:linear-gradient(145deg,#fff,#fff4f7)}
+html[data-theme="light"] .starred-card.category-engineering{background:linear-gradient(145deg,#fff,#effaff)}
+html[data-theme="light"] .starred-card.category-university{background:linear-gradient(145deg,#fff,#f6f2ff)}
+.target-add-btn{
+  min-height:38px;border-radius:999px!important;font-weight:850!important;
+  background:linear-gradient(135deg,rgba(105,132,255,.12),rgba(170,126,255,.10))!important
+}
+html[data-theme="light"] .target-add-btn{
+  background:linear-gradient(135deg,#edf3ff,#f7f0ff)!important;
+  color:#526aa3!important;border-color:#dbe3f4!important
+}
+
+/* Circulars: category-tinted group surfaces */
+.circular-group{overflow:hidden;position:relative}
+.circular-group:after{
+  content:"";position:absolute;right:-70px;top:-70px;width:160px;height:160px;border-radius:50%;opacity:.06;pointer-events:none
+}
+.circular-cat-medical:after{background:var(--cat-medical)}
+.circular-cat-engineering:after{background:var(--cat-engineering)}
+.circular-cat-university:after{background:var(--cat-university)}
+html[data-theme="light"] .circular-cat-medical{background:linear-gradient(145deg,#fffafd,#fff6f8)!important}
+html[data-theme="light"] .circular-cat-engineering{background:linear-gradient(145deg,#faffff,#f1fbff)!important}
+html[data-theme="light"] .circular-cat-university{background:linear-gradient(145deg,#fefcff,#f7f3ff)!important}
+.circular-card strong{position:relative;z-index:1}
+html[data-theme="light"] .circular-card b{
+  background:#eff9f3!important;border:1px solid #dceee4!important;padding:4px 6px!important;border-radius:999px!important
+}
+
+/* Calendar: stronger control hierarchy and clean status colors */
+.calendar-commandbar{padding:7px;border-radius:16px;background:rgba(255,255,255,.018);border:1px solid rgba(255,255,255,.04)}
+html[data-theme="light"] .calendar-commandbar{
+  background:linear-gradient(135deg,#f8fbff,#fbf9ff);border-color:#e7ecf3
+}
+.calendar-filter,.calendar-view-btn{font-weight:850}
+#calendarPdfButton{position:relative;overflow:hidden}
+#calendarPdfButton:after{
+  content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 18%,rgba(255,255,255,.22),transparent 62%);
+  transform:translateX(-120%);transition:transform .45s ease
+}
+#calendarPdfButton:hover:after{transform:translateX(120%)}
+html[data-theme="light"] .calendar-head{
+  background:linear-gradient(135deg,#f7faff,#fbf8ff)!important
+}
+html[data-theme="light"] .week{
+  background:linear-gradient(90deg,#f4f7fb,#f8f5ff,#f2f9fb)!important
+}
+html[data-theme="light"] .day:nth-child(7n+1){background-color:#fffafb!important}
+html[data-theme="light"] .day:nth-child(7n){background-color:#f9fcff!important}
+.timeline-card{transition:background .16s ease,transform .16s ease}
+.timeline-card:hover{transform:translateX(1px)}
+html[data-theme="light"] .timeline-card:hover{background:#f8faff}
+
+/* Admission Guide overview */
+.guide-stats{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:4px 0 12px
+}
+.guide-stat{
+  padding:11px 12px;border:1px solid var(--surface-line);border-radius:16px;background:var(--surface-soft)
+}
+.guide-stat-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.guide-stat-top span{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:850;color:#929dad}
+.guide-stat-top span i{width:8px;height:8px;border-radius:3px}
+.guide-stat-top b{font-size:17px}
+.guide-stat-meter{height:5px;margin-top:9px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.05)}
+.guide-stat-meter i{display:block;height:100%;border-radius:inherit}
+.guide-stat small{display:block;margin-top:6px;font-size:7px;color:#727f91}
+.guide-stat.medical .guide-stat-top i,.guide-stat.medical .guide-stat-meter i{background:var(--cat-medical)}
+.guide-stat.engineering .guide-stat-top i,.guide-stat.engineering .guide-stat-meter i{background:var(--cat-engineering)}
+.guide-stat.university .guide-stat-top i,.guide-stat.university .guide-stat-meter i{background:var(--cat-university)}
+.guide-stat.medical b{color:var(--cat-medical)}
+.guide-stat.engineering b{color:var(--cat-engineering)}
+.guide-stat.university b{color:var(--cat-university)}
+html[data-theme="light"] .guide-stat.medical{background:linear-gradient(145deg,#fff,#fff2f6);border-color:#f3dfe5}
+html[data-theme="light"] .guide-stat.engineering{background:linear-gradient(145deg,#fff,#edfaff);border-color:#dceff5}
+html[data-theme="light"] .guide-stat.university{background:linear-gradient(145deg,#fff,#f5f1ff);border-color:#e8e0f6}
+html[data-theme="light"] .guide-stat-top span{color:#66758b}
+html[data-theme="light"] .guide-stat-meter{background:#e9edf3}
+html[data-theme="light"] .guide-stat small{color:#8995a5}
+.category-section h3{display:flex;align-items:center;gap:7px}
+.category-section h3:before{content:"";width:10px;height:10px;border-radius:4px}
+.category-section.category-medical h3:before{background:var(--cat-medical)}
+.category-section.category-engineering h3:before{background:var(--cat-engineering)}
+.category-section.category-university h3:before{background:var(--cat-university)}
+html[data-theme="light"] .category-section.category-medical .admission-table th{background:#fff0f4;color:#87435a}
+html[data-theme="light"] .category-section.category-engineering .admission-table th{background:#edf9fd;color:#356b7d}
+html[data-theme="light"] .category-section.category-university .admission-table th{background:#f4effc;color:#5f4c83}
+
+/* Pickers and cloud save: clear sections, no dead-grey surfaces */
+html[data-theme="light"] .sync-code-box{
+  background:linear-gradient(135deg,#f5f8ff,#f8f4ff)!important;border-color:#dfe6f3!important
+}
+html[data-theme="light"] .pdf-pick-section{
+  padding:10px;border:1px solid #e9edf3;border-radius:15px;background:#fbfcfe
+}
+html[data-theme="light"] .pdf-pick-section:nth-child(1){background:linear-gradient(145deg,#fbfdff,#f2f6ff)}
+html[data-theme="light"] .pdf-pick-section:nth-child(2){background:linear-gradient(145deg,#fffafd,#f7f3ff)}
+html[data-theme="light"] .pdf-pick-section:nth-child(3){background:linear-gradient(145deg,#fbfdff,#f2fbff)}
+html[data-theme="light"] .pdf-pick-section:nth-child(4){background:linear-gradient(145deg,#fff,#f9fbff)}
+.pdf-pick-title b{font-size:10px}
+.pdf-pick-title button{font-weight:850}
+html[data-theme="light"] .pdf-pick-title button{color:#526ba2}
+html[data-theme="light"] .pdf-picker-foot{background:#fbfcfe}
+
+/* Mobile dock naming + color */
+.mobile-dock a{font-weight:750}
+html[data-theme="light"] .mobile-dock{
+  background:rgba(255,255,255,.94)!important;border-color:#dde5ef!important;
+  box-shadow:0 14px 36px rgba(61,78,110,.15),inset 0 1px 0 #fff!important
+}
+
+/* Mobile: smooth, safe, readable */
+@media(max-width:700px){
+  html{scroll-padding-top:76px}
+  .app{padding-left:9px!important;padding-right:9px!important}
+  .topnav{gap:6px!important;padding:8px 9px!important;border-radius:18px!important}
+  .brand-wrap{gap:7px}.brand-orb{width:20px;height:20px}.brand{font-size:9px!important;letter-spacing:.09em!important}
+  .nav-actions{margin-left:auto}
+  .theme-toggle{width:36px!important;height:36px!important}
+  .msg-link{width:36px!important;height:36px!important;border-radius:50%!important}
+  .sync-link{height:36px!important;border-radius:999px!important;padding:0 8px!important}
+  .hero{min-height:490px!important}
+  .hero-inner{padding-top:38px!important}
+  .days{font-size:clamp(96px,30vw,138px)!important}
+  .clock{gap:5px!important}
+  .clock div{min-width:0!important;flex:1}
+  .clock b{font-size:23px!important}
+  .dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:7px!important}
+  .stat-card{min-height:86px!important;padding:13px 12px!important;border-radius:17px!important}
+  .stat-label{font-size:8px!important}.stat-value{font-size:18px!important}
+  .schedule-visuals,.section,.target-section,.info-center{border-radius:22px!important}
+  .schedule-chart-grid{grid-template-columns:1fr!important}
+  .schedule-chart-card{border-radius:17px!important}
+  .status-chart-layout{grid-template-columns:92px 1fr!important}
+  .status-donut{width:88px!important;height:88px!important}
+  .target-head{align-items:flex-start!important}
+  .target-head-actions{width:100%;display:flex;justify-content:space-between;gap:7px}
+  .target-add-btn{min-height:40px!important;padding:0 14px!important}
+  .target-count{display:grid;place-items:center;min-height:40px!important}
+  .target-empty{gap:11px!important}
+  .circular-tabs{top:62px!important}
+  .circular-group{border-radius:17px!important}
+  .calendar-commandbar{padding:6px!important}
+  .calendar-filter-row{scroll-snap-type:x proximity}
+  .calendar-filter{scroll-snap-align:start}
+  .controls{display:grid!important;grid-template-columns:minmax(0,1fr) auto auto!important}
+  .controls input{width:100%!important}
+  .controls .btn{white-space:nowrap}
+  .calendar-head{min-height:48px}
+  .week div{font-size:7px!important}
+  .timeline-card{grid-template-columns:48px minmax(0,1fr) 32px!important;position:relative}
+  .timeline-status{grid-column:2/4;justify-self:start;margin-top:-3px}
+  .timeline-star{grid-column:3;grid-row:1}
+  .guide-stats{grid-template-columns:1fr!important;gap:6px}
+  .guide-stat{padding:10px 11px}
+  .guide-stat-meter{margin-top:7px}
+  .category-tabs{top:62px!important}
+  .category-section{scroll-margin-top:118px}
+  .pdf-picker-modal{width:100%!important}
+  .pdf-picker-body{gap:10px!important}
+  .pdf-pick-section{padding:9px}
+  .pdf-picker-foot{position:sticky;bottom:0;z-index:3}
+  .event-drawer{width:100%!important;max-width:none!important;border-left:0!important;border-top:1px solid var(--line)!important}
+  .mobile-dock{padding:5px!important}
+  .mobile-dock a{min-width:0;padding:7px 1px!important;font-size:7.5px!important;white-space:nowrap}
+  .mobile-dock b{font-size:16px!important;margin-bottom:2px!important}
+}
+@media(max-width:390px){
+  .brand{max-width:118px;overflow:hidden;text-overflow:ellipsis}
+  .sync-link span{display:none}
+  .sync-link{width:36px!important;padding:0!important;justify-content:center}
+  .controls{grid-template-columns:minmax(0,1fr) auto!important}
+  #refresh{grid-column:1/-1;width:100%}
+  .clock span{font-size:6.5px!important}
+  .target-head-actions{flex-wrap:wrap}.target-add-btn{flex:1}.target-count{flex:0 0 auto}
+}
+@media(hover:none){
+  .schedule-chart-card:hover,.timeline-card:hover,.circular-card:hover,.starred-card:hover{transform:none!important}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -1807,7 +2068,7 @@ html[data-theme="light"] .target-empty-copy>span{color:#7e899b}
 
     <section class="dashboard-stats">
       <div class="stat-card"><div class="stat-label">Next exam</div><div class="stat-value" id="statNext">—</div><div class="stat-note" id="statNextNote">Waiting for schedule</div></div>
-      <div class="stat-card"><div class="stat-label">Starred targets</div><div class="stat-value" id="statStarred">0</div><div class="stat-note">Your personal exam list</div></div>
+      <div class="stat-card"><div class="stat-label">My Exams</div><div class="stat-value" id="statStarred">0</div><div class="stat-note">Exams you selected</div></div>
       <div class="stat-card"><div class="stat-label">Study stage</div><div class="stat-value" id="statPhase">Build</div><div class="stat-note" id="statPhaseNote">Study every day</div></div>
       <div class="stat-card"><div class="stat-label">Confirmed exams</div><div class="stat-value" id="statConfirmed">0</div><div class="stat-note">Dates confirmed by official sources</div></div>
     </section>
@@ -1853,8 +2114,8 @@ html[data-theme="light"] .target-empty-copy>span{color:#7e899b}
 
     <section class="target-section" id="targets">
       <div class="target-head">
-        <div><div class="section-kicker">YOUR LIST</div><h2>My Exams</h2><div class="sub">Star an exam to keep it here.</div></div>
-        <div class="target-head-actions"><button class="target-add-btn" id="targetAddButton" type="button">＋ Add exams</button><div class="target-count" id="targetCount">0 STARRED</div></div>
+        <div><div class="section-kicker">YOUR LIST</div><h2>My Exams</h2><div class="sub">Choose exams to keep them together here.</div></div>
+        <div class="target-head-actions"><button class="target-add-btn" id="targetAddButton" type="button">＋ Add exams</button><div class="target-count" id="targetCount">0 SELECTED</div></div>
       </div>
       <div class="starred-grid" id="starredCards"></div>
     </section>
@@ -1894,7 +2155,7 @@ html[data-theme="light"] .target-empty-copy>span{color:#7e899b}
           <button class="calendar-filter" data-calendar-filter="medical" type="button">মেডিকেল</button>
           <button class="calendar-filter" data-calendar-filter="engineering" type="button">ইঞ্জিনিয়ারিং</button>
           <button class="calendar-filter" data-calendar-filter="university" type="button">বিশ্ববিদ্যালয়</button>
-          <button class="calendar-filter" data-calendar-filter="starred" type="button">★ Starred</button>
+          <button class="calendar-filter" data-calendar-filter="starred" type="button">★ My Exams</button>
         </div>
         <div class="calendar-audit"><i></i><span>Audited 7 Oct 2026</span></div>
       </div>
@@ -1909,6 +2170,7 @@ html[data-theme="light"] .target-empty-copy>span{color:#7e899b}
 
     <section class="info-center" id="infoCenter">
       <div class="head"><div><div class="section-kicker">REFERENCE</div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্য কণিকা</h2><div class="sub">বিশ্ববিদ্যালয়, ইঞ্জিনিয়ারিং ও মেডিকেল — এই ৩ ক্যাটাগরিতে আসন, যোগ্যতা, পরীক্ষার ধরন, নম্বরবণ্টন ও ফলাফল নির্ণয়।</div></div></div>
+      <div class="guide-stats" id="guideStats"></div>
       <div class="category-tabs" id="categoryTabs"></div>
       <div id="categoryCharts"></div>
     </section>
@@ -2003,16 +2265,16 @@ html[data-theme="light"] .target-empty-copy>span{color:#7e899b}
     <div class="event-drawer-date" id="eventDrawerDate">—</div>
     <div class="event-drawer-status" id="eventDrawerStatus">Confirmed</div>
     <div class="event-drawer-note" id="eventDrawerNote">—</div>
-    <div class="event-drawer-actions"><button class="btn" id="eventDrawerStar" type="button">☆ Add to targets</button><button class="btn primary" id="eventDrawerClose2" type="button">Done</button></div>
+    <div class="event-drawer-actions"><button class="btn" id="eventDrawerStar" type="button">☆ Add to My Exams</button><button class="btn primary" id="eventDrawerClose2" type="button">Done</button></div>
   </aside>
 </div>
 
 <nav class="mobile-dock" aria-label="Quick navigation">
   <a href="#dashboard"><b>⌂</b>Home</a>
-  <a href="#targets"><b>★</b>Targets</a>
+  <a href="#targets"><b>★</b>My Exams</a>
   <a href="#circulars"><b>◎</b>Circulars</a>
   <a href="#calendar"><b>▦</b>Calendar</a>
-  <a href="#infoCenter"><b>≡</b>Info</a>
+  <a href="#infoCenter"><b>≡</b>Guide</a>
 </nav>
 
 <div class="admin-editor" id="adminEditor" aria-label="Site admin editor">
@@ -2491,7 +2753,7 @@ function starButton(e,extraClass=''){
   b.type='button';
   b.className='star-btn '+extraClass+(isStarred(e)?' active':'');
   b.textContent=isStarred(e)?'★':'☆';
-  b.title=isStarred(e)?'Remove from My Target Exams':'Star this exam';
+  b.title=isStarred(e)?'Remove from My Exams':'Add to My Exams';
   b.setAttribute('aria-label',b.title);
   b.onclick=ev=>{ev.stopPropagation();toggleStar(e)};
   return b;
@@ -2575,7 +2837,7 @@ function openEventDrawer(e){
   eventDrawerStatus.textContent=state==='confirmed'?'Confirmed / official date':state==='pending'?'Date announced / circular pending':'Not confirmed';
   eventDrawerStatus.className='event-drawer-status '+(state==='confirmed'?'':state);
   eventDrawerNote.textContent=e.agreement||'Use the latest official university notice for final details.';
-  eventDrawerStar.textContent=isStarred(e)?(eventKey(e)===countdownTargetKey?'★ Countdown target':'★ In My Targets'):'☆ Add to targets';
+  eventDrawerStar.textContent=isStarred(e)?(eventKey(e)===countdownTargetKey?'★ Countdown target':'★ In My Exams'):'☆ Add to My Exams';
   eventDrawerBackdrop.classList.add('open');eventDrawerBackdrop.setAttribute('aria-hidden','false');
 }
 function closeEventDrawer(){eventDrawerBackdrop.classList.remove('open');eventDrawerBackdrop.setAttribute('aria-hidden','true');drawerEvent=null}
@@ -2732,7 +2994,7 @@ function updateDashboardStats(){
 }
 function renderStarredTargets(){
   const matches=all.filter(isStarred).sort((a,b)=>new Date(a.date)-new Date(b.date));
-  targetCount.textContent=matches.length+' STARRED';
+  targetCount.textContent=matches.length+' SELECTED';
   updateDashboardStats();
   if(!matches.length){
     starredCards.innerHTML='<div class="target-empty"><div class="target-empty-icon">★</div><div class="target-empty-copy"><b>Build your exam list</b><span>Tap “Add exams” and choose the exams you care about.</span><div class="target-empty-pills"><i class="medical">মেডিকেল</i><i class="engineering">ইঞ্জিনিয়ারিং</i><i class="university">বিশ্ববিদ্যালয়</i></div></div></div>';
@@ -3490,6 +3752,15 @@ function renderCategoryTable(cat){
 function renderAllCategories(){
   const tabs=document.getElementById('categoryTabs');
   const host=document.getElementById('categoryCharts');
+  const guideStats=document.getElementById('guideStats');
+  if(guideStats){
+    const counts=CATEGORY_ORDER.map(cat=>({cat,count:BOOKLET_ROWS.filter(r=>r.cat===cat).length}));
+    const max=Math.max(1,...counts.map(x=>x.count));
+    guideStats.innerHTML=counts.map(x=>{
+      const cls=x.cat==='মেডিকেল ও ডেন্টাল'?'medical':x.cat==='ইঞ্জিনিয়ারিং'?'engineering':'university';
+      return '<article class="guide-stat '+cls+'"><div class="guide-stat-top"><span><i></i>'+esc(CATEGORY_LABELS[x.cat]||x.cat)+'</span><b>'+x.count+'</b></div><div class="guide-stat-meter"><i style="width:'+(x.count/max*100)+'%"></i></div><small>তথ্য এন্ট্রি</small></article>';
+    }).join('');
+  }
   tabs.innerHTML=CATEGORY_ORDER.map((cat,i)=>'<button class="category-tab'+(i===0?' active':'')+'" data-cat="'+esc(cat)+'">'+esc(CATEGORY_LABELS[cat]||cat)+'</button>').join('');
   host.innerHTML=CATEGORY_ORDER.map(cat=>renderCategoryTable(cat)).join('');
 
