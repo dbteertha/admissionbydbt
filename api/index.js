@@ -3356,6 +3356,225 @@ html[data-theme="light"] .mobile-dock{background:rgba(249,251,251,.96)!important
   html[data-theme="light"] .info-center{background:#f8f7fa!important}
 }
 
+
+/* ===== DBT UI V6.2 — BLACK/WHITE + COLORFUL PREMIUM MODE ===== */
+:root{
+  --c-cyan:#39cbe5;
+  --c-cyan-deep:#168aa6;
+  --c-violet:#7a4fd8;
+  --c-violet-deep:#4f2a94;
+  --c-pink:#ee4f8a;
+  --c-coral:#f07c78;
+  --c-teal:#39a98f;
+  --c-amber:#e7a64d;
+  --c-blue:#4b78d1;
+}
+html[data-theme="dark"]{
+  --bg:#07090d!important;--panel:#0d1016!important;--panel2:#121722!important;
+  --text:#f2f4f7!important;--muted:#9ca6b3!important;--line:rgba(255,255,255,.09)!important;
+  --cat-medical:#ff6b9b!important;--cat-engineering:#52d3e8!important;--cat-university:#a27be8!important;
+  --status-confirmed:#62c99f!important;--status-pending:#e5b261!important;--status-tentative:#d77b8f!important;
+}
+html[data-theme="light"]{
+  --bg:#f5f6f8!important;--panel:#ffffff!important;--panel2:#f7f8fb!important;
+  --text:#17191f!important;--muted:#687180!important;--line:rgba(28,37,49,.10)!important;
+  --cat-medical:#d93f76!important;--cat-engineering:#199fba!important;--cat-university:#6845ba!important;
+  --status-confirmed:#2f9873!important;--status-pending:#b97b28!important;--status-tentative:#b75b70!important;
+}
+
+/* crisp black/white canvas + colorful atmospheric accents */
+html[data-theme="dark"] body{
+  background-color:#07090d!important;
+  background-image:
+    radial-gradient(circle at 9% 8%,rgba(57,203,229,.10),transparent 26%),
+    radial-gradient(circle at 92% 12%,rgba(238,79,138,.09),transparent 22%),
+    radial-gradient(circle at 72% 72%,rgba(122,79,216,.10),transparent 29%)!important;
+}
+html[data-theme="light"] body{
+  background-color:#f5f6f8!important;
+  background-image:
+    radial-gradient(circle at 9% 7%,rgba(57,203,229,.12),transparent 25%),
+    radial-gradient(circle at 93% 10%,rgba(238,79,138,.09),transparent 22%),
+    radial-gradient(circle at 74% 70%,rgba(122,79,216,.08),transparent 28%)!important;
+}
+
+/* nav: neutral shell, colorful active states */
+html[data-theme="dark"] .topnav{background:rgba(10,12,18,.90)!important;border-color:rgba(255,255,255,.08)!important}
+html[data-theme="light"] .topnav{background:rgba(255,255,255,.92)!important;border-color:rgba(25,34,46,.09)!important}
+.brand-orb{
+  background:radial-gradient(circle at 36% 31%,#fff 0 7%,#83ebf7 8% 22%,#39cbe5 35%,#7a4fd8 70%,#14101e 100%)!important;
+  box-shadow:0 6px 20px rgba(57,203,229,.24)!important
+}
+.navlink[href="#dashboard"].active{background:rgba(75,120,209,.14)!important;color:#c9d8ff!important}
+.navlink[href="#targets"].active{background:rgba(122,79,216,.15)!important;color:#d7c8ff!important}
+.navlink[href="#circulars"].active{background:rgba(238,79,138,.14)!important;color:#ffd0df!important}
+.navlink[href="#calendar"].active{background:rgba(57,203,229,.14)!important;color:#c8f5ff!important}
+.navlink[href="#infoCenter"].active{background:rgba(122,79,216,.14)!important;color:#ddd0ff!important}
+html[data-theme="light"] .navlink[href="#dashboard"].active{background:#eaf0ff!important;color:#385ea7!important}
+html[data-theme="light"] .navlink[href="#targets"].active{background:#f1eaff!important;color:#5a3fa3!important}
+html[data-theme="light"] .navlink[href="#circulars"].active{background:#ffeaf1!important;color:#a73761!important}
+html[data-theme="light"] .navlink[href="#calendar"].active{background:#e7f9fc!important;color:#137f98!important}
+html[data-theme="light"] .navlink[href="#infoCenter"].active{background:#f0ebff!important;color:#574196!important}
+
+/* section identity: richer like the dashboard reference */
+.schedule-visuals{--section-accent:var(--c-cyan)!important;--section-soft:rgba(57,203,229,.13)!important}
+.target-section{--section-accent:var(--c-violet)!important;--section-soft:rgba(122,79,216,.13)!important}
+.circular-section{--section-accent:var(--c-pink)!important;--section-soft:rgba(238,79,138,.13)!important}
+.calendar-section{--section-accent:var(--c-teal)!important;--section-soft:rgba(57,169,143,.13)!important}
+.info-center{--section-accent:var(--c-violet)!important;--section-soft:rgba(122,79,216,.13)!important}
+
+html[data-theme="dark"] .schedule-visuals{background:#0c171e!important;border-color:rgba(57,203,229,.20)!important}
+html[data-theme="dark"] .target-section{background:#171121!important;border-color:rgba(122,79,216,.22)!important}
+html[data-theme="dark"] .circular-section{background:#1f1119!important;border-color:rgba(238,79,138,.20)!important}
+html[data-theme="dark"] .calendar-section{background:#0d1919!important;border-color:rgba(57,169,143,.20)!important}
+html[data-theme="dark"] .info-center{background:#151220!important;border-color:rgba(122,79,216,.20)!important}
+
+html[data-theme="light"] .schedule-visuals{background:#e9f9fc!important;border-color:#bfeaf2!important}
+html[data-theme="light"] .target-section{background:#f3edff!important;border-color:#ddd0f5!important}
+html[data-theme="light"] .circular-section{background:#fff0f4!important;border-color:#f4cad7!important}
+html[data-theme="light"] .calendar-section{background:#ecf9f5!important;border-color:#c9e8dd!important}
+html[data-theme="light"] .info-center{background:#f3efff!important;border-color:#dcd2f4!important}
+
+/* section icons become proper color blocks */
+.target-head h2:before,
+.circular-section>.head h2:before,
+.command-section-head h2:before,
+.info-title:before,
+.schedule-visual-head h2:before{
+  color:#fff!important;border-color:transparent!important;
+  box-shadow:0 8px 18px color-mix(in srgb,var(--section-accent) 20%,transparent)!important
+}
+.target-head h2:before{background:var(--c-violet)!important}
+.circular-section>.head h2:before{background:var(--c-pink)!important}
+.command-section-head h2:before{background:var(--c-teal)!important}
+.info-title:before{background:var(--c-violet)!important}
+.schedule-visual-head h2:before{background:var(--c-cyan)!important}
+
+/* neutral cards inside colorful sections */
+html[data-theme="dark"] .schedule-chart-card,
+html[data-theme="dark"] .starred-card.compact-target,
+html[data-theme="dark"] .circular-card,
+html[data-theme="dark"] .calendar-commandbar,
+html[data-theme="dark"] .timeline-card,
+html[data-theme="dark"] .guide-card,
+html[data-theme="dark"] .guide-panel{
+  background:#10141b!important;border-color:rgba(255,255,255,.07)!important
+}
+html[data-theme="light"] .schedule-chart-card,
+html[data-theme="light"] .starred-card.compact-target,
+html[data-theme="light"] .circular-card,
+html[data-theme="light"] .calendar-commandbar,
+html[data-theme="light"] .timeline-card,
+html[data-theme="light"] .guide-card,
+html[data-theme="light"] .guide-panel{
+  background:#fff!important;border-color:rgba(28,37,49,.08)!important;
+  box-shadow:0 10px 26px rgba(53,66,86,.055)!important
+}
+
+/* featured cards get richer colored identity */
+.starred-card.compact-target.category-medical{background:color-mix(in srgb,var(--cat-medical) 7%,var(--panel))!important}
+.starred-card.compact-target.category-engineering{background:color-mix(in srgb,var(--cat-engineering) 7%,var(--panel))!important}
+.starred-card.compact-target.category-university{background:color-mix(in srgb,var(--cat-university) 7%,var(--panel))!important}
+html[data-theme="light"] .starred-card.compact-target.category-medical{background:#fff6f9!important}
+html[data-theme="light"] .starred-card.compact-target.category-engineering{background:#f3fbfd!important}
+html[data-theme="light"] .starred-card.compact-target.category-university{background:#f8f5ff!important}
+
+/* summary cards inspired by colorful dashboard tiles */
+.circular-summary-card:nth-child(1){background:color-mix(in srgb,var(--c-teal) 15%,var(--panel))!important;border-color:color-mix(in srgb,var(--c-teal) 25%,var(--line))!important}
+.circular-summary-card:nth-child(2){background:color-mix(in srgb,var(--c-pink) 14%,var(--panel))!important;border-color:color-mix(in srgb,var(--c-pink) 24%,var(--line))!important}
+.circular-summary-card:nth-child(3){background:color-mix(in srgb,var(--c-coral) 15%,var(--panel))!important;border-color:color-mix(in srgb,var(--c-coral) 24%,var(--line))!important}
+html[data-theme="light"] .circular-summary-card:nth-child(1){background:#e9f8f2!important}
+html[data-theme="light"] .circular-summary-card:nth-child(2){background:#ffeaf1!important}
+html[data-theme="light"] .circular-summary-card:nth-child(3){background:#fff0e9!important}
+
+/* chart bars are vivid, but not neon */
+.monthly-bar-stack i.medical,.weekly-bar-stack i.medical{background:#e95d88!important}
+.monthly-bar-stack i.engineering,.weekly-bar-stack i.engineering{background:#39cbe5!important}
+.monthly-bar-stack i.university,.weekly-bar-stack i.university{background:#7a4fd8!important}
+.status-legend i.confirmed{background:#45b78a!important}.status-legend i.pending{background:#e0a34c!important}.status-legend i.tentative{background:#d46880!important}
+
+/* category names use the same vivid palette everywhere */
+.category-medical .admission-name,
+.circular-cat-medical .circular-card strong,
+.calendar-section .category-medical .event-title,
+.calendar-section .timeline-card.category-medical .timeline-main strong,
+.starred-card.category-medical .target-name{color:var(--cat-medical)!important}
+.category-engineering .admission-name,
+.circular-cat-engineering .circular-card strong,
+.calendar-section .category-engineering .event-title,
+.calendar-section .timeline-card.category-engineering .timeline-main strong,
+.starred-card.category-engineering .target-name{color:var(--cat-engineering)!important}
+.category-university .admission-name,
+.circular-cat-university .circular-card strong,
+.calendar-section .category-university .event-title,
+.calendar-section .timeline-card.category-university .timeline-main strong,
+.starred-card.category-university .target-name{color:var(--cat-university)!important}
+
+/* active chips/buttons */
+.target-count{background:rgba(122,79,216,.14)!important;border-color:rgba(122,79,216,.26)!important;color:#d0c1f6!important}
+html[data-theme="light"] .target-count{background:#ede5ff!important;border-color:#dacaf7!important;color:#5d419d!important}
+.target-add-btn{background:rgba(122,79,216,.16)!important;border-color:rgba(122,79,216,.28)!important;color:#eadfff!important}
+html[data-theme="light"] .target-add-btn{background:#eee6ff!important;border-color:#d9caf6!important;color:#5a3f9b!important}
+
+.calendar-view-btn.active{background:rgba(57,169,143,.16)!important;border-color:rgba(57,169,143,.28)!important;color:#d8fff3!important}
+html[data-theme="light"] .calendar-view-btn.active{background:#e3f5ef!important;border-color:#c4e3d7!important;color:#2c7964!important}
+.circular-tab.active{background:rgba(238,79,138,.15)!important;border-color:rgba(238,79,138,.27)!important;color:#ffd5e1!important}
+html[data-theme="light"] .circular-tab.active{background:#ffe5ee!important;border-color:#f5c7d5!important;color:#a53860!important}
+.category-tab.active{background:rgba(122,79,216,.15)!important;border-color:rgba(122,79,216,.28)!important;color:#eadfff!important}
+html[data-theme="light"] .category-tab.active{background:#eee7ff!important;border-color:#d8cdf2!important;color:#5e4799!important}
+
+/* PDF / primary actions */
+#pdfDownloadSelected,.btn.primary{
+  background:linear-gradient(135deg,#4a78d0,#7a4fd8)!important;
+  border-color:transparent!important;color:#fff!important;
+  box-shadow:0 10px 22px rgba(91,79,190,.16)!important
+}
+.sync-link.saved{background:rgba(57,169,143,.13)!important;border-color:rgba(57,169,143,.23)!important;color:#bde8dc!important}
+html[data-theme="light"] .sync-link.saved{background:#e8f6f1!important;border-color:#cfe8df!important;color:#3b7767!important}
+
+/* modal shells stay black/white; controls carry color */
+html[data-theme="dark"] .pdf-picker-modal,
+html[data-theme="dark"] .day-events-sheet,
+html[data-theme="dark"] .target-picker,
+html[data-theme="dark"] .sync-modal,
+html[data-theme="dark"] .guide-compare-modal,
+html[data-theme="dark"] .event-drawer{background:#0b0e13!important;border-color:rgba(255,255,255,.08)!important}
+html[data-theme="light"] .pdf-picker-modal,
+html[data-theme="light"] .day-events-sheet,
+html[data-theme="light"] .target-picker,
+html[data-theme="light"] .sync-modal,
+html[data-theme="light"] .guide-compare-modal,
+html[data-theme="light"] .event-drawer{background:#fff!important;border-color:rgba(28,37,49,.09)!important}
+html[data-theme="dark"] .modal-x,html[data-theme="dark"] .sync-close,html[data-theme="dark"] .target-picker-close,html[data-theme="dark"] .event-drawer-close{
+  background:#161a22!important;border-color:rgba(255,255,255,.08)!important;color:#d5dae2!important
+}
+html[data-theme="light"] .modal-x,html[data-theme="light"] .sync-close,html[data-theme="light"] .target-picker-close,html[data-theme="light"] .event-drawer-close{
+  background:#f2f4f7!important;border-color:#e3e7ed!important;color:#596575!important
+}
+
+/* bottom dock mirrors the same color mapping */
+html[data-theme="dark"] .mobile-dock{background:rgba(9,11,16,.94)!important}
+html[data-theme="light"] .mobile-dock{background:rgba(255,255,255,.96)!important}
+.mobile-dock a[href="#dashboard"].active b{color:#5c87e3!important}
+.mobile-dock a[href="#targets"].active b{color:#8f68dd!important}
+.mobile-dock a[href="#circulars"].active b{color:#eb5b8e!important}
+.mobile-dock a[href="#calendar"].active b{color:#46b69b!important}
+.mobile-dock a[href="#infoCenter"].active b{color:#8f68dd!important}
+
+/* mobile gets solid colored sections to stay fast */
+@media(max-width:700px){
+  html[data-theme="dark"] .schedule-visuals{background:#0c171e!important}
+  html[data-theme="dark"] .target-section{background:#171121!important}
+  html[data-theme="dark"] .circular-section{background:#1f1119!important}
+  html[data-theme="dark"] .calendar-section{background:#0d1919!important}
+  html[data-theme="dark"] .info-center{background:#151220!important}
+  html[data-theme="light"] .schedule-visuals{background:#e9f9fc!important}
+  html[data-theme="light"] .target-section{background:#f3edff!important}
+  html[data-theme="light"] .circular-section{background:#fff0f4!important}
+  html[data-theme="light"] .calendar-section{background:#ecf9f5!important}
+  html[data-theme="light"] .info-center{background:#f3efff!important}
+}
+
 </style></head><body>
 <div class="app">
   <nav class="topnav">
@@ -4921,7 +5140,7 @@ if(dbtLanguageButton)dbtLanguageButton.onclick=()=>applyLanguage(currentLang==='
 function applyTheme(theme){
   const next=theme==='dark'?'dark':'light';
   document.documentElement.dataset.theme=next;
-  const tm=document.getElementById('themeColorMeta');if(tm)tm.content=next==='light'?'#f2f5f6':'#081016';
+  const tm=document.getElementById('themeColorMeta');if(tm)tm.content=next==='light'?'#f5f6f8':'#07090d';
   try{localStorage.setItem('admissionbydbt-theme-v1',next)}catch(e){}
   if(typeof themeToggle!=='undefined'&&themeToggle){
     themeToggle.title=currentLang==='bn'
