@@ -2826,6 +2826,32 @@ html[data-theme="light"] .pdf-picker-foot{
   .mobile-dock{backdrop-filter:blur(7px)!important;-webkit-backdrop-filter:blur(7px)!important}
 }
 
+
+/* ===== My Exams — days-between-exams sequence ===== */
+.target-month-grid{grid-template-columns:1fr!important;gap:0!important}
+.exam-gap-bridge{
+  display:grid;grid-template-columns:minmax(24px,1fr) auto minmax(24px,1fr);
+  align-items:center;gap:10px;padding:9px 14px;
+  color:#9cadc2;font-size:7px;font-weight:950;letter-spacing:.11em;text-align:center
+}
+.exam-gap-bridge span{height:1px;background:linear-gradient(90deg,transparent,rgba(131,158,195,.28))}
+.exam-gap-bridge span:last-child{background:linear-gradient(90deg,rgba(131,158,195,.28),transparent)}
+.exam-gap-bridge b{
+  min-width:76px;padding:6px 10px;border-radius:999px;
+  border:1px solid rgba(125,153,194,.18);background:rgba(125,153,194,.07);
+  color:#aebdd0;font-size:7px;font-weight:950;letter-spacing:.09em;white-space:nowrap
+}
+html[data-theme="light"] .exam-gap-bridge{color:#718198}
+html[data-theme="light"] .exam-gap-bridge span{background:linear-gradient(90deg,transparent,rgba(82,105,140,.22))}
+html[data-theme="light"] .exam-gap-bridge span:last-child{background:linear-gradient(90deg,rgba(82,105,140,.22),transparent)}
+html[data-theme="light"] .exam-gap-bridge b{
+  border-color:rgba(82,105,140,.14);background:rgba(92,121,166,.065);color:#607492
+}
+@media(max-width:700px){
+  .exam-gap-bridge{padding:8px 8px;gap:7px}
+  .exam-gap-bridge b{min-width:68px;padding:5px 8px;font-size:6.5px}
+}
+
 </style></head><body>
 <div class="app">
   <nav class="topnav">
@@ -3937,6 +3963,16 @@ function renderStarredTargets(){
       const time=eventTimeLabel(e),nearest=eventKey(e)===nearestKey;
       const message=v.done?'Exam time / completed':(v.d<=7?'Final stretch — keep revision tight.':v.d<=30?'Revision matters more than collecting new topics.':'Keep going — '+v.d+' days to this exam.');
       const urgency=Math.max(6,100-Math.min(100,(v.d/90)*100));
+      const globalIndex=matches.findIndex(x=>eventKey(x)===eventKey(e));
+      const nextExam=globalIndex>=0?matches[globalIndex+1]:null;
+      let gapHtml='';
+      if(nextExam){
+        const a=bdDate(e.date),b=bdDate(nextExam.date);
+        const aDay=new Date(a.getFullYear(),a.getMonth(),a.getDate());
+        const bDay=new Date(b.getFullYear(),b.getMonth(),b.getDate());
+        const gapDays=Math.max(0,Math.round((bDay-aDay)/86400000));
+        gapHtml='<div class="exam-gap-bridge" aria-label="'+gapDays+' day gap before '+esc(nextExam.title)+'"><span></span><b>'+gapDays+' '+(gapDays===1?'DAY':'DAYS')+' GAP</b><span></span></div>';
+      }
       return '<article class="starred-card category-'+eventCategory(e)+(nearest?' nearest':'')+'" data-star-key="'+key+'">'+
         (nearest?'<div class="target-nearest-badge">NEXT SELECTED</div>':'')+
         '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
@@ -3946,7 +3982,7 @@ function renderStarredTargets(){
           '<div class="target-time"><b data-part="h">'+String(v.h).padStart(2,'0')+'</b><span>HOURS</span></div>'+
           '<div class="target-time"><b data-part="m">'+String(v.m).padStart(2,'0')+'</b><span>MIN</span></div>'+
           '<div class="target-time"><b data-part="s">'+String(v.s).padStart(2,'0')+'</b><span>SEC</span></div>'+
-        '</div><div class="target-countdown-track"><i style="width:'+urgency+'%"></i></div><div class="target-message">'+esc(message)+'</div></article>';
+        '</div><div class="target-countdown-track"><i style="width:'+urgency+'%"></i></div><div class="target-message">'+esc(message)+'</div></article>'+gapHtml;
     }).join('');
     return '<section class="target-month-group" data-target-month="'+monthKey+'"><div class="target-month-head"><div><b>'+esc(g.label)+'</b><span>'+g.events.length+' exam'+(g.events.length===1?'':'s')+'</span></div><div class="target-month-cats">'+chips+'</div></div><div class="target-month-grid">'+cards+'</div></section>';
   }).join('');
