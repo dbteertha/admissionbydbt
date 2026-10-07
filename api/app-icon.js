@@ -1,0 +1,25 @@
+export default function handler(req,res){
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#5f7cff"/>
+      <stop offset=".5" stop-color="#8d6be7"/>
+      <stop offset="1" stop-color="#ef6f9b"/>
+    </linearGradient>
+    <linearGradient id="h" x1=".15" y1="0" x2=".85" y2="1">
+      <stop stop-color="#ffffff" stop-opacity=".98"/>
+      <stop offset="1" stop-color="#eaf1ff" stop-opacity=".9"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="118" fill="url(#g)"/>
+  <circle cx="394" cy="108" r="70" fill="#56d1d9" opacity=".35"/>
+  <circle cx="112" cy="414" r="94" fill="#ffb55c" opacity=".18"/>
+  <path d="M118 122h142c82 0 134 48 134 129 0 85-55 139-141 139H118z" fill="url(#h)"/>
+  <path d="M186 183v145h67c44 0 73-27 73-75 0-45-28-70-71-70z" fill="#6d74d9"/>
+  <path d="M178 116h148v52H178zm0 228h162v52H178z" fill="#fff" opacity=".94"/>
+  </svg>`;
+  res.statusCode=200;
+  res.setHeader('content-type','image/svg+xml; charset=utf-8');
+  res.setHeader('cache-control','public, max-age=86400');
+  res.end(svg);
+}
