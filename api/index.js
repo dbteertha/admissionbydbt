@@ -2542,6 +2542,115 @@ html[data-theme="light"] .info-center{
 @media(prefers-reduced-motion:reduce){
   .monthly-bar-item,.schedule-chart-card,.stat-card,.circular-card,.starred-card{transition:none!important}
 }
+
+/* ===== DBT UI V5.2 — SOLID PREMIUM DARK SYSTEM ===== */
+html[data-theme="dark"]{
+  --bg:#070b11;--panel:#0d141d;--panel2:#111a25;--text:#edf3fb;--muted:#8e9caf;
+  --line:#1e2a38;--glass-line:#1e2a38;--glass-hi:rgba(255,255,255,.035);
+  --cat-medical:#ff789b;--cat-engineering:#58cfee;--cat-university:#aa8cf5;
+  --status-confirmed:#59c999;--status-pending:#e3ad55;--status-tentative:#d17b91;
+}
+html[data-theme="dark"] body{background:#070b11!important;color:#edf3fb}
+html[data-theme="dark"] body:before{background:none!important}
+html[data-theme="dark"] .topnav{
+  background:#0a1018!important;border-bottom-color:#1a2532!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important
+}
+html[data-theme="dark"] .hero:before,
+html[data-theme="dark"] .app:before,
+html[data-theme="dark"] .app:after,
+html[data-theme="dark"] .schedule-visuals:after,
+html[data-theme="dark"] .starred-card:after{display:none!important}
+
+/* Solid, color-synced section identities */
+html[data-theme="dark"] .schedule-visuals{background:#0c1622!important;border-color:#203044!important;box-shadow:0 18px 46px rgba(0,0,0,.22)!important}
+html[data-theme="dark"] .target-section{background:#121323!important;border-color:#292a46!important;box-shadow:0 18px 46px rgba(0,0,0,.22)!important}
+html[data-theme="dark"] .circular-section{background:#181117!important;border-color:#3a2430!important;box-shadow:0 18px 46px rgba(0,0,0,.22)!important}
+html[data-theme="dark"] .calendar-section{background:#0c171d!important;border-color:#20343e!important;box-shadow:0 18px 46px rgba(0,0,0,.22)!important}
+html[data-theme="dark"] .info-center{background:#13121d!important;border-color:#2c2940!important;box-shadow:0 18px 46px rgba(0,0,0,.22)!important}
+html[data-theme="dark"] .schedule-visuals:before,
+html[data-theme="dark"] .target-section:before,
+html[data-theme="dark"] .circular-section:before,
+html[data-theme="dark"] .calendar-section:before,
+html[data-theme="dark"] .info-center:before{opacity:1!important}
+
+/* Cards use solid tones instead of glass/gradient surfaces */
+html[data-theme="dark"] .schedule-chart-card{background:#111c29!important;border-color:#223247!important}
+html[data-theme="dark"] .status-chart-card{background:#101b25!important}
+html[data-theme="dark"] .monthly-chart-card{background:#101a28!important;border-color:#243247!important}
+html[data-theme="dark"] .starred-card{background:#17182a!important;border-color:#2b2d49!important;box-shadow:none!important}
+html[data-theme="dark"] .circular-card,
+html[data-theme="dark"] .circular-group{background:#20161d!important;border-color:#3b2932!important}
+html[data-theme="dark"] .calendar-commandbar,
+html[data-theme="dark"] .timeline-card,
+html[data-theme="dark"] .calendar-cell,
+html[data-theme="dark"] .guide-card,
+html[data-theme="dark"] .guide-panel{background:#101c22!important;border-color:#22343d!important}
+html[data-theme="dark"] .info-center .guide-card,
+html[data-theme="dark"] .info-center .guide-panel{background:#191725!important;border-color:#302d43!important}
+
+/* Category identity stays vivid but controlled */
+html[data-theme="dark"] .starred-card.category-medical{border-left:3px solid var(--cat-medical)!important}
+html[data-theme="dark"] .starred-card.category-engineering{border-left:3px solid var(--cat-engineering)!important}
+html[data-theme="dark"] .starred-card.category-university{border-left:3px solid var(--cat-university)!important}
+html[data-theme="dark"] .pdf-category-chips .pdf-chip[data-pdf-cat="medical"].active,
+html[data-theme="dark"] .calendar-filter[data-calendar-filter="medical"].active{background:#3a1824!important;border-color:#7c3950!important;color:#ff9ab3!important}
+html[data-theme="dark"] .pdf-category-chips .pdf-chip[data-pdf-cat="engineering"].active,
+html[data-theme="dark"] .calendar-filter[data-calendar-filter="engineering"].active{background:#122f3a!important;border-color:#275e70!important;color:#7edcf4!important}
+html[data-theme="dark"] .pdf-category-chips .pdf-chip[data-pdf-cat="university"].active,
+html[data-theme="dark"] .calendar-filter[data-calendar-filter="university"].active{background:#251e3c!important;border-color:#4c3d77!important;color:#bea9ff!important}
+
+/* Premium modal system + soft close/back controls */
+html[data-theme="dark"] .pdf-picker-modal,
+html[data-theme="dark"] .day-events-sheet,
+html[data-theme="dark"] .target-picker,
+html[data-theme="dark"] .sync-modal,
+html[data-theme="dark"] .guide-compare-modal,
+html[data-theme="dark"] .event-drawer{
+  background:#0b121b!important;border-color:#223041!important;box-shadow:0 30px 80px rgba(0,0,0,.46)!important
+}
+html[data-theme="dark"] .pdf-picker-head,
+html[data-theme="dark"] .day-events-head,
+html[data-theme="dark"] .pdf-picker-foot{background:#0d1621!important;border-color:#1d2a39!important}
+html[data-theme="dark"] .modal-x,
+html[data-theme="dark"] .sync-close,
+html[data-theme="dark"] .target-picker-close,
+html[data-theme="dark"] .event-drawer-close{
+  width:36px!important;height:36px!important;border-radius:11px!important;
+  background:#172231!important;border:1px solid #2b3b4f!important;color:#aebdd0!important;
+  box-shadow:none!important
+}
+html[data-theme="dark"] .modal-x:hover,
+html[data-theme="dark"] .sync-close:hover,
+html[data-theme="dark"] .target-picker-close:hover,
+html[data-theme="dark"] .event-drawer-close:hover{
+  background:#203149!important;border-color:#3b5674!important;color:#fff!important
+}
+
+/* Inputs, chips and buttons: solid, calm, readable */
+html[data-theme="dark"] input,
+html[data-theme="dark"] .pdf-exam-search,
+html[data-theme="dark"] .target-picker-search,
+html[data-theme="dark"] .sync-existing-input{background:#0b131d!important;border-color:#253447!important;color:#eef4fb!important}
+html[data-theme="dark"] .pdf-chip,
+html[data-theme="dark"] .calendar-filter,
+html[data-theme="dark"] .calendar-view-btn,
+html[data-theme="dark"] .circular-tab,
+html[data-theme="dark"] .category-tab{background:#121c28!important;border-color:#26374a!important;color:#99a9bc!important}
+html[data-theme="dark"] .pdf-chip.active,
+html[data-theme="dark"] .calendar-view-btn.active,
+html[data-theme="dark"] .calendar-filter.active{background:#21334c!important;border-color:#38577c!important;color:#eaf2ff!important}
+html[data-theme="dark"] .btn,
+html[data-theme="dark"] .target-add-btn,
+html[data-theme="dark"] .sync-copy,
+html[data-theme="dark"] .sync-use{background:#1b2b41!important;border-color:#2f4764!important;color:#e4edfb!important}
+html[data-theme="dark"] #pdfDownloadSelected{background:#315d9b!important;border-color:#4576b9!important;color:#fff!important}
+
+/* Category-mix infographic removed: remaining snapshot uses full width */
+.schedule-chart-grid{grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)!important}
+.status-chart-card{min-width:0}
+@media(max-width:900px){.schedule-chart-grid{grid-template-columns:1fr!important}}
+
 </style></head><body>
 <div class="app">
   <nav class="topnav">
@@ -2600,14 +2709,6 @@ html[data-theme="light"] .info-center{
         <div class="schedule-live-dot"><i></i><span>Live calendar data</span></div>
       </div>
       <div class="schedule-chart-grid">
-        <article class="schedule-chart-card">
-          <div class="chart-card-head"><div><b>Category mix</b><span>Exams by type</span></div><strong id="mixTotal">0</strong></div>
-          <div class="mix-bars">
-            <div class="mix-row medical"><div class="mix-label"><span><i></i>মেডিকেল</span><b id="mixMedicalCount">0</b></div><div class="mix-track"><i id="mixMedicalBar"></i></div></div>
-            <div class="mix-row engineering"><div class="mix-label"><span><i></i>ইঞ্জিনিয়ারিং</span><b id="mixEngineeringCount">0</b></div><div class="mix-track"><i id="mixEngineeringBar"></i></div></div>
-            <div class="mix-row university"><div class="mix-label"><span><i></i>বিশ্ববিদ্যালয়</span><b id="mixUniversityCount">0</b></div><div class="mix-track"><i id="mixUniversityBar"></i></div></div>
-          </div>
-        </article>
         <article class="schedule-chart-card status-chart-card">
           <div class="chart-card-head"><div><b>Date confidence</b><span>Current schedule status</span></div></div>
           <div class="status-chart-layout">
@@ -3500,7 +3601,6 @@ function animateNumberText(el,value,suffix=''){
 }
 
 function renderScheduleVisuals(){
-  if(typeof mixTotal==='undefined'||!mixTotal)return;
   const counts={medical:0,engineering:0,university:0};
   const states={confirmed:0,pending:0,tentative:0};
   all.forEach(e=>{
@@ -3511,13 +3611,20 @@ function renderScheduleVisuals(){
   });
   const total=all.length||0;
   const max=Math.max(1,counts.medical,counts.engineering,counts.university);
-  animateNumberText(mixTotal,total);
-  animateNumberText(mixMedicalCount,counts.medical);
-  animateNumberText(mixEngineeringCount,counts.engineering);
-  animateNumberText(mixUniversityCount,counts.university);
-  mixMedicalBar.style.width=(counts.medical/max*100)+'%';
-  mixEngineeringBar.style.width=(counts.engineering/max*100)+'%';
-  mixUniversityBar.style.width=(counts.university/max*100)+'%';
+  const mixTotalEl=document.getElementById('mixTotal');
+  const mixMedicalCountEl=document.getElementById('mixMedicalCount');
+  const mixEngineeringCountEl=document.getElementById('mixEngineeringCount');
+  const mixUniversityCountEl=document.getElementById('mixUniversityCount');
+  const mixMedicalBarEl=document.getElementById('mixMedicalBar');
+  const mixEngineeringBarEl=document.getElementById('mixEngineeringBar');
+  const mixUniversityBarEl=document.getElementById('mixUniversityBar');
+  if(mixTotalEl)animateNumberText(mixTotalEl,total);
+  if(mixMedicalCountEl)animateNumberText(mixMedicalCountEl,counts.medical);
+  if(mixEngineeringCountEl)animateNumberText(mixEngineeringCountEl,counts.engineering);
+  if(mixUniversityCountEl)animateNumberText(mixUniversityCountEl,counts.university);
+  if(mixMedicalBarEl)mixMedicalBarEl.style.width=(counts.medical/max*100)+'%';
+  if(mixEngineeringBarEl)mixEngineeringBarEl.style.width=(counts.engineering/max*100)+'%';
+  if(mixUniversityBarEl)mixUniversityBarEl.style.width=(counts.university/max*100)+'%';
 
   animateNumberText(statusConfirmedCount,states.confirmed);
   animateNumberText(statusPendingCount,states.pending);
