@@ -413,6 +413,47 @@ a{color:inherit}
 .event-status.pending{color:#b7c5db;border:1px solid rgba(150,175,210,.22);background:rgba(120,150,190,.08)}
 .hero-target-note{margin:10px auto 0;width:max-content;max-width:100%;font-size:9px;color:#8f9bad;letter-spacing:.04em}
 @media(max-width:700px){.circular-section{padding:14px}.circular-grid{grid-template-columns:1fr 1fr}.circular-card{min-height:92px;padding:11px}.circular-card strong{font-size:11px}}
+/* ===== 2026-27 HOME + CALENDAR COMMAND CENTER ===== */
+.home-audit-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1px solid rgba(116,230,167,.18);border-radius:999px;background:rgba(116,230,167,.055);color:#a9d9ba;font-size:8px;font-weight:850;letter-spacing:.06em;white-space:nowrap}
+.home-audit-pill i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(116,230,167,.55)}
+.hero{min-height:560px!important}.hero-inner{width:min(940px,100%)!important;padding:58px 18px 34px!important}
+.hero-next-card{position:relative;z-index:2;width:min(720px,100%);margin:18px auto 0;padding:13px 15px;border:1px solid rgba(120,167,255,.18);border-radius:16px;background:linear-gradient(135deg,rgba(26,37,61,.58),rgba(9,14,23,.80));box-shadow:0 14px 42px rgba(0,0,0,.18);text-align:left}
+.hero-next-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.hero-next-kicker{font-size:7px;font-weight:950;letter-spacing:.15em;color:#7f91ad}
+.hero-next-status{display:inline-flex;align-items:center;gap:5px;font-size:7px;font-weight:900;color:#b8f0ca;padding:4px 7px;border:1px solid rgba(116,230,167,.17);border-radius:999px;background:rgba(116,230,167,.055)}
+.hero-next-status:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--green)}
+.hero-next-name{margin-top:6px;color:#f6f8fb;font-size:17px;font-weight:850;letter-spacing:-.02em}.hero-next-meta{margin-top:4px;color:#95a1b4;font-size:9px}
+.hero-upcoming-strip{position:relative;z-index:2;width:min(900px,100%);margin:10px auto 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.hero-mini-event{min-width:0;padding:9px 10px;border:1px solid rgba(255,255,255,.065);border-radius:11px;background:rgba(7,10,16,.66);text-align:left}
+.hero-mini-event b{display:block;color:#dfe5ed;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hero-mini-event span{display:block;margin-top:3px;color:#6f7b8e;font-size:7px}
+.dashboard-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important}.stat-card{position:relative;overflow:hidden}.stat-card:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,rgba(120,167,255,.35),transparent);opacity:.65}
+.command-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.circular-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0 12px}.circular-summary-card{padding:11px 12px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:#080c12}
+.circular-summary-card span{display:block;color:#687486;font-size:7px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.circular-summary-card b{display:block;margin-top:4px;color:#edf2f7;font-size:18px;letter-spacing:-.03em}.circular-summary-card small{display:block;margin-top:3px;color:#7f8998;font-size:7px}
+.circular-grid{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))!important}.circular-card{min-height:116px!important;padding:15px!important;background:linear-gradient(145deg,#0d121b,#080b11)!important}
+.circular-card b{display:inline-flex!important;width:max-content;padding:4px 6px;border:1px solid rgba(116,230,167,.16);border-radius:999px;background:rgba(116,230,167,.045)}.circular-card strong{margin-top:8px;display:block!important}
+.calendar-section{padding:20px!important;overflow:hidden}.calendar-commandbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:14px 0 10px}
+.calendar-view-switch{display:inline-flex;gap:3px;padding:3px;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:#070a0f}.calendar-view-btn{height:31px;padding:0 12px;border:0;border-radius:8px;background:transparent;color:#798493;font-size:8px;font-weight:900;cursor:pointer}.calendar-view-btn.active{background:#161d29;color:#edf3ff;box-shadow:inset 0 0 0 1px rgba(120,167,255,.17)}
+.calendar-filter-row{display:flex;gap:5px;flex-wrap:wrap}.calendar-filter{height:30px;padding:0 10px;border:1px solid rgba(255,255,255,.075);border-radius:999px;background:#0a0e14;color:#778291;font-size:7.5px;font-weight:850;cursor:pointer}.calendar-filter.active{border-color:rgba(120,167,255,.28);background:rgba(80,120,215,.11);color:#dbe7ff}
+.calendar-audit{display:flex;align-items:center;gap:7px;color:#7d899b;font-size:7.5px}.calendar-audit i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(116,230,167,.5)}
+.calendar-head{margin:9px 0!important;padding:8px 9px;border:1px solid rgba(255,255,255,.055);border-radius:12px;background:#080b10}.calendar-head .month{font-size:16px!important;font-weight:850!important;letter-spacing:-.025em}
+.calendar-scroll{border:1px solid rgba(255,255,255,.06);border-radius:14px;overflow:auto;background:#06090e}.week{background:#090d14!important;position:sticky;top:0;z-index:2}.grid{background:#06090e}
+.day{min-height:116px!important;background:#070b11!important;border-color:rgba(255,255,255,.045)!important;padding:8px!important}.day.muted{opacity:.35}.day.today{background:linear-gradient(145deg,rgba(74,115,207,.11),#080c12)!important;box-shadow:inset 0 0 0 1px rgba(120,167,255,.22)}
+.day .num{display:grid!important;place-items:center;width:24px;height:24px;border-radius:8px;color:#98a3b2!important;font-size:9px!important}.day.today .num{background:#dfe8ff;color:#0a1220!important;font-weight:950}
+.event{position:relative!important;display:grid!important;grid-template-columns:16px minmax(0,1fr)!important;align-items:center!important;gap:4px!important;margin-top:5px!important;padding:5px 6px!important;border:1px solid rgba(255,255,255,.065)!important;border-radius:8px!important;background:#0c1119!important;cursor:pointer!important}
+.event:hover{border-color:rgba(120,167,255,.23)!important;background:#111826!important}.event.starred{background:rgba(242,199,102,.065)!important;border-color:rgba(242,199,102,.16)!important}.event .star-btn{position:static!important;width:15px!important;height:15px!important;font-size:10px!important}
+.event-title{font-size:7.2px!important;line-height:1.25!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.event-status{grid-column:2;justify-self:start;margin:0!important;font-size:5.5px!important}
+.calendar-list{display:none}.calendar-section[data-view="timeline"] .calendar-scroll,.calendar-section[data-view="upcoming"] .calendar-scroll,.calendar-section[data-view="timeline"] .calendar-head,.calendar-section[data-view="upcoming"] .calendar-head{display:none}.calendar-section[data-view="timeline"] .calendar-list,.calendar-section[data-view="upcoming"] .calendar-list{display:block}
+.timeline-month{margin:13px 0 6px;color:#78869a;font-size:8px;font-weight:950;letter-spacing:.13em;text-transform:uppercase}.timeline-card{display:grid;grid-template-columns:74px minmax(0,1fr) auto;gap:12px;align-items:center;padding:11px 12px;border-top:1px solid rgba(255,255,255,.055);background:transparent;cursor:pointer}.timeline-card:first-of-type{border-top:0}.timeline-card:hover{background:rgba(255,255,255,.022)}
+.timeline-date{text-align:center}.timeline-date b{display:block;color:#f0f3f7;font-size:18px;line-height:1}.timeline-date span{display:block;margin-top:4px;color:#6f7b8c;font-size:7px;font-weight:850}.timeline-main{min-width:0}.timeline-main strong{display:block;color:#e8edf4;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.timeline-main small{display:block;margin-top:4px;color:#758193;font-size:7.5px}
+.timeline-status{display:flex;align-items:center;gap:5px;padding:5px 7px;border:1px solid rgba(116,230,167,.13);border-radius:999px;color:#a6d9b7;font-size:6px;font-weight:900;white-space:nowrap}.timeline-status.pending{border-color:rgba(242,199,102,.16);color:#d7b96d}.timeline-status.tentative{border-color:rgba(255,122,138,.16);color:#e79aa5}
+.timeline-empty{padding:34px 14px;text-align:center;color:#667286;font-size:9px}.calendar-list-shell{border:1px solid rgba(255,255,255,.06);border-radius:14px;background:#070a0f;overflow:hidden}.calendar-mobile-note{display:none}
+.event-drawer-backdrop{position:fixed;inset:0;z-index:105;background:rgba(0,0,0,.58);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:.16s}.event-drawer-backdrop.open{opacity:1;pointer-events:auto}
+.event-drawer{position:absolute;right:0;top:0;height:100%;width:min(410px,92vw);padding:22px;background:#080c12;border-left:1px solid rgba(255,255,255,.09);box-shadow:-24px 0 70px rgba(0,0,0,.42);transform:translateX(100%);transition:.2s ease;overflow:auto}.event-drawer-backdrop.open .event-drawer{transform:translateX(0)}
+.event-drawer-close{float:right;width:32px;height:32px;border:1px solid rgba(255,255,255,.08);border-radius:9px;background:#0f141c;color:#8b96a7;cursor:pointer}.event-drawer-kicker{margin-top:42px;color:#728198;font-size:7px;font-weight:950;letter-spacing:.15em}.event-drawer h3{margin:7px 0 5px;color:#f2f5f8;font-size:22px;letter-spacing:-.035em}.event-drawer-date{color:#aab5c5;font-size:10px;line-height:1.5}
+.event-drawer-status{display:inline-flex;margin-top:12px;padding:5px 8px;border:1px solid rgba(116,230,167,.16);border-radius:999px;color:#a5d8b7;background:rgba(116,230,167,.045);font-size:7px;font-weight:900}.event-drawer-status.pending{border-color:rgba(242,199,102,.18);color:#d9bb72;background:rgba(242,199,102,.045)}.event-drawer-status.tentative{border-color:rgba(255,122,138,.18);color:#e8a0aa;background:rgba(255,122,138,.045)}
+.event-drawer-note{margin-top:14px;padding:12px;border:1px solid rgba(255,255,255,.065);border-radius:12px;background:#0b1017;color:#8794a6;font-size:9px;line-height:1.55}.event-drawer-actions{display:flex;gap:7px;margin-top:15px}.event-drawer-actions .btn{flex:1}
+@media(max-width:850px){.dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero-upcoming-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.hero{min-height:0!important}.hero-inner{padding:36px 4px 25px!important}.hero-next-card{margin-top:12px;padding:11px}.hero-next-name{font-size:14px}.hero-upcoming-strip{display:none}.dashboard-stats{gap:6px!important}.stat-card{padding:10px!important}.circular-summary{grid-template-columns:1fr 1fr}.circular-summary-card:last-child{grid-column:1/-1}.calendar-section{padding:13px!important}.calendar-commandbar{align-items:stretch}.calendar-view-switch{width:100%}.calendar-view-btn{flex:1}.calendar-filter-row{width:100%;overflow:auto;flex-wrap:nowrap;padding-bottom:3px}.calendar-filter{flex:0 0 auto}.calendar-scroll{display:none!important}.calendar-head{display:none!important}.calendar-list{display:block!important}.calendar-mobile-note{display:block;margin:7px 0 9px;color:#667386;font-size:7px}.timeline-card{grid-template-columns:56px minmax(0,1fr) auto;gap:8px;padding:10px 8px}.timeline-date b{font-size:15px}}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -442,7 +483,12 @@ a{color:inherit}
         <div class="days" id="days">00</div>
         <div class="label">DAYS LEFT</div>
         <div class="hero-message" id="heroMessage">One focused day at a time.</div>
-        <div class="hero-target-note">Countdown target: first confirmed admission tests • DU IBA + AAUB • 5 Dec 2026</div>
+        <div class="hero-next-card" id="heroNextCard">
+          <div class="hero-next-top"><span class="hero-next-kicker">NEXT CONFIRMED ADMISSION TEST</span><span class="hero-next-status">Verified</span></div>
+          <div class="hero-next-name" id="heroNextName">Loading admission schedule…</div>
+          <div class="hero-next-meta" id="heroNextMeta">Official dates are prioritised over aggregator entries.</div>
+        </div>
+        <div class="hero-upcoming-strip" id="heroUpcomingStrip"></div>
         <div class="clock">
           <div><b id="weeks">00W</b><span>WEEKS</span></div>
           <div><b id="hours">00H</b><span>HOURS</span></div>
@@ -460,6 +506,7 @@ a{color:inherit}
       <div class="stat-card"><div class="stat-label">Next exam</div><div class="stat-value" id="statNext">—</div><div class="stat-note" id="statNextNote">Waiting for schedule</div></div>
       <div class="stat-card"><div class="stat-label">Starred targets</div><div class="stat-value" id="statStarred">0</div><div class="stat-note">Your personal exam list</div></div>
       <div class="stat-card"><div class="stat-label">Current phase</div><div class="stat-value" id="statPhase">Build</div><div class="stat-note" id="statPhaseNote">Consistency first</div></div>
+      <div class="stat-card"><div class="stat-label">Verified schedule</div><div class="stat-value" id="statConfirmed">0</div><div class="stat-note">Confirmed / official-date exams</div></div>
     </section>
 
     <section class="target-section" id="targets">
@@ -474,6 +521,11 @@ a{color:inherit}
       <div class="head">
         <div><div class="section-kicker">OFFICIAL SOURCES</div><h2>2026–27 Circulars & Notices</h2><div class="sub">Tap a university name to open its current official admission notice or portal. Last audited: 7 Oct 2026.</div></div>
       </div>
+      <div class="circular-summary">
+        <div class="circular-summary-card"><span>Published / official sources</span><b>11</b><small>Current verified links</small></div>
+        <div class="circular-summary-card"><span>Still pending</span><b>10</b><small>Full 2026–27 circular not verified</small></div>
+        <div class="circular-summary-card"><span>Last source audit</span><b style="font-size:14px">7 Oct 2026</b><small>Previous-cycle data stays clearly separated</small></div>
+      </div>
       <div class="circular-grid">
         ${OFFICIAL_CIRCULARS.map(x=>'<a class="circular-card" href="'+x.url+'" target="_blank" rel="noopener"><div><b>'+x.status+'</b><strong>'+x.name+'</strong></div><span>'+x.short+' • Official source</span></a>').join('')}
       </div>
@@ -484,17 +536,35 @@ a{color:inherit}
       </div>
     </section>
 
-    <section class="section calendar-section" id="calendar">
-      <div class="head">
-        <div><div class="section-kicker">SCHEDULE</div><h2>Admission Calendar</h2><div class="sub">Search, star and track the exams that matter to you.</div></div>
+    <section class="section calendar-section" id="calendar" data-view="month">
+      <div class="command-section-head">
+        <div><div class="section-kicker">SCHEDULE COMMAND CENTER</div><h2>Admission Calendar</h2><div class="sub">One verified timeline for exams, announced dates and pending circulars.</div></div>
         <div class="controls"><input id="search" placeholder="Search university or unit…"><button class="btn" id="refresh">Refresh</button></div>
       </div>
+      <div class="calendar-commandbar">
+        <div class="calendar-view-switch" id="calendarViewSwitch">
+          <button class="calendar-view-btn active" data-calendar-view="month" type="button">Month</button>
+          <button class="calendar-view-btn" data-calendar-view="timeline" type="button">Timeline</button>
+          <button class="calendar-view-btn" data-calendar-view="upcoming" type="button">Upcoming</button>
+        </div>
+        <div class="calendar-filter-row" id="calendarFilters">
+          <button class="calendar-filter active" data-calendar-filter="all" type="button">All</button>
+          <button class="calendar-filter" data-calendar-filter="confirmed" type="button">Confirmed</button>
+          <button class="calendar-filter" data-calendar-filter="engineering" type="button">Engineering</button>
+          <button class="calendar-filter" data-calendar-filter="medical" type="button">Medical</button>
+          <button class="calendar-filter" data-calendar-filter="clusters" type="button">Clusters</button>
+          <button class="calendar-filter" data-calendar-filter="starred" type="button">★ Starred</button>
+        </div>
+        <div class="calendar-audit"><i></i><span>Audited 7 Oct 2026</span></div>
+      </div>
+      <div class="calendar-mobile-note">Mobile uses the chronological timeline automatically for easier scanning.</div>
       <div class="calendar-head"><button class="btn" id="prev">← Previous</button><div class="month" id="month"></div><button class="btn" id="next">Next →</button></div>
       <div class="calendar-scroll">
         <div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
         <div class="grid" id="grid"></div>
       </div>
-      <div class="footer">Schedules may change. Use the latest official university notice for critical decisions.</div>
+      <div class="calendar-list" id="calendarList"></div>
+      <div class="footer">Schedules may change. Confirm critical details from the linked official university notice.</div>
     </section>
 
     <section class="info-center" id="infoCenter">
@@ -505,6 +575,18 @@ a{color:inherit}
   </main>
 </div>
 
+<div class="event-drawer-backdrop" id="eventDrawerBackdrop" aria-hidden="true">
+  <aside class="event-drawer" id="eventDrawer">
+    <button class="event-drawer-close" id="eventDrawerClose" type="button">×</button>
+    <div class="event-drawer-kicker">ADMISSION EVENT</div>
+    <h3 id="eventDrawerTitle">—</h3>
+    <div class="event-drawer-date" id="eventDrawerDate">—</div>
+    <div class="event-drawer-status" id="eventDrawerStatus">Confirmed</div>
+    <div class="event-drawer-note" id="eventDrawerNote">—</div>
+    <div class="event-drawer-actions"><button class="btn" id="eventDrawerStar" type="button">☆ Add to targets</button><button class="btn primary" id="eventDrawerClose2" type="button">Done</button></div>
+  </aside>
+</div>
+
 <nav class="mobile-dock" aria-label="Quick navigation">
   <a href="#dashboard"><b>⌂</b>Home</a>
   <a href="#targets"><b>★</b>Targets</a>
@@ -513,7 +595,7 @@ a{color:inherit}
   <a href="#infoCenter"><b>≡</b>Info</a>
 </nav>
 <script>
-const TARGET=new Date('2026-12-05T10:00:00+06:00'), START=new Date('2026-09-05T00:00:00+06:00');
+let TARGET=new Date('2026-12-05T10:00:00+06:00'); const START=new Date('2026-09-05T00:00:00+06:00');
 function phaseFor(days){
   if(days<=1)return {name:'EXAM MODE',stat:'Exam',note:'Stay calm. Execute.',msg:'You prepared for this. Keep your head clear and execute one question at a time.'};
   if(days<=7)return {name:'FINAL SPRINT',stat:'Final sprint',note:'Revise. Rest. Execute.',msg:'Protect your confidence. Revise what matters, sleep properly, and keep moving.'};
@@ -565,8 +647,82 @@ function starButton(e,extraClass=''){
   return b;
 }
 function bdDate(iso){return new Date(new Date(iso).toLocaleString('en-US',{timeZone:'Asia/Dhaka'}))}
-function filtered(){const q=search.value.toLowerCase();return all.filter(e=>!q||e.title.toLowerCase().includes(q))}
+let calendarView=(innerWidth<=700?'timeline':'month'),calendarFilter='all',drawerEvent=null;
+function eventState(e){return e.status==='tentative'?'tentative':e.status==='pending'?'pending':'confirmed'}
+function eventCategory(e){
+  const t=(e.title||'').toLowerCase();
+  if(/medical|dental|mbbs|bds|afmc|amc/.test(t))return 'medical';
+  if(/buet|ruet|kuet|cuet|butex|mist|engineering|technology/.test(t))return 'engineering';
+  if(/cluster|gst|agriculture|গুচ্ছ/.test(t))return 'clusters';
+  return 'general';
+}
+function filtered(){
+  const q=(search.value||'').toLowerCase().trim();
+  return all.filter(e=>{
+    if(q&&!e.title.toLowerCase().includes(q))return false;
+    if(calendarFilter==='confirmed'&&eventState(e)!=='confirmed')return false;
+    if(calendarFilter==='starred'&&!isStarred(e))return false;
+    if(['engineering','medical','clusters'].includes(calendarFilter)&&eventCategory(e)!==calendarFilter)return false;
+    return true;
+  }).sort((a,b)=>new Date(a.date)-new Date(b.date));
+}
+function eventTimeLabel(e){
+  if(e.displayTime)return e.displayTime;
+  if(eventState(e)!=='confirmed')return 'Time TBA';
+  return new Date(e.date).toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'});
+}
+function openEventDrawer(e){
+  drawerEvent=e;
+  const d=new Date(e.date),state=eventState(e);
+  eventDrawerTitle.textContent=e.title;
+  eventDrawerDate.textContent=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'})+' • '+eventTimeLabel(e);
+  eventDrawerStatus.textContent=state==='confirmed'?'Confirmed / official date':state==='pending'?'Date announced / circular pending':'Tentative';
+  eventDrawerStatus.className='event-drawer-status '+(state==='confirmed'?'':state);
+  eventDrawerNote.textContent=e.agreement||'Use the latest official university notice for final details.';
+  eventDrawerStar.textContent=isStarred(e)?'★ In My Targets':'☆ Add to targets';
+  eventDrawerBackdrop.classList.add('open');eventDrawerBackdrop.setAttribute('aria-hidden','false');
+}
+function closeEventDrawer(){eventDrawerBackdrop.classList.remove('open');eventDrawerBackdrop.setAttribute('aria-hidden','true');drawerEvent=null}
+function renderHeroNext(){
+  const now=new Date();
+  const future=all.filter(e=>new Date(e.date)>now).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const confirmed=future.filter(e=>eventState(e)==='confirmed');
+  const next=confirmed[0]||future[0];
+  if(!next)return;
+  TARGET=new Date(next.date);
+  heroNextName.textContent=next.title;
+  heroNextMeta.textContent=TARGET.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'})+' • '+eventTimeLabel(next);
+  const minis=future.slice(0,4);
+  heroUpcomingStrip.innerHTML=minis.map(e=>{
+    const d=new Date(e.date);
+    return '<div class="hero-mini-event"><b>'+esc(e.title)+'</b><span>'+esc(d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short'}))+' • '+esc(eventTimeLabel(e))+'</span></div>';
+  }).join('');
+  countdown();
+}
+function renderTimeline(es){
+  const now=new Date();
+  let rows=calendarView==='upcoming'?es.filter(e=>new Date(e.date)>=now).slice(0,14):es;
+  if(!rows.length){calendarList.innerHTML='<div class="calendar-list-shell"><div class="timeline-empty">No admission events match these filters.</div></div>';return}
+  let lastMonth='',html='<div class="calendar-list-shell">';
+  rows.forEach(e=>{
+    const d=new Date(e.date),monthKey=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',month:'long',year:'numeric'});
+    if(calendarView==='timeline'&&monthKey!==lastMonth){html+='<div class="timeline-month">'+esc(monthKey)+'</div>';lastMonth=monthKey}
+    const state=eventState(e);
+    html+='<div class="timeline-card" data-event-key="'+encodeURIComponent(eventKey(e))+'">'+
+      '<div class="timeline-date"><b>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit'})+'</b><span>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',month:'short',weekday:'short'})+'</span></div>'+
+      '<div class="timeline-main"><strong>'+esc(e.title)+'</strong><small>'+esc(eventTimeLabel(e))+(isStarred(e)?' • ★ Target':'')+'</small></div>'+
+      '<div class="timeline-status '+(state==='confirmed'?'':state)+'">'+(state==='confirmed'?'Confirmed':state==='pending'?'Pending':'Tentative')+'</div>'+
+    '</div>';
+  });
+  html+='</div>';calendarList.innerHTML=html;
+  calendarList.querySelectorAll('[data-event-key]').forEach(row=>{
+    row.onclick=()=>{const k=decodeURIComponent(row.dataset.eventKey||'');const e=all.find(x=>eventKey(x)===k);if(e)openEventDrawer(e)};
+  });
+}
 function render(){
+  calendar.dataset.view=(innerWidth<=700&&calendarView==='month')?'timeline':calendarView;
+  document.querySelectorAll('[data-calendar-view]').forEach(b=>b.classList.toggle('active',b.dataset.calendarView===calendarView));
+  document.querySelectorAll('[data-calendar-filter]').forEach(b=>b.classList.toggle('active',b.dataset.calendarFilter===calendarFilter));
   month.textContent=view.toLocaleString('en-US',{month:'long',year:'numeric'});
   grid.innerHTML='';
   const y=view.getFullYear(),mo=view.getMonth(),first=new Date(y,mo,1),start=new Date(y,mo,1-first.getDay());
@@ -578,29 +734,24 @@ function render(){
     const now=new Date();
     if(d.toDateString()==now.toDateString())cell.classList.add('today');
     cell.innerHTML='<span class="num">'+d.getDate()+'</span>';
-    es.filter(e=>{
-      const x=bdDate(e.date);
-      return x.getFullYear()==d.getFullYear()&&x.getMonth()==d.getMonth()&&x.getDate()==d.getDate()
-    }).slice(0,4).forEach(e=>{
+    const todays=es.filter(e=>{const x=bdDate(e.date);return x.getFullYear()==d.getFullYear()&&x.getMonth()==d.getMonth()&&x.getDate()==d.getDate()});
+    todays.slice(0,4).forEach(e=>{
       const el=document.createElement('div');
       el.className='event'+(isStarred(e)?' starred':'');
       el.title=e.title+(e.agreement?' — '+e.agreement:'');
+      el.onclick=()=>openEventDrawer(e);
       el.appendChild(starButton(e));
-      const t=document.createElement('span');
-      t.className='event-title';
-      t.textContent=e.title;
-      el.appendChild(t);
-      if(e.status==='tentative'||e.status==='pending'){
-        const badge=document.createElement('span');
-        badge.className='event-status '+e.status;
-        badge.textContent=e.status==='tentative'?'Tentative':'Pending';
-        el.appendChild(badge);
-      }
+      const t=document.createElement('span');t.className='event-title';t.textContent=e.title;el.appendChild(t);
+      const state=eventState(e);
+      if(state!=='confirmed'){const badge=document.createElement('span');badge.className='event-status '+state;badge.textContent=state==='tentative'?'Tentative':'Pending';el.appendChild(badge)}
       cell.appendChild(el);
     });
+    if(todays.length>4){const more=document.createElement('div');more.className='event-status pending';more.textContent='+'+(todays.length-4)+' more';cell.appendChild(more)}
     grid.appendChild(cell);
   }
+  renderTimeline(es);
   renderStarredTargets();
+  renderHeroNext();
 }
 function splitCountdown(target){
   let diff=new Date(target)-new Date();
@@ -618,6 +769,7 @@ function updateDashboardStats(){
   const future=all.filter(e=>new Date(e.date)>now).sort((a,b)=>new Date(a.date)-new Date(b.date));
   const next=future[0];
   statStarred.textContent=all.filter(isStarred).length;
+  if(typeof statConfirmed!=='undefined'&&statConfirmed)statConfirmed.textContent=all.filter(e=>eventState(e)==='confirmed').length;
   if(next){
     const d=new Date(next.date),left=Math.max(0,Math.ceil((d-now)/86400000));
     statNext.textContent=left+' days';
@@ -690,6 +842,13 @@ prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()
 next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};
 refresh.onclick=()=>load(true);
 search.oninput=render;
+calendarViewSwitch.querySelectorAll('[data-calendar-view]').forEach(btn=>btn.onclick=()=>{calendarView=btn.dataset.calendarView;render()});
+calendarFilters.querySelectorAll('[data-calendar-filter]').forEach(btn=>btn.onclick=()=>{calendarFilter=btn.dataset.calendarFilter;render()});
+eventDrawerClose.onclick=closeEventDrawer;eventDrawerClose2.onclick=closeEventDrawer;
+eventDrawerBackdrop.onclick=e=>{if(e.target===eventDrawerBackdrop)closeEventDrawer()};
+eventDrawerStar.onclick=()=>{if(!drawerEvent)return;const current=drawerEvent;toggleStar(current);drawerEvent=current;openEventDrawer(current)};
+addEventListener('keydown',e=>{if(e.key==='Escape'&&eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()});
+addEventListener('resize',()=>{calendar.dataset.view=(innerWidth<=700&&calendarView==='month')?'timeline':calendarView});
 load();
 setInterval(updateStarredTimers,1000);
 
