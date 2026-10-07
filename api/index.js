@@ -961,7 +961,9 @@ async function useExistingSyncCode(){
     setSyncUi('saved','Saved');
     syncStatusLine.textContent='Synced. This device will keep using this code.';
   }catch(e){
-    syncStatusLine.textContent='Could not load that code right now.';
+    syncStatusLine.textContent=e&&e.message==='storage_not_configured'
+      ?'Cloud sync is not connected yet. This device is saving locally only.'
+      :'Could not load that code right now.';
   }finally{syncUseButton.disabled=false}
 }
 function setCountdownTarget(e){
