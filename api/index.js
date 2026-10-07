@@ -609,6 +609,23 @@ a{color:inherit}
   .msg-link{width:42px!important;height:42px!important;border-radius:13px!important}.msg-link svg{width:20px!important;height:20px!important}
   .sync-link{height:42px!important;padding:0 9px!important;border-radius:13px!important}.sync-link span{font-size:9px!important}.sync-modal{padding:15px!important}.sync-code{font-size:13px!important;letter-spacing:.055em!important}
 }
+
+/* global visual admin editor */
+.admin-editor{position:fixed;left:14px;right:14px;bottom:14px;z-index:10000;display:none;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border:1px solid rgba(130,175,255,.25);border-radius:16px;background:rgba(5,9,16,.96);box-shadow:0 20px 70px rgba(0,0,0,.55);backdrop-filter:blur(18px)}
+body.admin-mode .admin-editor{display:flex}
+.admin-editor strong{font-size:11px;letter-spacing:.04em;margin-right:3px}
+.admin-editor input{height:34px;min-width:180px;padding:0 10px;border:1px solid rgba(255,255,255,.12);border-radius:9px;background:#0b111b;color:#fff;font-size:10px}
+.admin-editor button{height:34px;padding:0 10px;border:1px solid rgba(255,255,255,.11);border-radius:9px;background:#111925;color:#dbe6f7;font-size:9px;font-weight:800;cursor:pointer}
+.admin-editor button:hover{border-color:rgba(120,167,255,.42);color:#fff}
+.admin-editor .admin-save{background:rgba(69,112,204,.22);border-color:rgba(120,167,255,.32)}
+.admin-editor .admin-delete{color:#ffb4be;border-color:rgba(255,122,138,.25)}
+.admin-editor .admin-status{margin-left:auto;color:#93a1b6;font-size:9px}
+body.admin-mode [data-admin-key]{cursor:pointer}
+body.admin-mode [data-admin-key].admin-selected{outline:2px solid #74b7ff!important;outline-offset:3px!important;box-shadow:0 0 0 5px rgba(116,183,255,.12)!important}
+body.admin-mode [data-admin-hidden="1"]{display:initial!important;opacity:.28!important;filter:grayscale(.7)}
+body.admin-mode [data-admin-editing="1"]{outline:2px solid #74e6a7!important;outline-offset:3px!important;cursor:text!important}
+.admin-help{width:100%;font-size:8px;color:#718096;line-height:1.35}
+@media(max-width:700px){.admin-editor{left:7px;right:7px;bottom:74px;padding:8px}.admin-editor input{min-width:130px;flex:1}.admin-editor button{padding:0 8px}.admin-editor .admin-status{width:100%;margin-left:0}}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -782,7 +799,250 @@ a{color:inherit}
   <a href="#calendar"><b>▦</b>Calendar</a>
   <a href="#infoCenter"><b>≡</b>Info</a>
 </nav>
+
+<div class="admin-editor" id="adminEditor" aria-label="Site admin editor">
+  <strong>ADMIN EDITOR</strong>
+  <input id="adminKeyInput" type="password" placeholder="Admin password" autocomplete="current-password">
+  <button id="adminLoginBtn" type="button">Unlock</button>
+  <button id="adminEditBtn" type="button">Edit text</button>
+  <button id="adminParentBtn" type="button">Select parent</button>
+  <button id="adminUpBtn" type="button">↑ Move</button>
+  <button id="adminDownBtn" type="button">↓ Move</button>
+  <button class="admin-delete" id="adminDeleteBtn" type="button">Delete</button>
+  <button id="adminResetBtn" type="button">Reset item</button>
+  <button id="adminUndoBtn" type="button">Undo</button>
+  <button class="admin-save" id="adminSaveBtn" type="button">Save site</button>
+  <span class="admin-status" id="adminEditorStatus">Click anything to select it.</span>
+  <div class="admin-help">Click any text or block. Double-click text to edit. Select an item and drag it to move it inside the same section. Changes auto-save for the whole site after you unlock.</div>
+</div>
 <script>
+
+const DBT_ADMIN_MODE=location.pathname==='/admin'||location.pathname==='/admin/';
+let dbtAdminConfig={version:1,updatedAt:0,text:{},hidden:{},orders:{}};
+let dbtAdminSelected=null,dbtAdminApplying=false,dbtAdminSaveTimer=null,dbtAdminKey='';
+let dbtAdminUndo=[];
+try{dbtAdminKey=sessionStorage.getItem('dbt-admin-key')||''}catch(e){}
+if(DBT_ADMIN_MODE)document.body.classList.add('admin-mode');
+
+function dbtAdminStableKey(el){
+  if(!el||el===document.body)return 'body';
+  if(el.id)return 'id:'+el.id;
+  const parts=[];let cur=el,depth=0;
+  while(cur&&cur!==document.body&&depth<9){
+    let seg=cur.tagName.toLowerCase();
+    const cls=[...cur.classList].filter(x=>!x.startsWith('admin-')).slice(0,2);
+    if(cls.length)seg+='.'+cls.join('.');
+    const p=cur.parentElement;
+    if(p){
+      const same=[...p.children].filter(x=>x.tagName===cur.tagName);
+      if(same.length>1)seg+=':nth-'+(same.indexOf(cur)+1);
+    }
+    parts.unshift(seg);
+    if(p&&p.id){parts.unshift('id:'+p.id);break}
+    cur=p;depth++;
+  }
+  return parts.join('>');
+}
+function dbtAdminIsIgnored(el){
+  return !el||el.closest('#adminEditor')||['SCRIPT','STYLE','NOSCRIPT','SVG','PATH','CANVAS'].includes(el.tagName);
+}
+function dbtAdminCanEditText(el){
+  if(!el||dbtAdminIsIgnored(el))return false;
+  const kids=[...el.children].filter(x=>!['BR'].includes(x.tagName));
+  return kids.length===0 && (el.textContent||'').trim().length>0;
+}
+function dbtAdminScan(root=document.body){
+  const list=root===document.body?[...document.body.querySelectorAll('*')]:[root,...root.querySelectorAll('*')];
+  for(const el of list){
+    if(dbtAdminIsIgnored(el))continue;
+    if(!el.dataset.adminKey)el.dataset.adminKey=dbtAdminStableKey(el);
+    if(dbtAdminCanEditText(el)&&el.dataset.adminOriginalText===undefined)el.dataset.adminOriginalText=el.textContent;
+  }
+}
+function dbtAdminFind(key){
+  if(!key)return null;
+  return [...document.querySelectorAll('[data-admin-key]')].find(x=>x.dataset.adminKey===key)||null;
+}
+function dbtAdminApply(){
+  if(dbtAdminApplying)return;
+  dbtAdminApplying=true;
+  dbtAdminScan();
+  for(const el of document.querySelectorAll('[data-admin-key]')){
+    const key=el.dataset.adminKey;
+    if(Object.prototype.hasOwnProperty.call(dbtAdminConfig.text,key)&&dbtAdminCanEditText(el)){
+      el.textContent=dbtAdminConfig.text[key];
+    }
+    if(dbtAdminConfig.hidden[key]){
+      el.dataset.adminHidden='1';
+      if(!DBT_ADMIN_MODE)el.style.setProperty('display','none','important');
+      else el.style.removeProperty('display');
+    }else{
+      delete el.dataset.adminHidden;
+      if(el.style.getPropertyPriority('display')==='important'&&el.style.display==='none')el.style.removeProperty('display');
+    }
+  }
+  for(const [parentKey,order] of Object.entries(dbtAdminConfig.orders||{})){
+    const parent=dbtAdminFind(parentKey);
+    if(!parent||!Array.isArray(order))continue;
+    const map=new Map([...parent.children].map(x=>[x.dataset.adminKey,x]));
+    for(const childKey of order){const child=map.get(childKey);if(child)parent.appendChild(child)}
+  }
+  dbtAdminApplying=false;
+}
+async function dbtAdminLoad(){
+  try{
+    const r=await fetch('/api/admin-content',{cache:'no-store'});
+    const j=await r.json();
+    if(j&&j.config){
+      dbtAdminConfig=j.config;
+      dbtAdminApply();
+      const s=document.getElementById('adminEditorStatus');if(s&&DBT_ADMIN_MODE)s.textContent='Site content loaded.';
+    }
+  }catch(e){
+    const s=document.getElementById('adminEditorStatus');if(s&&DBT_ADMIN_MODE)s.textContent='Could not load saved site changes.';
+  }
+}
+function dbtAdminSnapshot(){
+  dbtAdminUndo.push(JSON.stringify(dbtAdminConfig));
+  if(dbtAdminUndo.length>30)dbtAdminUndo.shift();
+}
+function dbtAdminRecordOrder(parent){
+  if(!parent||dbtAdminIsIgnored(parent))return;
+  dbtAdminScan(parent);
+  const pkey=parent.dataset.adminKey||dbtAdminStableKey(parent);
+  parent.dataset.adminKey=pkey;
+  dbtAdminConfig.orders[pkey]=[...parent.children].filter(x=>x.dataset.adminKey&&!dbtAdminIsIgnored(x)).map(x=>x.dataset.adminKey);
+  dbtAdminConfig.updatedAt=Date.now();
+  dbtAdminQueueSave();
+}
+function dbtAdminSelect(el){
+  if(!DBT_ADMIN_MODE||dbtAdminIsIgnored(el))return;
+  if(dbtAdminSelected)dbtAdminSelected.classList.remove('admin-selected');
+  dbtAdminSelected=el;
+  dbtAdminScan(el);
+  el.classList.add('admin-selected');
+  el.draggable=true;
+  const s=document.getElementById('adminEditorStatus');
+  if(s)s.textContent='Selected: '+el.tagName.toLowerCase()+(el.id?' #'+el.id:'');
+}
+function dbtAdminEditSelected(){
+  const el=dbtAdminSelected;
+  if(!el||!dbtAdminCanEditText(el)){document.getElementById('adminEditorStatus').textContent='Select a text item first.';return}
+  dbtAdminSnapshot();
+  el.contentEditable='true';el.dataset.adminEditing='1';el.focus();
+  const finish=()=>{
+    el.contentEditable='false';delete el.dataset.adminEditing;
+    dbtAdminConfig.text[el.dataset.adminKey]=el.textContent;
+    dbtAdminConfig.updatedAt=Date.now();
+    dbtAdminQueueSave();
+    el.removeEventListener('blur',finish);
+  };
+  el.addEventListener('blur',finish);
+}
+function dbtAdminDeleteSelected(){
+  const el=dbtAdminSelected;if(!el)return;
+  dbtAdminSnapshot();
+  dbtAdminConfig.hidden[el.dataset.adminKey]=true;
+  dbtAdminConfig.updatedAt=Date.now();
+  el.dataset.adminHidden='1';el.classList.remove('admin-selected');dbtAdminSelected=null;
+  dbtAdminQueueSave();
+}
+function dbtAdminMove(dir){
+  const el=dbtAdminSelected;if(!el||!el.parentElement)return;
+  const sib=dir<0?el.previousElementSibling:el.nextElementSibling;if(!sib)return;
+  dbtAdminSnapshot();
+  const p=el.parentElement;
+  if(dir<0)p.insertBefore(el,sib);else p.insertBefore(sib,el);
+  dbtAdminRecordOrder(p);
+}
+function dbtAdminResetSelected(){
+  const el=dbtAdminSelected;if(!el)return;
+  dbtAdminSnapshot();
+  const key=el.dataset.adminKey;
+  delete dbtAdminConfig.text[key];delete dbtAdminConfig.hidden[key];
+  if(el.dataset.adminOriginalText!==undefined&&dbtAdminCanEditText(el))el.textContent=el.dataset.adminOriginalText;
+  delete el.dataset.adminHidden;el.style.removeProperty('display');
+  dbtAdminConfig.updatedAt=Date.now();dbtAdminQueueSave();
+}
+async function dbtAdminSave(){
+  if(!DBT_ADMIN_MODE)return;
+  if(!dbtAdminKey){
+    document.getElementById('adminEditorStatus').textContent='Enter the admin password first.';
+    return;
+  }
+  clearTimeout(dbtAdminSaveTimer);
+  const s=document.getElementById('adminEditorStatus');s.textContent='Saving for everyone…';
+  try{
+    const r=await fetch('/api/admin-content',{method:'PUT',headers:{'Content-Type':'application/json','x-admin-key':dbtAdminKey},body:JSON.stringify(dbtAdminConfig),cache:'no-store'});
+    const j=await r.json().catch(()=>({}));
+    if(r.status===401){s.textContent='Wrong admin password.';return}
+    if(r.status===503){s.textContent='ADMIN_KEY is not set in Vercel yet.';return}
+    if(!r.ok)throw new Error(j.error||'save_failed');
+    dbtAdminConfig=j.config||dbtAdminConfig;s.textContent='Saved for the whole site ✓';
+  }catch(e){s.textContent='Save failed. Try again.'}
+}
+function dbtAdminQueueSave(){
+  if(!DBT_ADMIN_MODE)return;
+  clearTimeout(dbtAdminSaveTimer);
+  dbtAdminSaveTimer=setTimeout(dbtAdminSave,850);
+}
+function dbtAdminBind(){
+  if(!DBT_ADMIN_MODE)return;
+  const input=document.getElementById('adminKeyInput');
+  input.value=dbtAdminKey;
+  document.getElementById('adminLoginBtn').onclick=()=>{dbtAdminKey=input.value.trim();try{sessionStorage.setItem('dbt-admin-key',dbtAdminKey)}catch(e){}dbtAdminSave()};
+  document.getElementById('adminEditBtn').onclick=dbtAdminEditSelected;
+  document.getElementById('adminParentBtn').onclick=()=>{if(dbtAdminSelected&&dbtAdminSelected.parentElement&&!dbtAdminIsIgnored(dbtAdminSelected.parentElement))dbtAdminSelect(dbtAdminSelected.parentElement)};
+  document.getElementById('adminUpBtn').onclick=()=>dbtAdminMove(-1);
+  document.getElementById('adminDownBtn').onclick=()=>dbtAdminMove(1);
+  document.getElementById('adminDeleteBtn').onclick=dbtAdminDeleteSelected;
+  document.getElementById('adminResetBtn').onclick=dbtAdminResetSelected;
+  document.getElementById('adminUndoBtn').onclick=()=>{if(!dbtAdminUndo.length)return;dbtAdminConfig=JSON.parse(dbtAdminUndo.pop());dbtAdminSave().then(()=>location.reload())};
+  document.getElementById('adminSaveBtn').onclick=dbtAdminSave;
+
+  document.addEventListener('click',e=>{
+    if(e.target.closest('#adminEditor'))return;
+    const el=e.target.closest('[data-admin-key]');
+    if(!el)return;
+    e.preventDefault();e.stopPropagation();dbtAdminSelect(el);
+  },true);
+  document.addEventListener('dblclick',e=>{
+    if(e.target.closest('#adminEditor'))return;
+    const el=e.target.closest('[data-admin-key]');if(el){e.preventDefault();e.stopPropagation();dbtAdminSelect(el);dbtAdminEditSelected()}
+  },true);
+  document.addEventListener('dragstart',e=>{
+    const el=e.target.closest('[data-admin-key]');
+    if(!el||el!==dbtAdminSelected){e.preventDefault();return}
+    e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',el.dataset.adminKey);
+  },true);
+  document.addEventListener('dragover',e=>{
+    const target=e.target.closest('[data-admin-key]');
+    if(!target||!dbtAdminSelected||target.parentElement!==dbtAdminSelected.parentElement)return;
+    e.preventDefault();e.dataTransfer.dropEffect='move';
+  },true);
+  document.addEventListener('drop',e=>{
+    const target=e.target.closest('[data-admin-key]');
+    const el=dbtAdminSelected;
+    if(!target||!el||target===el||target.parentElement!==el.parentElement)return;
+    e.preventDefault();dbtAdminSnapshot();
+    const r=target.getBoundingClientRect();
+    const after=e.clientY>r.top+r.height/2;
+    target.parentElement.insertBefore(el,after?target.nextSibling:target);
+    dbtAdminRecordOrder(el.parentElement);dbtAdminSelect(el);
+  },true);
+}
+const dbtAdminObserver=new MutationObserver(muts=>{
+  if(dbtAdminApplying)return;
+  let changed=false;
+  for(const m of muts){for(const n of m.addedNodes){if(n.nodeType===1){dbtAdminScan(n);changed=true}}}
+  if(changed)setTimeout(dbtAdminApply,0);
+});
+dbtAdminScan();
+dbtAdminObserver.observe(document.body,{childList:true,subtree:true});
+dbtAdminBind();
+dbtAdminLoad();
+setInterval(async()=>{if(DBT_ADMIN_MODE)return;try{const r=await fetch('/api/admin-content',{cache:'no-store'});const j=await r.json();if(j?.config&&Number(j.config.updatedAt||0)>Number(dbtAdminConfig.updatedAt||0)){dbtAdminConfig=j.config;dbtAdminApply()}}catch(e){}},30000);
+
 let TARGET=new Date('2026-12-05T10:00:00+06:00'); const START=new Date('2026-09-05T00:00:00+06:00');
 function phaseFor(days){
   if(days<=1)return {name:'EXAM MODE',stat:'Exam',note:'Stay calm. Execute.',msg:'You prepared for this. Keep your head clear and execute one question at a time.'};
