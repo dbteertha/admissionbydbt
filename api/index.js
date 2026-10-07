@@ -1795,7 +1795,7 @@ html[data-theme="light"] .topnav{
   border-color:rgba(69,85,116,.11);
   box-shadow:0 14px 38px rgba(62,78,109,.10),inset 0 1px 0 #fff
 }
-html[data-theme="light"] .theme-toggle:hover{background:#f2f5fb}
+.howto-link{width:36px;height:36px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);border-radius:50%;background:rgba(255,255,255,.045);color:#b9c6d8;text-decoration:none;font-size:12px;font-weight:950;transition:.18s ease}\n.howto-link:hover{transform:translateY(-1px);background:rgba(255,255,255,.08);color:#fff}\nhtml[data-theme="light"] .howto-link{background:#f5f7fb;border-color:#dfe6f0;color:#58709c}\nhtml[data-theme="light"] .howto-link:hover{background:#edf2fb;color:#334b77}\nhtml[data-theme="light"] .theme-toggle:hover{background:#f2f5fb}
 html[data-theme="light"] .sync-link:hover{background:#f2f6ff;color:#3d5686;border-color:#d7e1f3}
 html[data-theme="light"] .msg-link:hover{background:#eef9f3;color:#237554;border-color:#d3eadf}
 
@@ -2322,7 +2322,7 @@ html[data-theme="light"] .local-preview-note{background:#f4f7fb;border-color:#e2
       <a class="navlink" href="#infoCenter">Admission Guide</a>
     </div>
     <div class="nav-actions">
-      <button class="install-app-btn" id="installAppButton" type="button" hidden aria-label="Install Admission by DBT" title="Install app">↓</button>
+      <a class="howto-link" href="/how-to" aria-label="How to use Admission by DBT" title="How to use">?</a>\n      <button class="install-app-btn" id="installAppButton" type="button" hidden aria-label="Install Admission by DBT" title="Install app">↓</button>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span class="theme-sun">☀</span><span class="theme-moon">☾</span></button>
       <button class="sync-link" id="homeSyncButton" type="button" title="Save your Home and Calendar choices"><i></i><span id="homeSyncText">Save</span></button>
       <a class="msg-link" href="https://wa.me/+8801516560230" target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message on WhatsApp">
