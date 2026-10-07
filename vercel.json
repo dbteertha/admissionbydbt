@@ -15,6 +15,18 @@
       "destination": "/api/onushiloni.js"
     },
     {
+      "source": "/manifest.webmanifest",
+      "destination": "/api/pwa-manifest.js"
+    },
+    {
+      "source": "/sw.js",
+      "destination": "/api/sw.js"
+    },
+    {
+      "source": "/app-icon.svg",
+      "destination": "/api/app-icon.js"
+    },
+    {
       "source": "/api/events",
       "destination": "/api/index.js"
     },
