@@ -4030,7 +4030,7 @@ function dbtTranslateString(value){
     .replace(/([0-9]+) exam([^A-Za-z]|$)/g,'$1 পরীক্ষা$2')
     .replace(/([0-9]+) page([^A-Za-z]|$)/g,'$1 পেজ$2')
     .replace(/days ([0-9]+–[0-9]+)/g,'দিন $1')
-    .replace(/\+([0-9]+) more/g,'+$1 আরও');
+    .replace(/[+]([0-9]+) more/g,'+$1 আরও');
   return raw.slice(0,raw.indexOf(trimmed))+out+raw.slice(raw.indexOf(trimmed)+trimmed.length);
 }
 function dbtLocalizeRoot(root){
