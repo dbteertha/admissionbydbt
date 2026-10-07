@@ -2084,6 +2084,15 @@ html[data-theme="light"] .mobile-dock{
   .mobile-dock a{min-width:0;padding:7px 1px!important;font-size:7.5px!important;white-space:nowrap}
   .mobile-dock b{font-size:16px!important;margin-bottom:2px!important}
 }
+@media(max-width:700px){
+  .hero:before{filter:none!important;opacity:.72}
+  .app:before,.app:after{position:absolute!important}
+  .stat-card,.schedule-chart-card,.starred-card,.circular-card{box-shadow:0 8px 22px rgba(0,0,0,.10)!important}
+  html[data-theme="light"] .stat-card,
+  html[data-theme="light"] .schedule-chart-card,
+  html[data-theme="light"] .starred-card,
+  html[data-theme="light"] .circular-card{box-shadow:0 7px 20px rgba(65,82,115,.06)!important}
+}
 @media(max-width:390px){
   .brand{max-width:118px;overflow:hidden;text-overflow:ellipsis}
   .sync-link span{display:none}
@@ -3376,7 +3385,13 @@ function openEventDrawer(e){
   eventDrawerDate.textContent=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'})+' • '+eventTimeLabel(e);
   eventDrawerStatus.textContent=state==='confirmed'?'Confirmed / official date':state==='pending'?'Date announced / notice pending':'Not confirmed';
   eventDrawerStatus.className='event-drawer-status '+(state==='confirmed'?'':state);
-  eventDrawerNote.textContent=e.agreement||'Use the latest official university notice for final details.';
+  eventDrawerNote.textContent=currentLang==='bn'
+    ?(state==='confirmed'
+      ?'এই পরীক্ষার তারিখ নিশ্চিত/অফিসিয়াল তথ্য অনুযায়ী দেখানো হয়েছে। সময় ও শেষ নির্দেশনা অফিসিয়াল নোটিশে মিলিয়ে নিন।'
+      :state==='pending'
+        ?'পরীক্ষার তারিখ ঘোষণা বা তালিকাভুক্ত হয়েছে, তবে পূর্ণ নোটিশ বা কিছু বিস্তারিত এখনও বাকি।'
+        :'এই তারিখ এখনও নিশ্চিত নয়। অফিসিয়াল নোটিশ প্রকাশ হলে আবার যাচাই করুন।')
+    :(e.agreement||'Use the latest official university notice for final details.');
   eventDrawerStar.textContent=isStarred(e)?(eventKey(e)===countdownTargetKey?'★ Countdown target':'★ In My Exams'):'☆ Add to My Exams';
   eventDrawerBackdrop.classList.add('open');eventDrawerBackdrop.setAttribute('aria-hidden','false');
 }
@@ -3959,13 +3974,45 @@ const BN_EXACT={
   'Official portal':'অফিসিয়াল পোর্টাল','Official circular':'অফিসিয়াল সার্কুলার','Official notices':'অফিসিয়াল নোটিশ',
   'Official exam dates':'অফিসিয়াল পরীক্ষার তারিখ','Official date notice':'অফিসিয়াল তারিখের নোটিশ'
 };
+Object.assign(BN_EXACT,{
+  'EXAM MODE':'পরীক্ষা মোড','FINAL SPRINT':'শেষ দৌড়','MOCK SPRINT':'মক টেস্ট পর্ব','REVIEW STAGE':'রিভিশন পর্ব','BUILD + REVISE':'পড়া + রিভিশন',
+  'Exam':'পরীক্ষা','Final sprint':'শেষ প্রস্তুতি','Mocks':'মক টেস্ট','Revision':'রিভিশন','Build + revise':'পড়া + রিভিশন','Build':'পড়া',
+  'Stay calm. Execute.':'শান্ত থাকুন। পরিকল্পনা অনুযায়ী পরীক্ষা দিন।','Revise. Rest. Execute.':'রিভিশন করুন। বিশ্রাম নিন। আত্মবিশ্বাস নিয়ে পরীক্ষা দিন।',
+  'Practice > new topics':'নতুন টপিকের চেয়ে অনুশীলন বেশি জরুরি','Test what you remember':'যা পড়েছেন নিজেকে পরীক্ষা করুন','Consistency compounds':'নিয়মিত পড়াই বড় ফল দেয়','Study every day':'প্রতিদিন পড়ুন',
+  'You prepared for this. Keep your head clear and execute one question at a time.':'আপনি প্রস্তুতি নিয়েছেন। মাথা ঠান্ডা রেখে একবারে একটি প্রশ্নে মন দিন।',
+  'Protect your confidence. Revise what matters, sleep properly, and keep moving.':'আত্মবিশ্বাস ধরে রাখুন। দরকারি বিষয় রিভিশন করুন, ঠিকমতো ঘুমান এবং এগিয়ে যান।',
+  'The fastest gains now come from timed practice, mistakes, and focused revision.':'এখন সবচেয়ে বেশি উন্নতি হবে সময় ধরে অনুশীলন, ভুল বিশ্লেষণ ও ফোকাসড রিভিশনে।',
+  'Test yourself, solve questions, check mistakes, and try again.':'নিজেকে পরীক্ষা করুন, প্রশ্ন সমাধান করুন, ভুল দেখুন এবং আবার চেষ্টা করুন।',
+  'A strong day does not need to be perfect. Finish the important work and come back tomorrow.':'ভালো একটি দিন নিখুঁত হতে হবে না। গুরুত্বপূর্ণ কাজ শেষ করুন, আগামীকাল আবার চালিয়ে যান।',
+  'Learn the basics now. Study one focused day at a time.':'এখন বেসিক শক্ত করুন। প্রতিদিন মনোযোগ দিয়ে একদিন করে এগিয়ে যান।',
+  'PRINT CALENDAR':'ক্যালেন্ডার PDF','Make your calendar PDF':'নিজের ক্যালেন্ডার PDF বানান',
+  'Choose months, categories, universities and individual exams.':'মাস, ক্যাটাগরি, বিশ্ববিদ্যালয় ও নির্দিষ্ট পরীক্ষা বেছে নিন।',
+  'Category':'ক্যাটাগরি','University':'বিশ্ববিদ্যালয়','Individual exams':'আলাদা পরীক্ষা','PDF preview':'PDF প্রিভিউ',
+  'A4 landscape • black & white • one month per page':'A4 ল্যান্ডস্কেপ • সাদা-কালো • প্রতি পেজে এক মাস',
+  'No pages selected yet.':'এখনও কোনো পেজ নির্বাচন করা হয়নি।','No exams match these choices.':'এই নির্বাচনে কোনো পরীক্ষা পাওয়া যায়নি।',
+  'MAIN COUNTDOWN':'মূল কাউন্টডাউন','Choose target exam':'কাউন্টডাউনের পরীক্ষা বেছে নিন',
+  'MY EXAMS':'আমার পরীক্ষা','Choose exams':'পরীক্ষা বেছে নিন','No exam matches your search.':'আপনার খোঁজে কোনো পরীক্ষা পাওয়া যায়নি।',
+  'No next exam matches your search.':'আপনার খোঁজে পরবর্তী কোনো পরীক্ষা পাওয়া যায়নি।',
+  'DAY SCHEDULE':'দিনের সময়সূচি','ADMISSION EVENT':'ভর্তি পরীক্ষা','Done':'হয়ে গেছে',
+  'Confirmed / official date':'নিশ্চিত / অফিসিয়াল তারিখ','Date announced / notice pending':'তারিখ ঘোষণা হয়েছে / নোটিশ বাকি',
+  '★ Countdown target':'★ কাউন্টডাউন টার্গেট','★ In My Exams':'★ আমার পরীক্ষায় আছে','☆ Add to My Exams':'☆ আমার পরীক্ষায় যোগ করুন',
+  'No exams match these filters.':'এই ফিল্টারে কোনো পরীক্ষা পাওয়া যায়নি।','My Exam':'আমার পরীক্ষা',
+  'Guide':'গাইড','Quick navigation':'দ্রুত নেভিগেশন','Schedule overview':'সময়সূচির সারসংক্ষেপ',
+  'Search calendar exams':'ক্যালেন্ডারে পরীক্ষা খুঁজুন','Refresh exam dates':'পরীক্ষার তারিখ রিফ্রেশ করুন',
+  'Search exam or university…':'পরীক্ষা বা বিশ্ববিদ্যালয় খুঁজুন…','Close day schedule':'দিনের সময়সূচি বন্ধ করুন','Close event details':'পরীক্ষার বিস্তারিত বন্ধ করুন',
+  'Close weekly distribution':'সাপ্তাহিক বণ্টন বন্ধ করুন','Switch to dark theme':'ডার্ক থিম চালু করুন','Switch to light theme':'লাইট থিম চালু করুন',
+  'Jan':'জানু','Feb':'ফেব্রু','Mar':'মার্চ','Apr':'এপ্রিল','May':'মে','Jun':'জুন','Jul':'জুলাই','Aug':'আগ','Sep':'সেপ্ট','Oct':'অক্টো','Nov':'নভে','Dec':'ডিসে',
+  '● checking dates…':'● তারিখ দেখা হচ্ছে…','● could not check dates':'● তারিখ দেখা যায়নি',
+  'Use the latest official university notice for final details.':'চূড়ান্ত তথ্যের জন্য সর্বশেষ অফিসিয়াল বিশ্ববিদ্যালয় নোটিশ দেখুন।'
+});
 const BN_REPLACE=[
   ['January','জানুয়ারি'],['February','ফেব্রুয়ারি'],['March','মার্চ'],['April','এপ্রিল'],['May','মে'],['June','জুন'],['July','জুলাই'],['August','আগস্ট'],['September','সেপ্টেম্বর'],['October','অক্টোবর'],['November','নভেম্বর'],['December','ডিসেম্বর'],
   ['Sunday','রবিবার'],['Monday','সোমবার'],['Tuesday','মঙ্গলবার'],['Wednesday','বুধবার'],['Thursday','বৃহস্পতিবার'],['Friday','শুক্রবার'],['Saturday','শনিবার'],
   ['Dhaka University','ঢাকা বিশ্ববিদ্যালয়'],['Khulna University','খুলনা বিশ্ববিদ্যালয়'],['Jagannath University','জগন্নাথ বিশ্ববিদ্যালয়'],['Chittagong University','চট্টগ্রাম বিশ্ববিদ্যালয়'],['Comilla University','কুমিল্লা বিশ্ববিদ্যালয়'],['Rajshahi University','রাজশাহী বিশ্ববিদ্যালয়'],
   ['Medical & Dental','মেডিকেল ও ডেন্টাল'],['Medical / Dental','মেডিকেল / ডেন্টাল'],['Agriculture Cluster','কৃষি গুচ্ছ'],
   ['Fine Arts','চারুকলা'],['Social Science','সামাজিক বিজ্ঞান'],['Science','বিজ্ঞান'],['Humanities','মানবিক'],['Business','ব্যবসায় শিক্ষা'],
-  ['Not confirmed','নিশ্চিত নয়'],['Notice pending','নোটিশ বাকি'],['Confirmed','নিশ্চিত'],['Official','অফিসিয়াল'],['Time TBA','সময় পরে জানানো হবে']
+  ['Not confirmed','নিশ্চিত নয়'],['Notice pending','নোটিশ বাকি'],['Confirmed','নিশ্চিত'],['Official','অফিসিয়াল'],['Time TBA','সময় পরে জানানো হবে'],
+  ['Main countdown target:','মূল কাউন্টডাউন:'],['saved exams','সেভ করা পরীক্ষা'],['local preview','লোকাল প্রিভিউ'],['offline','অফলাইন'],['showing','দেখানো হচ্ছে'],['exams • updated','পরীক্ষা • আপডেট'],['updated','আপডেট']
 ];
 function dbtTranslateString(value){
   const raw=String(value==null?'':value);
@@ -3979,7 +4026,11 @@ function dbtTranslateString(value){
     .replace(/([0-9]+) official/g,'$1 অফিসিয়াল')
     .replace(/([0-9]+) waiting/g,'$1 অপেক্ষমাণ')
     .replace(/([0-9]+) Passed/g,'$1 শেষ')
-    .replace(/([0-9]+) Total/g,'$1 মোট');
+    .replace(/([0-9]+) Total/g,'$1 মোট')
+    .replace(/([0-9]+) exam([^A-Za-z]|$)/g,'$1 পরীক্ষা$2')
+    .replace(/([0-9]+) page([^A-Za-z]|$)/g,'$1 পেজ$2')
+    .replace(/days ([0-9]+–[0-9]+)/g,'দিন $1')
+    .replace(/\+([0-9]+) more/g,'+$1 আরও');
   return raw.slice(0,raw.indexOf(trimmed))+out+raw.slice(raw.indexOf(trimmed)+trimmed.length);
 }
 function dbtLocalizeRoot(root){
