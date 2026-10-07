@@ -946,6 +946,31 @@ body{background:#02050a;color:#f5f7fb}
 .calendar-section .timeline-card.category-engineering .timeline-main strong{color:#8fdcff!important}
 .calendar-section .category-university .event-title,
 .calendar-section .timeline-card.category-university .timeline-main strong{color:#c9b6ff!important}
+
+/* PDF calendar picker */
+.pdf-picker-backdrop{position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.68);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.pdf-picker-backdrop.open{display:flex}
+.pdf-picker-modal{width:min(720px,100%);max-height:min(88vh,820px);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,255,255,.11);border-radius:24px;background:rgba(9,13,20,.96);box-shadow:0 28px 90px rgba(0,0,0,.48)}
+.pdf-picker-head{display:flex;justify-content:space-between;gap:16px;padding:18px 18px 12px;border-bottom:1px solid rgba(255,255,255,.07)}
+.pdf-picker-head h3{margin:3px 0 0;font-size:20px}.pdf-picker-head p{margin:6px 0 0;color:#7d899a;font-size:9px}
+.pdf-picker-body{overflow:auto;padding:14px 18px 18px;display:grid;gap:15px}
+.pdf-pick-section{display:grid;gap:8px}.pdf-pick-title{display:flex;align-items:center;justify-content:space-between;gap:10px}.pdf-pick-title b{font-size:10px}.pdf-pick-title button{border:0;background:transparent;color:#8ca9e8;font-size:8px;cursor:pointer}
+.pdf-chip-grid{display:flex;flex-wrap:wrap;gap:6px}.pdf-chip{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025);color:#7f8998;border-radius:999px;padding:8px 10px;font-size:8px;font-weight:800;cursor:pointer;transition:.15s ease}
+.pdf-chip.active{color:#f4f7fb;background:rgba(132,164,255,.12);border-color:rgba(132,164,255,.28)}
+.pdf-category-chips .pdf-chip[data-pdf-cat="medical"].active{color:#ffb6c1;border-color:rgba(255,159,174,.35);background:rgba(255,159,174,.08)}
+.pdf-category-chips .pdf-chip[data-pdf-cat="engineering"].active{color:#a6e6ff;border-color:rgba(143,220,255,.35);background:rgba(143,220,255,.08)}
+.pdf-category-chips .pdf-chip[data-pdf-cat="university"].active{color:#d9ccff;border-color:rgba(201,182,255,.35);background:rgba(201,182,255,.08)}
+.pdf-exam-search{width:100%;box-sizing:border-box;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:#090d14;color:#eef2f7;padding:10px 11px;outline:none;font-size:10px}
+.pdf-exam-list{display:grid;gap:6px;max-height:260px;overflow:auto}.pdf-exam-row{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:8px;width:100%;text-align:left;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.02);color:#dfe5ed;padding:8px 10px;cursor:pointer}
+.pdf-exam-row.off{opacity:.42}.pdf-exam-check{width:16px;height:16px;border-radius:5px;border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;font-size:10px}.pdf-exam-row:not(.off) .pdf-exam-check{background:#e8eefc;color:#07101d;border-color:#e8eefc}
+.pdf-exam-row strong{display:block;font-size:9.5px}.pdf-exam-row small{display:block;margin-top:2px;color:#748094;font-size:7.5px}.pdf-exam-row em{font-style:normal;color:#778295;font-size:7px}
+.pdf-picker-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px 16px;border-top:1px solid rgba(255,255,255,.07)}.pdf-picker-foot b{display:block;font-size:10px}.pdf-picker-foot span{display:block;margin-top:2px;color:#758194;font-size:8px}
+.pdf-picker-foot .btn{min-width:132px}.pdf-picker-foot .btn:disabled{opacity:.4;cursor:not-allowed}
+@media(max-width:700px){
+  .pdf-picker-backdrop{padding:8px;align-items:flex-end}.pdf-picker-modal{max-height:92vh;border-radius:22px 22px 14px 14px}
+  .pdf-picker-head{padding:15px 14px 10px}.pdf-picker-body{padding:12px 14px 14px;gap:13px}.pdf-picker-foot{padding:10px 14px 13px}
+  .pdf-chip{padding:9px 10px;font-size:8.5px}.pdf-exam-list{max-height:230px}.pdf-exam-row{padding:9px}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -1110,7 +1135,43 @@ body{background:#02050a;color:#f5f7fb}
   </div>
 </div>
 
-<div class="event-drawer-backdrop" id="eventDrawerBackdrop" aria-hidden="true">
+<div class="pdf-picker-backdrop" id="pdfPickerBackdrop" aria-hidden="true">
+    <div class="pdf-picker-modal" role="dialog" aria-modal="true" aria-labelledby="pdfPickerTitle">
+      <div class="pdf-picker-head">
+        <div><div class="section-kicker">PRINT CALENDAR</div><h3 id="pdfPickerTitle">Choose what to download</h3><p>Pick months, categories, universities and individual exams.</p></div>
+        <button class="modal-x" id="pdfPickerClose" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="pdf-picker-body">
+        <section class="pdf-pick-section">
+          <div class="pdf-pick-title"><b>Months</b><button type="button" data-pdf-action="months-all">All</button></div>
+          <div class="pdf-chip-grid" id="pdfMonthChips"></div>
+        </section>
+        <section class="pdf-pick-section">
+          <div class="pdf-pick-title"><b>Category</b><button type="button" data-pdf-action="cats-all">All</button></div>
+          <div class="pdf-chip-grid pdf-category-chips" id="pdfCategoryChips">
+            <button type="button" class="pdf-chip active" data-pdf-cat="medical">মেডিকেল</button>
+            <button type="button" class="pdf-chip active" data-pdf-cat="engineering">ইঞ্জিনিয়ারিং</button>
+            <button type="button" class="pdf-chip active" data-pdf-cat="university">বিশ্ববিদ্যালয়</button>
+          </div>
+        </section>
+        <section class="pdf-pick-section">
+          <div class="pdf-pick-title"><b>University</b><button type="button" data-pdf-action="varsities-all">All</button></div>
+          <div class="pdf-chip-grid pdf-varsity-chips" id="pdfVarsityChips"></div>
+        </section>
+        <section class="pdf-pick-section pdf-exam-section">
+          <div class="pdf-pick-title"><b>Exams</b><button type="button" data-pdf-action="exams-all">All</button></div>
+          <input class="pdf-exam-search" id="pdfExamSearch" placeholder="Search exam or university…">
+          <div class="pdf-exam-list" id="pdfExamList"></div>
+        </section>
+      </div>
+      <div class="pdf-picker-foot">
+        <div><b id="pdfSelectedCount">0 exams</b><span id="pdfSelectedMonths">0 months</span></div>
+        <button class="btn" id="pdfDownloadSelected" type="button">Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="event-drawer-backdrop" id="eventDrawerBackdrop" aria-hidden="true">
   <aside class="event-drawer" id="eventDrawer">
     <button class="event-drawer-close" id="eventDrawerClose" type="button">×</button>
     <div class="event-drawer-kicker">ADMISSION EVENT</div>
@@ -1875,24 +1936,100 @@ function openTargetPicker(){
   setTimeout(()=>targetPickerSearch.focus(),30);
 }
 function closeTargetPicker(){targetPickerBackdrop.classList.remove('open');targetPickerBackdrop.setAttribute('aria-hidden','true')}
+let pdfPickMonths=new Set(),pdfPickCats=new Set(['medical','engineering','university']),pdfPickVarsities=new Set(),pdfPickExcluded=new Set();
+
+function pdfMonthKey(e){
+  const d=bdDate(e.date);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+}
+function pdfInstitution(e){
+  const t=String(e.title||'');
+  const rules=[
+    [/^Dhaka University|^DU IBA/i,'DU'],[/^Khulna University/i,'KU'],[/^Jagannath University/i,'JnU'],
+    [/^Rajshahi University/i,'RU'],[/^Chittagong University/i,'CU'],[/^Comilla University/i,'CoU'],
+    [/^SUST/i,'SUST'],[/^BUP/i,'BUP'],[/^GST/i,'GST'],[/^MIST/i,'MIST'],
+    [/^BUET/i,'BUET'],[/^RUET/i,'RUET'],[/^KUET/i,'KUET'],[/^CUET/i,'CUET'],[/^BUTEX/i,'BUTEX'],
+    [/Aviation and Aerospace University Bangladesh|AAUB/i,'AAUB'],[/Medical|Dental/i,'Medical / Dental'],
+    [/Agriculture Cluster/i,'Agriculture Cluster']
+  ];
+  for(const [re,name] of rules)if(re.test(t))return name;
+  return calendarShortTitle(e).split('-')[0]||t;
+}
+function pdfAllMonths(){
+  return [...new Set(all.map(pdfMonthKey))].sort();
+}
+function pdfAllVarsities(){
+  return [...new Set(all.map(pdfInstitution))].sort((a,b)=>a.localeCompare(b));
+}
+function pdfEligibleBase(e){
+  return pdfPickMonths.has(pdfMonthKey(e))&&pdfPickCats.has(eventCategory(e))&&pdfPickVarsities.has(pdfInstitution(e));
+}
+function pdfSelectedEvents(){
+  return all.filter(e=>pdfEligibleBase(e)&&!pdfPickExcluded.has(eventKey(e)));
+}
+function renderPdfPicker(){
+  const months=pdfAllMonths();
+  pdfMonthChips.innerHTML=months.map(key=>{
+    const [y,m]=key.split('-').map(Number);
+    const label=new Date(y,m-1,1).toLocaleString('en-US',{month:'short',year:'numeric'});
+    return '<button type="button" class="pdf-chip'+(pdfPickMonths.has(key)?' active':'')+'" data-pdf-month="'+key+'">'+label+'</button>';
+  }).join('');
+  pdfVarsityChips.innerHTML=pdfAllVarsities().map(v=>'<button type="button" class="pdf-chip'+(pdfPickVarsities.has(v)?' active':'')+'" data-pdf-varsity="'+encodeURIComponent(v)+'">'+esc(v)+'</button>').join('');
+
+  pdfCategoryChips.querySelectorAll('[data-pdf-cat]').forEach(btn=>btn.classList.toggle('active',pdfPickCats.has(btn.dataset.pdfCat)));
+
+  const q=(pdfExamSearch.value||'').toLowerCase().trim();
+  const visible=all.filter(e=>pdfEligibleBase(e)&&(!q||e.title.toLowerCase().includes(q)||pdfInstitution(e).toLowerCase().includes(q))).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  pdfExamList.innerHTML=visible.length?visible.map(e=>{
+    const off=pdfPickExcluded.has(eventKey(e));
+    const d=bdDate(e.date);
+    return '<button type="button" class="pdf-exam-row'+(off?' off':'')+'" data-pdf-exam="'+encodeURIComponent(eventKey(e))+'">'+
+      '<span class="pdf-exam-check">'+(off?'':'✓')+'</span>'+
+      '<span><strong>'+esc(calendarShortTitle(e))+'</strong><small>'+esc(pdfInstitution(e))+' • '+esc(d.toLocaleDateString('en-BD',{day:'numeric',month:'short',year:'numeric'}))+'</small></span>'+
+      '<em>'+esc(eventCategory(e)==='medical'?'মেডিকেল':eventCategory(e)==='engineering'?'ইঞ্জিনিয়ারিং':'বিশ্ববিদ্যালয়')+'</em></button>';
+  }).join(''):'<div class="target-picker-empty">No exams match these choices.</div>';
+
+  const selected=pdfSelectedEvents();
+  pdfSelectedCount.textContent=selected.length+' exam'+(selected.length===1?'':'s');
+  pdfSelectedMonths.textContent=pdfPickMonths.size+' month'+(pdfPickMonths.size===1?'':'s');
+  pdfDownloadSelected.disabled=!selected.length||!pdfPickMonths.size;
+
+  pdfMonthChips.querySelectorAll('[data-pdf-month]').forEach(btn=>btn.onclick=()=>{const k=btn.dataset.pdfMonth;pdfPickMonths.has(k)?pdfPickMonths.delete(k):pdfPickMonths.add(k);renderPdfPicker()});
+  pdfVarsityChips.querySelectorAll('[data-pdf-varsity]').forEach(btn=>btn.onclick=()=>{const v=decodeURIComponent(btn.dataset.pdfVarsity||'');pdfPickVarsities.has(v)?pdfPickVarsities.delete(v):pdfPickVarsities.add(v);renderPdfPicker()});
+  pdfExamList.querySelectorAll('[data-pdf-exam]').forEach(btn=>btn.onclick=()=>{const k=decodeURIComponent(btn.dataset.pdfExam||'');pdfPickExcluded.has(k)?pdfPickExcluded.delete(k):pdfPickExcluded.add(k);renderPdfPicker()});
+}
+function openPdfPicker(){
+  pdfPickMonths=new Set(pdfAllMonths());
+  pdfPickCats=new Set(['medical','engineering','university']);
+  pdfPickVarsities=new Set(pdfAllVarsities());
+  pdfPickExcluded=new Set();
+  pdfExamSearch.value='';
+  renderPdfPicker();
+  pdfPickerBackdrop.classList.add('open');pdfPickerBackdrop.setAttribute('aria-hidden','false');
+}
+function closePdfPicker(){pdfPickerBackdrop.classList.remove('open');pdfPickerBackdrop.setAttribute('aria-hidden','true')}
+
 async function downloadCalendarPdf(){
-  if(!Array.isArray(all)||!all.length)return;
-  const btn=document.getElementById('calendarPdfButton');
-  const old=btn?btn.textContent:'PDF';
+  const chosen=pdfSelectedEvents();
+  const months=[...pdfPickMonths].sort();
+  if(!chosen.length||!months.length)return;
+  const btn=document.getElementById('pdfDownloadSelected');
+  const old=btn?btn.textContent:'Download PDF';
   if(btn){btn.disabled=true;btn.textContent='Making PDF…'}
   try{
     const r=await fetch('/api/calendar-pdf',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({events:all})
+      body:JSON.stringify({events:chosen,months})
     });
     if(!r.ok)throw new Error('pdf_failed');
     const blob=await r.blob();
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
-    a.href=url;a.download='Admission-Calendar-2026-27.pdf';
+    a.href=url;a.download='Admission-Calendar-Selected.pdf';
     document.body.appendChild(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),2000);
+    closePdfPicker();
   }catch(e){
     alert('Could not make the PDF. Please try again.');
   }finally{
@@ -1917,7 +2054,20 @@ async function load(force=false){
 prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};
 next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};
 refresh.onclick=()=>load(true);
-calendarPdfButton.onclick=downloadCalendarPdf;
+calendarPdfButton.onclick=openPdfPicker;
+pdfPickerClose.onclick=closePdfPicker;
+pdfPickerBackdrop.onclick=e=>{if(e.target===pdfPickerBackdrop)closePdfPicker()};
+pdfExamSearch.oninput=renderPdfPicker;
+pdfCategoryChips.querySelectorAll('[data-pdf-cat]').forEach(btn=>btn.onclick=()=>{const cat=btn.dataset.pdfCat;pdfPickCats.has(cat)?pdfPickCats.delete(cat):pdfPickCats.add(cat);renderPdfPicker()});
+document.querySelectorAll('[data-pdf-action]').forEach(btn=>btn.onclick=()=>{
+  const a=btn.dataset.pdfAction;
+  if(a==='months-all')pdfPickMonths=new Set(pdfAllMonths());
+  if(a==='cats-all')pdfPickCats=new Set(['medical','engineering','university']);
+  if(a==='varsities-all')pdfPickVarsities=new Set(pdfAllVarsities());
+  if(a==='exams-all')pdfPickExcluded.clear();
+  renderPdfPicker();
+});
+pdfDownloadSelected.onclick=downloadCalendarPdf;
 search.oninput=render;
 mainTargetButton.onclick=openTargetPicker;
 targetAddButton.onclick=openExamPicker;
