@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import { get, put } from '@vercel/blob';
 
 const ALPHABET='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+const BLOB_STORE_ID='store_vUvKgnlBSMEysQyD';
 
 function json(res,status,data){
   res.statusCode=status;
@@ -61,7 +62,7 @@ export default async function handler(req,res){
     const pathname=pathFor(code);
 
     if(req.method==='GET'){
-      const result=await get(pathname,{access:'private',useCache:false});
+      const result=await get(pathname,{access:'private',useCache:false,storeId:BLOB_STORE_ID});
       if(!result||result.statusCode!==200)return json(res,404,{ok:false,error:'not_found'});
       const text=await streamToText(result.stream);
       const state=cleanState(JSON.parse(text));
@@ -73,7 +74,7 @@ export default async function handler(req,res){
       const incoming=cleanState(body);
       let existing=null;
       try{
-        const result=await get(pathname,{access:'private',useCache:false});
+        const result=await get(pathname,{access:'private',useCache:false,storeId:BLOB_STORE_ID});
         if(result&&result.statusCode===200){
           existing=cleanState(JSON.parse(await streamToText(result.stream)));
         }
@@ -87,7 +88,8 @@ export default async function handler(req,res){
         access:'private',
         addRandomSuffix:false,
         allowOverwrite:true,
-        contentType:'application/json; charset=utf-8'
+        contentType:'application/json; charset=utf-8',
+        storeId:BLOB_STORE_ID
       });
       return json(res,200,{ok:true,state:incoming});
     }
