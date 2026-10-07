@@ -343,7 +343,7 @@ a{color:inherit}
 .target-badge{display:inline-flex;margin-bottom:10px;font-size:8px;letter-spacing:.14em;color:#ffe6a3;border:1px solid rgba(242,199,102,.30);border-radius:999px;padding:5px 7px;background:rgba(95,70,13,.20)}
 .target-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.target-name{font-size:15px;font-weight:850;line-height:1.3}.target-date{font-size:10px;color:#aaa38e;margin-top:5px}
 .target-timer{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}.target-time{background:rgba(5,7,11,.72);border:1px solid rgba(242,199,102,.14);border-radius:12px;padding:9px 5px;text-align:center}.target-time b{display:block;font-size:23px;line-height:1;color:#f8e8b6;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.target-time span{display:block;margin-top:5px;font-size:7px;letter-spacing:.13em;color:#867d64}
-.target-message{font-size:10px;color:#9c957f;margin-top:11px}.target-empty{grid-column:1/-1;border:1px dashed rgba(242,199,102,.22);border-radius:15px;padding:19px;color:#9e9888;font-size:11px;text-align:center;background:rgba(13,13,10,.48)}
+.target-message{font-size:10px;color:#9c957f;margin-top:11px}.target-card-actions{display:flex;gap:7px;margin-top:11px}.countdown-target-btn{flex:1;border:1px solid rgba(120,167,255,.18);background:rgba(72,108,188,.08);color:#a9c3f5;border-radius:10px;padding:8px 10px;font-size:8px;font-weight:900;cursor:pointer}.countdown-target-btn:hover{border-color:rgba(120,167,255,.38);color:#e7f0ff}.countdown-target-btn.active{border-color:rgba(116,230,167,.28);background:rgba(116,230,167,.08);color:#b9ecc9}.target-empty{grid-column:1/-1;border:1px dashed rgba(242,199,102,.22);border-radius:15px;padding:19px;color:#9e9888;font-size:11px;text-align:center;background:rgba(13,13,10,.48)}
 .star-btn{appearance:none;border:1px solid #343c4a;background:#0d1119;color:#778195;width:30px;height:30px;border-radius:10px;display:inline-grid;place-items:center;cursor:pointer;font-size:16px;line-height:1;flex:0 0 auto;transition:.18s ease}.star-btn:hover{transform:translateY(-1px) scale(1.03);border-color:rgba(242,199,102,.42);color:#f5d67d}.star-btn.active{color:#ffd76b;border-color:rgba(242,199,102,.46);background:rgba(86,64,15,.30);box-shadow:0 0 18px rgba(231,185,59,.15)}
 
 /* calendar */
@@ -483,12 +483,7 @@ a{color:inherit}
         <div class="days" id="days">00</div>
         <div class="label">DAYS LEFT</div>
         <div class="hero-message" id="heroMessage">One focused day at a time.</div>
-        <div class="hero-next-card" id="heroNextCard">
-          <div class="hero-next-top"><span class="hero-next-kicker">NEXT CONFIRMED ADMISSION TEST</span><span class="hero-next-status">Verified</span></div>
-          <div class="hero-next-name" id="heroNextName">Loading admission schedule…</div>
-          <div class="hero-next-meta" id="heroNextMeta">Official dates are prioritised over aggregator entries.</div>
-        </div>
-        <div class="hero-upcoming-strip" id="heroUpcomingStrip"></div>
+        <div class="hero-target-note" id="heroCountdownTarget">Choose a target exam below to control this countdown.</div>
         <div class="clock">
           <div><b id="weeks">00W</b><span>WEEKS</span></div>
           <div><b id="hours">00H</b><span>HOURS</span></div>
@@ -620,17 +615,47 @@ function countdown(){
 }const daysEl=document.getElementById('days'),weeksEl=document.getElementById('weeks'),hoursEl=document.getElementById('hours'),minsEl=document.getElementById('mins'),secsEl=document.getElementById('secs'),fill=document.getElementById('fill'),pct=document.getElementById('pct'),passedEl=document.getElementById('passed'),totalEl=document.getElementById('total'); countdown();setInterval(countdown,1000);
 let all=[],view=new Date(2026,11,1),sourceHealth=[];
 const STAR_KEY='admissionbydbt-starred-v1';
+const COUNTDOWN_TARGET_KEY='admissionbydbt-countdown-target-v1';
+let countdownTargetKey='';
+try{countdownTargetKey=localStorage.getItem(COUNTDOWN_TARGET_KEY)||''}catch(e){}
 let starred=new Set();
 try{starred=new Set(JSON.parse(localStorage.getItem(STAR_KEY)||'[]'))}catch(e){starred=new Set()}
 
 function eventKey(e){return e.title+'|'+e.date}
 function isStarred(e){return starred.has(eventKey(e))}
 function saveStars(){localStorage.setItem(STAR_KEY,JSON.stringify([...starred]))}
+function setCountdownTarget(e){
+  countdownTargetKey=e?eventKey(e):'';
+  try{
+    if(countdownTargetKey)localStorage.setItem(COUNTDOWN_TARGET_KEY,countdownTargetKey);
+    else localStorage.removeItem(COUNTDOWN_TARGET_KEY);
+  }catch(err){}
+  if(e){
+    TARGET=new Date(e.date);
+    if(heroCountdownTarget){
+      heroCountdownTarget.textContent='Countdown target • '+e.title+' • '+new Date(e.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short',year:'numeric'})+' • '+eventTimeLabel(e);
+    }
+  }else if(heroCountdownTarget){
+    heroCountdownTarget.textContent='Choose a target exam below to control this countdown.';
+  }
+  countdown();
+  renderStarredTargets();
+}
+function restoreCountdownTarget(){
+  const selected=all.find(e=>eventKey(e)===countdownTargetKey);
+  if(selected){TARGET=new Date(selected.date);if(heroCountdownTarget)heroCountdownTarget.textContent='Countdown target • '+selected.title+' • '+new Date(selected.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short',year:'numeric'})+' • '+eventTimeLabel(selected);countdown();return}
+  if(countdownTargetKey){countdownTargetKey='';try{localStorage.removeItem(COUNTDOWN_TARGET_KEY)}catch(e){}}
+  const firstStar=all.filter(isStarred).filter(e=>new Date(e.date)>new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date))[0];
+  if(firstStar){countdownTargetKey=eventKey(firstStar);try{localStorage.setItem(COUNTDOWN_TARGET_KEY,countdownTargetKey)}catch(e){}TARGET=new Date(firstStar.date);if(heroCountdownTarget)heroCountdownTarget.textContent='Countdown target • '+firstStar.title+' • '+new Date(firstStar.date).toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short',year:'numeric'})+' • '+eventTimeLabel(firstStar);countdown();}
+  else if(heroCountdownTarget)heroCountdownTarget.textContent='Choose a target exam below to control this countdown.';
+}
 function toggleStar(e){
   const key=eventKey(e);
   const adding=!starred.has(key);
   if(adding) starred.add(key); else starred.delete(key);
   saveStars();
+  if(adding&&!countdownTargetKey){countdownTargetKey=key;try{localStorage.setItem(COUNTDOWN_TARGET_KEY,key)}catch(err){}}
+  if(!adding&&countdownTargetKey===key){countdownTargetKey='';try{localStorage.removeItem(COUNTDOWN_TARGET_KEY)}catch(err){}}
   if(adding&&typeof makeShooter==='function'&&!reduceMotion){
     makeShooter(true,Math.max(80,innerWidth*.72),Math.max(80,innerHeight*.18));
   }
@@ -679,26 +704,11 @@ function openEventDrawer(e){
   eventDrawerStatus.textContent=state==='confirmed'?'Confirmed / official date':state==='pending'?'Date announced / circular pending':'Tentative';
   eventDrawerStatus.className='event-drawer-status '+(state==='confirmed'?'':state);
   eventDrawerNote.textContent=e.agreement||'Use the latest official university notice for final details.';
-  eventDrawerStar.textContent=isStarred(e)?'★ In My Targets':'☆ Add to targets';
+  eventDrawerStar.textContent=isStarred(e)?(eventKey(e)===countdownTargetKey?'★ Countdown target':'★ In My Targets'):'☆ Add to targets';
   eventDrawerBackdrop.classList.add('open');eventDrawerBackdrop.setAttribute('aria-hidden','false');
 }
 function closeEventDrawer(){eventDrawerBackdrop.classList.remove('open');eventDrawerBackdrop.setAttribute('aria-hidden','true');drawerEvent=null}
-function renderHeroNext(){
-  const now=new Date();
-  const future=all.filter(e=>new Date(e.date)>now).sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const confirmed=future.filter(e=>eventState(e)==='confirmed');
-  const next=confirmed[0]||future[0];
-  if(!next)return;
-  TARGET=new Date(next.date);
-  heroNextName.textContent=next.title;
-  heroNextMeta.textContent=TARGET.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'})+' • '+eventTimeLabel(next);
-  const minis=future.slice(0,4);
-  heroUpcomingStrip.innerHTML=minis.map(e=>{
-    const d=new Date(e.date);
-    return '<div class="hero-mini-event"><b>'+esc(e.title)+'</b><span>'+esc(d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'numeric',month:'short'}))+' • '+esc(eventTimeLabel(e))+'</span></div>';
-  }).join('');
-  countdown();
-}
+function renderHeroNext(){restoreCountdownTarget()}
 function renderTimeline(es){
   const now=new Date();
   let rows=calendarView==='upcoming'?es.filter(e=>new Date(e.date)>=now).slice(0,14):es;
@@ -783,16 +793,16 @@ function renderStarredTargets(){
   targetCount.textContent=matches.length+' STARRED';
   updateDashboardStats();
   if(!matches.length){
-    starredCards.innerHTML='<div class="target-empty">☆ Star an exam from the calendar or Upcoming Exams. It will appear here with its own live countdown.</div>';
+    starredCards.innerHTML='<div class="target-empty">☆ Star an exam from the calendar, then set it as your big countdown target here.</div>';
     return;
   }
   starredCards.innerHTML=matches.map((e,i)=>{
-    const d=new Date(e.date),v=splitCountdown(e.date),key=encodeURIComponent(eventKey(e));
+    const d=new Date(e.date),v=splitCountdown(e.date),rawKey=eventKey(e),key=encodeURIComponent(rawKey),selected=rawKey===countdownTargetKey;
     const date=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'});
-    const time=e.displayTime||d.toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'});
+    const time=eventTimeLabel(e);
     const message=v.done?'Exam time / completed':(v.d<=7?'Final stretch — keep revision tight.':v.d<=30?'Revision matters more than collecting new topics.':'Keep going — '+v.d+' days to this target.');
-    return '<article class="starred-card'+(i===0&&!v.done?' primary-target':'')+'" data-star-key="'+key+'">'+
-      (i===0&&!v.done?'<div class="target-badge">NEXT TARGET</div>':'')+
+    return '<article class="starred-card'+(selected?' primary-target':'')+'" data-star-key="'+key+'">'+
+      (selected?'<div class="target-badge">BIG COUNTDOWN TARGET</div>':'')+
       '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
       '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Target Exams" title="Remove from My Target Exams">★</button></div>'+
       '<div class="target-timer">'+
@@ -800,12 +810,23 @@ function renderStarredTargets(){
         '<div class="target-time"><b data-part="h">'+String(v.h).padStart(2,'0')+'</b><span>HOURS</span></div>'+
         '<div class="target-time"><b data-part="m">'+String(v.m).padStart(2,'0')+'</b><span>MIN</span></div>'+
         '<div class="target-time"><b data-part="s">'+String(v.s).padStart(2,'0')+'</b><span>SEC</span></div>'+
-      '</div><div class="target-message">'+esc(message)+'</div></article>';
+      '</div><div class="target-message">'+esc(message)+'</div>'+
+      '<div class="target-card-actions"><button type="button" class="countdown-target-btn'+(selected?' active':'')+'" data-countdown-target="'+key+'">'+(selected?'✓ Controls big countdown':'Set as big countdown')+'</button></div>'+
+      '</article>';
   }).join('');
   starredCards.querySelectorAll('.target-unstar').forEach(btn=>{
     btn.onclick=()=>{
       const raw=decodeURIComponent(btn.dataset.starKey||'');
-      starred.delete(raw);saveStars();render();
+      starred.delete(raw);saveStars();
+      if(countdownTargetKey===raw){countdownTargetKey='';try{localStorage.removeItem(COUNTDOWN_TARGET_KEY)}catch(e){}}
+      render();
+    };
+  });
+  starredCards.querySelectorAll('[data-countdown-target]').forEach(btn=>{
+    btn.onclick=()=>{
+      const raw=decodeURIComponent(btn.dataset.countdownTarget||'');
+      const e=all.find(x=>eventKey(x)===raw);
+      if(e)setCountdownTarget(e);
     };
   });
 }
