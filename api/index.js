@@ -1600,6 +1600,161 @@ html[data-theme="light"] .timeline-month{color:#7f8da1}
   html[data-theme="light"] .event.unverified{background:#fff8e8!important;border-color:#f1dfad!important}
   html[data-theme="light"] .calendar-list-shell{background:#fff!important}
 }
+
+/* ===== DBT COLOR SYSTEM V2.2: mobile fix + richer surfaces + monthly chart ===== */
+
+/* More color without losing white as the main canvas */
+html[data-theme="light"] body{
+  background:
+    radial-gradient(circle at 7% 6%,rgba(101,132,255,.16),transparent 22%),
+    radial-gradient(circle at 91% 8%,rgba(255,121,164,.14),transparent 21%),
+    radial-gradient(circle at 86% 44%,rgba(80,204,180,.10),transparent 24%),
+    radial-gradient(circle at 13% 62%,rgba(183,137,255,.10),transparent 24%),
+    radial-gradient(circle at 72% 88%,rgba(255,194,91,.09),transparent 24%),
+    linear-gradient(180deg,#ffffff 0%,#f8faff 40%,#fdf9ff 70%,#f8fbff 100%)
+}
+html[data-theme="light"] .target-section{
+  background:
+    radial-gradient(circle at 92% 0%,rgba(198,150,255,.10),transparent 28%),
+    radial-gradient(circle at 0% 100%,rgba(255,132,178,.07),transparent 30%),
+    linear-gradient(150deg,#ffffff,#fbf9ff)
+}
+html[data-theme="light"] .circular-section{
+  background:
+    radial-gradient(circle at 0% 0%,rgba(255,125,157,.09),transparent 28%),
+    radial-gradient(circle at 100% 100%,rgba(255,193,95,.08),transparent 30%),
+    linear-gradient(150deg,#fff,#fffbfc)
+}
+html[data-theme="light"] .calendar-section{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(76,195,229,.10),transparent 28%),
+    radial-gradient(circle at 0% 100%,rgba(111,139,255,.07),transparent 30%),
+    linear-gradient(150deg,#fff,#f8fdff)
+}
+html[data-theme="light"] .info-center{
+  background:
+    radial-gradient(circle at 8% 0%,rgba(255,124,157,.07),transparent 24%),
+    radial-gradient(circle at 92% 0%,rgba(79,198,231,.07),transparent 25%),
+    radial-gradient(circle at 50% 100%,rgba(161,125,246,.08),transparent 28%),
+    #fff
+}
+
+/* Richer chart cards */
+.schedule-chart-card:nth-child(1){background:linear-gradient(145deg,rgba(93,127,255,.07),rgba(172,120,255,.035))}
+.schedule-chart-card:nth-child(2){background:linear-gradient(145deg,rgba(66,205,153,.065),rgba(255,135,112,.035))}
+.monthly-chart-card{
+  grid-column:1/-1;
+  background:linear-gradient(145deg,rgba(75,184,224,.055),rgba(117,137,255,.035),rgba(198,121,236,.035))
+}
+html[data-theme="light"] .schedule-chart-card:nth-child(1){
+  background:linear-gradient(145deg,#ffffff,#f2f5ff 64%,#faf2ff)
+}
+html[data-theme="light"] .schedule-chart-card:nth-child(2){
+  background:linear-gradient(145deg,#ffffff,#effaf5 62%,#fff3ef)
+}
+html[data-theme="light"] .monthly-chart-card{
+  background:linear-gradient(145deg,#ffffff,#f1fbff 42%,#f4f2ff 100%);
+  border-color:#e1e9f4
+}
+
+/* Monthly distribution chart */
+.monthly-chart-head{align-items:flex-end;margin-bottom:10px}
+.monthly-legend{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px 12px}
+.monthly-legend span{display:inline-flex!important;align-items:center;gap:5px!important;margin:0!important;color:#7e899a!important;font-size:7px!important}
+.monthly-legend i{width:7px;height:7px;border-radius:3px}
+.monthly-legend i.medical{background:var(--cat-medical)}
+.monthly-legend i.engineering{background:var(--cat-engineering)}
+.monthly-legend i.university{background:var(--cat-university)}
+.monthly-bars{
+  min-height:190px;display:flex;align-items:stretch;gap:8px;padding:6px 4px 0;
+  overflow-x:auto;scrollbar-width:thin
+}
+.monthly-bar-item{
+  flex:1 0 58px;min-width:58px;display:grid;grid-template-rows:18px 1fr 15px 12px;align-items:end;text-align:center
+}
+.monthly-bar-item>b{font-size:9px;color:#dce4ef}
+.monthly-bar-shell{
+  height:126px;display:flex;align-items:flex-end;justify-content:center;
+  border-radius:11px 11px 6px 6px;
+  background:linear-gradient(to top,rgba(255,255,255,.035),rgba(255,255,255,.012));
+  border:1px solid rgba(255,255,255,.045);overflow:hidden;padding:4px 5px 0
+}
+.monthly-bar-stack{
+  width:min(30px,68%);min-height:6px;display:flex;flex-direction:column-reverse;overflow:hidden;
+  border-radius:7px 7px 3px 3px;box-shadow:0 8px 18px rgba(0,0,0,.10)
+}
+.monthly-bar-stack i{display:block;width:100%;min-height:2px}
+.monthly-bar-stack i.medical{background:linear-gradient(180deg,#ff91a9,var(--cat-medical))}
+.monthly-bar-stack i.engineering{background:linear-gradient(180deg,#74d9f5,var(--cat-engineering))}
+.monthly-bar-stack i.university{background:linear-gradient(180deg,#c2a8ff,var(--cat-university))}
+.monthly-bar-item>span{font-size:8px;font-weight:850;color:#8d98a8}
+.monthly-bar-item>small{font-size:6.5px;color:#667286}
+.monthly-empty{margin:auto;color:#7e899a;font-size:9px}
+html[data-theme="light"] .monthly-bar-item>b{color:#40506a}
+html[data-theme="light"] .monthly-bar-shell{
+  background:linear-gradient(to top,#f2f5fa,#fbfcfe);border-color:#e7ecf3
+}
+html[data-theme="light"] .monthly-bar-item>span{color:#526178}
+html[data-theme="light"] .monthly-bar-item>small{color:#9aa4b2}
+
+/* Empty My Exams should be inviting, never a dark/grey slab */
+.target-empty{
+  grid-column:1/-1!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:14px!important;min-height:112px!important;padding:20px!important;border-radius:18px!important;
+  border:1px dashed rgba(154,123,241,.25)!important;
+  background:
+    radial-gradient(circle at 10% 20%,rgba(255,120,151,.08),transparent 22%),
+    radial-gradient(circle at 90% 80%,rgba(75,200,245,.08),transparent 24%),
+    linear-gradient(135deg,rgba(154,123,241,.055),rgba(255,255,255,.018))!important;
+  color:#aeb8c7!important;text-align:left!important
+}
+.target-empty-icon{
+  width:48px;height:48px;flex:0 0 48px;display:grid;place-items:center;border-radius:16px;
+  color:#ffd56a;background:linear-gradient(145deg,rgba(255,217,105,.18),rgba(170,123,255,.09));
+  border:1px solid rgba(255,213,106,.20);font-size:22px
+}
+.target-empty-copy b{display:block;color:#e9edf5;font-size:12px}
+.target-empty-copy>span{display:block;margin-top:4px;color:#8591a3;font-size:9px;line-height:1.45}
+.target-empty-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.target-empty-pills i{font-style:normal;font-size:7px;font-weight:850;padding:5px 7px;border-radius:999px}
+.target-empty-pills i.medical{color:var(--cat-medical);background:color-mix(in srgb,var(--cat-medical) 9%,transparent)}
+.target-empty-pills i.engineering{color:var(--cat-engineering);background:color-mix(in srgb,var(--cat-engineering) 9%,transparent)}
+.target-empty-pills i.university{color:var(--cat-university);background:color-mix(in srgb,var(--cat-university) 9%,transparent)}
+
+html[data-theme="light"] .target-empty{
+  border-color:#ddd5f0!important;
+  background:
+    radial-gradient(circle at 10% 20%,rgba(255,120,151,.10),transparent 24%),
+    radial-gradient(circle at 90% 80%,rgba(75,200,245,.10),transparent 26%),
+    linear-gradient(135deg,#fff,#f8f4ff 52%,#f1fbff)!important;
+  color:#6f7c90!important;box-shadow:0 10px 28px rgba(80,95,125,.055)
+}
+html[data-theme="light"] .target-empty-icon{
+  color:#b57b10;background:linear-gradient(145deg,#fff7df,#f5efff);border-color:#f0dfaa
+}
+html[data-theme="light"] .target-empty-copy b{color:#33425c}
+html[data-theme="light"] .target-empty-copy>span{color:#7e899b}
+
+/* Critical mobile light-theme fix: old !important dark card rule was overriding the light cards */
+@media(max-width:700px){
+  html[data-theme="light"] .dashboard-stats .stat-card{
+    border-color:#e4e9f1!important;
+    box-shadow:0 10px 28px rgba(70,86,116,.07)!important
+  }
+  html[data-theme="light"] .dashboard-stats .stat-card:nth-child(1){background:linear-gradient(145deg,#ffffff,#edf4ff)!important}
+  html[data-theme="light"] .dashboard-stats .stat-card:nth-child(2){background:linear-gradient(145deg,#ffffff,#fff0f7)!important}
+  html[data-theme="light"] .dashboard-stats .stat-card:nth-child(3){background:linear-gradient(145deg,#ffffff,#edf9f3)!important}
+  html[data-theme="light"] .dashboard-stats .stat-card:nth-child(4){background:linear-gradient(145deg,#ffffff,#fff7e9)!important}
+  html[data-theme="light"] .target-empty{min-height:118px!important;padding:16px!important}
+  .target-empty{align-items:flex-start!important;justify-content:flex-start!important}
+  .target-empty-icon{width:42px;height:42px;flex-basis:42px;border-radius:14px}
+  .monthly-chart-card{grid-column:auto}
+  .monthly-chart-head{align-items:flex-start;gap:8px}
+  .monthly-legend{justify-content:flex-start}
+  .monthly-bars{min-height:170px;gap:6px}
+  .monthly-bar-shell{height:108px}
+  .monthly-bar-item{flex-basis:52px;min-width:52px}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -1681,6 +1836,17 @@ html[data-theme="light"] .timeline-month{color:#7f8da1}
               <div><i class="tentative"></i><span>Not confirmed</span><b id="statusTentativeCount">0</b></div>
             </div>
           </div>
+        </article>
+        <article class="schedule-chart-card monthly-chart-card">
+          <div class="chart-card-head monthly-chart-head">
+            <div><b>Monthly exam distribution</b><span>How busy each month is</span></div>
+            <div class="monthly-legend">
+              <span><i class="medical"></i>মেডিকেল</span>
+              <span><i class="engineering"></i>ইঞ্জিনিয়ারিং</span>
+              <span><i class="university"></i>বিশ্ববিদ্যালয়</span>
+            </div>
+          </div>
+          <div class="monthly-bars" id="monthlyExamBars"></div>
         </article>
       </div>
     </section>
@@ -2517,6 +2683,36 @@ function renderScheduleVisuals(){
   statusDonut.classList.toggle('empty',!total);
   statusDonut.style.setProperty('--confirmed-stop',confirmedStop+'%');
   statusDonut.style.setProperty('--pending-stop',pendingStop+'%');
+
+  if(typeof monthlyExamBars!=='undefined'&&monthlyExamBars){
+    const monthMap=new Map();
+    all.forEach(e=>{
+      const d=bdDate(e.date);
+      const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+      if(!monthMap.has(key))monthMap.set(key,{key,label:d.toLocaleDateString('en-US',{month:'short'}),year:d.getFullYear(),medical:0,engineering:0,university:0,total:0});
+      const row=monthMap.get(key),cat=eventCategory(e);
+      if(row[cat]!==undefined)row[cat]++;
+      row.total++;
+    });
+    const months=[...monthMap.values()].sort((a,b)=>a.key.localeCompare(b.key));
+    const maxMonth=Math.max(1,...months.map(m=>m.total));
+    monthlyExamBars.innerHTML=months.map(m=>{
+      const full=Math.max(10,m.total/maxMonth*100);
+      const med=m.total?m.medical/m.total*100:0;
+      const eng=m.total?m.engineering/m.total*100:0;
+      const uni=Math.max(0,100-med-eng);
+      return '<div class="monthly-bar-item" title="'+esc(m.label+' '+m.year+' • '+m.total+' exams')+'">'+
+        '<b>'+m.total+'</b>'+
+        '<div class="monthly-bar-shell"><div class="monthly-bar-stack" style="height:'+full+'%">'+
+          (m.medical?'<i class="medical" style="height:'+med+'%"></i>':'')+
+          (m.engineering?'<i class="engineering" style="height:'+eng+'%"></i>':'')+
+          (m.university?'<i class="university" style="height:'+uni+'%"></i>':'')+
+        '</div></div>'+
+        '<span>'+esc(m.label)+'</span><small>'+m.year+'</small>'+
+      '</div>';
+    }).join('');
+    if(!months.length)monthlyExamBars.innerHTML='<div class="monthly-empty">No schedule data yet.</div>';
+  }
 }
 
 function updateDashboardStats(){
@@ -2539,7 +2735,7 @@ function renderStarredTargets(){
   targetCount.textContent=matches.length+' STARRED';
   updateDashboardStats();
   if(!matches.length){
-    starredCards.innerHTML='<div class="target-empty">No exams selected yet. Tap “Add exams” to choose them here.</div>';
+    starredCards.innerHTML='<div class="target-empty"><div class="target-empty-icon">★</div><div class="target-empty-copy"><b>Build your exam list</b><span>Tap “Add exams” and choose the exams you care about.</span><div class="target-empty-pills"><i class="medical">মেডিকেল</i><i class="engineering">ইঞ্জিনিয়ারিং</i><i class="university">বিশ্ববিদ্যালয়</i></div></div></div>';
     return;
   }
   starredCards.innerHTML=matches.map((e,i)=>{
