@@ -85,6 +85,11 @@ function monthKey(date){
   return local.getFullYear()+'-'+String(local.getMonth()+1).padStart(2,'0');
 }
 
+function cleanMonths(value){
+  if(!Array.isArray(value))return [];
+  return [...new Set(value.map(x=>String(x||'').trim()).filter(x=>/^\d{4}-(0[1-9]|1[0-2])$/.test(x)))].sort().slice(0,24);
+}
+
 function monthRange(events){
   const keys=[...new Set(events.map(e=>monthKey(e.date)))].sort();
   if(!keys.length)return [];
@@ -212,7 +217,11 @@ export default async function handler(req,res){
     const events=cleanEvents(body.events);
     if(!events.length)return json(res,400,{ok:false,error:'no_events'});
 
-    const months=monthRange(events);
+    const requestedMonths=cleanMonths(body.months);
+    const months=requestedMonths.length
+      ?requestedMonths.map(key=>{const [year,month]=key.split('-').map(Number);return {year,month:month-1}})
+      :monthRange(events);
+    if(!months.length)return json(res,400,{ok:false,error:'no_months'});
     const doc=new PDFDocument({
       autoFirstPage:false,
       size:'A4',
