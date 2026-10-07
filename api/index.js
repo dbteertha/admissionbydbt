@@ -938,6 +938,7 @@ function openSyncModal(){
   syncStatusLine.textContent=homeSyncConfigured?(navigator.onLine?'Your choices sync automatically when they change.':'Offline — changes stay saved locally until internet returns.'):'Cloud sync storage is not connected yet; choices remain saved locally.';
   syncModalBackdrop.classList.add('open');syncModalBackdrop.setAttribute('aria-hidden','false');
   if(!homeSyncState)saveLocalSyncState();
+  else if(navigator.onLine)pushCloudSync();
 }
 function closeSyncModal(){syncModalBackdrop.classList.remove('open');syncModalBackdrop.setAttribute('aria-hidden','true')}
 async function useExistingSyncCode(){
@@ -1270,7 +1271,7 @@ syncModalClose.onclick=closeSyncModal;
 syncModalBackdrop.onclick=e=>{if(e.target===syncModalBackdrop)closeSyncModal()};
 syncCopyButton.onclick=async()=>{try{await navigator.clipboard.writeText(homeSyncCode);syncStatusLine.textContent='Code copied.'}catch(e){syncStatusLine.textContent='Copy failed — press and hold the code to copy it.'}};
 syncUseButton.onclick=useExistingSyncCode;
-syncExistingInput.oninput=()=>{syncExistingInput.value=normalizeSyncCode(syncExistingInput.value)};
+syncExistingInput.oninput=()=>{syncExistingInput.value=syncExistingInput.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')};
 targetPickerClose.onclick=closeTargetPicker;
 targetPickerBackdrop.onclick=e=>{if(e.target===targetPickerBackdrop)closeTargetPicker()};
 targetPickerSearch.oninput=renderTargetPicker;
@@ -1283,8 +1284,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape'){if(syncModalBackdrop.classLi
 addEventListener('online',()=>{if(validSyncCode(homeSyncCode))pushCloudSync()});
 addEventListener('storage',e=>{if(e.key===HOME_SYNC_STATE_KEY&&e.newValue){try{const s=JSON.parse(e.newValue);if(Number(s.updatedAt||0)>Number(homeSyncState?.updatedAt||0)){applySyncState(s);render()}}catch(err){}}});
 addEventListener('resize',()=>{calendar.dataset.view=calendarView});
-load();
-initializeSecretSync();
+load().then(()=>initializeSecretSync());
 setInterval(updateStarredTimers,1000);
 setInterval(()=>{if(validSyncCode(homeSyncCode)&&navigator.onLine)initializeSecretSync()},30000);
 
