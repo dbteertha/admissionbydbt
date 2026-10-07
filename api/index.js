@@ -1460,6 +1460,78 @@ html[data-theme="light"] .category-tab[data-cat="বিশ্ববিদ্য�
 @media(prefers-reduced-motion:reduce){
   .mix-track>i,.theme-toggle span,button,a,input{transition:none!important}
 }
+
+/* ===== DBT COLOR SYSTEM V2.1: detail polish ===== */
+.hero:before{
+  content:"";position:absolute;width:min(680px,92vw);height:min(390px,56vw);left:50%;top:45%;
+  transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(105,136,255,.10),rgba(121,105,255,.045) 42%,transparent 72%);
+  filter:blur(12px)
+}
+html[data-theme="light"] .hero:before{
+  background:radial-gradient(ellipse,rgba(103,136,255,.12),rgba(112,205,226,.065) 42%,rgba(255,142,177,.035) 58%,transparent 74%)
+}
+.hero-inner{z-index:1}
+.status-donut.empty{background:rgba(255,255,255,.06)}
+html[data-theme="light"] .status-donut.empty{background:#edf1f6}
+
+/* summary boxes use semantic colors */
+.circular-summary-card{position:relative;overflow:hidden}
+.circular-summary-card:before{content:"";position:absolute;left:0;right:0;top:0;height:2px}
+.circular-summary-card:nth-child(1):before{background:var(--status-confirmed)}
+.circular-summary-card:nth-child(2):before{background:var(--status-pending)}
+.circular-summary-card:nth-child(3):before{background:linear-gradient(90deg,var(--accent-calendar),var(--cat-university))}
+.circular-summary-card:nth-child(1) b{color:#78ddb5}
+.circular-summary-card:nth-child(2) b{color:#f0c46f}
+.circular-summary-card:nth-child(3) b{color:#8db1ff}
+html[data-theme="light"] .circular-summary-card:nth-child(1){background:linear-gradient(145deg,#fff,#f1fbf6)}
+html[data-theme="light"] .circular-summary-card:nth-child(2){background:linear-gradient(145deg,#fff,#fff9eb)}
+html[data-theme="light"] .circular-summary-card:nth-child(3){background:linear-gradient(145deg,#fff,#f2f5ff)}
+html[data-theme="light"] .circular-summary-card:nth-child(1) b{color:#287c59}
+html[data-theme="light"] .circular-summary-card:nth-child(2) b{color:#a26c18}
+html[data-theme="light"] .circular-summary-card:nth-child(3) b{color:#4f69b2}
+
+/* clearer colored filters without extra text */
+.calendar-filter[data-calendar-filter="medical"]::before,
+.calendar-filter[data-calendar-filter="engineering"]::before,
+.calendar-filter[data-calendar-filter="university"]::before{
+  content:"";display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;vertical-align:middle
+}
+.calendar-filter[data-calendar-filter="medical"]::before{background:var(--cat-medical)}
+.calendar-filter[data-calendar-filter="engineering"]::before{background:var(--cat-engineering)}
+.calendar-filter[data-calendar-filter="university"]::before{background:var(--cat-university)}
+
+.calendar-view-btn[data-calendar-view="month"].active{color:#83a7ff}
+.calendar-view-btn[data-calendar-view="timeline"].active{color:#b397ff}
+.calendar-view-btn[data-calendar-view="upcoming"].active{color:#73d7ac}
+html[data-theme="light"] .calendar-view-btn[data-calendar-view="month"].active{color:#4965b1;background:#eef3ff}
+html[data-theme="light"] .calendar-view-btn[data-calendar-view="timeline"].active{color:#6c52aa;background:#f4efff}
+html[data-theme="light"] .calendar-view-btn[data-calendar-view="upcoming"].active{color:#2b7f5d;background:#eff9f4}
+
+/* target count and selected states */
+.target-count{border-color:rgba(169,132,255,.18)!important;background:rgba(169,132,255,.06)!important;color:#c7adff!important}
+html[data-theme="light"] .target-count{border-color:#e1d7f6!important;background:#f7f3ff!important;color:#6d54a5!important}
+.target-picker-row.active{box-shadow:inset 3px 0 0 #7f9dff}
+.target-picker-row.category-medical.active{box-shadow:inset 3px 0 0 var(--cat-medical)}
+.target-picker-row.category-engineering.active{box-shadow:inset 3px 0 0 var(--cat-engineering)}
+.target-picker-row.category-university.active{box-shadow:inset 3px 0 0 var(--cat-university)}
+
+/* PDF selector: months blue, universities violet, selected exams readable */
+#pdfMonthChips .pdf-chip.active{color:#8eabff!important;border-color:rgba(111,144,255,.30)!important;background:rgba(111,144,255,.08)!important}
+#pdfVarsityChips .pdf-chip.active{color:#bea2ff!important;border-color:rgba(170,137,255,.30)!important;background:rgba(170,137,255,.08)!important}
+html[data-theme="light"] #pdfMonthChips .pdf-chip.active{color:#4b67b1!important;border-color:#d7e1fb!important;background:#eef3ff!important}
+html[data-theme="light"] #pdfVarsityChips .pdf-chip.active{color:#6d53a7!important;border-color:#e3daf7!important;background:#f6f2ff!important}
+.pdf-exam-row:not(.off){border-color:rgba(111,139,255,.12)}
+html[data-theme="light"] .pdf-exam-row:not(.off){border-color:#dfe6f3!important;background:#fbfcff!important}
+
+/* colored information rows on mobile, synced to category */
+@media(max-width:700px){
+  .category-section.category-medical .admission-table tr{border-left:3px solid var(--cat-medical)}
+  .category-section.category-engineering .admission-table tr{border-left:3px solid var(--cat-engineering)}
+  .category-section.category-university .admission-table tr{border-left:3px solid var(--cat-university)}
+  #calendarPdfButton{font-size:8px!important;padding-left:10px!important;padding-right:10px!important}
+  .circular-summary-card b{font-size:14px!important}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -1574,7 +1646,7 @@ html[data-theme="light"] .category-tab[data-cat="বিশ্ববিদ্য�
     <section class="section calendar-section" id="calendar" data-view="month">
       <div class="command-section-head">
         <div><div class="section-kicker">SCHEDULE</div><h2>Calendar</h2><div class="sub">Exam dates in one place.</div></div>
-        <div class="controls"><input id="search" placeholder="Search university or unit…"><button class="btn" id="calendarPdfButton" type="button">PDF</button><button class="btn" id="refresh">Refresh</button></div>
+        <div class="controls"><input id="search" placeholder="Search university or unit…"><button class="btn" id="calendarPdfButton" type="button">Print PDF</button><button class="btn" id="refresh">Refresh</button></div>
       </div>
       <div class="calendar-commandbar">
         <div class="calendar-view-switch" id="calendarViewSwitch">
@@ -1656,7 +1728,7 @@ html[data-theme="light"] .category-tab[data-cat="বিশ্ববিদ্য�
 <div class="pdf-picker-backdrop" id="pdfPickerBackdrop" aria-hidden="true">
     <div class="pdf-picker-modal" role="dialog" aria-modal="true" aria-labelledby="pdfPickerTitle">
       <div class="pdf-picker-head">
-        <div><div class="section-kicker">PRINT CALENDAR</div><h3 id="pdfPickerTitle">Choose what to download</h3><p>Pick months, categories, universities and individual exams.</p></div>
+        <div><div class="section-kicker">PRINT CALENDAR</div><h3 id="pdfPickerTitle">Make your calendar PDF</h3><p>Choose months, categories, universities and individual exams.</p></div>
         <button class="modal-x" id="pdfPickerClose" type="button" aria-label="Close">×</button>
       </div>
       <div class="pdf-picker-body">
@@ -2374,6 +2446,7 @@ function renderScheduleVisuals(){
   const confirmedStop=total?states.confirmed/total*100:0;
   const pendingStop=total?(states.confirmed+states.pending)/total*100:0;
   statusConfirmedPct.textContent=Math.round(confirmedStop)+'%';
+  statusDonut.classList.toggle('empty',!total);
   statusDonut.style.setProperty('--confirmed-stop',confirmedStop+'%');
   statusDonut.style.setProperty('--pending-stop',pendingStop+'%');
 }
