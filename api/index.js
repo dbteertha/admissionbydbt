@@ -267,6 +267,11 @@ function renderCircularGroups(){
 
 const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admission by DBT | ভর্তি তথ্যকেন্দ্র ২০২৬–২৭</title>
+<script>
+try{
+  document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'light';
+}catch(e){document.documentElement.dataset.theme='light'}
+</script>
 <style>
 :root{
   --bg:#03050a;--panel:rgba(9,12,19,.78);--panel-2:rgba(14,18,28,.78);
@@ -971,6 +976,292 @@ body{background:#02050a;color:#f5f7fb}
   .pdf-picker-head{padding:15px 14px 10px}.pdf-picker-body{padding:12px 14px 14px;gap:13px}.pdf-picker-foot{padding:10px 14px 13px}
   .pdf-chip{padding:9px 10px;font-size:8.5px}.pdf-exam-list{max-height:230px}.pdf-exam-row{padding:9px}
 }
+
+/* ===== DBT SOFT LIGHT THEME ===== */
+.theme-toggle{
+  width:36px;height:36px;display:grid;place-items:center;position:relative;overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);border-radius:50%;
+  background:rgba(255,255,255,.045);color:#dbe5f4;cursor:pointer;
+  transition:.2s ease;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)
+}
+.theme-toggle:hover{transform:translateY(-1px)}
+.theme-toggle span{position:absolute;transition:.22s ease;font-size:15px;line-height:1}
+.theme-toggle .theme-sun{opacity:1;transform:scale(1)}
+.theme-toggle .theme-moon{opacity:0;transform:scale(.6) rotate(-25deg)}
+
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f7f9fc;
+  --panel:rgba(255,255,255,.82);
+  --panel-2:rgba(255,255,255,.94);
+  --line:rgba(67,83,111,.11);
+  --line-strong:rgba(67,83,111,.17);
+  --text:#172033;
+  --muted:#738096;
+  --soft:#46556d;
+  --blue:#5578ff;
+  --cyan:#14a7c8;
+  --violet:#7e64df;
+  --gold:#d99b28;
+  --green:#2d9f6f;
+  --danger:#e46476;
+  --glass:rgba(255,255,255,.72);
+  --glass-strong:rgba(255,255,255,.92);
+  --glass-line:rgba(57,73,104,.10);
+  --glass-hi:rgba(255,255,255,.94);
+  --quiet:#78869a;
+  --shadow:0 22px 64px rgba(63,78,108,.10);
+}
+html[data-theme="light"] body{
+  background:
+    radial-gradient(circle at 14% 8%,rgba(105,139,255,.11),transparent 25%),
+    radial-gradient(circle at 88% 18%,rgba(255,155,187,.10),transparent 27%),
+    radial-gradient(circle at 56% 74%,rgba(97,207,184,.09),transparent 28%),
+    linear-gradient(180deg,#ffffff 0%,#f9fbfe 48%,#f5f8fc 100%);
+  color:#172033
+}
+html[data-theme="light"] #stars{opacity:.08;filter:invert(1)}
+html[data-theme="light"] .app:before{
+  background:
+    radial-gradient(circle at 18% 8%,rgba(88,126,255,.08),transparent 31%),
+    radial-gradient(circle at 82% 30%,rgba(250,126,171,.07),transparent 28%),
+    radial-gradient(circle at 55% 78%,rgba(61,191,159,.065),transparent 35%)
+}
+html[data-theme="light"] .app:after{background:linear-gradient(to bottom,transparent,rgba(229,235,245,.18))}
+
+html[data-theme="light"] .topnav{
+  border-color:rgba(63,79,107,.10);
+  background:rgba(255,255,255,.76);
+  box-shadow:0 16px 48px rgba(65,80,111,.10),inset 0 1px 0 rgba(255,255,255,.96)
+}
+html[data-theme="light"] .brand-orb{
+  background:radial-gradient(circle at 36% 32%,#fff 0 8%,#b9ddff 10% 23%,#6f8cff 42%,#b6a6ff 72%,#ffffff 100%);
+  box-shadow:0 7px 22px rgba(91,112,220,.22)
+}
+html[data-theme="light"] .brand-orb:after{border-color:rgba(89,112,211,.20)}
+html[data-theme="light"] .brand{color:#1c2740}
+html[data-theme="light"] .brand-sub{color:#8b97aa}
+html[data-theme="light"] .navlink{color:#728096}
+html[data-theme="light"] .navlink:hover{background:rgba(75,97,136,.055);color:#26344d}
+html[data-theme="light"] .navlink.active{background:linear-gradient(135deg,rgba(103,132,255,.12),rgba(163,135,255,.09));color:#31486f;box-shadow:inset 0 0 0 1px rgba(99,125,216,.10)}
+html[data-theme="light"] .sync-link,
+html[data-theme="light"] .msg-link,
+html[data-theme="light"] .live,
+html[data-theme="light"] .theme-toggle{
+  background:rgba(255,255,255,.76);border-color:rgba(64,82,113,.11);
+  color:#52627b;box-shadow:0 5px 16px rgba(74,91,124,.06),inset 0 1px 0 #fff
+}
+html[data-theme="light"] .sync-link.saved{background:rgba(64,184,125,.08);border-color:rgba(44,154,104,.17);color:#287a58}
+html[data-theme="light"] .msg-link{color:#27825d}
+html[data-theme="light"] .theme-toggle{color:#5e6b80}
+html[data-theme="light"] .theme-toggle .theme-sun{opacity:0;transform:scale(.6) rotate(25deg)}
+html[data-theme="light"] .theme-toggle .theme-moon{opacity:1;transform:scale(1) rotate(0)}
+
+html[data-theme="light"] .hero-eyebrow{
+  color:#68768d;background:rgba(255,255,255,.72);border-color:rgba(71,88,119,.10);
+  box-shadow:0 8px 24px rgba(84,100,130,.06)
+}
+html[data-theme="light"] .hero-phase{
+  color:#526fae;background:linear-gradient(135deg,rgba(95,132,255,.10),rgba(127,197,255,.10));
+  border-color:rgba(89,121,210,.13)
+}
+html[data-theme="light"] .orbit-shell{border-color:rgba(93,122,205,.12)}
+html[data-theme="light"] .orbit-shell:before{border-color:rgba(89,119,200,.11)}
+html[data-theme="light"] .orbit-shell:after{border-color:rgba(97,112,145,.09)}
+html[data-theme="light"] .orbit-dot{background:#6e8cff;box-shadow:0 0 18px rgba(100,128,255,.38)}
+html[data-theme="light"] .days{color:#17223a;text-shadow:0 18px 50px rgba(86,103,142,.10)}
+html[data-theme="light"] .label{color:#42516a}
+html[data-theme="light"] .hero-message{color:#78869a}
+html[data-theme="light"] .clock b{color:#24324b}
+html[data-theme="light"] .clock span{color:#8a97aa}
+html[data-theme="light"] .progress{background:#edf1f7;border-color:#e1e7f0;box-shadow:inset 0 1px 4px rgba(84,98,126,.06)}
+html[data-theme="light"] .fill{background:linear-gradient(90deg,#6b83ff,#61c9e8 54%,#79d9b0)}
+html[data-theme="light"] .progress-meta,
+html[data-theme="light"] .pct{color:#7c899c}
+html[data-theme="light"] .passed{color:#4a5971}
+
+html[data-theme="light"] .panel,
+html[data-theme="light"] .section,
+html[data-theme="light"] .target-section,
+html[data-theme="light"] .info-center,
+html[data-theme="light"] .mission-section,
+html[data-theme="light"] .stat-card{
+  border-color:rgba(69,86,116,.10);
+  background:linear-gradient(150deg,rgba(255,255,255,.92),rgba(249,251,255,.78));
+  box-shadow:0 20px 55px rgba(69,86,116,.08),inset 0 1px 0 rgba(255,255,255,.98)
+}
+html[data-theme="light"] .section-kicker{color:#8a96a9}
+html[data-theme="light"] .sub{color:#7d899c}
+html[data-theme="light"] .stat-label{color:#8b97a9}
+html[data-theme="light"] .stat-value{color:#23324b}
+html[data-theme="light"] .stat-note{color:#7b879a}
+html[data-theme="light"] .dashboard-stats .stat-card:nth-child(1){background:linear-gradient(145deg,#ffffff,#f1f6ff)}
+html[data-theme="light"] .dashboard-stats .stat-card:nth-child(2){background:linear-gradient(145deg,#ffffff,#fff3f8)}
+html[data-theme="light"] .dashboard-stats .stat-card:nth-child(3){background:linear-gradient(145deg,#ffffff,#f3fbf7)}
+html[data-theme="light"] .dashboard-stats .stat-card:nth-child(4){background:linear-gradient(145deg,#ffffff,#f7f3ff)}
+
+html[data-theme="light"] .starred-card{
+  background:linear-gradient(145deg,#ffffff,#f7f9ff);
+  border-color:rgba(78,96,132,.10);box-shadow:0 12px 32px rgba(76,91,121,.06)
+}
+html[data-theme="light"] .target-name{color:#26344d}
+html[data-theme="light"] .target-date,
+html[data-theme="light"] .target-message{color:#7b8798}
+html[data-theme="light"] .target-time{background:#f6f8fc;border-color:#e8edf4}
+html[data-theme="light"] .target-time b{color:#31415c}
+html[data-theme="light"] .target-time span{color:#8b96a6}
+html[data-theme="light"] .star-btn{background:#fff;border-color:#dfe5ef;color:#9aa5b4}
+html[data-theme="light"] .star-btn.active{background:#fff7df;border-color:#f0d58a;color:#c68a13;box-shadow:0 6px 18px rgba(197,145,32,.10)}
+html[data-theme="light"] .target-add-btn{background:linear-gradient(135deg,#eef3ff,#f5f0ff)!important;border-color:#dce4f5!important;color:#526b9b!important}
+
+html[data-theme="light"] .circular-section{background:linear-gradient(150deg,#ffffff,#fbfcff)}
+html[data-theme="light"] .circular-summary-card{
+  background:#fff;border-color:#e7ebf2;box-shadow:0 7px 22px rgba(72,88,119,.045)
+}
+html[data-theme="light"] .circular-summary-card span,
+html[data-theme="light"] .circular-summary-card small{color:#8793a4}
+html[data-theme="light"] .circular-summary-card b{color:#28364f}
+html[data-theme="light"] .circular-tabs{
+  background:rgba(250,252,255,.86);border-color:#e6ebf2;box-shadow:0 8px 24px rgba(70,88,120,.07)
+}
+html[data-theme="light"] .circular-tab{color:#8390a2}
+html[data-theme="light"] .circular-tab:hover{color:#34445e;background:#f1f4f9}
+html[data-theme="light"] .circular-tab.active{color:#314567;background:#fff;box-shadow:0 5px 16px rgba(75,91,123,.09),inset 0 0 0 1px #e7ebf3}
+html[data-theme="light"] .circular-group{
+  background:rgba(249,251,255,.80);border-color:#e9edf4
+}
+html[data-theme="light"] .circular-group-icon{background:#eef3ff;border-color:#dce5fb;color:#5d77bd}
+html[data-theme="light"] .circular-cat-medical .circular-group-icon{background:#fff0f4;border-color:#ffdbe5;color:#d76783}
+html[data-theme="light"] .circular-cat-engineering .circular-group-icon{background:#ecf9ff;border-color:#d4f0fb;color:#278db0}
+html[data-theme="light"] .circular-cat-university .circular-group-icon{background:#f4efff;border-color:#e5dafd;color:#795eb9}
+html[data-theme="light"] .circular-card{
+  background:#fff!important;border-color:#e8edf3!important;box-shadow:0 8px 24px rgba(72,87,117,.045)!important
+}
+html[data-theme="light"] .circular-card:hover{background:#fff!important;border-color:#d9e1ec!important;box-shadow:0 12px 28px rgba(70,86,116,.08)!important}
+html[data-theme="light"] .circular-card b{color:#38815f!important}
+html[data-theme="light"] .circular-card span,
+html[data-theme="light"] .circular-waiting>span{color:#8490a2}
+html[data-theme="light"] .circular-waiting{border-color:#e7ecf3}
+html[data-theme="light"] .circular-waiting em{color:#748196;border-color:#e4e9f0;background:#fff}
+html[data-theme="light"] .circular-empty{background:#f6f8fb;color:#7d899a}
+
+html[data-theme="light"] .calendar-section{background:linear-gradient(150deg,#ffffff,#fafcff)}
+html[data-theme="light"] .controls input{
+  background:#fff;color:#2e3b52;border-color:#e2e8f0!important;box-shadow:0 5px 16px rgba(77,93,124,.04)
+}
+html[data-theme="light"] .controls input::placeholder{color:#9aa5b5}
+html[data-theme="light"] .btn{background:#fff;color:#53637b;border-color:#e2e8f0!important;box-shadow:0 5px 15px rgba(74,89,120,.045)}
+html[data-theme="light"] .btn:hover{background:#f7f9fc}
+html[data-theme="light"] .calendar-view-switch{background:#f5f7fb;border-color:#e5eaf1!important}
+html[data-theme="light"] .calendar-view-btn{color:#7f8a9b}
+html[data-theme="light"] .calendar-view-btn.active{background:#fff;color:#395277;box-shadow:0 4px 13px rgba(71,87,118,.08)}
+html[data-theme="light"] .calendar-filter{background:#fff;color:#8490a1;border-color:#e4e9f0!important}
+html[data-theme="light"] .calendar-filter.active{background:#edf3ff;color:#4e6fae;border-color:#d9e4fb!important}
+html[data-theme="light"] .calendar-head{background:#f9fbfd;border-color:#e8edf3!important}
+html[data-theme="light"] .month{color:#283750}
+html[data-theme="light"] .calendar-scroll{background:#fff;border-color:#e7ebf2!important}
+html[data-theme="light"] .week{background:#f7f9fc!important}
+html[data-theme="light"] .week div{color:#8793a4}
+html[data-theme="light"] .day{border-color:#edf0f5!important}
+html[data-theme="light"] .day.today{background:#f1f5ff!important}
+html[data-theme="light"] .num{color:#7c8899}
+html[data-theme="light"] .today .num{background:#6b83ff;color:#fff}
+html[data-theme="light"] .event.verified{background:#edf9f3!important;border-color:#cdebdc!important}
+html[data-theme="light"] .event.unverified{background:#fff8e8!important;border-color:#f1dfad!important}
+html[data-theme="light"] .event:hover{filter:brightness(.985);background:inherit!important}
+html[data-theme="light"] .timeline-card{border-color:#e7ebf2;background:#fff}
+html[data-theme="light"] .timeline-date{color:#536177}
+html[data-theme="light"] .timeline-main small{color:#8793a4}
+html[data-theme="light"] .timeline-status{background:#f1f8f4!important;border-color:#dbece2!important;color:#4b8066!important}
+html[data-theme="light"] .timeline-status.pending,
+html[data-theme="light"] .timeline-status.tentative{background:#fff8e8!important;border-color:#f0dfb0!important;color:#9a7425!important}
+
+html[data-theme="light"] .category-tabs{
+  background:rgba(250,252,255,.90);border-color:#e5eaf1;box-shadow:0 8px 24px rgba(75,90,120,.07)
+}
+html[data-theme="light"] .category-tab{color:#7f8b9d}
+html[data-theme="light"] .category-tab.active{background:#fff;color:#354b6d;box-shadow:0 5px 14px rgba(77,92,123,.08)}
+html[data-theme="light"] .table-wrap{background:#fff;border-color:#e7ebf2}
+html[data-theme="light"] .admission-table th{background:#f3f6fa;color:#506078}
+html[data-theme="light"] .admission-table td{color:#58677c;border-color:#edf0f4}
+html[data-theme="light"] .admission-table td:first-child{background:#fbfcfe}
+html[data-theme="light"] .admission-table tbody tr:hover td{background:#f9fbfd}
+html[data-theme="light"] .admission-table tbody tr:hover td:first-child{background:#f6f9fc}
+
+html[data-theme="light"] .mission-side{border-color:#e7ebf2}
+html[data-theme="light"] .mission-item{background:#fff;border-color:#e7ebf2}
+html[data-theme="light"] .mission-item:hover{background:#f7faff;border-color:#dbe4f4}
+html[data-theme="light"] .mission-item.done{background:#f0faf5;border-color:#d7eee2}
+html[data-theme="light"] .mission-check{background:#fff;border-color:#ced6e2}
+html[data-theme="light"] .mission-check:checked{background:linear-gradient(145deg,#6d86ff,#59c8df)}
+html[data-theme="light"] .mission-input{background:#fff!important;color:#304058!important;border-color:#e2e8f0!important}
+
+html[data-theme="light"] .sync-modal,
+html[data-theme="light"] .target-picker,
+html[data-theme="light"] .event-drawer,
+html[data-theme="light"] .pdf-picker-modal{
+  background:rgba(255,255,255,.96)!important;border-color:#e1e7ef!important;color:#25344c!important;
+  box-shadow:0 26px 80px rgba(58,74,105,.18)!important
+}
+html[data-theme="light"] .sync-code-box,
+html[data-theme="light"] .target-picker-row,
+html[data-theme="light"] .event-drawer-note,
+html[data-theme="light"] .pdf-exam-row{
+  background:#f8fafc!important;border-color:#e8ecf2!important;color:#34445d!important
+}
+html[data-theme="light"] .target-picker-row:hover,
+html[data-theme="light"] .pdf-exam-row:hover{background:#f2f6fb!important}
+html[data-theme="light"] .pdf-picker-backdrop,
+html[data-theme="light"] .sync-modal-backdrop,
+html[data-theme="light"] .target-picker-backdrop,
+html[data-theme="light"] .event-drawer-backdrop{background:rgba(72,84,105,.22)}
+html[data-theme="light"] .pdf-picker-head,
+html[data-theme="light"] .pdf-picker-foot{border-color:#e9edf3}
+html[data-theme="light"] .pdf-picker-head p,
+html[data-theme="light"] .pdf-exam-row small,
+html[data-theme="light"] .pdf-exam-row em{color:#8490a1}
+html[data-theme="light"] .pdf-chip{background:#fff;border-color:#e3e8ef;color:#7e8b9d}
+html[data-theme="light"] .pdf-chip.active{background:#eef3ff;border-color:#d8e2f7;color:#4d68a0}
+html[data-theme="light"] .pdf-exam-search{background:#fff;color:#31415b;border-color:#e1e7ef}
+html[data-theme="light"] .pdf-exam-check{border-color:#cfd7e2}
+html[data-theme="light"] .pdf-exam-row:not(.off) .pdf-exam-check{background:#647cff;color:#fff;border-color:#647cff}
+
+html[data-theme="light"] .mobile-dock{
+  background:rgba(255,255,255,.88)!important;border-color:rgba(72,88,117,.12)!important;
+  box-shadow:0 14px 44px rgba(67,82,111,.14),inset 0 1px 0 #fff!important
+}
+html[data-theme="light"] .mobile-dock a,
+html[data-theme="light"] .mobile-dock button{color:#8190a4}
+html[data-theme="light"] .mobile-dock b{color:#62718a}
+html[data-theme="light"] .mobile-dock a.active{background:linear-gradient(135deg,#edf3ff,#f6f0ff)!important;color:#405b89}
+html[data-theme="light"] .mobile-dock a.active b{color:#4d68a0}
+
+html[data-theme="light"] .category-medical .admission-name,
+html[data-theme="light"] .circular-cat-medical .circular-card strong,
+html[data-theme="light"] .calendar-section .category-medical .event-title,
+html[data-theme="light"] .calendar-section .timeline-card.category-medical .timeline-main strong{color:#c94f70!important}
+html[data-theme="light"] .category-engineering .admission-name,
+html[data-theme="light"] .circular-cat-engineering .circular-card strong,
+html[data-theme="light"] .calendar-section .category-engineering .event-title,
+html[data-theme="light"] .calendar-section .timeline-card.category-engineering .timeline-main strong{color:#1683a8!important}
+html[data-theme="light"] .category-university .admission-name,
+html[data-theme="light"] .circular-cat-university .circular-card strong,
+html[data-theme="light"] .calendar-section .category-university .event-title,
+html[data-theme="light"] .calendar-section .timeline-card.category-university .timeline-main strong{color:#7255b0!important}
+html[data-theme="light"] .category-medical h3{color:#b94d69}
+html[data-theme="light"] .category-engineering h3{color:#177d9f}
+html[data-theme="light"] .category-university h3{color:#6e55a6}
+
+@media(max-width:700px){
+  html[data-theme="light"] .admission-table tr{
+    background:linear-gradient(145deg,#ffffff,#fafcff);border-color:#e6ebf2;
+    box-shadow:0 10px 28px rgba(67,83,113,.06)
+  }
+  html[data-theme="light"] .admission-table td,
+  html[data-theme="light"] .admission-table td:first-child{border-color:#edf0f4!important;color:#526178}
+  html[data-theme="light"] .admission-table td:before{color:#8b97a7}
+  html[data-theme="light"] .admission-table td:first-child{color:#283850}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -986,6 +1277,7 @@ body{background:#02050a;color:#f5f7fb}
       <a class="navlink" href="#infoCenter">Admission Guide</a>
     </div>
     <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span class="theme-sun">☀</span><span class="theme-moon">☾</span></button>
       <button class="sync-link" id="homeSyncButton" type="button" title="Save your Home and Calendar choices"><i></i><span id="homeSyncText">Save</span></button>
       <a class="msg-link" href="https://wa.me/+8801516560230" target="_blank" rel="noopener" aria-label="Message on WhatsApp" title="Message on WhatsApp">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18.4 3.8 20l1-3.5A8.4 8.4 0 1 1 7 18.4Z"/><path d="M8.2 8.1c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.8 2c.1.3.1.5-.1.7l-.6.8c-.2.2-.2.4 0 .7.5.9 1.3 1.7 2.2 2.2.3.2.5.2.7 0l.8-.7c.2-.2.5-.2.7-.1l1.9.9c.3.1.4.3.4.6 0 .8-.4 1.6-1 2-1 .6-2.4.5-4-.2-1.4-.6-2.8-1.7-3.9-3.1-1-1.3-1.7-2.8-1.8-4.1-.1-.8.1-1.4.5-1.7Z"/></svg>
@@ -2071,6 +2363,18 @@ pdfDownloadSelected.onclick=downloadCalendarPdf;
 search.oninput=render;
 mainTargetButton.onclick=openTargetPicker;
 targetAddButton.onclick=openExamPicker;
+function applyTheme(theme){
+  const next=theme==='dark'?'dark':'light';
+  document.documentElement.dataset.theme=next;
+  try{localStorage.setItem('admissionbydbt-theme-v1',next)}catch(e){}
+  if(typeof themeToggle!=='undefined'&&themeToggle){
+    themeToggle.title=next==='light'?'Switch to dark theme':'Switch to light theme';
+    themeToggle.setAttribute('aria-label',themeToggle.title);
+  }
+}
+applyTheme(document.documentElement.dataset.theme||'light');
+themeToggle.onclick=()=>applyTheme(document.documentElement.dataset.theme==='light'?'dark':'light');
+
 homeSyncButton.onclick=openSyncModal;
 syncModalClose.onclick=closeSyncModal;
 syncModalBackdrop.onclick=e=>{if(e.target===syncModalBackdrop)closeSyncModal()};
