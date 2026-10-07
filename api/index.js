@@ -382,7 +382,7 @@ a{color:inherit}
   .dashboard-stats{grid-template-columns:repeat(2,1fr);gap:7px}.stat-card{min-height:78px;padding:12px;border-radius:14px}.stat-value{font-size:15px}.stat-note{font-size:9px}
   .section,.target-section,.info-center,.mission-section{padding:14px;border-radius:18px}.head h2,.target-head h2,.info-title{font-size:22px}.sub{font-size:10px}.mission-actions{flex-wrap:wrap}.mission-input{flex-basis:100%}
   .starred-grid{grid-template-columns:1fr}.target-timer{gap:5px}.target-time b{font-size:21px}.star-btn{width:34px;height:34px}.event .star-btn{width:20px;height:20px}
-  .calendar-scroll{margin:0 -4px}.controls{width:100%}.controls input{flex:1;min-width:0}.week,.grid{min-width:660px}.day{min-height:86px;padding:6px}.event{font-size:8px;padding:4px 5px}
+  .calendar-scroll{margin:0}.controls{width:100%}.controls input{flex:1;min-width:0}.week,.grid{min-width:0}.day{min-height:72px;padding:4px}.event{font-size:7px;padding:3px 4px}
   .category-tabs{top:67px;display:grid;grid-template-columns:repeat(3,1fr);padding:7px}.category-tab{border-radius:9px;font-size:9px;padding:8px}
   .table-wrap{overflow:visible;border:0;background:transparent}.admission-table{min-width:0;display:block}.admission-table thead{display:none}.admission-table tbody{display:grid;gap:10px}.admission-table tr{display:block;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(13,17,26,.86),rgba(8,11,17,.82));border-radius:15px;padding:5px 11px;box-shadow:0 12px 35px rgba(0,0,0,.16)}.admission-table td,.admission-table td:first-child{display:grid;grid-template-columns:112px 1fr;gap:10px;position:static!important;min-width:0;background:transparent!important;border:0;border-bottom:1px solid rgba(255,255,255,.055);padding:10px 0;font-size:10px}.admission-table td:last-child{border-bottom:0}.admission-table td:before{content:attr(data-label);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#69768d;font-weight:700}.admission-table td:first-child{display:block;font-size:13px;color:#f2f5fa;padding:10px 0}.admission-table td:first-child:before{display:none}
   .mobile-dock{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:70;display:grid;grid-template-columns:repeat(5,1fr);width:calc(100% - 20px);max-width:520px;padding:6px;border:1px solid rgba(255,255,255,.10);border-radius:17px;background:rgba(7,10,16,.84);backdrop-filter:blur(22px);box-shadow:0 18px 55px rgba(0,0,0,.38)}.mobile-dock a,.mobile-dock button{border:0;background:transparent;color:#7f899b;text-decoration:none;text-align:center;border-radius:12px;padding:7px 3px;font-size:8px;cursor:pointer}.mobile-dock b{display:block;font-size:15px;color:#b8c4d8;margin-bottom:3px}.mobile-dock a:active,.mobile-dock button:active{background:rgba(255,255,255,.06)}
@@ -465,7 +465,38 @@ a{color:inherit}
 .event-drawer-status{display:inline-flex;margin-top:12px;padding:5px 8px;border:1px solid rgba(116,230,167,.16);border-radius:999px;color:#a5d8b7;background:rgba(116,230,167,.045);font-size:7px;font-weight:900}.event-drawer-status.pending{border-color:rgba(242,199,102,.18);color:#d9bb72;background:rgba(242,199,102,.045)}.event-drawer-status.tentative{border-color:rgba(255,122,138,.18);color:#e8a0aa;background:rgba(255,122,138,.045)}
 .event-drawer-note{margin-top:14px;padding:12px;border:1px solid rgba(255,255,255,.065);border-radius:12px;background:#0b1017;color:#8794a6;font-size:9px;line-height:1.55}.event-drawer-actions{display:flex;gap:7px;margin-top:15px}.event-drawer-actions .btn{flex:1}
 @media(max-width:850px){.dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero-upcoming-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.hero{min-height:0!important}.hero-inner{padding:36px 4px 25px!important}.hero-next-card{margin-top:12px;padding:11px}.hero-next-name{font-size:14px}.hero-upcoming-strip{display:none}.dashboard-stats{gap:6px!important}.stat-card{padding:10px!important}.circular-summary{grid-template-columns:1fr 1fr}.circular-summary-card:last-child{grid-column:1/-1}.calendar-section{padding:13px!important}.calendar-commandbar{align-items:stretch}.calendar-view-switch{width:100%}.calendar-view-btn{flex:1}.calendar-filter-row{width:100%;overflow:auto;flex-wrap:nowrap;padding-bottom:3px}.calendar-filter{flex:0 0 auto}.calendar-scroll{display:none!important}.calendar-head{display:none!important}.calendar-list{display:block!important}.calendar-mobile-note{display:block;margin:7px 0 9px;color:#667386;font-size:7px}.timeline-card{grid-template-columns:56px minmax(0,1fr) auto;gap:8px;padding:10px 8px}.timeline-date b{font-size:15px}}
+@media(max-width:700px){
+  .hero{min-height:0!important}.hero-inner{padding:32px 4px 22px!important}.hero-upcoming-strip,.hero-next-card{display:none!important}
+  .dashboard-stats{gap:6px!important}.stat-card{padding:9px!important;min-height:68px!important}.stat-note{display:none}.stat-label{font-size:7px!important}.stat-value{font-size:14px!important}
+  .section-kicker,.command-section-head .sub,.target-head .sub,.circular-section>.head .sub,.info-center>.head .sub,.footer,.audit-note{display:none!important}
+  .circular-summary{grid-template-columns:1fr 1fr;margin:9px 0!important}.circular-summary-card{padding:9px!important}.circular-summary-card:last-child{display:none}.circular-summary-card small{display:none}
+  .circular-grid{grid-template-columns:1fr 1fr!important;gap:6px!important}.circular-card{min-height:76px!important;padding:9px!important}.circular-card span{display:none!important}.circular-card strong{font-size:9px!important}.circular-card b{font-size:6px!important}
+  .circular-pending{padding:9px!important}.circular-pending-title{margin-bottom:6px!important}.circular-pending-chip{padding:4px 6px!important;font-size:7px!important}
+  .calendar-section{padding:10px!important}
+  .command-section-head{align-items:center!important}.command-section-head h2{font-size:20px!important}
+  .controls{width:100%;gap:5px!important}.controls input{flex:1;min-width:0;padding:8px 9px!important;font-size:9px!important}.controls .btn{padding:8px 9px!important;font-size:9px!important}
+  .calendar-commandbar{align-items:stretch;margin:9px 0 7px!important;gap:7px!important}
+  .calendar-view-switch{width:100%;order:1}.calendar-view-btn{flex:1;height:28px!important;padding:0 7px!important;font-size:7px!important}
+  .calendar-filter-row{order:2;width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:none}.calendar-filter-row::-webkit-scrollbar{display:none}
+  .calendar-filter{flex:0 0 auto;height:27px!important;padding:0 8px!important;font-size:7px!important}
+  .calendar-audit{display:none!important}
+  .calendar-head{display:flex!important;margin:6px 0!important;padding:6px!important;border-radius:10px!important}
+  .calendar-head .btn{padding:6px 8px!important;font-size:0!important}.calendar-head .btn:first-child:after{content:"‹";font-size:16px}.calendar-head .btn:last-child:after{content:"›";font-size:16px}
+  .calendar-head .month{font-size:13px!important}
+  .calendar-scroll{display:block!important;margin:0!important;overflow:hidden!important;border-radius:11px!important}
+  .week,.grid{min-width:0!important;width:100%!important;grid-template-columns:repeat(7,minmax(0,1fr))!important}
+  .week div{padding:5px 1px!important;font-size:5.5px!important;letter-spacing:.03em!important}
+  .day{min-height:68px!important;padding:3px!important}
+  .day .num{width:18px!important;height:18px!important;font-size:7px!important;border-radius:6px!important}
+  .event{grid-template-columns:8px minmax(0,1fr)!important;gap:2px!important;margin-top:3px!important;padding:3px 2px!important;border-radius:5px!important;min-height:15px}
+  .event .star-btn{width:8px!important;height:8px!important;font-size:6px!important;border:0!important;background:transparent!important}
+  .event-title{font-size:5.5px!important;line-height:1.05!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
+  .event-status{display:none!important}
+  .calendar-section[data-view="timeline"] .calendar-scroll,.calendar-section[data-view="upcoming"] .calendar-scroll,.calendar-section[data-view="timeline"] .calendar-head,.calendar-section[data-view="upcoming"] .calendar-head{display:none!important}
+  .calendar-section[data-view="timeline"] .calendar-list,.calendar-section[data-view="upcoming"] .calendar-list{display:block!important}
+  .calendar-section[data-view="month"] .calendar-list{display:none!important}
+  .timeline-card{grid-template-columns:48px minmax(0,1fr) auto;gap:7px;padding:9px 7px}.timeline-date b{font-size:14px}.timeline-status{font-size:5px;padding:4px 5px}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -521,7 +552,7 @@ a{color:inherit}
 
     <section class="target-section" id="targets">
       <div class="target-head">
-        <div><div class="section-kicker">YOUR PRIORITIES</div><h2>★ My Target Exams</h2><div class="sub">Star any exam. Your nearest target becomes the mission priority and gets its own live timer.</div></div>
+        <div><div class="section-kicker">TARGETS</div><h2>★ My Target Exams</h2><div class="sub">Star exams you want to follow.</div></div>
         <div class="target-count" id="targetCount">0 STARRED</div>
       </div>
       <div class="starred-grid" id="starredCards"></div>
@@ -548,7 +579,7 @@ a{color:inherit}
 
     <section class="section calendar-section" id="calendar" data-view="month">
       <div class="command-section-head">
-        <div><div class="section-kicker">SCHEDULE COMMAND CENTER</div><h2>Admission Calendar</h2><div class="sub">One verified timeline for exams, announced dates and pending circulars.</div></div>
+        <div><div class="section-kicker">SCHEDULE</div><h2>Admission Calendar</h2><div class="sub">Verified exam dates and status.</div></div>
         <div class="controls"><input id="search" placeholder="Search university or unit…"><button class="btn" id="refresh">Refresh</button></div>
       </div>
       <div class="calendar-commandbar">
@@ -567,7 +598,6 @@ a{color:inherit}
         </div>
         <div class="calendar-audit"><i></i><span>Audited 7 Oct 2026</span></div>
       </div>
-      <div class="calendar-mobile-note">Mobile uses the chronological timeline automatically for easier scanning.</div>
       <div class="calendar-head"><button class="btn" id="prev">← Previous</button><div class="month" id="month"></div><button class="btn" id="next">Next →</button></div>
       <div class="calendar-scroll">
         <div class="week"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
@@ -702,7 +732,7 @@ function starButton(e,extraClass=''){
   return b;
 }
 function bdDate(iso){return new Date(new Date(iso).toLocaleString('en-US',{timeZone:'Asia/Dhaka'}))}
-let calendarView=(innerWidth<=700?'timeline':'month'),calendarFilter='all',drawerEvent=null;
+let calendarView='month',calendarFilter='all',drawerEvent=null;
 function eventState(e){return e.status==='tentative'?'tentative':e.status==='pending'?'pending':'confirmed'}
 function eventCategory(e){
   const t=(e.title||'').toLowerCase();
@@ -759,7 +789,7 @@ function renderTimeline(es){
   });
 }
 function render(){
-  calendar.dataset.view=(innerWidth<=700&&calendarView==='month')?'timeline':calendarView;
+  calendar.dataset.view=calendarView;
   document.querySelectorAll('[data-calendar-view]').forEach(b=>b.classList.toggle('active',b.dataset.calendarView===calendarView));
   document.querySelectorAll('[data-calendar-filter]').forEach(b=>b.classList.toggle('active',b.dataset.calendarFilter===calendarFilter));
   month.textContent=view.toLocaleString('en-US',{month:'long',year:'numeric'});
@@ -912,7 +942,7 @@ eventDrawerClose.onclick=closeEventDrawer;eventDrawerClose2.onclick=closeEventDr
 eventDrawerBackdrop.onclick=e=>{if(e.target===eventDrawerBackdrop)closeEventDrawer()};
 eventDrawerStar.onclick=()=>{if(!drawerEvent)return;const current=drawerEvent;toggleStar(current);drawerEvent=current;openEventDrawer(current)};
 addEventListener('keydown',e=>{if(e.key==='Escape'){if(targetPickerBackdrop.classList.contains('open'))closeTargetPicker();else if(eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()}});
-addEventListener('resize',()=>{calendar.dataset.view=(innerWidth<=700&&calendarView==='month')?'timeline':calendarView});
+addEventListener('resize',()=>{calendar.dataset.view=calendarView});
 load();
 setInterval(updateStarredTimers,1000);
 
