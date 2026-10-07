@@ -280,6 +280,7 @@ a{color:inherit}
 .navlinks{display:flex;gap:4px;align-items:center}
 .navlink{border:0;background:transparent;color:#aab2c0;text-decoration:none;font-size:11px;padding:8px 10px;border-radius:10px;cursor:pointer}
 .navlink:hover{background:rgba(255,255,255,.06);color:#fff}
+.navlink.active{background:rgba(120,167,255,.12);color:#fff;box-shadow:inset 0 -2px 0 rgba(120,167,255,.78)}
 .nav-actions{display:flex;align-items:center;gap:7px}
 .sync-link{height:36px;display:inline-flex;align-items:center;gap:7px;padding:0 10px;border:1px solid rgba(120,167,255,.22);border-radius:11px;background:rgba(10,16,27,.74);color:#cfe0ff;font-size:9px;font-weight:850;letter-spacing:.02em;cursor:pointer;transition:.16s ease;white-space:nowrap}
 .sync-link:hover{transform:translateY(-1px);border-color:rgba(120,167,255,.44);background:#111827;color:#fff}
@@ -396,6 +397,7 @@ a{color:inherit}
   .category-tabs{top:67px;display:grid;grid-template-columns:repeat(3,1fr);padding:7px}.category-tab{border-radius:9px;font-size:9px;padding:8px}
   .table-wrap{overflow:visible;border:0;background:transparent}.admission-table{min-width:0;display:block}.admission-table thead{display:none}.admission-table tbody{display:grid;gap:10px}.admission-table tr{display:block;border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(13,17,26,.86),rgba(8,11,17,.82));border-radius:15px;padding:5px 11px;box-shadow:0 12px 35px rgba(0,0,0,.16)}.admission-table td,.admission-table td:first-child{display:grid;grid-template-columns:112px 1fr;gap:10px;position:static!important;min-width:0;background:transparent!important;border:0;border-bottom:1px solid rgba(255,255,255,.055);padding:10px 0;font-size:10px}.admission-table td:last-child{border-bottom:0}.admission-table td:before{content:attr(data-label);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:#69768d;font-weight:700}.admission-table td:first-child{display:block;font-size:13px;color:#f2f5fa;padding:10px 0}.admission-table td:first-child:before{display:none}
   .mobile-dock{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:70;display:grid;grid-template-columns:repeat(5,1fr);width:calc(100% - 20px);max-width:520px;padding:6px;border:1px solid rgba(255,255,255,.10);border-radius:17px;background:rgba(7,10,16,.84);backdrop-filter:blur(22px);box-shadow:0 18px 55px rgba(0,0,0,.38)}.mobile-dock a,.mobile-dock button{border:0;background:transparent;color:#7f899b;text-decoration:none;text-align:center;border-radius:12px;padding:7px 3px;font-size:8px;cursor:pointer}.mobile-dock b{display:block;font-size:15px;color:#b8c4d8;margin-bottom:3px}.mobile-dock a:active,.mobile-dock button:active{background:rgba(255,255,255,.06)}
+.mobile-dock a.active{background:rgba(120,167,255,.12);color:#eaf2ff}.mobile-dock a.active b{color:#dce9ff}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.orbit-dot{animation:none}}
 
@@ -634,10 +636,10 @@ body.admin-mode [data-admin-editing="1"]{outline:2px solid #74e6a7!important;out
       <div><div class="brand">ADMISSION BY DBT</div><div class="brand-sub">MISSION CONTROL • 2026–27</div></div>
     </div>
     <div class="navlinks">
-      <a class="navlink" href="#dashboard">Home</a>
+      <a class="navlink active" href="#dashboard">Home</a>
       <a class="navlink" href="#targets">My Exams</a>
-      <a class="navlink" href="#calendar">Calendar</a>
       <a class="navlink" href="#circulars">Circulars</a>
+      <a class="navlink" href="#calendar">Calendar</a>
       <a class="navlink" href="#infoCenter">Admission Guide</a>
     </div>
     <div class="nav-actions">
@@ -2090,6 +2092,31 @@ document.querySelectorAll('.navlinks a[href^="#"],.mobile-dock a[href^="#"]').fo
     try{history.replaceState(null,'',sel)}catch(e){}
   });
 });
+
+const pageSectionOrder=['dashboard','targets','circulars','calendar','infoCenter'];
+let pageNavSpyTick=0;
+function updatePageNavFromScroll(){
+  pageNavSpyTick=0;
+  const topnav=document.querySelector('.topnav');
+  const marker=(topnav?topnav.getBoundingClientRect().bottom:0)+22;
+  let activeId=pageSectionOrder[0];
+  for(const id of pageSectionOrder){
+    const sec=document.getElementById(id);
+    if(!sec)continue;
+    if(sec.getBoundingClientRect().top<=marker)activeId=id;
+    else break;
+  }
+  document.querySelectorAll('.navlinks a[href^="#"],.mobile-dock a[href^="#"]').forEach(link=>{
+    link.classList.toggle('active',link.getAttribute('href')==='#'+activeId);
+  });
+}
+function queuePageNavSpy(){
+  if(pageNavSpyTick)return;
+  pageNavSpyTick=requestAnimationFrame(updatePageNavFromScroll);
+}
+addEventListener('scroll',queuePageNavSpy,{passive:true});
+addEventListener('resize',queuePageNavSpy,{passive:true});
+updatePageNavFromScroll();
 
 
 
