@@ -852,6 +852,26 @@ body{background:#02050a;color:#f5f7fb}
   .mobile-dock{bottom:8px;width:calc(100% - 14px);border-radius:20px!important;padding:5px!important}
   .mobile-dock a{border-radius:14px!important}
 }
+
+/* Month calendar chips: one clean label, no leftover star column */
+.calendar-section[data-view="month"] .event{
+  display:block!important;
+  grid-template-columns:none!important;
+  padding:5px 7px!important;
+}
+.calendar-section[data-view="month"] .event-title{
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  font-size:7.4px!important;
+  line-height:1.2!important;
+  font-weight:800!important;
+}
+.calendar-section[data-view="month"] .event-status,
+.calendar-section[data-view="month"] .event .star-btn{display:none!important}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
