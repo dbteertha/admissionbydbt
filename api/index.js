@@ -938,6 +938,14 @@ body{background:#02050a;color:#f5f7fb}
 .category-medical h3{color:#ffb1bd}
 .category-engineering h3{color:#9fe3ff}
 .category-university h3{color:#d3c5ff}
+
+/* category text colors in calendar */
+.calendar-section .category-medical .event-title,
+.calendar-section .timeline-card.category-medical .timeline-main strong{color:#ff9fae!important}
+.calendar-section .category-engineering .event-title,
+.calendar-section .timeline-card.category-engineering .timeline-main strong{color:#8fdcff!important}
+.calendar-section .category-university .event-title,
+.calendar-section .timeline-card.category-university .timeline-main strong{color:#c9b6ff!important}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -1696,7 +1704,8 @@ function renderTimeline(es){
     const d=new Date(e.date),monthKey=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',month:'long',year:'numeric'});
     if(calendarView==='timeline'&&monthKey!==lastMonth){html+='<div class="timeline-month">'+esc(monthKey)+'</div>';lastMonth=monthKey}
     const state=eventState(e);
-    html+='<div class="timeline-card" data-event-key="'+encodeURIComponent(eventKey(e))+'">'+
+    const cat=eventCategory(e);
+    html+='<div class="timeline-card category-'+cat+'" data-event-key="'+encodeURIComponent(eventKey(e))+'">'+
       '<div class="timeline-date"><b>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit'})+'</b><span>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',month:'short',weekday:'short'})+'</span></div>'+
       '<div class="timeline-main"><strong>'+esc(calendarShortTitle(e))+'</strong><small>'+esc(eventTimeLabel(e))+(isStarred(e)?' • ★ My Exam':'')+'</small></div>'+
       '<button type="button" class="star-btn timeline-star'+(isStarred(e)?' active':'')+'" data-list-star="'+encodeURIComponent(eventKey(e))+'" aria-label="'+(isStarred(e)?'Remove from My Exams':'Add to My Exams')+'" title="'+(isStarred(e)?'Remove from My Exams':'Add to My Exams')+'">'+(isStarred(e)?'★':'☆')+'</button>'+
@@ -1735,7 +1744,8 @@ function render(){
     todays.slice(0,4).forEach(e=>{
       const el=document.createElement('div');
       const state=eventState(e);
-      el.className='event '+(state==='confirmed'?'verified':'unverified');
+      const cat=eventCategory(e);
+      el.className='event '+(state==='confirmed'?'verified':'unverified')+' category-'+cat;
       el.title=e.title;
       el.onclick=()=>openEventDrawer(e);
       const t=document.createElement('span');t.className='event-title';t.textContent=calendarShortTitle(e);el.appendChild(t);
