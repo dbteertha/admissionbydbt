@@ -1262,6 +1262,204 @@ html[data-theme="light"] .category-university h3{color:#6e55a6}
   html[data-theme="light"] .admission-table td:before{color:#8b97a7}
   html[data-theme="light"] .admission-table td:first-child{color:#283850}
 }
+
+/* ===== DBT COLOR SYSTEM V2: unified, colorful, responsive ===== */
+:root{
+  --cat-medical:#ff7897;
+  --cat-engineering:#4bc8f5;
+  --cat-university:#aa8cff;
+  --status-confirmed:#55d59a;
+  --status-pending:#f3bd58;
+  --status-tentative:#ff8d72;
+  --accent-home:#7290ff;
+  --accent-target:#9a7bf1;
+  --accent-circular:#ff7e9b;
+  --accent-calendar:#39b8da;
+  --accent-guide:#8b72e8;
+}
+html[data-theme="light"]{
+  --cat-medical:#ca4f70;
+  --cat-engineering:#157fa5;
+  --cat-university:#7253b1;
+  --status-confirmed:#24875e;
+  --status-pending:#a97014;
+  --status-tentative:#c75b45;
+  --accent-home:#5673df;
+  --accent-target:#7659cf;
+  --accent-circular:#cf5876;
+  --accent-calendar:#1685a9;
+  --accent-guide:#7055bd;
+}
+
+/* global polish */
+body{transition:background .25s ease,color .2s ease}
+button,a,input{transition:border-color .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid rgba(104,135,255,.24);outline-offset:2px}
+.dashboard-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.stat-card{position:relative;overflow:hidden}
+.stat-card:before{content:"";position:absolute;left:12px;right:12px;top:0;height:3px;border-radius:0 0 999px 999px}
+.stat-card:nth-child(1):before{background:linear-gradient(90deg,#6385ff,#63c9ff)}
+.stat-card:nth-child(2):before{background:linear-gradient(90deg,#a874ff,#ff7fb2)}
+.stat-card:nth-child(3):before{background:linear-gradient(90deg,#42cda0,#77dda5)}
+.stat-card:nth-child(4):before{background:linear-gradient(90deg,#f0ad48,#ff7d88)}
+.stat-card:nth-child(1) .stat-value{color:#85a4ff}
+.stat-card:nth-child(2) .stat-value{color:#c69cff}
+.stat-card:nth-child(3) .stat-value{color:#78ddb5}
+.stat-card:nth-child(4) .stat-value{color:#f0bd67}
+html[data-theme="light"] .stat-card:nth-child(1) .stat-value{color:#4f6ed2}
+html[data-theme="light"] .stat-card:nth-child(2) .stat-value{color:#805ec7}
+html[data-theme="light"] .stat-card:nth-child(3) .stat-value{color:#27805f}
+html[data-theme="light"] .stat-card:nth-child(4) .stat-value{color:#b47718}
+
+/* major section identity */
+.target-section,.circular-section,.calendar-section,.info-center,.schedule-visuals{position:relative}
+.target-section:before,.circular-section:before,.calendar-section:before,.info-center:before,.schedule-visuals:before{
+  content:"";position:absolute;left:22px;right:22px;top:0;height:3px;border-radius:0 0 999px 999px;pointer-events:none
+}
+.target-section:before{background:linear-gradient(90deg,var(--accent-target),#e47bc4)}
+.circular-section:before{background:linear-gradient(90deg,var(--cat-medical),var(--status-pending),var(--cat-engineering))}
+.calendar-section:before{background:linear-gradient(90deg,var(--accent-calendar),#6b88ff,var(--cat-university))}
+.info-center:before{background:linear-gradient(90deg,var(--cat-medical),var(--cat-engineering),var(--cat-university))}
+.schedule-visuals:before{background:linear-gradient(90deg,#5f80ff,#51c8d9,#61c79d,#f2b957,#d276e8)}
+#targets .section-kicker{color:var(--accent-target)}
+#circulars .section-kicker{color:var(--accent-circular)}
+#calendar .section-kicker{color:var(--accent-calendar)}
+#infoCenter .section-kicker{color:var(--accent-guide)}
+html[data-theme="light"] .target-section{background:linear-gradient(150deg,#fff 0%,#fbf9ff 66%,#f6f1ff 100%)}
+html[data-theme="light"] .circular-section{background:linear-gradient(150deg,#fff 0%,#fffafb 58%,#fff5f0 100%)}
+html[data-theme="light"] .calendar-section{background:linear-gradient(150deg,#fff 0%,#f9fdff 60%,#eefaff 100%)}
+html[data-theme="light"] .info-center{background:linear-gradient(150deg,#fff 0%,#fcfbff 62%,#f6f2ff 100%)}
+
+/* nav uses the same section palette */
+.navlink[href="#dashboard"].active{color:#dfe6ff}
+.navlink[href="#targets"].active{color:#e7dcff}
+.navlink[href="#circulars"].active{color:#ffdce6}
+.navlink[href="#calendar"].active{color:#d3f5ff}
+.navlink[href="#infoCenter"].active{color:#e6dcff}
+html[data-theme="light"] .navlink[href="#dashboard"].active{color:#405da9;background:#eef3ff}
+html[data-theme="light"] .navlink[href="#targets"].active{color:#6a4ba7;background:#f4efff}
+html[data-theme="light"] .navlink[href="#circulars"].active{color:#a84461;background:#fff0f4}
+html[data-theme="light"] .navlink[href="#calendar"].active{color:#176f8d;background:#ecf9ff}
+html[data-theme="light"] .navlink[href="#infoCenter"].active{color:#614a9d;background:#f3efff}
+
+/* colored schedule charts */
+.schedule-visuals{
+  margin:0 0 26px;padding:22px 24px;border:1px solid var(--glass-line);border-radius:26px;
+  background:linear-gradient(150deg,rgba(18,23,34,.63),rgba(8,12,19,.48));
+  box-shadow:var(--shadow),inset 0 1px 0 var(--glass-hi)
+}
+.schedule-visual-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px}
+.schedule-visual-head h2{font-size:21px;margin:0;letter-spacing:-.035em}
+.schedule-live-dot{display:inline-flex;align-items:center;gap:6px;color:#7f8b9c;font-size:8px}
+.schedule-live-dot i{width:7px;height:7px;border-radius:50%;background:var(--status-confirmed);box-shadow:0 0 0 5px rgba(85,213,154,.08)}
+.schedule-chart-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:10px}
+.schedule-chart-card{padding:14px;border:1px solid rgba(255,255,255,.07);border-radius:19px;background:rgba(255,255,255,.025)}
+.chart-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}
+.chart-card-head b{display:block;font-size:11px}.chart-card-head span{display:block;margin-top:3px;font-size:8px;color:#768295}.chart-card-head strong{font-size:22px;line-height:1}
+.mix-bars{display:grid;gap:10px}.mix-row{display:grid;gap:5px}.mix-label{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:8px;color:#8a95a5}.mix-label span{display:flex;align-items:center;gap:6px}.mix-label span i{width:8px;height:8px;border-radius:3px}.mix-label b{font-size:9px;color:#cbd3df}
+.mix-track{height:9px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.045)}.mix-track>i{display:block;height:100%;width:0;border-radius:inherit;transition:width .55s cubic-bezier(.2,.8,.2,1)}
+.mix-row.medical .mix-label span i,.mix-row.medical .mix-track>i{background:var(--cat-medical)}
+.mix-row.engineering .mix-label span i,.mix-row.engineering .mix-track>i{background:var(--cat-engineering)}
+.mix-row.university .mix-label span i,.mix-row.university .mix-track>i{background:var(--cat-university)}
+.status-chart-layout{display:grid;grid-template-columns:116px 1fr;gap:15px;align-items:center}
+.status-donut{--confirmed-stop:0%;--pending-stop:0%;width:108px;height:108px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--status-confirmed) 0 var(--confirmed-stop),var(--status-pending) var(--confirmed-stop) var(--pending-stop),var(--status-tentative) var(--pending-stop) 100%);position:relative}
+.status-donut:after{content:"";position:absolute;inset:14px;border-radius:50%;background:#0b0f17;border:1px solid rgba(255,255,255,.06)}
+.status-donut>div{position:relative;z-index:1;text-align:center}.status-donut b{display:block;font-size:20px}.status-donut span{display:block;font-size:7px;color:#758195;margin-top:2px}
+.status-legend{display:grid;gap:8px}.status-legend>div{display:grid;grid-template-columns:8px 1fr auto;align-items:center;gap:7px;font-size:8px;color:#8792a2}.status-legend i{width:8px;height:8px;border-radius:3px}.status-legend i.confirmed{background:var(--status-confirmed)}.status-legend i.pending{background:var(--status-pending)}.status-legend i.tentative{background:var(--status-tentative)}.status-legend b{font-size:9px;color:#cbd3df}
+html[data-theme="light"] .schedule-visuals{border-color:#e5eaf2;background:linear-gradient(150deg,#fff,#f8fbff 55%,#fbf8ff);box-shadow:0 20px 55px rgba(69,86,116,.08),inset 0 1px 0 #fff}
+html[data-theme="light"] .schedule-chart-card{background:#fff;border-color:#e8edf3;box-shadow:0 8px 24px rgba(71,87,117,.04)}
+html[data-theme="light"] .chart-card-head b{color:#2b3a52}
+html[data-theme="light"] .chart-card-head span,.schedule-live-dot{color:#8290a2}
+html[data-theme="light"] .mix-track{background:#eef2f6}
+html[data-theme="light"] .mix-label{color:#6f7d91}html[data-theme="light"] .mix-label b,html[data-theme="light"] .status-legend b{color:#34445d}
+html[data-theme="light"] .status-donut:after{background:#fff;border-color:#edf0f4}
+html[data-theme="light"] .status-donut b{color:#2e3d56}
+html[data-theme="light"] .status-donut span{color:#8a96a7}
+html[data-theme="light"] .status-legend>div{color:#738095}
+
+/* My Exams shares category colors */
+.starred-card.category-medical{border-left:3px solid var(--cat-medical)}
+.starred-card.category-engineering{border-left:3px solid var(--cat-engineering)}
+.starred-card.category-university{border-left:3px solid var(--cat-university)}
+.starred-card.category-medical .target-name{color:var(--cat-medical)}
+.starred-card.category-engineering .target-name{color:var(--cat-engineering)}
+.starred-card.category-university .target-name{color:var(--cat-university)}
+.target-picker-row.category-medical strong,.pdf-exam-row.category-medical strong{color:var(--cat-medical)!important}
+.target-picker-row.category-engineering strong,.pdf-exam-row.category-engineering strong{color:var(--cat-engineering)!important}
+.target-picker-row.category-university strong,.pdf-exam-row.category-university strong{color:var(--cat-university)!important}
+
+/* Circular category consistency */
+.circular-cat-medical{border-left:3px solid var(--cat-medical)!important}
+.circular-cat-engineering{border-left:3px solid var(--cat-engineering)!important}
+.circular-cat-university{border-left:3px solid var(--cat-university)!important}
+.circular-tab[data-circular-tab="Medical"].active{color:var(--cat-medical)!important;box-shadow:inset 0 -2px 0 var(--cat-medical)}
+.circular-tab[data-circular-tab="Engineering"].active{color:var(--cat-engineering)!important;box-shadow:inset 0 -2px 0 var(--cat-engineering)}
+.circular-tab[data-circular-tab="University"].active{color:var(--cat-university)!important;box-shadow:inset 0 -2px 0 var(--cat-university)}
+html[data-theme="light"] .circular-tab[data-circular-tab="Medical"].active{background:#fff3f6!important}
+html[data-theme="light"] .circular-tab[data-circular-tab="Engineering"].active{background:#eefaff!important}
+html[data-theme="light"] .circular-tab[data-circular-tab="University"].active{background:#f6f1ff!important}
+
+/* Calendar: category + status are separate visual channels */
+.calendar-filter[data-calendar-filter="medical"].active{color:var(--cat-medical)!important;border-color:color-mix(in srgb,var(--cat-medical) 34%,transparent)!important;background:color-mix(in srgb,var(--cat-medical) 9%,transparent)!important}
+.calendar-filter[data-calendar-filter="engineering"].active{color:var(--cat-engineering)!important;border-color:color-mix(in srgb,var(--cat-engineering) 34%,transparent)!important;background:color-mix(in srgb,var(--cat-engineering) 9%,transparent)!important}
+.calendar-filter[data-calendar-filter="university"].active{color:var(--cat-university)!important;border-color:color-mix(in srgb,var(--cat-university) 34%,transparent)!important;background:color-mix(in srgb,var(--cat-university) 9%,transparent)!important}
+.timeline-card.category-medical{box-shadow:inset 3px 0 0 var(--cat-medical)}
+.timeline-card.category-engineering{box-shadow:inset 3px 0 0 var(--cat-engineering)}
+.timeline-card.category-university{box-shadow:inset 3px 0 0 var(--cat-university)}
+.event.verified{box-shadow:inset 0 0 0 1px rgba(85,213,154,.06)}
+.event.unverified{box-shadow:inset 0 0 0 1px rgba(243,189,88,.06)}
+html[data-theme="light"] .event.verified:hover{background:#e8f7ef!important}
+html[data-theme="light"] .event.unverified:hover{background:#fff5dc!important}
+
+/* Admission Guide uses the exact same category palette */
+.category-tab[data-cat="মেডিকেল ও ডেন্টাল"].active{color:var(--cat-medical)!important;box-shadow:inset 0 -2px 0 var(--cat-medical)}
+.category-tab[data-cat="ইঞ্জিনিয়ারিং"].active{color:var(--cat-engineering)!important;box-shadow:inset 0 -2px 0 var(--cat-engineering)}
+.category-tab[data-cat="বিশ্ববিদ্যালয়"].active{color:var(--cat-university)!important;box-shadow:inset 0 -2px 0 var(--cat-university)}
+html[data-theme="light"] .category-tab[data-cat="মেডিকেল ও ডেন্টাল"].active{background:#fff2f6}
+html[data-theme="light"] .category-tab[data-cat="ইঞ্জিনিয়ারিং"].active{background:#edfaff}
+html[data-theme="light"] .category-tab[data-cat="বিশ্ববিদ্যালয়"].active{background:#f5f1ff}
+.category-section.category-medical .table-wrap{border-top:3px solid color-mix(in srgb,var(--cat-medical) 72%,transparent)}
+.category-section.category-engineering .table-wrap{border-top:3px solid color-mix(in srgb,var(--cat-engineering) 72%,transparent)}
+.category-section.category-university .table-wrap{border-top:3px solid color-mix(in srgb,var(--cat-university) 72%,transparent)}
+
+/* PDF picker and important actions */
+#calendarPdfButton,#pdfDownloadSelected{
+  border-color:transparent!important;color:#fff!important;
+  background:linear-gradient(135deg,#5684ef,#5dc3de)!important;
+  box-shadow:0 8px 22px rgba(67,128,210,.18)!important
+}
+#calendarPdfButton:hover,#pdfDownloadSelected:hover{transform:translateY(-1px);box-shadow:0 11px 28px rgba(67,128,210,.24)!important}
+.pdf-chip[data-pdf-cat="medical"].active{color:var(--cat-medical)!important;border-color:color-mix(in srgb,var(--cat-medical) 38%,transparent)!important;background:color-mix(in srgb,var(--cat-medical) 9%,transparent)!important}
+.pdf-chip[data-pdf-cat="engineering"].active{color:var(--cat-engineering)!important;border-color:color-mix(in srgb,var(--cat-engineering) 38%,transparent)!important;background:color-mix(in srgb,var(--cat-engineering) 9%,transparent)!important}
+.pdf-chip[data-pdf-cat="university"].active{color:var(--cat-university)!important;border-color:color-mix(in srgb,var(--cat-university) 38%,transparent)!important;background:color-mix(in srgb,var(--cat-university) 9%,transparent)!important}
+
+/* mobile dock mirrors desktop section colors */
+.mobile-dock a[href="#dashboard"].active b{color:#7f9aff!important}
+.mobile-dock a[href="#targets"].active b{color:#b58cff!important}
+.mobile-dock a[href="#circulars"].active b{color:#ff8eaa!important}
+.mobile-dock a[href="#calendar"].active b{color:#53c9e9!important}
+.mobile-dock a[href="#infoCenter"].active b{color:#b092ff!important}
+
+/* mobile organization */
+@media(max-width:900px){
+  .dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .schedule-chart-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .schedule-visuals{margin-bottom:18px;padding:14px;border-radius:22px}
+  .schedule-visuals:before,.target-section:before,.circular-section:before,.calendar-section:before,.info-center:before{left:14px;right:14px}
+  .schedule-visual-head{align-items:center;margin-bottom:11px}.schedule-visual-head h2{font-size:18px}.schedule-live-dot span{display:none}
+  .schedule-chart-card{padding:12px;border-radius:16px}.status-chart-layout{grid-template-columns:96px 1fr;gap:12px}.status-donut{width:90px;height:90px}.status-donut:after{inset:12px}.status-donut b{font-size:17px}
+  .dashboard-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .nav-actions{gap:5px}.theme-toggle{width:34px;height:34px}.sync-link{padding:0 8px}
+  #calendarPdfButton{min-width:54px}
+  .controls{width:100%}.controls input{flex:1;min-width:0!important}
+  .pdf-picker-foot .btn{min-height:44px}
+  .target-add-btn,.btn,.calendar-filter,.calendar-view-btn,.circular-tab,.category-tab{touch-action:manipulation}
+}
+@media(prefers-reduced-motion:reduce){
+  .mix-track>i,.theme-toggle span,button,a,input{transition:none!important}
+}
 </style></head><body><canvas id="stars"></canvas>
 <div class="app">
   <nav class="topnav">
@@ -1317,6 +1515,34 @@ html[data-theme="light"] .category-university h3{color:#6e55a6}
       <div class="stat-card"><div class="stat-label">Starred targets</div><div class="stat-value" id="statStarred">0</div><div class="stat-note">Your personal exam list</div></div>
       <div class="stat-card"><div class="stat-label">Study stage</div><div class="stat-value" id="statPhase">Build</div><div class="stat-note" id="statPhaseNote">Study every day</div></div>
       <div class="stat-card"><div class="stat-label">Confirmed exams</div><div class="stat-value" id="statConfirmed">0</div><div class="stat-note">Dates confirmed by official sources</div></div>
+    </section>
+
+    <section class="schedule-visuals" id="scheduleVisuals" aria-label="Schedule overview">
+      <div class="schedule-visual-head">
+        <div><div class="section-kicker">AT A GLANCE</div><h2>Schedule Snapshot</h2></div>
+        <div class="schedule-live-dot"><i></i><span>Live calendar data</span></div>
+      </div>
+      <div class="schedule-chart-grid">
+        <article class="schedule-chart-card">
+          <div class="chart-card-head"><div><b>Category mix</b><span>Exams by type</span></div><strong id="mixTotal">0</strong></div>
+          <div class="mix-bars">
+            <div class="mix-row medical"><div class="mix-label"><span><i></i>মেডিকেল</span><b id="mixMedicalCount">0</b></div><div class="mix-track"><i id="mixMedicalBar"></i></div></div>
+            <div class="mix-row engineering"><div class="mix-label"><span><i></i>ইঞ্জিনিয়ারিং</span><b id="mixEngineeringCount">0</b></div><div class="mix-track"><i id="mixEngineeringBar"></i></div></div>
+            <div class="mix-row university"><div class="mix-label"><span><i></i>বিশ্ববিদ্যালয়</span><b id="mixUniversityCount">0</b></div><div class="mix-track"><i id="mixUniversityBar"></i></div></div>
+          </div>
+        </article>
+        <article class="schedule-chart-card status-chart-card">
+          <div class="chart-card-head"><div><b>Date confidence</b><span>Current schedule status</span></div></div>
+          <div class="status-chart-layout">
+            <div class="status-donut" id="statusDonut"><div><b id="statusConfirmedPct">0%</b><span>confirmed</span></div></div>
+            <div class="status-legend">
+              <div><i class="confirmed"></i><span>Confirmed</span><b id="statusConfirmedCount">0</b></div>
+              <div><i class="pending"></i><span>Notice pending</span><b id="statusPendingCount">0</b></div>
+              <div><i class="tentative"></i><span>Not confirmed</span><b id="statusTentativeCount">0</b></div>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section class="target-section" id="targets">
@@ -2122,7 +2348,38 @@ function splitCountdown(target){
     done:false
   };
 }
+function renderScheduleVisuals(){
+  if(typeof mixTotal==='undefined'||!mixTotal)return;
+  const counts={medical:0,engineering:0,university:0};
+  const states={confirmed:0,pending:0,tentative:0};
+  all.forEach(e=>{
+    const cat=eventCategory(e);
+    if(counts[cat]!==undefined)counts[cat]++;
+    const state=eventState(e);
+    if(states[state]!==undefined)states[state]++;
+  });
+  const total=all.length||0;
+  const max=Math.max(1,counts.medical,counts.engineering,counts.university);
+  mixTotal.textContent=total;
+  mixMedicalCount.textContent=counts.medical;
+  mixEngineeringCount.textContent=counts.engineering;
+  mixUniversityCount.textContent=counts.university;
+  mixMedicalBar.style.width=(counts.medical/max*100)+'%';
+  mixEngineeringBar.style.width=(counts.engineering/max*100)+'%';
+  mixUniversityBar.style.width=(counts.university/max*100)+'%';
+
+  statusConfirmedCount.textContent=states.confirmed;
+  statusPendingCount.textContent=states.pending;
+  statusTentativeCount.textContent=states.tentative;
+  const confirmedPct=total?Math.round(states.confirmed/total*100):0;
+  const pendingPct=total?states.pending/total*100:0;
+  statusConfirmedPct.textContent=confirmedPct+'%';
+  statusDonut.style.setProperty('--confirmed-stop',confirmedPct+'%');
+  statusDonut.style.setProperty('--pending-stop',(confirmedPct+pendingPct)+'%');
+}
+
 function updateDashboardStats(){
+  renderScheduleVisuals();
   const now=new Date();
   const future=all.filter(e=>new Date(e.date)>now).sort((a,b)=>new Date(a.date)-new Date(b.date));
   const next=future[0];
@@ -2149,7 +2406,7 @@ function renderStarredTargets(){
     const date=d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'full'});
     const time=eventTimeLabel(e);
     const message=v.done?'Exam time / completed':(v.d<=7?'Final stretch — keep revision tight.':v.d<=30?'Revision matters more than collecting new topics.':'Keep going — '+v.d+' days to this target.');
-    return '<article class="starred-card" data-star-key="'+key+'">'+
+    return '<article class="starred-card category-'+eventCategory(e)+'" data-star-key="'+key+'">'+
       '<div class="target-top"><div><div class="target-name">'+esc(e.title)+'</div><div class="target-date">'+esc(date)+' • '+esc(time)+'</div></div>'+
       '<button type="button" class="star-btn active target-unstar" data-star-key="'+key+'" aria-label="Remove from My Exams" title="Remove from My Exams">★</button></div>'+
       '<div class="target-timer">'+
@@ -2187,7 +2444,7 @@ function renderExamPicker(){
   if(!rows.length){examPickerList.innerHTML='<div class="target-picker-empty">No exam matches your search.</div>';return}
   examPickerList.innerHTML=rows.map(e=>{
     const selected=isStarred(e),d=new Date(e.date),key=encodeURIComponent(eventKey(e));
-    return '<button type="button" class="target-picker-row'+(selected?' active':'')+'" data-exam-pick="'+key+'"><span><strong>'+esc(e.title)+'</strong><small>'+esc(d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'}))+' • '+esc(eventTimeLabel(e))+'</small></span><span class="target-picker-check">'+(selected?'✓':'+')+'</span></button>';
+    return '<button type="button" class="target-picker-row category-'+eventCategory(e)+(selected?' active':'')+'" data-exam-pick="'+key+'"><span><strong>'+esc(e.title)+'</strong><small>'+esc(d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'}))+' • '+esc(eventTimeLabel(e))+'</small></span><span class="target-picker-check">'+(selected?'✓':'+')+'</span></button>';
   }).join('');
   examPickerList.querySelectorAll('[data-exam-pick]').forEach(btn=>btn.onclick=()=>{
     const raw=decodeURIComponent(btn.dataset.examPick||'');
@@ -2212,7 +2469,7 @@ function renderTargetPicker(){
   if(!rows.length){targetPickerList.innerHTML='<div class="target-picker-empty">No next exam matches your search.</div>';return}
   targetPickerList.innerHTML=rows.map(e=>{
     const active=eventKey(e)===countdownTargetKey,d=new Date(e.date),key=encodeURIComponent(eventKey(e));
-    return '<button type="button" class="target-picker-row'+(active?' active':'')+'" data-main-target="'+key+'"><span><strong>'+esc(e.title)+'</strong><small>'+esc(d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'}))+' • '+esc(eventTimeLabel(e))+'</small></span><span class="target-picker-check">'+(active?'✓':'›')+'</span></button>';
+    return '<button type="button" class="target-picker-row category-'+eventCategory(e)+(active?' active':'')+'" data-main-target="'+key+'"><span><strong>'+esc(e.title)+'</strong><small>'+esc(d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',dateStyle:'medium'}))+' • '+esc(eventTimeLabel(e))+'</small></span><span class="target-picker-check">'+(active?'✓':'›')+'</span></button>';
   }).join('');
   targetPickerList.querySelectorAll('[data-main-target]').forEach(btn=>btn.onclick=()=>{
     const raw=decodeURIComponent(btn.dataset.mainTarget||'');
@@ -2275,7 +2532,7 @@ function renderPdfPicker(){
   pdfExamList.innerHTML=visible.length?visible.map(e=>{
     const off=pdfPickExcluded.has(eventKey(e));
     const d=bdDate(e.date);
-    return '<button type="button" class="pdf-exam-row'+(off?' off':'')+'" data-pdf-exam="'+encodeURIComponent(eventKey(e))+'">'+
+    return '<button type="button" class="pdf-exam-row category-'+eventCategory(e)+(off?' off':'')+'" data-pdf-exam="'+encodeURIComponent(eventKey(e))+'">'+
       '<span class="pdf-exam-check">'+(off?'':'✓')+'</span>'+
       '<span><strong>'+esc(calendarShortTitle(e))+'</strong><small>'+esc(pdfInstitution(e))+' • '+esc(d.toLocaleDateString('en-BD',{day:'numeric',month:'short',year:'numeric'}))+'</small></span>'+
       '<em>'+esc(eventCategory(e)==='medical'?'মেডিকেল':eventCategory(e)==='engineering'?'ইঞ্জিনিয়ারিং':'বিশ্ববিদ্যালয়')+'</em></button>';
