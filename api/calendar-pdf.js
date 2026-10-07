@@ -218,10 +218,13 @@ function drawMonth(doc,year,month,events,pageNumber,totalPages){
   }
 
   const footer='Thin border = confirmed • Thick border = notice pending / not confirmed • Always check the latest official notice before the exam.';
+  // Keep footer inside the printable content box. Drawing text below PDFKit's
+  // bottom margin makes PDFKit auto-create overflow pages.
+  const footerY=pageH-PAGE.margins.bottom-10;
   doc.font('Helvetica').fontSize(6.4).fillColor('#000000')
-    .text(footer,left,pageH-17,{width:contentW-90,align:'left'});
+    .text(footer,left,footerY,{width:contentW-90,height:8,align:'left',lineBreak:false});
   doc.font('Helvetica-Bold').fontSize(6.4)
-    .text('Page '+pageNumber+' of '+totalPages,left,pageH-17,{width:contentW,align:'right'});
+    .text('Page '+pageNumber+' of '+totalPages,left,footerY,{width:contentW,height:8,align:'right',lineBreak:false});
 }
 
 export default async function handler(req,res){
