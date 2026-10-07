@@ -836,6 +836,53 @@ function eventTimeLabel(e){
   if(eventState(e)!=='confirmed')return 'Time TBA';
   return new Date(e.date).toLocaleTimeString('en-BD',{timeZone:'Asia/Dhaka',hour:'numeric',minute:'2-digit'});
 }
+function calendarShortTitle(e){
+  const t=String(e.title||'');
+  const exact={
+    'Medical & Dental':'MAT',
+    'DU IBA':'DU-IBA',
+    'Aviation and Aerospace University Bangladesh (AAUB)':'AAUB',
+    'Dhaka University A / Science':'DU-A',
+    'Dhaka University B / Arts, Law & Social Science':'DU-B',
+    'Dhaka University Fine Arts':'DU-Fine Arts',
+    'Dhaka University C / Business':'DU-C',
+    'Khulna University A / Science':'KU-A',
+    'Khulna University B / Life Science':'KU-B',
+    'Khulna University C / Humanities':'KU-C',
+    'Khulna University D / Business':'KU-D',
+    'MIST C Unit':'MIST-C',
+    'MIST A & B':'MIST-A/B',
+    'Jagannath University A / Science':'JnU-A',
+    'Jagannath University B / Humanities':'JnU-B',
+    'Jagannath University C / Business':'JnU-C',
+    'Jagannath University D / Social Science':'JnU-D',
+    'Jagannath University E / Fine Arts':'JnU-E',
+    'Agriculture Cluster':'ACAS',
+    'Rajshahi University A / Humanities':'RU-A',
+    'Rajshahi University B / Business':'RU-B',
+    'Rajshahi University C / Science':'RU-C',
+    'Chittagong University A / Science':'CU-A',
+    'Chittagong University B':'CU-B',
+    'Chittagong University B1':'CU-B1',
+    'Chittagong University B2':'CU-B2',
+    'Chittagong University C / Business':'CU-C',
+    'Chittagong University D':'CU-D',
+    'Chittagong University D1':'CU-D1',
+    'Comilla University A':'CoU-A',
+    'Comilla University B':'CoU-B',
+    'Comilla University C':'CoU-C',
+    'SUST A':'SUST-A',
+    'SUST B':'SUST-B',
+    'BUP BBA General':'BUP-BBA',
+    'GST A / Science':'GST-A',
+    'GST B / Humanities':'GST-B',
+    'GST C / Business':'GST-C',
+    'GST D / Architecture':'GST-D'
+  };
+  if(exact[t])return exact[t];
+  if(/^BUP\s+/.test(t))return t.replace(/^BUP\s+/,'BUP-');
+  return t;
+}
 function openEventDrawer(e){
   drawerEvent=e;
   const d=new Date(e.date),state=eventState(e);
@@ -860,7 +907,7 @@ function renderTimeline(es){
     const state=eventState(e);
     html+='<div class="timeline-card" data-event-key="'+encodeURIComponent(eventKey(e))+'">'+
       '<div class="timeline-date"><b>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',day:'2-digit'})+'</b><span>'+d.toLocaleDateString('en-BD',{timeZone:'Asia/Dhaka',month:'short',weekday:'short'})+'</span></div>'+
-      '<div class="timeline-main"><strong>'+esc(e.title)+'</strong><small>'+esc(eventTimeLabel(e))+(isStarred(e)?' • ★ Target':'')+'</small></div>'+
+      '<div class="timeline-main"><strong>'+esc(calendarShortTitle(e))+'</strong><small>'+esc(eventTimeLabel(e))+(isStarred(e)?' • ★ Target':'')+'</small></div>'+
       '<div class="timeline-status '+(state==='confirmed'?'':state)+'">'+(state==='confirmed'?'Confirmed':state==='pending'?'Pending':'Tentative')+'</div>'+
     '</div>';
   });
@@ -891,7 +938,7 @@ function render(){
       el.title=e.title+(e.agreement?' — '+e.agreement:'');
       el.onclick=()=>openEventDrawer(e);
       el.appendChild(starButton(e));
-      const t=document.createElement('span');t.className='event-title';t.textContent=e.title;el.appendChild(t);
+      const t=document.createElement('span');t.className='event-title';t.textContent=calendarShortTitle(e);el.appendChild(t);
       const state=eventState(e);
       if(state!=='confirmed'){const badge=document.createElement('span');badge.className='event-status '+state;badge.textContent=state==='tentative'?'Tentative':'Pending';el.appendChild(badge)}
       cell.appendChild(el);
