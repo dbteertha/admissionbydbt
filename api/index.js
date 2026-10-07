@@ -1031,7 +1031,7 @@ body{background:#02050a;color:#f5f7fb}
     <section class="section calendar-section" id="calendar" data-view="month">
       <div class="command-section-head">
         <div><div class="section-kicker">SCHEDULE</div><h2>Calendar</h2><div class="sub">Exam dates in one place.</div></div>
-        <div class="controls"><input id="search" placeholder="Search university or unit…"><button class="btn" id="refresh">Refresh</button></div>
+        <div class="controls"><input id="search" placeholder="Search university or unit…"><button class="btn" id="calendarPdfButton" type="button">PDF</button><button class="btn" id="refresh">Refresh</button></div>
       </div>
       <div class="calendar-commandbar">
         <div class="calendar-view-switch" id="calendarViewSwitch">
@@ -1875,6 +1875,31 @@ function openTargetPicker(){
   setTimeout(()=>targetPickerSearch.focus(),30);
 }
 function closeTargetPicker(){targetPickerBackdrop.classList.remove('open');targetPickerBackdrop.setAttribute('aria-hidden','true')}
+async function downloadCalendarPdf(){
+  if(!Array.isArray(all)||!all.length)return;
+  const btn=document.getElementById('calendarPdfButton');
+  const old=btn?btn.textContent:'PDF';
+  if(btn){btn.disabled=true;btn.textContent='Making PDF…'}
+  try{
+    const r=await fetch('/api/calendar-pdf',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({events:all})
+    });
+    if(!r.ok)throw new Error('pdf_failed');
+    const blob=await r.blob();
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download='Admission-Calendar-2026-27.pdf';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),2000);
+  }catch(e){
+    alert('Could not make the PDF. Please try again.');
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent=old}
+  }
+}
+
 async function load(force=false){
   syncStatus.textContent='● checking dates…';
   try{
@@ -1892,6 +1917,7 @@ async function load(force=false){
 prev.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()-1,1);render()};
 next.onclick=()=>{view=new Date(view.getFullYear(),view.getMonth()+1,1);render()};
 refresh.onclick=()=>load(true);
+calendarPdfButton.onclick=downloadCalendarPdf;
 search.oninput=render;
 mainTargetButton.onclick=openTargetPicker;
 targetAddButton.onclick=openExamPicker;
