@@ -913,7 +913,9 @@ function queueCloudSync(){
   homeSyncTimer=setTimeout(pushCloudSync,550);
 }
 async function initializeSecretSync(){
-  if(!validSyncCode(homeSyncCode)){setSyncUi('','Sync');return}
+  // Always provision a stable device sync code on first load so cloud backup
+  // starts automatically without requiring the user to open/click Sync first.
+  if(!validSyncCode(homeSyncCode))homeSyncCode=ensureSyncCode();
   homeSyncCode=normalizeSyncCode(homeSyncCode);
   try{localStorage.setItem(HOME_SYNC_CODE_KEY,homeSyncCode)}catch(e){}
   try{
