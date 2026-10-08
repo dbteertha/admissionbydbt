@@ -1,18 +1,13 @@
 import crypto from 'node:crypto';
 
 const CLIENT_ID="339294750280-18e1h251at3am9qiuuf30uq1hb1dclqb.apps.googleusercontent.com";
+const REDIRECT_URI='https://admissionbydbt.vercel.app/api/google-callback';
 
 function parseCookies(req){
   return Object.fromEntries(String(req.headers.cookie||'').split(';').map(x=>x.trim()).filter(Boolean).map(x=>{
     const i=x.indexOf('=');
     return i<0?[x,'']:[x.slice(0,i),decodeURIComponent(x.slice(i+1))];
   }));
-}
-function requestOrigin(req){
-  const proto=String(req.headers['x-forwarded-proto']||'https').split(',')[0].trim();
-  const host=String(req.headers['x-forwarded-host']||req.headers.host||'').split(',')[0].trim();
-  if(!host)throw new Error('Missing request host');
-  return proto+'://'+host;
 }
 function key(){
   const secret=process.env.SESSION_SECRET;
@@ -32,8 +27,7 @@ function cookie(name,value,maxAge){
 
 export default async function handler(req,res){
   try{
-    const url=new URL(req.url,requestOrigin(req));
-    const redirectUri=requestOrigin(req)+'/api/google-callback';
+    const url=new URL(req.url,'https://admissionbydbt.vercel.app');
     const code=url.searchParams.get('code');
     const state=url.searchParams.get('state');
     const error=url.searchParams.get('error');
@@ -48,7 +42,7 @@ export default async function handler(req,res){
       code,
       client_id:CLIENT_ID,
       client_secret:clientSecret,
-      redirect_uri:redirectUri,
+      redirect_uri:REDIRECT_URI,
       grant_type:'authorization_code'
     });
     const r=await fetch('https://oauth2.googleapis.com/token',{

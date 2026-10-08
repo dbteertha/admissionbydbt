@@ -1,13 +1,10 @@
 {
   "version": 2,
-  "redirects": [
+  "rewrites": [
     {
       "source": "/",
-      "destination": "/tracker",
-      "permanent": false
-    }
-  ],
-  "rewrites": [
+      "destination": "/api/tracker.js"
+    },
     {
       "source": "/tracker",
       "destination": "/api/tracker.js"
@@ -31,6 +28,18 @@
     {
       "source": "/api/google-logout",
       "destination": "/api/google-logout.js"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/api/privacy.js"
+    },
+    {
+      "source": "/terms",
+      "destination": "/api/terms.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api/tracker.js"
     }
   ]
 }

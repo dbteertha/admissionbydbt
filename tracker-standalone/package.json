@@ -1,5 +1,5 @@
 {
-  "name": "dbt-tracker",
+  "name": "dbt-tracker-standalone",
   "version": "1.0.0",
   "private": true,
   "type": "module",
