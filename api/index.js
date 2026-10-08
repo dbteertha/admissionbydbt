@@ -713,7 +713,7 @@ try{
   <div class="admin-help">Click any text or block. Double-click text to edit. Select an item and drag it to move it inside the same section. Changes auto-save for the whole site after you unlock.</div>
 </div>
 <script id="dbtBootEvents" type="application/json">${JSON.stringify(CURATED_EVENTS).replace(/</g,'\\u003c')}</script>
-<script defer src="/js/app-v1.js"></script><script defer src="/admission-map.js"></script><script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/js/app-v2.js"></script><script defer src="/admission-map.js"></script><script defer src="/_vercel/insights/script.js"></script>
 </body></html>`;
 
 export default async function handler(req,res){

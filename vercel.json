@@ -27,10 +27,6 @@
       "destination": "/api/home-sync.js"
     },
     {
-      "source": "/api/calendar-pdf",
-      "destination": "/api/calendar-pdf.js"
-    },
-    {
       "source": "/api/admin-content",
       "destination": "/api/admin-content.js"
     },
@@ -95,6 +91,33 @@
     },
     {
       "source": "/js/app-v1.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/js/app-v2.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/vendor/jspdf.umd.min.js",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/vendor/jspdf.plugin.autotable.min.js",
       "headers": [
         {
           "key": "Cache-Control",

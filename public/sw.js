@@ -1,5 +1,5 @@
-const CACHE='dbt-shell-v5';
-const SHELL=['/','/manifest.webmanifest','/app-icon.svg','/css/app-v1.css','/js/app-v1.js','/admission-map.css','/admission-map.js'];
+const CACHE='dbt-shell-v6';
+const SHELL=['/','/manifest.webmanifest','/app-icon.svg','/css/app-v1.css','/js/app-v2.js','/admission-map.css','/admission-map.js'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).catch(()=>{}));
@@ -29,7 +29,15 @@ self.addEventListener('fetch',event=>{
     return;
   }
 
-  if(url.pathname==='/manifest.webmanifest'||url.pathname==='/app-icon.svg'){
+  if(
+    url.pathname==='/manifest.webmanifest'||
+    url.pathname==='/app-icon.svg'||
+    url.pathname.startsWith('/css/')||
+    url.pathname.startsWith('/js/')||
+    url.pathname.startsWith('/vendor/')||
+    url.pathname==='/admission-map.css'||
+    url.pathname==='/admission-map.js'
+  ){
     event.respondWith(caches.match(req).then(hit=>hit||fetch(req).then(resp=>{
       const copy=resp.clone();
       caches.open(CACHE).then(cache=>cache.put(req,copy)).catch(()=>{});
