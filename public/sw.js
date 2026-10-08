@@ -1,5 +1,5 @@
-const CACHE='dbt-shell-v4';
-const SHELL=['/','/manifest.webmanifest','/app-icon.svg'];
+const CACHE='dbt-shell-v5';
+const SHELL=['/','/manifest.webmanifest','/app-icon.svg','/css/app-v1.css','/js/app-v1.js','/admission-map.css','/admission-map.js'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).catch(()=>{}));
