@@ -1,0 +1,340 @@
+{
+  "version": 2,
+  "asOf": "2026-10-08",
+  "attribution": "Boundary shapes are simplified from the user-supplied geoBoundaries developer kit. Campus coordinates are representative points from the supplied kit, not surveyed entrances or exam rooms.",
+  "institutions": [
+    {
+      "id": "du",
+      "code": "DU",
+      "name": "ঢাকা বিশ্ববিদ্যালয়",
+      "nameEn": "University of Dhaka",
+      "type": "university"
+    },
+    {
+      "id": "aaub",
+      "code": "AAUB",
+      "name": "এভিয়েশন ও অ্যারোস্পেস বিশ্ববিদ্যালয়",
+      "nameEn": "Aviation and Aerospace University, Bangladesh",
+      "type": "engineering"
+    },
+    {
+      "id": "ku",
+      "code": "KU",
+      "name": "খুলনা বিশ্ববিদ্যালয়",
+      "nameEn": "Khulna University",
+      "type": "university"
+    },
+    {
+      "id": "mist",
+      "code": "MIST",
+      "name": "এমআইএসটি",
+      "nameEn": "Military Institute of Science and Technology",
+      "type": "engineering"
+    },
+    {
+      "id": "jnu",
+      "code": "JnU",
+      "name": "জগন্নাথ বিশ্ববিদ্যালয়",
+      "nameEn": "Jagannath University",
+      "type": "university"
+    },
+    {
+      "id": "bup",
+      "code": "BUP",
+      "name": "বিইউপি",
+      "nameEn": "Bangladesh University of Professionals",
+      "type": "university"
+    },
+    {
+      "id": "kuet",
+      "code": "KUET",
+      "name": "কুয়েট",
+      "nameEn": "Khulna University of Engineering & Technology",
+      "type": "engineering"
+    },
+    {
+      "id": "ru",
+      "code": "RU",
+      "name": "রাজশাহী বিশ্ববিদ্যালয়",
+      "nameEn": "University of Rajshahi",
+      "type": "university"
+    },
+    {
+      "id": "ruet",
+      "code": "RUET",
+      "name": "রুয়েট",
+      "nameEn": "Rajshahi University of Engineering & Technology",
+      "type": "engineering"
+    },
+    {
+      "id": "buet",
+      "code": "BUET",
+      "name": "বুয়েট",
+      "nameEn": "Bangladesh University of Engineering and Technology",
+      "type": "engineering"
+    },
+    {
+      "id": "cuet",
+      "code": "CUET",
+      "name": "চুয়েট",
+      "nameEn": "Chittagong University of Engineering & Technology",
+      "type": "engineering"
+    },
+    {
+      "id": "sust",
+      "code": "SUST",
+      "name": "শাবিপ্রবি",
+      "nameEn": "Shahjalal University of Science and Technology",
+      "type": "university"
+    },
+    {
+      "id": "butex",
+      "code": "BUTEX",
+      "name": "বুটেক্স",
+      "nameEn": "Bangladesh University of Textiles",
+      "type": "engineering"
+    },
+    {
+      "id": "cu",
+      "code": "CU",
+      "name": "চট্টগ্রাম বিশ্ববিদ্যালয়",
+      "nameEn": "University of Chittagong",
+      "type": "university"
+    },
+    {
+      "id": "cou",
+      "code": "CoU",
+      "name": "কুমিল্লা বিশ্ববিদ্যালয়",
+      "nameEn": "Comilla University",
+      "type": "university"
+    }
+  ],
+  "locations": [
+    {
+      "id": "du-main",
+      "institutionId": "du",
+      "code": "DU",
+      "division": "Dhaka",
+      "district": "Dhaka",
+      "address": "Dhaka University Campus, Dhaka-1000",
+      "lat": 23.73155,
+      "lng": 90.3925,
+      "x": 544.6,
+      "y": 683.5
+    },
+    {
+      "id": "aaub-main",
+      "institutionId": "aaub",
+      "code": "AAUB",
+      "division": "Rangpur",
+      "district": "Lalmonirhat",
+      "address": "Lalmonirhat Campus, near Lalmonirhat Airport",
+      "lat": 25.8905,
+      "lng": 89.43561,
+      "x": 425.7,
+      "y": 311
+    },
+    {
+      "id": "ku-main",
+      "institutionId": "ku",
+      "code": "KU",
+      "division": "Khulna",
+      "district": "Khulna",
+      "address": "Gollamari, Khulna-9208",
+      "lat": 22.80229,
+      "lng": 89.53408,
+      "x": 437.9,
+      "y": 843.8
+    },
+    {
+      "id": "mist-main",
+      "institutionId": "mist",
+      "code": "MIST",
+      "division": "Dhaka",
+      "district": "Dhaka",
+      "address": "Mirpur Cantonment, Dhaka-1216",
+      "lat": 23.83807,
+      "lng": 90.35866,
+      "x": 540.4,
+      "y": 665.1
+    },
+    {
+      "id": "jnu-main",
+      "institutionId": "jnu",
+      "code": "JnU",
+      "division": "Dhaka",
+      "district": "Dhaka",
+      "address": "9-10 Chittaranjan Avenue, Dhaka-1100",
+      "lat": 23.70895,
+      "lng": 90.41066,
+      "x": 546.8,
+      "y": 687.4
+    },
+    {
+      "id": "bup-main",
+      "institutionId": "bup",
+      "code": "BUP",
+      "division": "Dhaka",
+      "district": "Dhaka",
+      "address": "Mirpur Cantonment, Dhaka-1216",
+      "lat": 23.83964,
+      "lng": 90.35743,
+      "x": 540.2,
+      "y": 664.8
+    },
+    {
+      "id": "kuet-main",
+      "institutionId": "kuet",
+      "code": "KUET",
+      "division": "Khulna",
+      "district": "Khulna",
+      "address": "KUET Campus, Khulna-9203",
+      "lat": 22.90103,
+      "lng": 89.50127,
+      "x": 433.9,
+      "y": 826.7
+    },
+    {
+      "id": "ru-main",
+      "institutionId": "ru",
+      "code": "RU",
+      "division": "Rajshahi",
+      "district": "Rajshahi",
+      "address": "Motihar, Rajshahi-6205",
+      "lat": 24.37112,
+      "lng": 88.6412,
+      "x": 327.1,
+      "y": 573.1
+    },
+    {
+      "id": "ruet-main",
+      "institutionId": "ruet",
+      "code": "RUET",
+      "division": "Rajshahi",
+      "district": "Rajshahi",
+      "address": "Kazla, Rajshahi-6204",
+      "lat": 24.36867,
+      "lng": 88.62654,
+      "x": 325.2,
+      "y": 573.6
+    },
+    {
+      "id": "buet-main",
+      "institutionId": "buet",
+      "code": "BUET",
+      "division": "Dhaka",
+      "district": "Dhaka",
+      "address": "BUET Campus, Dhaka-1000",
+      "lat": 23.72523,
+      "lng": 90.39097,
+      "x": 544.4,
+      "y": 684.6
+    },
+    {
+      "id": "cuet-main",
+      "institutionId": "cuet",
+      "code": "CUET",
+      "division": "Chattogram",
+      "district": "Chattogram",
+      "address": "Pahartoli, Raozan, Chattogram-4349",
+      "lat": 22.46506,
+      "lng": 91.97154,
+      "x": 740.7,
+      "y": 902
+    },
+    {
+      "id": "sust-main",
+      "institutionId": "sust",
+      "code": "SUST",
+      "division": "Sylhet",
+      "district": "Sylhet",
+      "address": "Kumargaon, Sylhet-3114",
+      "lat": 24.92004,
+      "lng": 91.83334,
+      "x": 723.5,
+      "y": 478.4
+    },
+    {
+      "id": "butex-main",
+      "institutionId": "butex",
+      "code": "BUTEX",
+      "division": "Dhaka",
+      "district": "Dhaka",
+      "address": "92 Shaheed Tajuddin Ahmed Avenue, Tejgaon Industrial Area, Dhaka-1208",
+      "lat": 23.76011,
+      "lng": 90.40198,
+      "x": 545.7,
+      "y": 678.5
+    },
+    {
+      "id": "cu-main",
+      "institutionId": "cu",
+      "code": "CU",
+      "division": "Chattogram",
+      "district": "Chattogram",
+      "address": "Hathazari, Chattogram-4331",
+      "lat": 22.47124,
+      "lng": 91.77809,
+      "x": 716.6,
+      "y": 900.9
+    },
+    {
+      "id": "cou-main",
+      "institutionId": "cou",
+      "code": "CoU",
+      "division": "Chattogram",
+      "district": "Cumilla",
+      "address": "Kotbari, Cumilla-3506",
+      "lat": 23.41806,
+      "lng": 91.13452,
+      "x": 636.7,
+      "y": 737.5
+    },
+    {
+      "id": "aaub-dhaka",
+      "institutionId": "aaub",
+      "code": "AAUB-D",
+      "division": "Dhaka",
+      "district": "Dhaka",
+      "address": "Old Airport, Tejgaon, Dhaka-1215",
+      "lat": 23.7767,
+      "lng": 90.3853,
+      "x": 543.7,
+      "y": 675.7
+    }
+  ],
+  "divisionPaths": [
+    {
+      "name": "Chattogram",
+      "path": "M783.2,1212.3L783.2,1212.3L783.2,1212.2L783.2,1212.3ZM782.7,1219.9L779.8,1214.0L782.1,1220.0L782.7,1219.9ZM725.1,1023.8L731.9,1003.0L728.5,994.2L725.1,1023.8ZM658.7,887.9L649.0,874.7L650.5,882.0L658.7,887.9ZM678.0,878.5L661.7,866.4L668.1,902.8L683.7,922.6L690.7,914.8L678.0,878.5ZM626.7,857.4L629.0,879.4L639.3,884.1L640.6,867.8L626.7,857.4ZM658.6,863.0L651.0,852.4L644.4,850.2L650.2,860.1L658.6,863.0ZM663.5,850.2L662.9,855.7L666.6,858.2L663.5,850.2ZM658.2,601.5L627.5,601.5L619.0,643.3L591.6,662.9L578.5,698.2L583.9,719.1L569.7,737.8L577.8,765.6L568.6,799.1L625.1,904.7L624.6,965.9L638.7,951.9L637.5,915.7L622.5,887.7L618.3,834.9L628.4,844.8L666.8,839.8L702.9,887.9L733.6,973.5L732.9,1067.9L745.3,1068.6L752.8,1127.0L788.7,1201.6L770.1,1126.6L772.0,1098.1L790.8,1073.2L801.0,1093.6L814.6,1092.2L819.4,1112.3L830.0,1102.4L810.1,855.9L792.7,817.8L794.0,756.1L780.5,686.8L771.9,696.1L765.6,679.5L753.4,695.8L735.0,685.5L738.5,733.0L729.8,732.1L717.3,759.2L721.0,791.3L707.2,811.4L690.2,812.9L675.2,763.6L670.7,795.6L664.0,789.8L640.3,704.5L658.2,601.5Z"
+    },
+    {
+      "name": "Dhaka",
+      "path": "M646.7,595.1L641.7,584.4L651.9,568.1L640.1,553.9L649.3,545.2L643.9,526.4L572.2,549.5L576.0,587.3L555.5,577.6L534.8,588.1L512.5,510.3L501.7,500.8L482.8,507.7L463.5,546.5L472.0,624.5L460.8,641.6L470.2,677.7L403.8,656.0L412.6,690.7L424.3,693.1L444.5,728.6L473.1,831.3L489.0,838.4L517.4,801.8L538.1,813.6L557.6,793.8L569.1,799.8L577.8,765.6L569.7,737.8L583.9,719.1L578.5,698.2L591.6,662.9L609.8,658.9L627.6,623.4L624.9,605.3L646.7,595.1Z"
+    },
+    {
+      "name": "Mymensingh",
+      "path": "M572.2,549.5L652.2,517.6L641.8,506.4L647.0,496.3L620.3,480.0L617.2,435.1L543.6,435.7L466.8,401.2L453.7,467.6L457.2,492.6L472.1,510.2L470.9,537.2L482.8,507.7L506.7,500.6L534.8,588.1L555.5,577.6L576.0,587.3L572.2,549.5Z"
+    },
+    {
+      "name": "Rajshahi",
+      "path": "M470.9,537.2L455.2,453.7L418.5,454.3L370.3,417.8L361.9,434.4L303.0,431.4L288.8,486.2L269.2,471.0L250.0,519.0L270.8,556.3L313.5,582.8L330.4,579.2L335.7,604.6L368.4,614.7L382.9,643.4L462.5,678.5L470.2,677.7L460.8,641.6L472.0,624.5L463.2,562.0L470.9,537.2Z"
+    },
+    {
+      "name": "Rangpur",
+      "path": "M474.3,403.3L474.4,403.5L474.4,403.4L474.3,403.3ZM474.3,403.3L472.9,322.3L481.2,305.8L456.0,255.0L445.1,264.9L451.3,282.5L441.5,287.8L443.2,300.8L424.2,284.8L418.8,292.9L391.3,269.3L381.9,225.0L359.9,220.8L377.3,252.2L357.3,244.5L352.6,256.0L322.0,211.5L300.4,201.1L298.8,185.0L293.7,191.6L286.7,215.6L303.4,215.5L309.9,230.5L268.8,272.2L260.1,326.9L277.0,325.4L315.3,378.0L346.4,373.8L355.5,407.8L418.5,454.3L455.1,453.8L466.8,401.2L474.3,403.3Z"
+    },
+    {
+      "name": "Sylhet",
+      "path": "M656.7,636.6L668.5,635.3L669.8,614.1L698.0,622.1L700.9,600.0L732.3,605.0L734.7,578.2L764.0,564.4L760.5,545.5L778.0,490.7L803.4,483.3L803.9,468.7L755.0,428.0L617.2,435.1L620.3,480.0L647.0,496.3L641.8,506.4L652.2,517.6L640.1,553.9L651.9,568.1L641.7,584.4L658.5,597.3L656.7,636.6Z"
+    },
+    {
+      "name": "Khulna",
+      "path": "M411.2,1031.8L414.8,1028.6L410.9,1025.5L411.2,1031.8ZM403.3,652.3L382.9,643.4L368.4,614.7L335.7,604.6L340.1,650.1L321.0,659.8L316.5,694.5L344.0,730.6L337.9,764.1L368.1,774.1L355.8,790.6L355.3,825.4L366.3,837.0L363.5,870.4L383.5,955.2L376.1,965.9L399.5,1047.3L408.9,1043.8L408.6,1023.5L413.9,1000.7L427.6,1030.0L438.0,982.8L444.1,1034.0L458.5,1024.7L454.8,1012.4L477.5,1012.4L480.3,933.4L493.5,889.5L482.9,859.6L488.3,850.0L489.1,838.2L473.1,831.3L444.5,728.6L424.3,693.1L412.6,690.7L403.3,652.3Z"
+    },
+    {
+      "name": "Barishal",
+      "path": "M559.0,1003.5L566.8,1002.0L565.1,991.1L559.0,1003.5ZM573.2,996.7L578.2,994.3L575.9,991.0L573.2,996.7ZM581.3,988.5L584.8,986.0L582.0,985.2L581.3,988.5ZM554.0,993.6L545.1,971.8L536.1,1013.3L542.3,996.7L554.0,993.6ZM560.6,989.4L566.0,979.4L563.4,971.0L558.8,976.0L560.6,989.4ZM610.3,949.9L618.8,925.3L616.2,920.1L610.3,949.9ZM574.9,982.8L599.3,954.8L606.5,898.3L586.1,846.4L566.4,868.4L579.7,913.3L570.0,960.4L574.9,982.8ZM517.4,801.8L482.9,859.6L493.5,889.5L480.3,933.4L490.6,982.8L501.7,967.2L499.6,1009.5L519.0,1018.8L544.2,965.9L565.2,963.2L575.6,907.0L558.1,865.6L580.4,833.9L547.3,805.0L530.9,813.6L517.4,801.8Z"
+    }
+  ]
+}
