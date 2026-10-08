@@ -3841,6 +3841,7 @@ html[data-theme="light"] .guide-compare-toggle.active{background:#eee7ff!importa
     <div class="sync-code-box">
       <div class="sync-code" id="syncCodeText">—</div>
       <button class="sync-copy" id="syncCopyButton" type="button">Copy</button>
+      <button class="sync-copy" id="syncBackupButton" type="button">Save backup</button>
     </div>
     <div class="sync-status-line" id="syncStatusLine">Saved on this device.</div>
     <div class="sync-divider"></div>
@@ -4069,7 +4070,7 @@ function dbtAdminApply(){
 }
 async function dbtAdminLoad(){
   try{
-    const r=await fetch('/api/admin-content',{cache:'no-store'});
+    const r=await fetch('/api/admin-content');
     const j=await r.json();
     if(j&&j.config){
       dbtAdminConfig=j.config;
@@ -4219,7 +4220,7 @@ dbtAdminScan();
 dbtAdminObserver.observe(document.body,{childList:true,subtree:true});
 dbtAdminBind();
 dbtAdminLoad();
-setInterval(async()=>{if(DBT_ADMIN_MODE||document.hidden)return;try{const r=await fetch('/api/admin-content',{cache:'no-store'});const j=await r.json();if(j?.config&&Number(j.config.updatedAt||0)>Number(dbtAdminConfig.updatedAt||0)){dbtAdminConfig=j.config;dbtAdminApply()}}catch(e){}},90000);
+// Public admin content is loaded once at boot; CDN handles scale.
 
 let TARGET=new Date('2026-12-05T10:00:00+06:00'); const START=new Date('2026-08-04T00:00:00+06:00');
 function phaseFor(days){
@@ -4255,7 +4256,7 @@ let homeSyncCode='';
 try{homeSyncCode=localStorage.getItem(HOME_SYNC_CODE_KEY)||''}catch(e){}
 let homeSyncState=null;
 try{homeSyncState=JSON.parse(localStorage.getItem(HOME_SYNC_STATE_KEY)||'null')}catch(e){homeSyncState=null}
-let homeSyncTimer=null,homeSyncApplying=false,homeSyncConfigured=true;
+let homeSyncApplying=false,homeSyncConfigured=true;
 let countdownTargetKey='';
 try{countdownTargetKey=localStorage.getItem(COUNTDOWN_TARGET_KEY)||''}catch(e){}
 let starred=new Set();
@@ -4292,7 +4293,7 @@ function saveLocalSyncState(updatedAt=Date.now()){
   const state=currentSyncState(updatedAt);
   homeSyncState=state;
   try{localStorage.setItem(HOME_SYNC_STATE_KEY,JSON.stringify(state))}catch(e){}
-  queueCloudSync();
+  setSyncUi('','Save');
 }
 function setSyncUi(mode,text){
   const b=document.getElementById('homeSyncButton'),t=document.getElementById('homeSyncText');
@@ -4338,49 +4339,39 @@ async function pushCloudSync(){
     const r=await fetch('/api/home-sync',{method:'PUT',headers:{'Content-Type':'application/json','x-dbt-sync-code':homeSyncCode},body:JSON.stringify(state),cache:'no-store'});
     const j=await r.json().catch(()=>({}));
     if(r.status===409&&j.state){
-      applySyncState(j.state);render();setSyncUi('saved','Saved');return;
+      setSyncUi('','Save');
+      throw new Error('newer_cloud_state');
     }
-    if(r.status===503){homeSyncConfigured=false;setSyncUi('offline',location.hostname==='localhost'||location.hostname==='127.0.0.1'?'Local preview':'Local');return}
+    if(r.status===503){homeSyncConfigured=false;setSyncUi('offline',location.hostname==='localhost'||location.hostname==='127.0.0.1'?'Local preview':'Local');throw new Error('storage_not_configured')}
     if(!r.ok)throw new Error('sync_save_failed');
     setSyncUi('saved','Saved');
+    return true;
   }catch(e){
-    setSyncUi('offline',navigator.onLine?'Local':'Offline');
+    setSyncUi('offline',navigator.onLine?'Save':'Offline');
+    throw e;
   }
 }
-function queueCloudSync(){
-  if(!validSyncCode(homeSyncCode))return;
-  clearTimeout(homeSyncTimer);
-  homeSyncTimer=setTimeout(pushCloudSync,550);
-}
-async function initializeSecretSync(){
-  // Always provision a stable device sync code on first load so cloud backup
-  // starts automatically without requiring the user to open/click Sync first.
+function initializeSecretSync(){
+  // Keep a stable Secret Code locally, but never touch cloud storage on passive visits.
   if(!validSyncCode(homeSyncCode))homeSyncCode=ensureSyncCode();
   homeSyncCode=normalizeSyncCode(homeSyncCode);
   try{localStorage.setItem(HOME_SYNC_CODE_KEY,homeSyncCode)}catch(e){}
-  try{
-    const cloud=await fetchCloudSync();
-    const local=homeSyncState;
-    if(cloud&&(!local||Number(cloud.updatedAt||0)>=Number(local.updatedAt||0))){
-      applySyncState(cloud);render();
-    }else if(local&&(!cloud||Number(local.updatedAt||0)>Number(cloud.updatedAt||0))){
-      await pushCloudSync();
-    }else if(!cloud){
-      await pushCloudSync();
-    }
-    if(homeSyncConfigured)setSyncUi('saved','Saved');
-  }catch(e){
-    setSyncUi('offline',navigator.onLine?'Local':'Offline');
+  if(!homeSyncState){
+    const state=currentSyncState(Date.now());
+    homeSyncState=state;
+    try{localStorage.setItem(HOME_SYNC_STATE_KEY,JSON.stringify(state))}catch(e){}
   }
+  setSyncUi('','Save');
 }
 function openSyncModal(){
   homeSyncCode=ensureSyncCode();
   syncCodeText.textContent=homeSyncCode;
   syncExistingInput.value='';
-  syncStatusLine.textContent=homeSyncConfigured?(navigator.onLine?'Your choices save automatically when they change.':'No internet — changes stay on this device and will save online later.'):'Online save is not connected yet. Your choices are still saved on this device.';
+  syncStatusLine.textContent=navigator.onLine
+    ?'Saved on this device. Press Save backup to store the latest choices online.'
+    :'No internet — your latest choices are still saved on this device.';
   syncModalBackdrop.classList.add('open');syncModalBackdrop.setAttribute('aria-hidden','false');
   if(!homeSyncState)saveLocalSyncState();
-  else if(navigator.onLine)pushCloudSync();
 }
 function closeSyncModal(){syncModalBackdrop.classList.remove('open');syncModalBackdrop.setAttribute('aria-hidden','true')}
 async function useExistingSyncCode(){
@@ -4400,8 +4391,8 @@ async function useExistingSyncCode(){
     applySyncState(cloud);render();
     syncCodeText.textContent=homeSyncCode;
     syncExistingInput.value='';
-    setSyncUi('saved','Saved');
-    syncStatusLine.textContent='Saved. This device will keep using this code.';
+    setSyncUi('','Save');
+    syncStatusLine.textContent='Restored from this Secret Code. Future changes stay local until you press Save backup.';
   }catch(e){
     syncStatusLine.textContent=e&&e.message==='storage_not_configured'
       ?'Online save is not connected yet. This device is saving only on this device.'
@@ -5029,7 +5020,7 @@ async function downloadCalendarPdf(){
 async function load(force=false){
   syncStatus.textContent='● checking dates…';
   try{
-    const r=await fetch('/api/events'+(force?'?refresh=1':''),{cache:'no-store'});
+    const r=await fetch('/api/events'+(force?'?refresh=1':''));
     if(!r.ok)throw new Error('events_failed');
     const j=await r.json();
     all=j.events||[];
@@ -5299,6 +5290,19 @@ homeSyncButton.onclick=openSyncModal;
 syncModalClose.onclick=closeSyncModal;
 syncModalBackdrop.onclick=e=>{if(e.target===syncModalBackdrop)closeSyncModal()};
 syncCopyButton.onclick=async()=>{try{await navigator.clipboard.writeText(homeSyncCode);syncStatusLine.textContent='Code copied.'}catch(e){syncStatusLine.textContent='Could not copy. Press and hold the code to copy it.'}};
+syncBackupButton.onclick=async()=>{
+  if(!navigator.onLine){syncStatusLine.textContent='No internet — backup was not sent. Your choices are still safe on this device.';return}
+  syncBackupButton.disabled=true;
+  syncStatusLine.textContent='Saving backup…';
+  try{
+    await pushCloudSync();
+    syncStatusLine.textContent='Backup saved online. Keep this Secret Code private.';
+  }catch(e){
+    syncStatusLine.textContent=e&&e.message==='newer_cloud_state'
+      ?'A newer backup already exists for this code. Restore it first before saving again.'
+      :'Could not save backup right now. Your local copy is unchanged.';
+  }finally{syncBackupButton.disabled=false}
+};
 syncUseButton.onclick=useExistingSyncCode;
 syncExistingInput.oninput=()=>{syncExistingInput.value=syncExistingInput.value.toUpperCase().replace(/[^A-Z0-9-]/g,'')};
 examPickerClose.onclick=closeExamPicker;
@@ -5313,7 +5317,7 @@ eventDrawerClose.onclick=closeEventDrawer;eventDrawerClose2.onclick=closeEventDr
 eventDrawerBackdrop.onclick=e=>{if(e.target===eventDrawerBackdrop)closeEventDrawer()};
 eventDrawerStar.onclick=()=>{if(!drawerEvent)return;const current=drawerEvent;toggleStar(current);drawerEvent=current;openEventDrawer(current)};
 addEventListener('keydown',e=>{if(e.key==='Escape'){if(syncModalBackdrop.classList.contains('open'))closeSyncModal();else if(examPickerBackdrop.classList.contains('open'))closeExamPicker();else if(targetPickerBackdrop.classList.contains('open'))closeTargetPicker();else if(pdfPickerBackdrop.classList.contains('open'))closePdfPicker();else if(dayEventsBackdrop.classList.contains('open'))closeDayEvents();else if(guideCompareBackdrop.classList.contains('open'))closeGuideCompare();else if(eventDrawerBackdrop.classList.contains('open'))closeEventDrawer()}});
-addEventListener('online',()=>{if(validSyncCode(homeSyncCode))pushCloudSync()});
+addEventListener('online',()=>{if(validSyncCode(homeSyncCode))setSyncUi('','Save')});
 addEventListener('storage',e=>{if(e.key===HOME_SYNC_STATE_KEY&&e.newValue){try{const s=JSON.parse(e.newValue);if(Number(s.updatedAt||0)>Number(homeSyncState?.updatedAt||0)){applySyncState(s);render()}}catch(err){}}});
 addEventListener('resize',()=>{calendar.dataset.view=calendarView});
 (function hydrateStartupEvents(){
@@ -5329,12 +5333,13 @@ addEventListener('resize',()=>{calendar.dataset.view=calendarView});
   }catch(e){syncStatus.textContent='● '+all.length+' exams • ready'}
 })();
 render();
-const dbtBackgroundRefresh=()=>load().then(()=>initializeSecretSync());
+initializeSecretSync();
+const dbtBackgroundRefresh=()=>load();
 if('requestIdleCallback' in window)requestIdleCallback(dbtBackgroundRefresh,{timeout:1200});
 else setTimeout(dbtBackgroundRefresh,120);
 const dbtUiTick=setInterval(()=>{if(document.hidden)return;countdown();updateStarredTimers()},1000);
 addEventListener('visibilitychange',()=>{if(!document.hidden){countdown();updateStarredTimers()}});
-setInterval(()=>{if(!document.hidden&&validSyncCode(homeSyncCode)&&navigator.onLine)initializeSecretSync()},90000);
+// Secret Code cloud transfer is explicit only; no background polling.
 
 const UNIVERSITY_INFO = {
   "ঢাকা বিশ্ববিদ্যালয়": {
@@ -6058,12 +6063,19 @@ export default async function handler(req,res){
     res.setHeader('access-control-allow-origin','*');
     return res.end(JSON.stringify({updatedAt:new Date(data.at).toISOString(),events:data.events,sources:data.sources}));
   }
-  if(u.pathname==='/how-to'||u.pathname==='/how-to/'){res.statusCode=200;res.setHeader('content-type','text/html; charset=utf-8');res.setHeader('cache-control','no-cache');return res.end(HOW_TO_HTML);}
+  if(u.pathname==='/how-to'||u.pathname==='/how-to/'){
+    res.statusCode=200;
+    res.setHeader('content-type','text/html; charset=utf-8');
+    res.setHeader('Cache-Control','public, max-age=0');
+    res.setHeader('Vercel-CDN-Cache-Control','public, s-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
+    return res.end(HOW_TO_HTML);
+  }
   if(u.pathname==='/health'){
     res.statusCode=200; res.setHeader('content-type','text/plain'); return res.end('ok');
   }
   res.statusCode=200;
   res.setHeader('content-type','text/html; charset=utf-8');
-  res.setHeader('cache-control','no-cache');
+  res.setHeader('Cache-Control','public, max-age=0');
+  res.setHeader('Vercel-CDN-Cache-Control','public, s-maxage=3600, stale-while-revalidate=86400, stale-if-error=86400');
   return res.end(html);
 }

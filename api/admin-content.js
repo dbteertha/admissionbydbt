@@ -4,10 +4,11 @@ import { get, put } from '@vercel/blob';
 const BLOB_STORE_ID='store_vUvKgnlBSMEysQyD';
 const PATHNAME='admin/site-content-v1.json';
 
-function json(res,status,data){
+function json(res,status,data,cache='no-store',vercelCache=''){
   res.statusCode=status;
   res.setHeader('content-type','application/json; charset=utf-8');
-  res.setHeader('cache-control','no-store');
+  res.setHeader('cache-control',cache);
+  if(vercelCache)res.setHeader('Vercel-CDN-Cache-Control',vercelCache);
   res.end(JSON.stringify(data));
 }
 function safeEqual(a,b){
@@ -65,7 +66,13 @@ async function load(){
 export default async function handler(req,res){
   try{
     if(req.method==='GET'){
-      return json(res,200,{ok:true,config:await load()});
+      return json(
+        res,
+        200,
+        {ok:true,config:await load()},
+        'public, max-age=60',
+        'public, s-maxage=600, stale-while-revalidate=86400, stale-if-error=86400'
+      );
     }
     if(req.method==='PUT'||req.method==='POST'){
       const expected=process.env.ADMIN_KEY;

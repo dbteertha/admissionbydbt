@@ -1,0 +1,26 @@
+name: Sync admission events
+
+on:
+  schedule:
+    - cron: '17 */3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: admission-events-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh precomputed admission events
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          curl --fail-with-body --retry 3 --retry-delay 10 \
+            -X POST "https://admissionbydbt.vercel.app/api/sync-events" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Content-Type: application/json"

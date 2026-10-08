@@ -16,7 +16,11 @@
     },
     {
       "source": "/api/events",
-      "destination": "/api/index.js"
+      "destination": "/api/events.js"
+    },
+    {
+      "source": "/api/sync-events",
+      "destination": "/api/sync-events.js"
     },
     {
       "source": "/api/home-sync",
