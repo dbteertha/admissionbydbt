@@ -16,11 +16,11 @@
     },
     {
       "source": "/api/events",
-      "destination": "/api/events.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/api/sync-events",
-      "destination": "/api/sync-events.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/api/home-sync",

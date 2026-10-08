@@ -2,6 +2,7 @@ import http from 'node:http';
 import https from 'node:https';
 import { URL } from 'node:url';
 import { HOW_TO_HTML } from '../lib/how-to.js';
+import { get as blobGet, put as blobPut } from '@vercel/blob';
 
 const PORT = process.env.PORT || 10000;
 const SOURCES = [
@@ -224,6 +225,95 @@ async function sync(force=false){
   let events=dedupe([...CURATED_EVENTS,...results.flatMap(r=>r.events)]);
   cache={at:Date.now(),events,sources:results.map(({events,...x})=>x)};
   return cache;
+}
+
+const EVENTS_BLOB_STORE_ID='store_vUvKgnlBSMEysQyD';
+const EVENTS_SNAPSHOT_PATH='cache/events-live.json';
+
+async function eventsStreamToText(stream){
+  const reader=stream.getReader();
+  const dec=new TextDecoder();
+  let out='';
+  while(true){
+    const {done,value}=await reader.read();
+    if(done)break;
+    out+=dec.decode(value,{stream:true});
+    if(out.length>2_000_000)throw new Error('snapshot_too_large');
+  }
+  out+=dec.decode();
+  return out;
+}
+function eventsFallback(){
+  return {
+    updatedAt:new Date().toISOString(),
+    events:CURATED_EVENTS,
+    sources:[{name:'Embedded curated schedule',ok:true,count:CURATED_EVENTS.length,mode:'fallback'}],
+    fallback:true
+  };
+}
+async function readEventsSnapshot(){
+  try{
+    const result=await blobGet(EVENTS_SNAPSHOT_PATH,{access:'private',useCache:false,storeId:EVENTS_BLOB_STORE_ID});
+    if(result&&result.statusCode===200){
+      const parsed=JSON.parse(await eventsStreamToText(result.stream));
+      if(Array.isArray(parsed?.events)&&parsed.events.length>=CURATED_EVENTS.length){
+        return {
+          updatedAt:parsed.updatedAt||new Date().toISOString(),
+          events:parsed.events,
+          sources:Array.isArray(parsed.sources)?parsed.sources:[]
+        };
+      }
+    }
+  }catch(e){}
+  return eventsFallback();
+}
+async function eventSyncAuthorized(req){
+  const configured=process.env.SYNC_SECRET;
+  const supplied=String(req.headers['x-sync-secret']||'');
+  if(configured&&supplied&&supplied===configured)return true;
+
+  const auth=String(req.headers.authorization||'');
+  const match=auth.match(/^Bearer\s+(.+)$/i);
+  if(!match)return false;
+  try{
+    const r=await fetch('https://api.github.com/repos/dbteertha/admissionbydbt',{
+      headers:{
+        Authorization:'Bearer '+match[1],
+        Accept:'application/vnd.github+json',
+        'User-Agent':'admissionbydbt-event-sync'
+      }
+    });
+    if(!r.ok)return false;
+    const data=await r.json();
+    return data?.full_name==='dbteertha/admissionbydbt'&&data?.permissions?.push===true;
+  }catch(e){return false}
+}
+async function refreshEventsSnapshot(){
+  const data=await sync(true);
+  const sources=Array.isArray(data.sources)?data.sources:[];
+  const externalCount=sources.reduce((n,x)=>n+Number(x.count||0),0);
+  const healthySources=sources.filter(x=>x.ok&&Number(x.count||0)>0).length;
+
+  if(externalCount<3||healthySources<1||!Array.isArray(data.events)||data.events.length<CURATED_EVENTS.length){
+    const err=new Error('snapshot_validation_failed');
+    err.meta={externalCount,healthySources,mergedCount:Array.isArray(data.events)?data.events.length:0};
+    throw err;
+  }
+
+  const payload={
+    version:1,
+    updatedAt:new Date(data.at||Date.now()).toISOString(),
+    events:data.events,
+    sources
+  };
+  await blobPut(EVENTS_SNAPSHOT_PATH,JSON.stringify(payload),{
+    access:'private',
+    addRandomSuffix:false,
+    allowOverwrite:true,
+    contentType:'application/json; charset=utf-8',
+    storeId:EVENTS_BLOB_STORE_ID
+  });
+  return {payload,externalCount,healthySources};
 }
 
 const OFFICIAL_CIRCULARS = [
@@ -6055,14 +6145,55 @@ updatePageNavFromScroll();
 
 export default async function handler(req,res){
   const u=new URL(req.url,'https://admissionbydbt.vercel.app');
+
   if(u.pathname==='/api/events'){
-    const data=await sync(u.searchParams.get('refresh')==='1');
+    if(req.method!=='GET'&&req.method!=='HEAD'){
+      res.statusCode=405;
+      res.setHeader('content-type','application/json; charset=utf-8');
+      res.setHeader('Cache-Control','no-store');
+      return res.end(JSON.stringify({ok:false,error:'method_not_allowed'}));
+    }
+    const data=await readEventsSnapshot();
     res.statusCode=200;
     res.setHeader('content-type','application/json; charset=utf-8');
-    res.setHeader('cache-control','no-store');
     res.setHeader('access-control-allow-origin','*');
-    return res.end(JSON.stringify({updatedAt:new Date(data.at).toISOString(),events:data.events,sources:data.sources}));
+    res.setHeader('Cache-Control','public, max-age=60');
+    res.setHeader('Vercel-CDN-Cache-Control','public, s-maxage=1800, stale-while-revalidate=43200, stale-if-error=86400');
+    if(req.method==='HEAD')return res.end();
+    return res.end(JSON.stringify(data));
   }
+
+  if(u.pathname==='/api/sync-events'){
+    res.setHeader('Cache-Control','no-store');
+    res.setHeader('content-type','application/json; charset=utf-8');
+    if(req.method!=='POST'){
+      res.statusCode=405;
+      return res.end(JSON.stringify({ok:false,error:'method_not_allowed'}));
+    }
+    if(!(await eventSyncAuthorized(req))){
+      res.statusCode=401;
+      return res.end(JSON.stringify({ok:false,error:'unauthorized'}));
+    }
+    try{
+      const result=await refreshEventsSnapshot();
+      res.statusCode=200;
+      return res.end(JSON.stringify({
+        ok:true,
+        status:'updated',
+        count:result.payload.events.length,
+        externalCount:result.externalCount,
+        healthySources:result.healthySources
+      }));
+    }catch(e){
+      res.statusCode=e?.message==='snapshot_validation_failed'?503:500;
+      return res.end(JSON.stringify({
+        ok:false,
+        error:e?.message||'sync_events_failed',
+        ...(e?.meta||{})
+      }));
+    }
+  }
+
   if(u.pathname==='/how-to'||u.pathname==='/how-to/'){
     res.statusCode=200;
     res.setHeader('content-type','text/html; charset=utf-8');
