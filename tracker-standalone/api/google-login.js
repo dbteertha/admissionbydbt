@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 
 const CLIENT_ID="339294750280-18e1h251at3am9qiuuf30uq1hb1dclqb.apps.googleusercontent.com";
-const REDIRECT_URI='https://admissionbydbt.vercel.app/api/google-callback';
+const REDIRECT_URI='https://dbt-tracker-theta.vercel.app/api/google-callback';
 const SCOPE='https://www.googleapis.com/auth/spreadsheets';
 
 function cookie(name,value,maxAge){
