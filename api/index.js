@@ -370,6 +370,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
 <link rel="icon" href="/app-icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/app-icon.svg">
 <link rel="stylesheet" href="/admission-map.css">
+<link rel="stylesheet" href="/css/criteria-v1.css">
 <script>
 try{
   document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'dark';
@@ -397,6 +398,7 @@ try{
       <a class="navlink" href="#infoCenter">Admission Guide</a>
     </div>
     <div class="nav-actions">
+      <button class="criteria-nav-btn" id="criteriaLaunchButton" type="button" title="ভর্তি তথ্য ও যোগ্যতা" aria-label="ভর্তি তথ্য ও যোগ্যতা"><b>◎</b><span>ভর্তি তথ্য ও যোগ্যতা</span></button>
       <a class="howto-link" href="/how-to" aria-label="How to use Admission by DBT" title="How to use">?</a>\n      <button class="install-app-btn" id="installAppButton" type="button" hidden aria-label="Install Admission by DBT" title="Install app">↓</button>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span class="theme-sun">☀</span><span class="theme-moon">☾</span></button>
       <button class="language-toggle" id="languageToggle" type="button" aria-label="বাংলা ভাষায় দেখুন" title="বাংলা ভাষায় দেখুন"><span>অ</span></button>
@@ -713,7 +715,7 @@ try{
   <div class="admin-help">Click any text or block. Double-click text to edit. Select an item and drag it to move it inside the same section. Changes auto-save for the whole site after you unlock.</div>
 </div>
 <script id="dbtBootEvents" type="application/json">${JSON.stringify(CURATED_EVENTS).replace(/</g,'\\u003c')}</script>
-<script defer src="/js/app-v2.js"></script><script defer src="/admission-map.js"></script><script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/js/app-v2.js"></script><script defer src="/js/criteria-v1.js"></script><script defer src="/admission-map.js"></script><script defer src="/_vercel/insights/script.js"></script>
 </body></html>`;
 
 export default async function handler(req,res){
