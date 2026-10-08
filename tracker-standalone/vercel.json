@@ -1,0 +1,36 @@
+{
+  "version": 2,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/tracker",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/tracker",
+      "destination": "/api/tracker.js"
+    },
+    {
+      "source": "/tracker/(.*)",
+      "destination": "/api/tracker.js"
+    },
+    {
+      "source": "/api/google-login",
+      "destination": "/api/google-login.js"
+    },
+    {
+      "source": "/api/google-callback",
+      "destination": "/api/google-callback.js"
+    },
+    {
+      "source": "/api/google-token",
+      "destination": "/api/google-token.js"
+    },
+    {
+      "source": "/api/google-logout",
+      "destination": "/api/google-logout.js"
+    }
+  ]
+}
