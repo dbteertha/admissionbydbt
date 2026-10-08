@@ -1,5 +1,5 @@
-const CACHE='dbt-shell-v8';
-const SHELL=['/','/manifest.webmanifest','/app-icon.svg','/css/app-v1.css','/js/app-v2.js','/css/criteria-v2.css','/js/criteria-v2.js','/data/admission-criteria-v1.json','/admission-map.css','/admission-map.js'];
+const CACHE='dbt-shell-v9';
+const SHELL=['/','/manifest.webmanifest','/app-icon.svg','/css/app-v1.css','/js/app-v2.js','/css/criteria-v3.css','/js/criteria-v3.js','/data/admission-criteria-v1.json','/admission-map.css','/admission-map.js'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)).catch(()=>{}));
@@ -35,6 +35,7 @@ self.addEventListener('fetch',event=>{
     url.pathname.startsWith('/css/')||
     url.pathname.startsWith('/js/')||
     url.pathname.startsWith('/vendor/')||
+    url.pathname.startsWith('/data/')||
     url.pathname==='/admission-map.css'||
     url.pathname==='/admission-map.js'
   ){

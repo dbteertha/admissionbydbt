@@ -1,0 +1,218 @@
+/* Admission by DBT — Criteria Directory + Lockscreen Wallpaper */
+.criteria-nav-btn{
+  display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 11px;
+  border:1px solid rgba(129,140,248,.24);border-radius:11px;
+  background:linear-gradient(135deg,rgba(34,211,238,.10),rgba(129,140,248,.12));
+  color:var(--text);font-size:8px;font-weight:900;cursor:pointer;white-space:nowrap
+}
+.criteria-nav-btn b{font-size:13px;color:#8adff0}.criteria-nav-btn:hover{border-color:rgba(129,140,248,.42);transform:translateY(-1px)}
+.criteria-backdrop,.wallpaper-backdrop{
+  position:fixed;inset:0;z-index:170;display:none;align-items:center;justify-content:center;padding:18px;
+  background:rgba(2,5,10,.76);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)
+}
+.criteria-backdrop.open,.wallpaper-backdrop.open{display:flex}
+body.criteria-lock{overflow:hidden}
+.criteria-modal,.wallpaper-modal{
+  width:min(1180px,96vw);max-height:min(92vh,960px);display:flex;flex-direction:column;overflow:hidden;
+  border:1px solid rgba(255,255,255,.10);border-radius:25px;background:#0b1018;
+  box-shadow:0 32px 110px rgba(0,0,0,.54)
+}
+.criteria-head,.wallpaper-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:18px 20px 14px;
+  border-bottom:1px solid rgba(255,255,255,.07)
+}
+.criteria-head span,.wallpaper-head span{display:block;color:#7f8ea4;font-size:7px;font-weight:900;letter-spacing:.14em}
+.criteria-head h2,.wallpaper-head h2{margin:4px 0 0;font-size:23px;letter-spacing:-.035em}
+.criteria-head p,.wallpaper-head p{margin:5px 0 0;color:#8793a4;font-size:9px}
+.criteria-close{
+  width:36px;height:36px;display:grid;place-items:center;flex:0 0 auto;border:1px solid rgba(255,255,255,.08);
+  border-radius:11px;background:#10151e;color:#a9b3c3;font-size:21px;cursor:pointer
+}
+.criteria-tools{padding:13px 20px 8px;display:grid;gap:8px}
+.criteria-search{
+  height:42px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid rgba(255,255,255,.08);
+  border-radius:13px;background:#080c12
+}
+.criteria-search span{color:#7f8da0}.criteria-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#f3f6fb;font-size:10px}
+.criteria-filters{display:flex;gap:6px;flex-wrap:wrap}
+.criteria-filters button{
+  min-height:32px;padding:6px 10px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.025);
+  color:#8d99aa;font-size:8px;font-weight:850;cursor:pointer
+}
+.criteria-filters button.active{background:rgba(129,140,248,.17);border-color:rgba(129,140,248,.34);color:#dbe0ff}
+.criteria-result-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:2px 20px 10px;color:#7c899d;font-size:8px}
+.criteria-result-meta b{color:#d8dfeb;font-size:9px}
+.criteria-list{
+  overflow:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:0 20px 20px
+}
+.criteria-card{
+  --criteria-accent:#818cf8;display:flex;flex-direction:column;min-width:0;padding:14px;border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;background:rgba(255,255,255,.025);box-shadow:inset 3px 0 0 var(--criteria-accent)
+}
+.criteria-card.category-medical{--criteria-accent:#34d399}.criteria-card.category-engineering{--criteria-accent:#22d3ee}
+.criteria-card.category-general{--criteria-accent:#818cf8}.criteria-card.category-arts{--criteria-accent:#fb7185}
+.criteria-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.criteria-card-head h3{margin:5px 0 0;font-size:14px;letter-spacing:-.02em}
+.criteria-category{
+  display:inline-flex;padding:4px 7px;border-radius:999px;background:color-mix(in srgb,var(--criteria-accent) 13%,transparent);
+  color:var(--criteria-accent);font-size:7px;font-weight:900
+}
+.criteria-calc{flex:0 0 auto;padding:5px 7px;border:1px solid rgba(255,255,255,.07);border-radius:8px;color:#9eabba;font-size:7px;font-weight:800}
+.criteria-card dl{display:grid;gap:7px;margin:13px 0 12px}
+.criteria-card dl>div{display:grid;grid-template-columns:92px minmax(0,1fr);gap:10px;padding-top:7px;border-top:1px solid rgba(255,255,255,.055)}
+.criteria-card dt{color:#758298;font-size:7.5px;font-weight:900}.criteria-card dd{margin:0;color:#d9e0ea;font-size:8.5px;line-height:1.55}
+.criteria-wallpaper-btn{
+  margin-top:auto;min-height:36px;border:1px solid color-mix(in srgb,var(--criteria-accent) 30%,transparent);border-radius:10px;
+  background:color-mix(in srgb,var(--criteria-accent) 11%,transparent);color:#f3f6fb;font-size:8px;font-weight:900;cursor:pointer
+}
+.criteria-wallpaper-btn:hover{background:color-mix(in srgb,var(--criteria-accent) 17%,transparent)}
+.criteria-loading,.criteria-empty{grid-column:1/-1;padding:42px 12px;text-align:center;color:#7f8c9e;font-size:10px}
+
+.wallpaper-modal{width:min(1040px,96vw)}
+.wallpaper-body{min-height:0;overflow:auto;display:grid;grid-template-columns:minmax(280px,.78fr) minmax(320px,1.22fr);gap:15px;padding:16px 20px 20px}
+.wallpaper-form{display:flex;flex-direction:column;gap:12px}
+.wallpaper-target-card{padding:14px;border:1px solid rgba(129,140,248,.17);border-radius:14px;background:linear-gradient(145deg,rgba(34,211,238,.06),rgba(129,140,248,.08))}
+.wallpaper-target-card span{display:block;color:#7f8da0;font-size:7px;font-weight:900;letter-spacing:.12em}.wallpaper-target-card b{display:block;margin-top:6px;font-size:15px;line-height:1.35}
+.wallpaper-form label{display:grid;gap:6px;color:#8795a8;font-size:8px;font-weight:850}
+.wallpaper-form input,.wallpaper-form textarea{
+  width:100%;padding:10px 11px;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:#080c12;color:#f1f5f9;
+  outline:0;font:700 10px/1.45 inherit;resize:vertical
+}
+.wallpaper-form input:focus,.wallpaper-form textarea:focus{border-color:rgba(129,140,248,.36);box-shadow:0 0 0 3px rgba(129,140,248,.06)}
+.wallpaper-hint{padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.025);color:#768397;font-size:8px;line-height:1.5}
+.wallpaper-download{
+  min-height:42px;border:0;border-radius:12px;background:linear-gradient(135deg,#22b8cf,#6f6bdd);color:#fff;font-size:9px;font-weight:950;cursor:pointer;
+  box-shadow:0 12px 28px rgba(77,94,202,.20)
+}
+.wallpaper-download:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+.wallpaper-preview-shell{min-width:0;display:flex;justify-content:center;padding:11px;border:1px solid rgba(255,255,255,.07);border-radius:16px;background:#05080d}
+#wallpaperCanvas{display:block;width:min(100%,420px);height:auto;aspect-ratio:9/16;border-radius:17px;background:#020617;box-shadow:0 18px 48px rgba(0,0,0,.34)}
+
+.criteria-toast{
+  position:fixed;left:50%;bottom:24px;z-index:220;max-width:min(540px,90vw);padding:10px 14px;border:1px solid rgba(255,255,255,.11);
+  border-radius:12px;background:#111827;color:#f8fafc;box-shadow:0 16px 44px rgba(0,0,0,.36);font-size:8px;font-weight:850;
+  opacity:0;pointer-events:none;transform:translate(-50%,14px);transition:.2s ease
+}
+.criteria-toast.show{opacity:1;transform:translate(-50%,0)}
+
+.criteria-quick-wallpaper{
+  display:inline-flex;align-items:center;gap:4px;min-height:29px;padding:0 8px;border:1px solid rgba(129,140,248,.20);
+  border-radius:9px;background:rgba(129,140,248,.07);color:#aeb8ff;font-size:7px;font-weight:900;cursor:pointer;white-space:nowrap
+}
+.criteria-quick-wallpaper span{font-size:11px}.criteria-quick-wallpaper i{font-style:normal}
+.timeline-card .criteria-quick-wallpaper{justify-self:end}
+.criteria-drawer-wallpaper{border-color:rgba(129,140,248,.22)!important;background:rgba(129,140,248,.08)!important;color:#c9ceff!important}
+
+html[data-theme="light"] .criteria-modal,html[data-theme="light"] .wallpaper-modal{background:#fff;border-color:#e4e8ef}
+html[data-theme="light"] .criteria-head,html[data-theme="light"] .wallpaper-head{border-color:#e8ecf2}
+html[data-theme="light"] .criteria-close{background:#f8fafc;border-color:#e3e8ef;color:#617086}
+html[data-theme="light"] .criteria-search,html[data-theme="light"] .wallpaper-form input,html[data-theme="light"] .wallpaper-form textarea{background:#f7f9fc;border-color:#e4e9f0;color:#26354d}
+html[data-theme="light"] .criteria-filters button{background:#fff;border-color:#e4e9f0;color:#728097}
+html[data-theme="light"] .criteria-filters button.active{background:#eef0ff;border-color:#d6d9fb;color:#565db5}
+html[data-theme="light"] .criteria-result-meta b{color:#31415a}
+html[data-theme="light"] .criteria-card{background:#fff;border-color:#e6eaf0}
+html[data-theme="light"] .criteria-card dl>div{border-color:#edf0f4}
+html[data-theme="light"] .criteria-card dd{color:#34445e}
+html[data-theme="light"] .criteria-calc{border-color:#e6eaf0;color:#69778c}
+html[data-theme="light"] .criteria-wallpaper-btn{color:#34405e}
+html[data-theme="light"] .wallpaper-target-card{background:linear-gradient(145deg,#f0fbfd,#f2f0ff);border-color:#e0e4f8}
+html[data-theme="light"] .wallpaper-hint{background:#f6f8fb;color:#758196}
+html[data-theme="light"] .wallpaper-preview-shell{background:#eef2f7;border-color:#e1e6ed}
+html[data-theme="light"] .criteria-nav-btn{color:#34435e}
+
+@media(max-width:900px){
+  .criteria-list{grid-template-columns:1fr}
+  .wallpaper-body{grid-template-columns:1fr}
+  .wallpaper-preview-shell{order:-1}
+  #wallpaperCanvas{width:min(100%,360px)}
+}
+@media(max-width:700px){
+  .criteria-backdrop,.wallpaper-backdrop{align-items:flex-end;padding:7px;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .criteria-modal,.wallpaper-modal{width:100%;max-height:94vh;border-radius:22px 22px 12px 12px}
+  .criteria-head,.wallpaper-head{padding:15px 14px 11px}
+  .criteria-tools{padding:11px 14px 7px}.criteria-result-meta{padding:2px 14px 9px}.criteria-list{padding:0 14px 15px}
+  .criteria-result-meta span{display:none}
+  .criteria-card dl>div{grid-template-columns:78px minmax(0,1fr)}
+  .wallpaper-body{padding:12px 14px 15px}
+  .criteria-nav-btn{width:34px;padding:0;justify-content:center}
+  .criteria-nav-btn span{display:none}
+  .criteria-quick-wallpaper i{display:none}
+  .criteria-quick-wallpaper{width:30px;padding:0;justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .criteria-toast,.criteria-nav-btn{transition:none!important}
+}
+
+/* ===== Criteria V2 — category + sorting controls ===== */
+.criteria-control-group{display:grid;grid-template-columns:68px minmax(0,1fr);align-items:start;gap:8px}
+.criteria-control-label{
+  display:flex;align-items:center;min-height:32px;color:#677589;font-size:7px;font-weight:950;letter-spacing:.12em
+}
+.criteria-sorts{display:flex;gap:6px;flex-wrap:wrap}
+.criteria-sorts button{
+  min-height:32px;padding:6px 10px;border:1px solid rgba(255,255,255,.08);border-radius:999px;
+  background:rgba(255,255,255,.025);color:#8d99aa;font-size:8px;font-weight:850;cursor:pointer
+}
+.criteria-sorts button:hover,.criteria-filters button:hover{border-color:rgba(129,140,248,.24);color:#c9d1df}
+.criteria-sorts button.active{
+  background:linear-gradient(135deg,rgba(34,211,238,.13),rgba(129,140,248,.18));
+  border-color:rgba(34,211,238,.30);color:#d9f8ff
+}
+html[data-theme="light"] .criteria-control-label{color:#7a879a}
+html[data-theme="light"] .criteria-sorts button{background:#fff;border-color:#e2e8f0;color:#718096}
+html[data-theme="light"] .criteria-sorts button.active{background:#edf8ff;border-color:#bfe6f0;color:#267b8b}
+@media(max-width:700px){
+  .criteria-control-group{grid-template-columns:1fr;gap:4px}
+  .criteria-control-label{min-height:0;padding-left:2px}
+  .criteria-filters,.criteria-sorts{overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:none}
+  .criteria-filters::-webkit-scrollbar,.criteria-sorts::-webkit-scrollbar{display:none}
+  .criteria-filters button,.criteria-sorts button{flex:0 0 auto}
+}
+
+/* ===== Criteria V3 — Bangla multi-criteria + My Exams-only wallpaper ===== */
+.criteria-tools{gap:9px}
+.criteria-multi-group{display:grid;grid-template-columns:78px minmax(0,1fr);gap:9px;align-items:start}
+.criteria-multi-group>b{min-height:32px;display:flex;align-items:center;color:#6f7d91;font-size:8px;font-weight:950;letter-spacing:.04em}
+.criteria-multi-group>div{display:flex;gap:6px;flex-wrap:wrap}
+.criteria-choice{min-height:32px;padding:6px 10px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.025);color:#8d99aa;font-size:8px;font-weight:850;cursor:pointer}
+.criteria-choice:hover{border-color:rgba(129,140,248,.25);color:#d3d9e4}
+.criteria-choice.active{color:#eef9ff;border-color:rgba(61,211,238,.34);background:linear-gradient(135deg,rgba(34,211,238,.13),rgba(129,140,248,.17))}
+.criteria-gpa-sort.active{border-color:rgba(116,230,167,.34);background:rgba(57,169,143,.13);color:#c9ffe9}
+.criteria-filter-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:3px}
+.criteria-filter-summary span{color:#77869a;font-size:8px;font-weight:750}
+.criteria-filter-summary button{border:0;background:transparent;color:#a9b4c4;font-size:8px;font-weight:900;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.criteria-card-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+.criteria-card-badges span{display:inline-flex;padding:5px 7px;border:1px solid rgba(255,255,255,.065);border-radius:999px;background:rgba(255,255,255,.025);color:#8f9caf;font-size:7px;font-weight:850}
+.criteria-card-badges span.yes{color:#74e6a7;border-color:rgba(116,230,167,.16)}
+.criteria-card-badges span.no{color:#f199a5;border-color:rgba(241,153,165,.16)}
+.criteria-card.category-medical{--criteria-accent:#34d399}.criteria-card.category-engineering{--criteria-accent:#22d3ee}.criteria-card.category-varsity{--criteria-accent:#818cf8}
+.criteria-card.category-medical,.criteria-card.category-engineering,.criteria-card.category-varsity{border-top:2px solid color-mix(in srgb,var(--criteria-accent) 55%,transparent)}
+.criteria-card .criteria-category{background:color-mix(in srgb,var(--criteria-accent) 13%,transparent);color:var(--criteria-accent)}
+.criteria-wallpaper-btn,.criteria-quick-wallpaper,.criteria-drawer-wallpaper{display:none!important}
+.target-wallpaper-launch{border-color:rgba(122,79,216,.28)!important;background:linear-gradient(135deg,rgba(57,203,229,.10),rgba(122,79,216,.14))!important;color:#dfe9ff!important}
+.wallpaper-modal{width:min(1050px,96vw)}
+.wallpaper-form{gap:11px}
+.wallpaper-field{display:grid;gap:6px;color:#8795a8;font-size:8px;font-weight:850}
+.wallpaper-field>span,.wallpaper-option-block>b{color:#8795a8;font-size:8px;font-weight:900}
+.wallpaper-field select,.wallpaper-field input{width:100%;min-height:42px;padding:9px 11px;border:1px solid rgba(255,255,255,.08);border-radius:11px;background:#080c12;color:#f1f5f9;outline:0;font:750 10px/1.4 inherit}
+.wallpaper-option-block{display:grid;gap:7px}
+.wallpaper-choice-row{display:flex;gap:6px;flex-wrap:wrap}
+.wallpaper-choice-row button{min-height:33px;padding:6px 10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;background:rgba(255,255,255,.025);color:#8f9bac;font-size:8px;font-weight:850;cursor:pointer}
+.wallpaper-choice-row button.active{border-color:rgba(82,211,232,.30);background:linear-gradient(135deg,rgba(57,203,229,.12),rgba(122,79,216,.16));color:#e9f8ff}
+html[data-theme="light"] .criteria-choice{background:#fff;border-color:#e3e8ef;color:#718096}
+html[data-theme="light"] .criteria-choice.active{background:#edf8ff;border-color:#bfe2ec;color:#286f81}
+html[data-theme="light"] .criteria-gpa-sort.active{background:#edf9f3;border-color:#bce2d0;color:#287358}
+html[data-theme="light"] .criteria-card-badges span{background:#f8fafc;border-color:#e7ebf0;color:#68758a}
+html[data-theme="light"] .target-wallpaper-launch{color:#455575!important}
+html[data-theme="light"] .wallpaper-field select,html[data-theme="light"] .wallpaper-field input{background:#f7f9fc;border-color:#e4e9f0;color:#26354d}
+html[data-theme="light"] .wallpaper-choice-row button{background:#fff;border-color:#e4e9f0;color:#728097}
+html[data-theme="light"] .wallpaper-choice-row button.active{background:#eef5ff;border-color:#cbdaf4;color:#46659d}
+@media(max-width:700px){
+  .criteria-multi-group{grid-template-columns:1fr;gap:4px}
+  .criteria-multi-group>b{min-height:0;padding-left:2px}
+  .criteria-multi-group>div{overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;scrollbar-width:none}
+  .criteria-multi-group>div::-webkit-scrollbar{display:none}
+  .criteria-choice{flex:0 0 auto}
+  .target-head-actions{flex-wrap:wrap;justify-content:flex-end}
+  .target-wallpaper-launch{order:2}
+}
