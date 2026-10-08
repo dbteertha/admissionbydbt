@@ -279,6 +279,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/app-icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/app-icon.svg">
+<link rel="stylesheet" href="/admission-map.css">
 <script>
 try{
   document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'dark';
@@ -3782,7 +3783,7 @@ html[data-theme="light"] .guide-compare-toggle.active{background:#eee7ff!importa
     <section class="section calendar-section" id="calendar" data-view="month">
       <div class="command-section-head">
         <div><div class="section-kicker">SCHEDULE</div><h2>Calendar</h2><div class="sub">Exam dates in one place.</div></div>
-        <div class="controls"><input id="search" type="search" aria-label="Search calendar exams" placeholder="Search university or unit…"><button class="btn" id="calendarPdfButton" type="button">Print PDF</button><button class="btn" id="refresh" type="button" aria-label="Refresh exam dates">Refresh</button></div>
+        <div class="controls"><input id="search" type="search" aria-label="Search calendar exams" placeholder="Search university or unit…"><button class="btn admission-map-launch" id="admissionMapButton" type="button">🗺 ভর্তি ম্যাপ</button><button class="btn" id="calendarPdfButton" type="button">Print PDF</button><button class="btn" id="refresh" type="button" aria-label="Refresh exam dates">Refresh</button></div>
       </div>
       <div class="calendar-commandbar">
         <div class="calendar-view-switch" id="calendarViewSwitch">
@@ -3871,6 +3872,45 @@ html[data-theme="light"] .guide-compare-toggle.active{background:#eee7ff!importa
     </div>
     <input class="target-picker-search" id="targetPickerSearch" type="search" placeholder="Search exam or university…">
     <div class="target-picker-list" id="targetPickerList"></div>
+  </div>
+</div>
+
+
+<div class="admission-map-backdrop" id="admissionMapBackdrop" aria-hidden="true">
+  <div class="admission-map-modal" role="dialog" aria-modal="true" aria-labelledby="admissionMapTitle">
+    <div class="admission-map-head">
+      <div><div class="section-kicker">বাংলা ভর্তি মানচিত্র</div><h3 id="admissionMapTitle">আমার ভর্তি মানচিত্র</h3><p>পছন্দের বিশ্ববিদ্যালয় বেছে নিয়ে নামসহ রঙিন মানচিত্র তৈরি করুন।</p></div>
+      <button class="modal-x" id="admissionMapClose" type="button" aria-label="ভর্তি মানচিত্র বন্ধ করুন">×</button>
+    </div>
+    <div class="admission-map-step" id="admissionMapSelectStep">
+      <div class="admission-map-tools">
+        <label class="admission-map-search"><span>⌕</span><input id="admissionMapSearch" type="search" placeholder="বিশ্ববিদ্যালয় খুঁজুন…" aria-label="বিশ্ববিদ্যালয় খুঁজুন"></label>
+        <div class="admission-map-filters" id="admissionMapFilters">
+          <button type="button" class="active" data-map-filter="all">সব</button>
+          <button type="button" data-map-filter="university">বিশ্ববিদ্যালয়</button>
+          <button type="button" data-map-filter="engineering">ইঞ্জিনিয়ারিং</button>
+          <button type="button" data-map-filter="medical">মেডিকেল</button>
+        </div>
+        <div class="admission-map-quick">
+          <button type="button" id="admissionMapAll">সব নির্বাচন</button>
+          <button type="button" id="admissionMapClear">সব মুছুন</button>
+          <button type="button" id="admissionMapFromMyExams">★ আমার পরীক্ষা থেকে</button>
+        </div>
+      </div>
+      <div class="admission-map-list" id="admissionMapList"></div>
+      <div class="admission-map-foot">
+        <div><b id="admissionMapSelectedCount">০টি নির্বাচিত</b><span>মানচিত্রে শুধু নির্বাচিত বিশ্ববিদ্যালয়গুলোর নাম থাকবে।</span></div>
+        <button class="btn admission-map-preview-btn" id="admissionMapPreviewButton" type="button" disabled>মানচিত্র দেখুন →</button>
+      </div>
+    </div>
+    <div class="admission-map-preview-step" id="admissionMapPreviewStep" hidden>
+      <div class="admission-map-preview-note"><b>প্রিভিউ</b><span>নাম, রং ও অবস্থান দেখে তারপর ডাউনলোড করুন।</span></div>
+      <div class="admission-map-canvas-shell"><canvas id="admissionMapCanvas" width="1080" height="1440" aria-label="নির্বাচিত বিশ্ববিদ্যালয়সহ বাংলাদেশ ভর্তি মানচিত্র"></canvas></div>
+      <div class="admission-map-preview-actions">
+        <button class="btn" id="admissionMapBack" type="button">← নির্বাচন বদলান</button>
+        <button class="btn admission-map-download" id="admissionMapDownload" type="button">PNG ডাউনলোড</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -6005,7 +6045,7 @@ updatePageNavFromScroll();
 // Heavy animated star canvas removed for faster loading and smoother mobile performance.
 
 
-</script><script defer src="/_vercel/insights/script.js"></script>
+</script><script defer src="/admission-map.js"></script><script defer src="/_vercel/insights/script.js"></script>
 </body></html>`;
 
 export default async function handler(req,res){
