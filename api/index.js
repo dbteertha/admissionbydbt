@@ -370,7 +370,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
 <link rel="icon" href="/app-icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/app-icon.svg">
 <link rel="stylesheet" href="/admission-map.css">
-<link rel="stylesheet" href="/css/criteria-v1.css">
+<link rel="stylesheet" href="/css/criteria-v2.css">
 <script>
 try{
   document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'dark';
@@ -715,7 +715,7 @@ try{
   <div class="admin-help">Click any text or block. Double-click text to edit. Select an item and drag it to move it inside the same section. Changes auto-save for the whole site after you unlock.</div>
 </div>
 <script id="dbtBootEvents" type="application/json">${JSON.stringify(CURATED_EVENTS).replace(/</g,'\\u003c')}</script>
-<script defer src="/js/app-v2.js"></script><script defer src="/js/criteria-v1.js"></script><script defer src="/admission-map.js"></script><script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/js/app-v2.js"></script><script defer src="/js/criteria-v2.js"></script><script defer src="/admission-map.js"></script><script defer src="/_vercel/insights/script.js"></script>
 </body></html>`;
 
 export default async function handler(req,res){
