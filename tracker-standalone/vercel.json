@@ -30,14 +30,6 @@
       "destination": "/api/google-logout.js"
     },
     {
-      "source": "/privacy",
-      "destination": "/api/privacy.js"
-    },
-    {
-      "source": "/terms",
-      "destination": "/api/terms.js"
-    },
-    {
       "source": "/(.*)",
       "destination": "/api/tracker.js"
     }

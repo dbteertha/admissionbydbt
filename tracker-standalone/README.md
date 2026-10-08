@@ -1,22 +1,16 @@
-# DBT Tracker — Standalone
+# Admission by DBT — Tracker Standalone
 
-This directory is an exact standalone runtime copy of the existing Study Tracker.
+This directory is a byte-for-byte extraction of the live Tracker runtime and Google OAuth endpoints from the main Admission project.
 
-## Zero-change guarantees
-- Tracker HTML/CSS/JS source is copied byte-for-byte from `api/tracker.js`.
-- All existing localStorage keys remain unchanged.
-- Google OAuth routes are copied byte-for-byte.
-- AES-256-GCM session cookie behavior remains unchanged.
-- Google Sheets synchronization behavior remains unchanged.
-- Existing public path compatibility is preserved at `/tracker` and its subroutes.
+Production architecture:
+- This directory is deployed as its own Vercel project.
+- The main Admission project proxies /tracker and /api/google-* to this project so the public origin remains unchanged.
+- Keeping the original origin preserves existing localStorage data and HttpOnly Google session cookies without migration.
+- Tracker UI/state/schema/Google Sheets behavior must not be modified during the separation.
 
-## Deployment model
-Deploy this directory as its own Vercel project, then proxy the existing
-`admissionbydbt.vercel.app/tracker` and `/api/google-*` paths to that project.
-Keeping the original browser origin preserves all existing localStorage and cookies.
-
-Required environment variables on the standalone project:
+Required environment variables:
 - GOOGLE_CLIENT_SECRET
 - SESSION_SECRET
 
-Do not change the Google OAuth redirect URI while the original admissionbydbt origin remains the public proxy.
+The OAuth redirect URI intentionally remains:
+https://admissionbydbt.vercel.app/api/google-callback
