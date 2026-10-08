@@ -369,8 +369,7 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta n
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" href="/app-icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/app-icon.svg">
-<link rel="stylesheet" href="/admission-map.css">
-<link rel="stylesheet" href="/css/criteria-v3.css">
+
 <script>
 try{
   document.documentElement.dataset.theme=localStorage.getItem('admissionbydbt-theme-v1')||'dark';
@@ -383,7 +382,10 @@ try{
   document.documentElement.lang='en';
 }
 </script>
-<link rel="stylesheet" href="/css/app-v1.css"></head><body>
+<link rel="stylesheet" href="/css/app-v1.css">
+<link rel="stylesheet" href="/css/experience-v10.css">
+<link rel="stylesheet" href="/css/guide-v4.css">
+<link rel="stylesheet" href="/admission-map-v2.css"></head><body>
 <div class="app">
   <nav class="topnav">
     <div class="brand-wrap">
@@ -398,7 +400,7 @@ try{
       <a class="navlink" href="#infoCenter">Admission Guide</a>
     </div>
     <div class="nav-actions">
-      <button class="criteria-nav-btn" id="criteriaLaunchButton" type="button" title="ভর্তি তথ্য ও যোগ্যতা" aria-label="ভর্তি তথ্য ও যোগ্যতা"><b>◎</b><span>ভর্তি তথ্য ও যোগ্যতা</span></button>
+      
       <a class="howto-link" href="/how-to" aria-label="How to use Admission by DBT" title="How to use">?</a>\n      <button class="install-app-btn" id="installAppButton" type="button" hidden aria-label="Install Admission by DBT" title="Install app">↓</button>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span class="theme-sun">☀</span><span class="theme-moon">☾</span></button>
       <button class="language-toggle" id="languageToggle" type="button" aria-label="বাংলা ভাষায় দেখুন" title="বাংলা ভাষায় দেখুন"><span>অ</span></button>
@@ -476,8 +478,8 @@ try{
 
     <section class="target-section" id="targets">
       <div class="target-head">
-        <div><div class="section-kicker">YOUR LIST</div><h2>My Exams</h2><div class="sub">Choose exams to keep them together here.</div></div>
-        <div class="target-head-actions"><button class="target-add-btn" id="targetAddButton" type="button">＋ Add exams</button><button class="target-add-btn target-wallpaper-launch" id="myExamsWallpaperButton" type="button">▣ ওয়ালপেপার</button><div class="target-count" id="targetCount">0 SELECTED</div></div>
+        <div><div class="section-kicker">YOUR LIST</div><h2>My Exams</h2><div class="sub">পরীক্ষা যোগ করুন → মূল টার্গেট ঠিক করুন → নিজের 9:16 লকস্ক্রিন ওয়ালপেপার বানান।</div></div>
+        <div class="target-head-actions"><button class="target-add-btn" id="targetAddButton" type="button">＋ Add exams</button><button class="target-add-btn target-wallpaper-launch" id="myExamsWallpaperButton" type="button">▣ ওয়ালপেপার বানান</button><div class="target-count" id="targetCount">0 SELECTED</div></div>
       </div>
       <div class="starred-grid" id="starredCards"></div>
     </section>
@@ -531,15 +533,58 @@ try{
     </section>
 
     <section class="info-center" id="infoCenter">
-      <div class="head"><div><div class="section-kicker">REFERENCE</div><h2 class="info-title">বিশ্ববিদ্যালয় ভর্তি তথ্য কণিকা</h2><div class="sub">বিশ্ববিদ্যালয়, ইঞ্জিনিয়ারিং ও মেডিকেল — এই ৩ ক্যাটাগরিতে আসন, যোগ্যতা, পরীক্ষার ধরন, নম্বরবণ্টন ও ফলাফল নির্ণয়।</div></div></div>
-      <div class="guide-toolbar">
-        <label class="guide-search-wrap"><span>⌕</span><input id="guideSearch" type="search" placeholder="Search university, unit or topic…" aria-label="Search Admission Guide"></label>
-        <button class="guide-clear" id="guideClearSearch" type="button" hidden>Clear</button>
+      <div class="head guide-v4-head">
+        <div>
+          <div class="section-kicker">ADMISSION GUIDE</div>
+          <h2 class="info-title">ভর্তি তথ্য, যোগ্যতা ও তুলনা</h2>
+          <div class="sub">আলাদা কোনো ভর্তি তথ্য পেজ নেই — এখানেই খুঁজুন, একসাথে একাধিক ফিল্টার দিন, বিস্তারিত দেখুন এবং তুলনা করুন।</div>
+          <div class="guide-v4-help"><span>১ • খুঁজুন</span><span>২ • ফিল্টার মিলিয়ে নিন</span><span>৩ • বিস্তারিত দেখুন</span><span>৪ • তুলনা করুন</span></div>
+        </div>
       </div>
+
+      <div class="guide-v4-toolbar">
+        <label class="guide-search-wrap"><span>⌕</span><input id="guideSearch" type="search" placeholder="বিশ্ববিদ্যালয়, ইউনিট, আসন বা যোগ্যতা খুঁজুন…" aria-label="ভর্তি গাইড খুঁজুন"></label>
+        <button class="guide-v4-filter-toggle" id="guideFilterToggle" type="button" aria-expanded="false">ফিল্টার ও সাজানো <b id="guideActiveFilterCount">০</b></button>
+        <button class="guide-v4-reset" id="guideResetFilters" type="button">সব রিসেট</button>
+        <button class="guide-clear" id="guideClearSearch" type="button" hidden>খোঁজ মুছুন</button>
+      </div>
+
+      <div class="guide-v4-filter-panel" id="guideFilterPanel">
+        <div class="guide-v4-filter-group">
+          <strong>GPA অনুযায়ী সাজানো</strong>
+          <div class="guide-v4-chips" id="guideSortFilters">
+            <button class="guide-v4-chip active" type="button" data-guide-sort="gpa-desc">সর্বোচ্চ GPA আগে</button>
+            <button class="guide-v4-chip" type="button" data-guide-sort="gpa-asc">সর্বনিম্ন GPA আগে</button>
+            <button class="guide-v4-chip" type="button" data-guide-sort="name">নাম অনুযায়ী</button>
+          </div>
+        </div>
+        <div class="guide-v4-filter-group">
+          <strong>ধরন • একাধিক বাছাই করা যাবে</strong>
+          <div class="guide-v4-chips" id="guideTypeFilters">
+            <button class="guide-v4-chip" type="button" data-guide-type="engineering">ইঞ্জিনিয়ারিং</button>
+            <button class="guide-v4-chip" type="button" data-guide-type="medical">মেডিকেল</button>
+            <button class="guide-v4-chip" type="button" data-guide-type="university">বিশ্ববিদ্যালয়</button>
+          </div>
+        </div>
+        <div class="guide-v4-filter-group">
+          <strong>ক্যালকুলেটর • চাইলে দুটোই বাছুন</strong>
+          <div class="guide-v4-chips" id="guideCalcFilters">
+            <button class="guide-v4-chip" type="button" data-guide-calc="yes">ক্যালকুলেটর চলে</button>
+            <button class="guide-v4-chip" type="button" data-guide-calc="no">ক্যালকুলেটর চলে না</button>
+          </div>
+        </div>
+        <div class="guide-v4-filter-group">
+          <strong>বিভাগ • একাধিক বাছাই করা যাবে</strong>
+          <div class="guide-v4-chips" id="guideDivisionFilters"></div>
+        </div>
+      </div>
+
+      <div class="guide-v4-results" id="guideResultsMeta"><b>লোড হচ্ছে…</b><span>সর্বোচ্চ GPA আগে</span></div>
       <div class="guide-compare-tray" id="guideCompareTray" aria-live="polite"></div>
-      <button class="guide-compare-open" id="guideCompareButton" type="button" disabled>Compare <b id="guideCompareCount">0</b></button>
-      <div class="category-tabs" id="categoryTabs"></div>
-      <div id="categoryCharts"></div>
+      <button class="guide-compare-open" id="guideCompareButton" type="button" disabled>তুলনা করুন <b id="guideCompareCount">০</b></button>
+      <div class="category-tabs" id="categoryTabs" hidden></div>
+      <div class="guide-v4-grid" id="categoryCharts"></div>
+      <div class="audit-note circular-footnote">এই যোগ্যতা ও আসনের তথ্য আপনার দেওয়া ভর্তি ডেটাসেট থেকে দেখানো হচ্ছে। আবেদন করার আগে সর্বশেষ অফিসিয়াল সার্কুলার মিলিয়ে নিন।</div>
     </section>
   </main>
 </div>
@@ -600,7 +645,7 @@ try{
 <div class="admission-map-backdrop" id="admissionMapBackdrop" aria-hidden="true">
   <div class="admission-map-modal" role="dialog" aria-modal="true" aria-labelledby="admissionMapTitle">
     <div class="admission-map-head">
-      <div><div class="section-kicker">বাংলা ভর্তি মানচিত্র</div><h3 id="admissionMapTitle">আমার ভর্তি মানচিত্র</h3><p>পছন্দের বিশ্ববিদ্যালয় বেছে নিয়ে নামসহ রঙিন মানচিত্র তৈরি করুন।</p></div>
+      <div><div class="section-kicker">বাংলা ভর্তি মানচিত্র</div><h3 id="admissionMapTitle">আমার ভর্তি মানচিত্র</h3><p>বাংলাদেশের division shape ও প্রতিনিধিত্বমূলক campus coordinate ব্যবহার করে নামসহ রঙিন ভর্তি মানচিত্র বানান।</p></div>
       <button class="modal-x" id="admissionMapClose" type="button" aria-label="ভর্তি মানচিত্র বন্ধ করুন">×</button>
     </div>
     <div class="admission-map-step" id="admissionMapSelectStep">
@@ -610,7 +655,6 @@ try{
           <button type="button" class="active" data-map-filter="all">সব</button>
           <button type="button" data-map-filter="university">বিশ্ববিদ্যালয়</button>
           <button type="button" data-map-filter="engineering">ইঞ্জিনিয়ারিং</button>
-          <button type="button" data-map-filter="medical">মেডিকেল</button>
         </div>
         <div class="admission-map-quick">
           <button type="button" id="admissionMapAll">সব নির্বাচন</button>
@@ -619,6 +663,7 @@ try{
         </div>
       </div>
       <div class="admission-map-list" id="admissionMapList"></div>
+      <div class="audit-note" style="margin-top:9px">মেডিকেল, GST ও কৃষি গুচ্ছের একক campus pin নেই—তাই এই map-এ campus থাকা প্রতিষ্ঠানগুলো দেখানো হয়। পিন পরীক্ষার কেন্দ্র নয়।</div>
       <div class="admission-map-foot">
         <div><b id="admissionMapSelectedCount">০টি নির্বাচিত</b><span>মানচিত্রে শুধু নির্বাচিত বিশ্ববিদ্যালয়গুলোর নাম থাকবে।</span></div>
         <button class="btn admission-map-preview-btn" id="admissionMapPreviewButton" type="button" disabled>মানচিত্র দেখুন →</button>
@@ -715,7 +760,7 @@ try{
   <div class="admin-help">Click any text or block. Double-click text to edit. Select an item and drag it to move it inside the same section. Changes auto-save for the whole site after you unlock.</div>
 </div>
 <script id="dbtBootEvents" type="application/json">${JSON.stringify(CURATED_EVENTS).replace(/</g,'\\u003c')}</script>
-<script defer src="/js/app-v2.js"></script><script defer src="/js/criteria-v3.js"></script><script defer src="/admission-map.js"></script><script defer src="/_vercel/insights/script.js"></script>
+<script defer src="/js/app-v3.js"></script><script defer src="/js/guide-v4.js"></script><script defer src="/admission-map-v2.js"></script><script defer src="/_vercel/insights/script.js"></script>
 </body></html>`;
 
 export default async function handler(req,res){

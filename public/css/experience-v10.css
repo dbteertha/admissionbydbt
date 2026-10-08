@@ -1,0 +1,13 @@
+/* DBT V10 — shared accessibility and visual polish */
+:root{--dbt-cyan:#39cbe5;--dbt-violet:#8a63e6;--dbt-pink:#ee4f8a;--dbt-teal:#39a98f;--dbt-amber:#e7a64d;--dbt-blue:#4b78d1}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--dbt-cyan) 72%,white);outline-offset:2px}
+.target-add-btn,.btn,.calendar-filter,.calendar-view-btn,.category-tab,.circular-tab{min-height:40px}
+.target-wallpaper-launch{background:linear-gradient(135deg,rgba(238,79,138,.14),rgba(138,99,230,.16))!important;border-color:rgba(238,79,138,.25)!important}
+.target-section,.circular-section,.calendar-section,.info-center{scroll-margin-top:92px}
+.target-section{box-shadow:inset 0 1px 0 rgba(138,99,230,.08)}.circular-section{box-shadow:inset 0 1px 0 rgba(238,79,138,.07)}.calendar-section{box-shadow:inset 0 1px 0 rgba(57,169,143,.07)}
+.info-center{background:linear-gradient(155deg,#0d131d 0%,#151022 48%,#0c1820 100%)!important;border:1px solid rgba(138,99,230,.15)!important}
+html[data-theme="light"] .info-center{background:linear-gradient(155deg,#fff 0%,#f5f0ff 48%,#eefbfc 100%)!important;border-color:#e5dff2!important}
+.topnav{box-shadow:0 12px 34px rgba(0,0,0,.12)}.target-head .sub,.command-section-head .sub,.info-center .sub{line-height:1.55}
+@media(hover:hover){.target-add-btn:hover,.btn:hover,.calendar-filter:hover,.calendar-view-btn:hover{transform:translateY(-1px)}}
+@media(max-width:700px){button,.btn,.target-add-btn,.calendar-filter,.calendar-view-btn,.circular-tab{min-height:44px}.controls input{min-height:44px}.target-head-actions{display:grid!important;grid-template-columns:1fr 1fr!important;width:100%}.target-count{grid-column:1/-1;text-align:center}.topnav{box-shadow:none}}
+@media(max-width:440px){.target-head-actions{grid-template-columns:1fr!important}.target-count{grid-column:auto}}
