@@ -4181,7 +4181,7 @@ dbtAdminBind();
 dbtAdminLoad();
 setInterval(async()=>{if(DBT_ADMIN_MODE||document.hidden)return;try{const r=await fetch('/api/admin-content',{cache:'no-store'});const j=await r.json();if(j?.config&&Number(j.config.updatedAt||0)>Number(dbtAdminConfig.updatedAt||0)){dbtAdminConfig=j.config;dbtAdminApply()}}catch(e){}},90000);
 
-let TARGET=new Date('2026-12-05T10:00:00+06:00'); const START=new Date('2026-09-05T00:00:00+06:00');
+let TARGET=new Date('2026-12-05T10:00:00+06:00'); const START=new Date('2026-08-04T00:00:00+06:00');
 function phaseFor(days){
   if(days<=1)return {name:'EXAM MODE',stat:'Exam',note:'Stay calm. Execute.',msg:'You prepared for this. Keep your head clear and execute one question at a time.'};
   if(days<=7)return {name:'FINAL SPRINT',stat:'Final sprint',note:'Revise. Rest. Execute.',msg:'Protect your confidence. Revise what matters, sleep properly, and keep moving.'};
