@@ -1,0 +1,42 @@
+name: Backup DBT source archive
+
+on:
+  schedule:
+    - cron: '25 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dbt-source-archive
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out complete repository history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Create recovery archives and inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p recovery
+          git bundle create recovery/admissionbydbt-complete-history.bundle --all
+          tar --exclude=.git --exclude=recovery -czf recovery/admissionbydbt-source-tree.tar.gz .
+          git rev-parse HEAD > recovery/COMMIT_SHA.txt
+          sha256sum recovery/*.bundle recovery/*.tar.gz > recovery/SHA256SUMS.txt
+          echo "These archives exclude Vercel secrets, Google Sheets content and browser-local data." > recovery/README.txt
+          echo "Restore git history using: git clone admissionbydbt-complete-history.bundle admissionbydbt" >> recovery/README.txt
+          echo "Verify with: sha256sum -c SHA256SUMS.txt" >> recovery/README.txt
+      - name: Upload downloadable recovery archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-source-recovery-${{ github.run_number }}
+          path: recovery/
+          if-no-files-found: error
+          retention-days: 90
