@@ -295,9 +295,9 @@ async function refreshEventsSnapshot(){
   const healthySources=sources.filter(x=>x.ok&&Number(x.count||0)>0).length;
 
   if(externalCount<3||healthySources<1||!Array.isArray(data.events)||data.events.length<CURATED_EVENTS.length){
-    const err=new Error('snapshot_validation_failed');
-    err.meta={externalCount,healthySources,mergedCount:Array.isArray(data.events)?data.events.length:0};
-    throw err;
+    // Preserve the last verified snapshot rather than publishing incomplete source data.
+    return {skipped:true,reason:'insufficient_verified_external_events',externalCount,healthySources,
+      sourceDiagnostics:sources.map(x=>({name:x.name,status:x.status,ok:x.ok,count:x.count,mode:x.mode,error:x.error||''}))};
   }
 
   const payload={
@@ -797,6 +797,9 @@ export default async function handler(req,res){
     try{
       const result=await refreshEventsSnapshot();
       res.statusCode=200;
+      if(result.skipped)return res.end(JSON.stringify({ok:true,status:'skipped',reason:result.reason,
+        snapshotPreserved:true,externalCount:result.externalCount,healthySources:result.healthySources,
+        sources:result.sourceDiagnostics}));
       return res.end(JSON.stringify({
         ok:true,
         status:'updated',
