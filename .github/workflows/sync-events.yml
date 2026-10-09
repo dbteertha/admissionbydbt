@@ -18,9 +18,13 @@ jobs:
     steps:
       - name: Refresh precomputed admission events
         env:
-          GH_TOKEN: ${{ github.token }}
+          SYNC_SECRET: ${{ secrets.SYNC_SECRET }}
         run: |
+          if [ -z "$SYNC_SECRET" ]; then
+            echo "::error::Missing GitHub Actions secret SYNC_SECRET. Add the same value to GitHub Actions and Vercel Production."
+            exit 1
+          fi
           curl --fail-with-body --retry 3 --retry-delay 10 \
             -X POST "https://admissionbydbt.vercel.app/api/sync-events" \
-            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "x-sync-secret: $SYNC_SECRET" \
             -H "Content-Type: application/json"
