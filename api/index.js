@@ -386,32 +386,32 @@ try{
 <link rel="stylesheet" href="/css/experience-v10.css">
 <link rel="stylesheet" href="/css/guide-v4.css">
 <link rel="stylesheet" href="/admission-map-v2.css"><style>
-/* Compact More dropdown next to the five primary navigation links. */
-.dbt-top-more{position:relative;flex:0 0 auto;z-index:65}
-.dbt-top-more>summary{list-style:none}
-.dbt-top-more>summary::-webkit-details-marker{display:none}
-.dbt-top-more-trigger{display:flex;align-items:center;justify-content:center;gap:5px;min-height:35px;padding:7px 10px;border:1px solid rgba(152,164,188,.15);border-radius:10px;background:rgba(255,255,255,.025);color:var(--text);opacity:.75;font-size:11px;font-weight:650;cursor:pointer;user-select:none}
-.dbt-top-more-trigger:hover,.dbt-top-more[open] .dbt-top-more-trigger{opacity:1;background:rgba(120,167,255,.10);border-color:rgba(120,167,255,.23)}
-.dbt-top-more-trigger:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.dbt-top-more-caret{font-size:14px;line-height:1}
-.dbt-top-more[open] .dbt-top-more-caret{transform:rotate(180deg)}
-.dbt-top-more-mobile{display:none;font-size:20px;line-height:1}
-.dbt-top-more-pop{position:absolute;top:calc(100% + 10px);right:0;width:min(318px,calc(100vw - 24px));padding:8px;border:1px solid var(--line-strong);border-radius:14px;background:#101621;box-shadow:0 24px 65px rgba(0,0,0,.46);z-index:100;max-height:min(72vh,560px);overflow-y:auto}
-.dbt-top-more-caption{padding:6px 9px 9px;color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.12em;opacity:.75}
-.dbt-top-more-item{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;padding:10px 11px;border:0;border-radius:9px;background:transparent;text-decoration:none;text-align:left;cursor:pointer;color:var(--text);font:inherit;opacity:.79}
-.dbt-top-more-item:hover,.dbt-top-more-item:focus-visible{background:rgba(120,167,255,.10);opacity:1;outline:none}
-.dbt-top-more-item:focus-visible{box-shadow:inset 0 0 0 2px var(--blue)}
-.dbt-top-more-item strong{font-size:12px;font-weight:700;line-height:1.35;color:inherit}
-.dbt-top-more-item small{font-size:10px;line-height:1.5;color:var(--muted);font-weight:400}
-.dbt-more-bn{display:none}
-html[data-lang="bn"] .dbt-more-en{display:none}
-html[data-lang="bn"] .dbt-more-bn{display:inline}
-html[data-theme="light"] .dbt-top-more-pop{background:#fff;box-shadow:0 18px 50px rgba(24,39,64,.17)}
-html[data-theme="light"] .dbt-top-more-trigger{background:rgba(20,35,59,.035);border-color:rgba(30,45,71,.13)}
-html[data-theme="light"] .dbt-top-more-item:hover,html[data-theme="light"] .dbt-top-more-item:focus-visible{background:rgba(65,105,192,.08)}
-#scheduleVisuals{scroll-margin-top:95px}
-@media(max-width:900px){.dbt-top-more-trigger{width:35px;height:35px;padding:0}.dbt-top-more-word,.dbt-top-more-caret{display:none}.dbt-top-more-mobile{display:block}}
-@media(max-width:700px){.dbt-top-more-trigger{width:33px!important;height:33px!important;min-height:33px!important;border-radius:10px}.dbt-top-more-pop{right:-5px}}
+/* In-countdown navigation: subtle text links, not a separate homepage section. */
+.dbt-hero-directory{position:relative;z-index:8;display:flex;justify-content:center;align-items:center;gap:6px 9px;flex-wrap:wrap;max-width:840px;margin:20px auto 0;padding:0 4px;line-height:1.35}
+.dbt-hero-nav-label{font-size:9px;letter-spacing:.12em;font-weight:800;opacity:.36;color:var(--text);margin-right:4px}
+.dbt-hero-jump{display:inline-flex;align-items:center;justify-content:center;min-height:33px;padding:7px 9px;color:var(--text);font-size:11px;text-decoration:none;opacity:.55;border-radius:7px;white-space:nowrap;transition:opacity .15s ease,background .15s ease}
+.dbt-hero-jump:hover,.dbt-hero-jump:focus-visible{opacity:1;background:rgba(130,160,216,.12);outline:none}
+.dbt-hero-jump:focus-visible,.dbt-hero-more-trigger:focus-visible{box-shadow:inset 0 0 0 2px var(--blue)}
+.dbt-hero-more{position:relative;z-index:10}
+.dbt-hero-more>summary{list-style:none}
+.dbt-hero-more>summary::-webkit-details-marker{display:none}
+.dbt-hero-more-trigger{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:33px;padding:7px 10px;border-radius:7px;color:var(--text);font-size:11px;font-weight:650;opacity:.58;cursor:pointer;user-select:none}
+.dbt-hero-more-trigger:hover,.dbt-hero-more[open] .dbt-hero-more-trigger{opacity:1;background:rgba(130,160,216,.12)}
+.dbt-hero-more[open] .dbt-hero-more-trigger span[aria-hidden="true"]{transform:rotate(180deg)}
+.dbt-hero-more-menu{position:absolute;right:0;bottom:calc(100% + 9px);width:min(318px,calc(100vw - 32px));padding:7px;border:1px solid var(--line-strong);border-radius:13px;background:#101621;box-shadow:0 16px 44px rgba(0,0,0,.5);max-height:min(64vh,490px);overflow-y:auto;text-align:left;z-index:90}
+.dbt-hero-menu-item{display:flex;flex-direction:column;align-items:flex-start;width:100%;gap:4px;padding:10px;border:0;border-radius:8px;background:transparent;font:inherit;text-decoration:none;text-align:left;color:var(--text);opacity:.67;cursor:pointer}
+.dbt-hero-menu-item strong{font-size:12px;font-weight:700;line-height:1.35}
+.dbt-hero-menu-item small{font-size:10px;line-height:1.5;color:var(--muted);font-weight:400}
+.dbt-hero-menu-item:hover,.dbt-hero-menu-item:focus-visible{opacity:1;background:rgba(120,167,255,.10);outline:none}
+.dbt-hero-menu-item:focus-visible{box-shadow:inset 0 0 0 2px var(--blue)}
+.dbt-hero-lang-bn{display:none}
+html[data-lang="bn"] .dbt-hero-lang-en{display:none}
+html[data-lang="bn"] .dbt-hero-lang-bn{display:inline}
+html[data-theme="light"] .dbt-hero-more-menu{background:#fff;box-shadow:0 16px 44px rgba(31,48,78,.18)}
+html[data-theme="light"] .dbt-hero-menu-item:hover,html[data-theme="light"] .dbt-hero-menu-item:focus-visible{background:rgba(76,112,179,.10)}
+#dashboard,#scheduleVisuals,#targets,#circulars,#calendar,#infoCenter{scroll-margin-top:96px}
+@media(max-width:700px){.dbt-hero-directory{margin:14px auto 0;gap:0 3px}.dbt-hero-nav-label{display:none}.dbt-hero-jump,.dbt-hero-more-trigger{min-height:35px;padding:8px 7px;font-size:10px}.dbt-hero-more-menu{right:-8px;max-height:min(55vh,390px)}}
+@media(prefers-reduced-motion:reduce){.dbt-hero-jump{transition:none}}
 </style>
 </head><body>
 <div class="app">
@@ -429,21 +429,7 @@ html[data-theme="light"] .dbt-top-more-item:hover,html[data-theme="light"] .dbt-
     </div>
     <div class="nav-actions">
       
-      <details class="dbt-top-more" id="dbtTopMore">
-        <summary class="dbt-top-more-trigger" aria-label="More website features">
-          <span class="dbt-top-more-word"><span class="dbt-more-en">More</span><span class="dbt-more-bn">আরও</span></span>
-          <span class="dbt-top-more-caret" aria-hidden="true">⌄</span>
-          <span class="dbt-top-more-mobile" aria-hidden="true">⋯</span>
-        </summary>
-        <div class="dbt-top-more-pop" aria-label="More website features">
-          <div class="dbt-top-more-caption"><span class="dbt-more-en">MORE FEATURES</span><span class="dbt-more-bn">আরও সুবিধা</span></div>
-          <a class="dbt-top-more-item" href="#scheduleVisuals"><strong><span class="dbt-more-en">Schedule snapshot</span><span class="dbt-more-bn">সময়সূচির সারাংশ</span></strong><small><span class="dbt-more-en">Date confidence, monthly and weekly exam charts</span><span class="dbt-more-bn">পরীক্ষার তারিখ, মাস ও সপ্তাহের চার্ট</span></small></a>
-<button class="dbt-top-more-item" type="button" data-dbt-more-map="1"><strong><span class="dbt-more-en">Admission map</span><span class="dbt-more-bn">ভর্তি ম্যাপ</span></strong><small><span class="dbt-more-en">Choose universities and preview the map</span><span class="dbt-more-bn">বিশ্ববিদ্যালয় বেছে ম্যাপে দেখুন</span></small></button>
-<a class="dbt-top-more-item" href="/tracker"><strong><span class="dbt-more-en">Study tracker</span><span class="dbt-more-bn">স্টাডি ট্র্যাকার</span></strong><small><span class="dbt-more-en">Subjects, chapters and weekly routine</span><span class="dbt-more-bn">বিষয়, অধ্যায় ও সাপ্তাহিক রুটিন</span></small></a>
-<a class="dbt-top-more-item" href="/onushiloni"><strong><span class="dbt-more-en">Question bank</span><span class="dbt-more-bn">প্রশ্নব্যাংক</span></strong><small><span class="dbt-more-en">Chemistry questions by chapter and topic</span><span class="dbt-more-bn">অধ্যায় ও টপিক অনুযায়ী রসায়নের প্রশ্ন</span></small></a>
-<a class="dbt-top-more-item" href="/how-to"><strong><span class="dbt-more-en">How to use</span><span class="dbt-more-bn">ব্যবহারবিধি</span></strong><small><span class="dbt-more-en">Help and feature instructions</span><span class="dbt-more-bn">সুবিধাগুলোর ব্যবহার ও নির্দেশনা</span></small></a>
-        </div>
-      </details>\n      <button class="install-app-btn" id="installAppButton" type="button" hidden aria-label="Install Admission by DBT" title="Install app">↓</button>
+      <a class="howto-link" href="/how-to" aria-label="How to use Admission by DBT" title="How to use">?</a>\n      <button class="install-app-btn" id="installAppButton" type="button" hidden aria-label="Install Admission by DBT" title="Install app">↓</button>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme" title="Switch color theme"><span class="theme-sun">☀</span><span class="theme-moon">☾</span></button>
       <button class="language-toggle" id="languageToggle" type="button" aria-label="বাংলা ভাষায় দেখুন" title="বাংলা ভাষায় দেখুন"><span>অ</span></button>
       <button class="sync-link" id="homeSyncButton" type="button" title="Save your Home and Calendar choices"><i></i><span id="homeSyncText">Save</span></button>
@@ -477,6 +463,24 @@ html[data-theme="light"] .dbt-top-more-item:hover,html[data-theme="light"] .dbt-
           <div class="progress-meta"><div class="passed"><span id="passed">0 Passed</span><i>|</i><span id="total">0 Total</span></div><div class="pct" id="pct">0%</div></div>
           <div class="progress"><div class="fill" id="fill"></div></div>
         </div>
+        <nav class="dbt-hero-directory" aria-label="Explore the website">
+          <span class="dbt-hero-nav-label"><span class="dbt-hero-lang-en">EXPLORE</span><span class="dbt-hero-lang-bn">ঘুরে দেখুন</span></span>
+          <a class="dbt-hero-jump" href="#dashboard">Home</a>
+          <a class="dbt-hero-jump" href="#targets">My Exams</a>
+          <a class="dbt-hero-jump" href="#circulars">Circulars</a>
+          <a class="dbt-hero-jump" href="#calendar">Calendar</a>
+          <a class="dbt-hero-jump" href="#infoCenter">Admission Guide</a>
+          <details class="dbt-hero-more" id="dbtHeroMore">
+            <summary class="dbt-hero-more-trigger" aria-label="See more website features"><span class="dbt-hero-lang-en">More</span><span class="dbt-hero-lang-bn">আরও</span> <span aria-hidden="true">⌄</span></summary>
+            <div class="dbt-hero-more-menu" aria-label="More website features">
+              <a class="dbt-hero-menu-item" href="#scheduleVisuals"><strong><span class="dbt-hero-lang-en">Schedule Snapshot</span><span class="dbt-hero-lang-bn">সময়সূচির সারাংশ</span></strong><small><span class="dbt-hero-lang-en">Date confidence, monthly and weekly exam charts</span><span class="dbt-hero-lang-bn">পরীক্ষার তারিখ, মাস ও সপ্তাহের চার্ট</span></small></a>
+<button class="dbt-hero-menu-item" type="button" data-dbt-hero-map="1"><strong><span class="dbt-hero-lang-en">Admission Map</span><span class="dbt-hero-lang-bn">ভর্তি ম্যাপ</span></strong><small><span class="dbt-hero-lang-en">Choose universities and preview the map</span><span class="dbt-hero-lang-bn">বিশ্ববিদ্যালয় বেছে ম্যাপে দেখুন</span></small></button>
+<a class="dbt-hero-menu-item" href="/tracker"><strong><span class="dbt-hero-lang-en">Study Tracker</span><span class="dbt-hero-lang-bn">স্টাডি ট্র্যাকার</span></strong><small><span class="dbt-hero-lang-en">Subjects, chapters and weekly routine</span><span class="dbt-hero-lang-bn">বিষয়, অধ্যায় ও সাপ্তাহিক রুটিন</span></small></a>
+<a class="dbt-hero-menu-item" href="/onushiloni"><strong><span class="dbt-hero-lang-en">Question Bank</span><span class="dbt-hero-lang-bn">প্রশ্নব্যাংক</span></strong><small><span class="dbt-hero-lang-en">Chemistry questions by chapter and topic</span><span class="dbt-hero-lang-bn">অধ্যায় ও টপিক অনুযায়ী রসায়নের প্রশ্ন</span></small></a>
+<a class="dbt-hero-menu-item" href="/how-to"><strong><span class="dbt-hero-lang-en">How to Use</span><span class="dbt-hero-lang-bn">ব্যবহারবিধি</span></strong><small><span class="dbt-hero-lang-en">Help and feature instructions</span><span class="dbt-hero-lang-bn">সুবিধাগুলোর ব্যবহার ও নির্দেশনা</span></small></a>
+            </div>
+          </details>
+        </nav>
       </div>
     </section>
 
@@ -803,20 +807,30 @@ html[data-theme="light"] .dbt-top-more-item:hover,html[data-theme="light"] .dbt-
 </div>
 <script>
 (function(){
-  const more=document.getElementById('dbtTopMore');
-  if(!more)return;
+  const menu=document.getElementById('dbtHeroMore');
+  const nav=document.querySelector('.dbt-hero-directory');
+  if(!menu||!nav)return;
   document.addEventListener('click',function(e){
-    if(!more.contains(e.target)){more.open=false;return}
-    const item=e.target.closest('.dbt-top-more-item');
-    if(!item)return;
-    more.open=false;
-    if(item.hasAttribute('data-dbt-more-map')){
+    if(!menu.contains(e.target))menu.open=false;
+    const link=e.target.closest('.dbt-hero-directory a[href^="#"]');
+    if(link){
+      const id=link.getAttribute('href').slice(1);
+      const target=document.getElementById(id);
+      if(target){
+        e.preventDefault();
+        menu.open=false;
+        target.scrollIntoView({behavior:'smooth',block:'start'});
+        try{history.replaceState(null,'','#'+id)}catch(err){}
+      }
+    }
+    if(e.target.closest('[data-dbt-hero-map]')){
+      menu.open=false;
       const map=document.getElementById('admissionMapButton');
       if(map)map.click();
     }
   });
   document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'&&more.open){more.open=false;more.querySelector('summary').focus()}
+    if(e.key==='Escape'&&menu.open){menu.open=false;menu.querySelector('summary').focus()}
   });
 })();
 </script>
