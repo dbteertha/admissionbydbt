@@ -385,7 +385,40 @@ try{
 <link rel="stylesheet" href="/css/app-v1.css">
 <link rel="stylesheet" href="/css/experience-v10.css">
 <link rel="stylesheet" href="/css/guide-v4.css">
-<link rel="stylesheet" href="/admission-map-v2.css"></head><body>
+<link rel="stylesheet" href="/admission-map-v2.css">
+<style>
+/* Home feature index — scoped to this component only. */
+.dbt-feature-index{margin:14px 0 22px;padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:rgba(11,16,27,.8);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.dbt-feature-index>summary{display:flex;align-items:center;justify-content:space-between;gap:15px;cursor:pointer;list-style:none}
+.dbt-feature-index>summary::-webkit-details-marker{display:none}
+.dbt-feature-index-heading{display:flex;flex-direction:column;gap:4px;min-width:0}
+.dbt-feature-index-kicker{font-size:9px;color:var(--blue);font-weight:850;letter-spacing:.13em}
+.dbt-feature-index-heading strong{font-size:17px;letter-spacing:-.025em;color:var(--text)}
+.dbt-feature-index-heading small{font-size:11px;line-height:1.45;color:var(--muted)}
+.dbt-feature-index-chevron{flex:none;width:29px;height:29px;display:grid;place-items:center;border:1px solid var(--line);border-radius:9px;color:var(--soft);font-size:15px}
+.dbt-feature-index[open] .dbt-feature-index-chevron{transform:rotate(180deg)}
+.dbt-feature-index-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:13px}
+.dbt-feature-index-item{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0;min-height:86px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025);text-decoration:none;text-align:left;color:var(--text);cursor:pointer;transition:background .16s ease,border-color .16s ease;font:inherit}
+.dbt-feature-index-item:hover{background:rgba(120,167,255,.09);border-color:rgba(120,167,255,.35)}
+.dbt-feature-index-item:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.dbt-feature-index-item strong{font-size:12px;line-height:1.3;font-weight:800}
+.dbt-feature-index-item small{font-size:10px;color:var(--muted);line-height:1.48;max-width:100%;font-weight:400}
+.dbt-feature-index-row{display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px}
+.dbt-feature-index-num{font-size:9px;font-weight:850;letter-spacing:.08em;color:var(--blue)}
+.dbt-feature-index-arrow{font-size:13px;color:var(--muted);line-height:1}
+.dbt-feature-index-bn{display:none}
+html[data-lang="bn"] .dbt-feature-index-en{display:none}
+html[data-lang="bn"] .dbt-feature-index-bn{display:inline}
+html[data-theme="light"] .dbt-feature-index{background:rgba(255,255,255,.90);border-color:rgba(54,74,113,.15)}
+html[data-theme="light"] .dbt-feature-index-item{background:rgba(240,245,252,.7);border-color:rgba(50,74,121,.15)}
+html[data-theme="light"] .dbt-feature-index-item:hover{background:#e8f0fd;border-color:rgba(66,103,175,.35)}
+#dashboard,#scheduleVisuals,#targets,#circulars,#calendar,#infoCenter{scroll-margin-top:104px}
+@media(max-width:1060px){.dbt-feature-index-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){.dbt-feature-index{padding:12px;margin-top:10px}.dbt-feature-index-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dbt-feature-index-item{min-height:90px}.dbt-feature-index-heading strong{font-size:15px}}
+@media(max-width:380px){.dbt-feature-index-grid{grid-template-columns:1fr}.dbt-feature-index-item{min-height:72px}}
+@media(prefers-reduced-motion:reduce){.dbt-feature-index-item{transition:none}}
+</style>
+</head><body>
 <div class="app">
   <nav class="topnav">
     <div class="brand-wrap">
@@ -412,6 +445,21 @@ try{
     </div>
   </nav>
 
+<details class="dbt-feature-index" open aria-label="Website feature index">
+  <summary><span class="dbt-feature-index-heading"><span class="dbt-feature-index-kicker">SITE INDEX</span><strong><span class="dbt-feature-index-en">Explore Admission by DBT</span><span class="dbt-feature-index-bn">অ্যাডমিশন বাই ডিবিটি: সব সুবিধা</span></strong><small><span class="dbt-feature-index-en">Tap a feature to jump straight to it.</span><span class="dbt-feature-index-bn">যে সুবিধায় যেতে চান, সেটিতে চাপ দিন।</span></small></span><span class="dbt-feature-index-chevron" aria-hidden="true">⌄</span></summary>
+  <div class="dbt-feature-index-grid">
+<a class="dbt-feature-index-item" href="#dashboard"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">01</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">Countdown</span><span class="dbt-feature-index-bn">কাউন্টডাউন</span></strong><small><span class="dbt-feature-index-en">Exam countdown, main target and progress.</span><span class="dbt-feature-index-bn">পরীক্ষার সময়, মূল টার্গেট ও অগ্রগতি।</span></small></a>
+<a class="dbt-feature-index-item" href="#scheduleVisuals"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">02</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">Schedule Snapshot</span><span class="dbt-feature-index-bn">সময়সূচির সারাংশ</span></strong><small><span class="dbt-feature-index-en">Confirmed dates, monthly charts and weekly breakdown.</span><span class="dbt-feature-index-bn">নিশ্চিত তারিখ, মাসভিত্তিক চার্ট ও সাপ্তাহিক বিশ্লেষণ।</span></small></a>
+<a class="dbt-feature-index-item" href="#targets"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">03</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">My Exams</span><span class="dbt-feature-index-bn">আমার পরীক্ষা</span></strong><small><span class="dbt-feature-index-en">Save selected exams, set a target and make a wallpaper.</span><span class="dbt-feature-index-bn">পরীক্ষা সেভ, টার্গেট নির্বাচন ও ওয়ালপেপার তৈরি।</span></small></a>
+<a class="dbt-feature-index-item" href="#circulars"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">04</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">Circulars</span><span class="dbt-feature-index-bn">ভর্তি বিজ্ঞপ্তি</span></strong><small><span class="dbt-feature-index-en">Official links and pending notices by category.</span><span class="dbt-feature-index-bn">বিভাগভিত্তিক অফিসিয়াল লিংক ও অপেক্ষমাণ নোটিশ।</span></small></a>
+<a class="dbt-feature-index-item" href="#calendar"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">05</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">Exam Calendar</span><span class="dbt-feature-index-bn">পরীক্ষার ক্যালেন্ডার</span></strong><small><span class="dbt-feature-index-en">Month, list and next-exam views; search, filters and PDF.</span><span class="dbt-feature-index-bn">মাস, তালিকা, পরবর্তী পরীক্ষা, সার্চ, ফিল্টার ও PDF।</span></small></a>
+<button class="dbt-feature-index-item" type="button" data-dbt-index-open="admissionMapButton"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">06</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">Admission Map</span><span class="dbt-feature-index-bn">ভর্তি ম্যাপ</span></strong><small><span class="dbt-feature-index-en">Choose universities and preview them on a Bangladesh map.</span><span class="dbt-feature-index-bn">বিশ্ববিদ্যালয় বেছে বাংলাদেশের ম্যাপে দেখুন।</span></small></button>
+<a class="dbt-feature-index-item" href="#infoCenter"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">07</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">Admission Guide</span><span class="dbt-feature-index-bn">ভর্তি তথ্য গাইড</span></strong><small><span class="dbt-feature-index-en">Eligibility, information, combined filters and comparisons.</span><span class="dbt-feature-index-bn">যোগ্যতা, তথ্য, ফিল্টার ও তুলনা।</span></small></a>
+<a class="dbt-feature-index-item" href="/tracker"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">08</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">Study Tracker</span><span class="dbt-feature-index-bn">স্টাডি ট্র্যাকার</span></strong><small><span class="dbt-feature-index-en">Subjects, chapters, progress and weekly/daily routine.</span><span class="dbt-feature-index-bn">বিষয়, অধ্যায়, অগ্রগতি ও সাপ্তাহিক/দৈনিক রুটিন।</span></small></a>
+<a class="dbt-feature-index-item" href="/onushiloni"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">09</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">Question Bank</span><span class="dbt-feature-index-bn">প্রশ্নব্যাংক</span></strong><small><span class="dbt-feature-index-en">Select Chemistry questions by chapter, subtopic and type.</span><span class="dbt-feature-index-bn">অধ্যায়, টপিক ও ধরন দিয়ে রসায়নের প্রশ্ন নির্বাচন।</span></small></a>
+<a class="dbt-feature-index-item" href="/how-to"><span class="dbt-feature-index-row"><span class="dbt-feature-index-num">10</span><span class="dbt-feature-index-arrow" aria-hidden="true">↗</span></span><strong><span class="dbt-feature-index-en">How to Use</span><span class="dbt-feature-index-bn">ব্যবহারবিধি</span></strong><small><span class="dbt-feature-index-en">Step-by-step help for the website's features.</span><span class="dbt-feature-index-bn">ওয়েবসাইটের সুবিধাগুলো ব্যবহারের নির্দেশনা।</span></small></a>
+  </div>
+</details>
   <main id="dashboard">
     <section class="hero">
       <div class="hero-inner">
@@ -759,6 +807,14 @@ try{
   <span class="admin-status" id="adminEditorStatus">Click anything to select it.</span>
   <div class="admin-help">Click any text or block. Double-click text to edit. Select an item and drag it to move it inside the same section. Changes auto-save for the whole site after you unlock.</div>
 </div>
+<script>
+document.addEventListener('click',function(event){
+  const link=event.target.closest('[data-dbt-index-open]');
+  if(!link)return;
+  const control=document.getElementById(link.getAttribute('data-dbt-index-open'));
+  if(control&&control!==link)control.click();
+});
+</script>
 <script id="dbtBootEvents" type="application/json">${JSON.stringify(CURATED_EVENTS).replace(/</g,'\\u003c')}</script>
 <script defer src="/js/app-v3.js"></script><script defer src="/js/guide-v4.js"></script><script defer src="/admission-map-v2.js"></script><script defer src="/_vercel/insights/script.js"></script>
 </body></html>`;
