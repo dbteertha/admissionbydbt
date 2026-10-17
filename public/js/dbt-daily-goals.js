@@ -41,6 +41,7 @@ function updateStatus(message,error=false){
 }
 function apply(op,target){
   if(!target.days)target.days={};
+  target.activeDate=op.date;
   if(op.kind==='replace'){
     target.days[op.date]=carryDetails(structuredClone(op.day),target.days[op.date]);
   }else{
