@@ -34,7 +34,7 @@ function cleanState(data){
       })).filter(s=>s.id)
     };
   }
-  return {version:1,days};
+  return {version:1,activeDate: /^20\\d{2}-[01]\\d-[0-3]\\d$/.test(String(data.activeDate||''))?String(data.activeDate):'',days};
 }
 async function parseBody(req){
   let raw='';
