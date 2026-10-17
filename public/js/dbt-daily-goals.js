@@ -5,11 +5,13 @@ if(typeof renderThisWeekView!=='function'||typeof trackerDailyGoalRefs!=='functi
 const API='https://admissionbydbt.vercel.app/api/daily-goals';
 const KEY_NAME='dbt-daily-widget-key-v1';
 const CACHE_NAME='dbt-daily-widget-cache-v1';
+const OUTBOX_NAME='dbt-daily-widget-outbox-v1';
 let key='',revision=null,remote={version:1,days:{}},busy=false,dirty=[],timer=null,renderDelay=null;
 const h=s=>esc(String(s??''));
 const dayKey=()=>trackerWeekDate?.value||new Date().toLocaleDateString('en-CA',{timeZone:'Asia/Dhaka'});
 function persistCache(){try{localStorage.setItem(CACHE_NAME,JSON.stringify(remote))}catch(_){}}
-try{key=localStorage.getItem(KEY_NAME)||'';const raw=JSON.parse(localStorage.getItem(CACHE_NAME)||'null');if(raw&&raw.days)remote=raw}catch(_){}
+try{key=localStorage.getItem(KEY_NAME)||'';const raw=JSON.parse(localStorage.getItem(CACHE_NAME)||'null');if(raw&&raw.days)remote=raw;const pending=JSON.parse(localStorage.getItem(OUTBOX_NAME)||'[]');if(Array.isArray(pending))dirty=pending.slice(0,200)}catch(_){}
+const persistOutbox=()=>{try{localStorage.setItem(OUTBOX_NAME,JSON.stringify(dirty))}catch(_){}};
 function refsDay(date){
   // Read-only projection of the existing selected Weekly Routine items.
   const refs=trackerDailyGoalRefs(date),bySub=new Map();
@@ -152,20 +154,21 @@ async function pull(show=false){
   finally{busy=false}
 }
 function enqueue(op){
-  apply(op,remote);persistCache();dirty.push(op);
+  apply(op,remote);persistCache();dirty.push(op);persistOutbox();
   scheduleRender();updateStatus(key?'Saving…':'Saved on this browser · pair to sync');
   if(key){clearTimeout(timer);timer=setTimeout(flush,450)}
 }
 async function flush(){
   if(busy||!key||!dirty.length)return;
-  busy=true;const batch=dirty.splice(0);
+  busy=true;const batch=dirty.splice(0);persistOutbox();
   try{
     // Reapply only the user's pending changes after a revision conflict.
     let base=revision,working=structuredClone(remote);
+    batch.forEach(op=>apply(op,working));
     for(let attempt=0;attempt<3;attempt++){
       const {status,data}=await request('PUT',{baseRevision:base,state:working});
       if(status===200&&data.ok){
-        revision=data.revision;remote=data.state;persistCache();
+        revision=data.revision;remote=data.state;persistCache();persistOutbox();
         updateStatus('Synced · '+new Date().toLocaleTimeString());break;
       }
       if(status!==409)throw Error(data.error||'Sync unavailable');
@@ -175,7 +178,7 @@ async function flush(){
     }
   }catch(e){
     // Do not discard unconfirmed changes, or overwrite other devices.
-    dirty.unshift(...batch);
+    dirty.unshift(...batch);persistOutbox();
     updateStatus('Not synced · retry with Refresh',true);
   }finally{busy=false;scheduleRender()}
   if(dirty.length){clearTimeout(timer);timer=setTimeout(flush,3000)}
@@ -190,7 +193,7 @@ async function pair(){
   const next=(entered.trim()||randomKey()).toLowerCase();
   if(!/^[a-f0-9]{64}$/.test(next)){alert('The pairing key must contain 64 hexadecimal characters.');return}
   key=next;localStorage.setItem(KEY_NAME,key);
-  revision=null;dirty=[];remote={version:1,days:{}};
+  revision=null;dirty=[];persistOutbox();remote={version:1,days:{}};
   const {status,data}=await request('GET').catch(()=>({status:0,data:{}}));
   if(status===200&&data.ok){remote=data.state;revision=data.revision;persistCache()}
   else if(status===404){enqueue({kind:'replace',date:dayKey(),day:refsDay(dayKey())});await flush()}
@@ -218,8 +221,8 @@ document.addEventListener('click',e=>{
   }
 },true);
 window.addEventListener('focus',()=>{if(key)pull()});
-setInterval(()=>{if(key&&!document.hidden)pull()},30000);
-if(key)setTimeout(()=>pull(),700);
+setInterval(()=>{if(key&&!document.hidden){if(dirty.length)flush();else pull()}},30000);
+if(key)setTimeout(()=>{if(dirty.length){dirty.forEach(op=>apply(op,remote));flush()}else pull()},700);
 if(trackerWeekView)setTimeout(renderPanel,80);
 const styles=document.createElement('style');
 styles.textContent=`
