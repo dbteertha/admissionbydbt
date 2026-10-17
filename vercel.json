@@ -23,10 +23,6 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/api/daily-goals",
-      "destination": "/api/daily-goals.js"
-    },
-    {
       "source": "/api/home-sync",
       "destination": "/api/home-sync.js"
     },
