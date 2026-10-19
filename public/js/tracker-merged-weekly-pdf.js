@@ -85,4 +85,5 @@ trackerWeeklyPrintTaskText=function(ref){
     return ref.mergedMembers.map(item=>originalPrintTask(item)).join(' + ');
   return originalPrintTask(ref);
 };
+if(trackerWeekView&&typeof renderThisWeekView==='function')renderThisWeekView();
 })();
