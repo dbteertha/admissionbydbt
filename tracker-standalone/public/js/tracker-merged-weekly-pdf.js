@@ -72,7 +72,7 @@ trackerWeeklyGroups=function(){
     for(const item of row.items){
       if(item.mergedGroupId&&items.length&&items[items.length-1].mergedGroupId===item.mergedGroupId){
         const parent=items[items.length-1];
-        if(!parent.mergedMembers)parent.mergedMembers=[parent];
+        if(!parent.mergedMembers)parent.mergedMembers=[{...parent}];
         parent.mergedMembers.push(item);
       }else items.push({...item});
     }
