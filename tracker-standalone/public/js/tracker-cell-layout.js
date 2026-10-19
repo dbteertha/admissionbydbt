@@ -48,7 +48,7 @@ trackerOpenChapterHighlightDate=function(key){
     const skip=off.checked;
     const raw=input.value;
     if(mode==='save'&&!skip &&
-       (!/^\\d{4}-\\d{2}-\\d{2}$/.test(raw)||!Number.isFinite(Date.parse(raw+'T00:00:00')))){
+       (!/^\d{4}-\d{2}-\d{2}$/.test(raw)||!Number.isFinite(Date.parse(raw+'T00:00:00')))){
       trackerToastMsg('Choose a valid date or select Do not highlight');
       input.focus();
       return;
