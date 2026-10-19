@@ -108,7 +108,14 @@ renderTrackerRows=function(s){
 };
 const style=document.createElement('style');
 style.textContent=`
-.dbt-reorder-controls{display:inline-flex;align-items:center;margin-inline-start:6px;vertical-align:middle}
+/* Keep Move and Edit in separate fixed slots in the compact column header.
+   The Tracker's generic .field-head button selector absolutely positions ALL buttons
+   at the right edge, so the Move button needs an explicit position reset. */
+.tracker-table th .field-head .dbt-reorder-controls{position:absolute;right:27px;top:50%;transform:translateY(-50%);display:inline-flex;align-items:center;justify-content:center;margin:0;z-index:2}
+.tracker-table th .field-head .dbt-reorder-controls .dbt-move-trigger{position:static!important;inset:auto!important;right:auto!important;top:auto!important;transform:none!important;opacity:.68!important;pointer-events:auto!important;display:inline-flex!important}
+.tracker-table th .field-head .dbt-reorder-controls .dbt-move-trigger:hover,.tracker-table th .field-head .dbt-reorder-controls .dbt-move-trigger:focus-visible{opacity:1!important}
+.tracker-table th .field-head>button[data-edit-field]{right:0!important;z-index:3}
+@media(max-width:700px){.tracker-table th .field-head .dbt-reorder-controls{right:20px}}
 .dbt-move-trigger{display:inline-flex;align-items:center;justify-content:center;min-width:23px;height:22px;padding:0 4px;border:1px solid rgba(155,181,218,.17);border-radius:6px;background:transparent;color:#8fa7c8;font:600 15px/1 inherit;cursor:pointer;opacity:.65;transition:opacity .15s,background .15s,border-color .15s}
 .dbt-move-trigger:hover,.dbt-move-trigger:focus-visible{opacity:1;background:#172337;border-color:rgba(145,185,244,.6);color:#e4efff;outline-offset:2px}
 .dbt-move-title{font-weight:800}
