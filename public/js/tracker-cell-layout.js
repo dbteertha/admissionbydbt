@@ -51,7 +51,7 @@ trackerOpenChapterHighlightDate=function(key){
       const dateInput=document.getElementById('chapterHighlightDate');
       const raw=dateInput?.value||'';
       if(excluded && b===save &&
-         (!/^\\d{4}-\\d{2}-\\d{2}$/.test(raw)||!Number.isFinite(Date.parse(raw+'T00:00:00')))){
+         (!/^\d{4}-\d{2}-\d{2}$/.test(raw)||!Number.isFinite(Date.parse(raw+'T00:00:00')))){
         if(old)old(e);return;
       }
       const unchanged=excluded && (b===save?raw===cell.chapterHighlightUntil:!cell.chapterHighlightUntil);
