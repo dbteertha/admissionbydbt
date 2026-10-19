@@ -217,5 +217,6 @@ td.dbt-merged-cell{position:relative;padding:5px!important;min-width:170px}
 `;
 document.head.appendChild(style);
 addButtons();
-if(!isWeek())applyMerges(trackerSubject());
+if(!isWeek())renderTrackerRows(trackerSubject());
+else if(typeof renderThisWeekView==='function')renderThisWeekView();
 })();
