@@ -5,68 +5,93 @@
 'use strict';
 if(typeof trackerGetCell!=='function'||typeof renderTrackerRows!=='function')return;
 const currentDate=trackerTaskHighlightDate;
+const currentColumnActive=trackerFieldHighlightActive;
+// A cell-specific highlight date never changes other cells. Legacy column
+// highlights remain supported unless the user explicitly selects cell-only mode.
 trackerTaskHighlightDate=function(field,cell){
   if(cell&&cell.highlightExcluded===true)return '';
+  if(cell&&typeof cell.chapterHighlightUntil==='string'&&cell.chapterHighlightUntil)
+    return cell.chapterHighlightUntil;
+  if(field&&field.highlightScope==='individual')return '';
   return currentDate(field,cell);
+};
+trackerFieldHighlightActive=function(field){
+  return !!(field&&field.highlightScope!=='individual'&&currentColumnActive(field));
 };
 const originalBadge=trackerTaskHighlightBadge;
 trackerTaskHighlightBadge=function(s,ch,f,cell){
-  if(cell&&cell.highlightExcluded===true){
-    const key=trackerCellKey(s.id,ch.id,f.id);
-    return '<button class="week-task-highlight-date dbt-highlight-off" type="button" data-chapter-highlight="'+esc(key)+'" title="Highlight is turned off for this cell. Click to change.">◌ No highlight</button>';
-  }
+  const key=trackerCellKey(s.id,ch.id,f.id);
+  if(cell&&cell.highlightExcluded===true)
+    return '<button class="week-task-highlight-date dbt-highlight-off" type="button" data-chapter-highlight="'+esc(key)+'" title="Highlight is disabled for this cell — click to change">◌ No highlight</button>';
+  const date=trackerTaskHighlightDate(f,cell);
+  if(!date)
+    return '<button class="week-task-highlight-date dbt-highlight-add" type="button" data-chapter-highlight="'+esc(key)+'" title="Highlight this cell only">📅</button>';
   return originalBadge(s,ch,f,cell);
 };
 trackerOpenChapterHighlightDate=function(key){
   const ref=trackerResolveCellKey(key);
   if(!ref)return;
   const {s,ch,f,cell}=ref;
-  const anchor=[...document.querySelectorAll('[data-chapter-highlight]')].find(el=>el.dataset.chapterHighlight===key &&
-    (el===document.activeElement||el.matches(':hover')))
-    ||[...document.querySelectorAll('[data-chapter-highlight]')].find(el=>el.dataset.chapterHighlight===key);
+  const matches=[...document.querySelectorAll('[data-chapter-highlight]')].filter(el=>el.dataset.chapterHighlight===key);
+  const anchor=matches.find(el=>el===document.activeElement||el.matches(':hover'))||matches[0];
   if(!anchor)return;
-  const blocked=cell.highlightExcluded===true;
-  const current=cell.chapterHighlightUntil||f.highlightUntil||'';
-  const defaultDate=f.highlightUntil||'';
+  const chosen=cell.chapterHighlightUntil||f.highlightUntil||'';
+  const excluded=cell.highlightExcluded===true;
   trackerShowCellPopover(anchor,
     '<div class="cell-pop-title">📅 '+esc(ch.name)+' · '+esc(f.name)+'</div>'+
     '<div class="dbt-date-pop-body">'+
-      '<label class="dbt-date-pop-label">Date <input id="dbtCellHighlightDate" type="date" value="'+esc(current)+'"></label>'+
-      '<label class="dbt-date-pop-check"><input id="dbtCellHighlightOff" type="checkbox" '+(blocked?'checked':'')+'> <span>Do not highlight this cell</span></label>'+
-      '<div class="dbt-date-pop-default">Column default: '+esc(defaultDate?trackerWeekDateText(defaultDate):'None')+'</div>'+
-      '<div class="dbt-date-pop-actions">'+
+      '<label class="dbt-date-pop-label">Highlight until <input id="dbtCellHighlightDate" type="date" value="'+esc(chosen)+'"></label>'+
+      '<div class="dbt-date-pop-default">'+(f.highlightScope==='individual'?
+         'Cell-only mode. Other cells keep their individual dates.':
+         'Column-wide date: '+esc(f.highlightUntil?trackerWeekDateText(f.highlightUntil):'None'))+'</div>'+
+      '<label class="dbt-date-pop-check"><input id="dbtCellHighlightOff" type="checkbox" '+(excluded?'checked':'')+'> <span>Do not highlight this cell</span></label>'+
+      '<div class="dbt-date-pop-actions dbt-date-pop-actions-wrap">'+
         '<button class="cell-pop-btn" type="button" id="dbtDateCancel">Cancel</button>'+
-        '<button class="cell-pop-btn" type="button" id="dbtDateDefault">Use column date</button>'+
-        '<button class="cell-pop-btn primary" type="button" id="dbtDateSave">Save</button>'+
+        '<button class="cell-pop-btn" type="button" id="dbtDateClear">Clear this cell</button>'+
+        '<button class="cell-pop-btn primary" type="button" id="dbtDateSave">Only this cell</button>'+
+        '<button class="cell-pop-btn dbt-date-whole" type="button" id="dbtDateColumn">Whole column</button>'+
       '</div>'+
     '</div>'
   );
   const input=trackerCellPopover.querySelector('#dbtCellHighlightDate');
   const off=trackerCellPopover.querySelector('#dbtCellHighlightOff');
-  trackerCellPopover.querySelector('#dbtDateCancel').onclick=()=>trackerCloseCellPopover();
-  const commit=(mode)=>{
-    const skip=off.checked;
-    const raw=input.value;
-    if(mode==='save'&&!skip &&
-       (!/^\d{4}-\d{2}-\d{2}$/.test(raw)||!Number.isFinite(Date.parse(raw+'T00:00:00')))){
+  const close=()=>trackerCloseCellPopover();
+  trackerCellPopover.querySelector('#dbtDateCancel').onclick=close;
+  const commit=mode=>{
+    const date=input.value,skip=off.checked;
+    if((mode==='cell'||mode==='column')&&!skip&&
+      (!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(Date.parse(date+'T00:00:00')))){
       trackerToastMsg('Choose a valid date or select Do not highlight');
-      input.focus();
-      return;
+      input.focus();return;
     }
-    const before=JSON.stringify([cell.highlightExcluded===true,cell.chapterHighlightUntil||'']);
-    if(mode==='default')delete cell.chapterHighlightUntil;
-    else if(mode==='save'&&!skip)cell.chapterHighlightUntil=raw;
-    cell.highlightExcluded=mode==='default'?false:skip;
-    if(before===JSON.stringify([cell.highlightExcluded===true,cell.chapterHighlightUntil||''])){
-      trackerCloseCellPopover();
-      return;
+    const before=JSON.stringify([cell.highlightExcluded===true,cell.chapterHighlightUntil||'',f.highlightScope||'',f.highlightUntil||'']);
+    if(mode==='cell'){
+      if(!skip)cell.chapterHighlightUntil=date;
+      cell.highlightExcluded=skip;
+      // Do not erase the old column deadline. It can be reinstated later
+      // through Whole column; simply suppress its inheritance.
+      f.highlightScope='individual';
+    }else if(mode==='column'){
+      if(!skip)f.highlightUntil=date;
+      f.highlightScope='column';
+      delete cell.chapterHighlightUntil;
+      cell.highlightExcluded=skip;
+    }else if(mode==='clear'){
+      delete cell.chapterHighlightUntil;
+      cell.highlightExcluded=true;
     }
-    cell.updatedAt=new Date().toISOString();
-    trackerCloseCellPopover();
-    trackerSave('Cell highlight preference updated');
+    const after=JSON.stringify([cell.highlightExcluded===true,cell.chapterHighlightUntil||'',f.highlightScope||'',f.highlightUntil||'']);
+    close();
+    if(before===after)return;
+    const stamp=new Date().toISOString();
+    cell.updatedAt=stamp;
+    if(mode==='cell'||mode==='column')f.updatedAt=stamp;
+    trackerSave(mode==='column'?'Column highlight changed':mode==='cell'?'Single cell highlight changed':'Cell highlight cleared');
+    trackerToastMsg(mode==='cell'?'Only this cell uses this date':mode==='column'?'Column-wide highlighting enabled':'Highlight disabled for this cell');
   };
-  trackerCellPopover.querySelector('#dbtDateDefault').onclick=()=>commit('default');
-  trackerCellPopover.querySelector('#dbtDateSave').onclick=()=>commit('save');
+  trackerCellPopover.querySelector('#dbtDateSave').onclick=()=>commit('cell');
+  trackerCellPopover.querySelector('#dbtDateColumn').onclick=()=>commit('column');
+  trackerCellPopover.querySelector('#dbtDateClear').onclick=()=>commit('clear');
 };
 const isWeek=()=>!!trackerWeekView;
 function fields(s){return trackerVisibleFields(s)}
@@ -221,6 +246,12 @@ td.dbt-merged-cell:hover>.dbt-inline-unmerge,td.dbt-merged-cell:focus-within>.db
 .dbt-date-pop-actions{display:flex;justify-content:flex-end;gap:5px;flex-wrap:wrap}
 .dbt-date-pop-actions .cell-pop-btn{font-size:10px;padding:6px 8px}
 td.dbt-merged-cell>.cell-box{padding-right:58px!important}
+
+.dbt-highlight-add{opacity:.12!important;background:transparent!important;border:1px dashed rgba(151,185,232,.18)!important;min-width:22px;color:#adc6ef!important;padding:2px 4px!important}
+.cell-box:hover .dbt-highlight-add,.cell-box:focus-within .dbt-highlight-add,.week-task-card:hover .dbt-highlight-add,.dbt-highlight-add:focus-visible{opacity:1!important}
+.dbt-date-pop-actions-wrap{justify-content:flex-start;gap:5px}
+.dbt-date-pop-actions-wrap .cell-pop-btn{font-size:10px;padding:6px 8px}
+.dbt-date-whole{border-color:#536275!important}
 `;
 document.head.appendChild(style);
 addButtons();
