@@ -255,6 +255,73 @@ td.dbt-merged-cell>.cell-box{padding-right:58px!important}
 `;
 document.head.appendChild(style);
 addButtons();
+
+/* Bulk highlight now targets exact selected cells — never whole columns.
+   Uses the existing compact cell popover and normal cloud save pipeline. */
+function trackerBindSelectedCellHighlight(){
+  const button=document.getElementById('trackerBulkUntil');
+  if(!button)return;
+  button.textContent='📅 Highlight selected';
+  button.title='Set or clear highlighting on only the selected cells';
+  button.onclick=e=>{
+    e.preventDefault();e.stopPropagation();
+    const refs=trackerSelectedRefs();
+    if(!refs.length){trackerToastMsg('Select cells first');return;}
+    // Use explicit per-cell dates; never read/mutate checkboxes or progress.
+    const previous=refs.find(r=>r.cell.chapterHighlightUntil&&!r.cell.highlightExcluded);
+    const today=trackerLocalDateKey();
+    const suggestion=previous?previous.cell.chapterHighlightUntil:today;
+    trackerShowCellPopover(button,
+      '<div class="cell-pop-title">📅 Highlight selected cells</div>'+
+      '<div class="dbt-date-pop-body">'+
+        '<div class="dbt-date-pop-default">'+refs.length+' cell'+(refs.length===1?'':'s')+' selected · only these cells will change</div>'+
+        '<label class="dbt-date-pop-label">Highlight until <input type="date" id="dbtSelectedHighlightDate" value="'+esc(suggestion)+'"></label>'+
+        '<div class="dbt-date-pop-actions dbt-date-pop-actions-wrap">'+
+          '<button class="cell-pop-btn" type="button" id="dbtSelectedHighlightCancel">Cancel</button>'+
+          '<button class="cell-pop-btn" type="button" id="dbtSelectedHighlightClear">Clear selected</button>'+
+          '<button class="cell-pop-btn primary" type="button" id="dbtSelectedHighlightApply">Apply to selected</button>'+
+        '</div>'+
+      '</div>'
+    );
+    const input=trackerCellPopover.querySelector('#dbtSelectedHighlightDate');
+    const act=(clear)=>{
+      const date=input.value;
+      if(!clear&&(!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(Date.parse(date+'T00:00:00')))){
+        trackerToastMsg('Choose a valid highlight date');input.focus();return;
+      }
+      const stamp=new Date().toISOString();
+      let changes=0;
+      const fieldChanges=new Map();
+      for(const {s,f,cell} of refs){
+        // A column can carry an old default date, but selected-cell mode
+        // must not pass that date through to unselected chapter cells.
+        if(f.highlightScope!=='individual')fieldChanges.set(s.id+'|'+f.id,f);
+        if(clear){
+          if(cell.highlightExcluded!==true||cell.chapterHighlightUntil){
+            delete cell.chapterHighlightUntil;
+            cell.highlightExcluded=true;
+            cell.updatedAt=stamp;changes++;
+          }
+        }else if(cell.highlightExcluded===true||cell.chapterHighlightUntil!==date){
+          cell.chapterHighlightUntil=date;
+          cell.highlightExcluded=false;
+          cell.updatedAt=stamp;changes++;
+        }
+      }
+      fieldChanges.forEach(f=>{f.highlightScope='individual';f.updatedAt=stamp;changes++});
+      trackerCloseCellPopover();
+      if(changes){
+        trackerSave(clear?'Selected cell highlights cleared':'Selected cells highlighted');
+        trackerToastMsg((clear?'Cleared':'Highlighted')+' '+refs.length+' selected cell'+(refs.length===1?'':'s'));
+      }else trackerToastMsg('Selected cell highlights already up to date');
+    };
+    trackerCellPopover.querySelector('#dbtSelectedHighlightCancel').onclick=()=>trackerCloseCellPopover();
+    trackerCellPopover.querySelector('#dbtSelectedHighlightClear').onclick=()=>act(true);
+    trackerCellPopover.querySelector('#dbtSelectedHighlightApply').onclick=()=>act(false);
+  };
+}
+trackerBindSelectedCellHighlight();
+
 if(!isWeek())renderTrackerRows(trackerSubject());
 else if(typeof renderThisWeekView==='function')renderThisWeekView();
 })();
