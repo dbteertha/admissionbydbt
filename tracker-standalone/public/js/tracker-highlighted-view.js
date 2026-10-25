@@ -47,6 +47,23 @@ function taskLine(r){
     '</div>'+
   '</div>';
 }
+// Match the Main Tracker's lossless horizontal merge metadata.
+function highlightedMerges(s,ch){
+  const visible=trackerVisibleFields(s).map(f=>f.id),used=new Set(),groups=[];
+  for(const id of visible){
+    const cell=trackerGetCell(s.id,ch.id,id);
+    const extras=Array.isArray(cell.mergedWith)?cell.mergedWith:[];
+    if(!extras.length||used.has(id))continue;
+    const all=[id,...extras];
+    const start=visible.indexOf(id);
+    if(all.length<2||new Set(all).size!==all.length||
+       all.some((x,i)=>visible.indexOf(x)!==start+i||used.has(x)))continue;
+    groups.push({anchor:id,members:all});
+    all.forEach(x=>used.add(x));
+  }
+  return groups;
+}
+
 let highlightedSubjectId='';
 function renderHighlighted(){
   const refs=activeRefs();
@@ -70,7 +87,16 @@ function renderHighlighted(){
       '</div>';
     const own=refs.filter(r=>r.s.id===current.id);
     const chapters=current.chapters.filter(ch=>own.some(r=>r.ch.id===ch.id));
-    const fields=trackerVisibleFields(current).filter(f=>own.some(r=>r.f.id===f.id));
+    // Include all original columns belonging to an active merged group,
+    // even when the covered member has no independent highlight.
+    const included=new Set(own.map(r=>r.f.id));
+    for(const ch of chapters){
+      for(const group of highlightedMerges(current,ch)){
+        if(group.members.some(id=>own.some(r=>r.ch.id===ch.id&&r.f.id===id)))
+          group.members.forEach(id=>included.add(id));
+      }
+    }
+    const fields=trackerVisibleFields(current).filter(f=>included.has(f.id));
     html+='<div class="dbt-hi-main-table-wrap"><table class="tracker-table dbt-hi-main-table"><thead><tr>'+
       '<th><div class="field-head"><span>'+esc(current.name)+' • CHAPTER</span></div></th>'+
       fields.map(f=>'<th><div class="field-head"><span>'+esc(f.name)+'</span></div></th>').join('')+
@@ -81,18 +107,33 @@ function renderHighlighted(){
           '<span class="chapter-num">'+num+'</span>'+
           '<div class="chapter-name"><strong>'+esc(ch.name)+'</strong></div>'+
           '</div></td>'+
-          fields.map(f=>{
-            const cell=trackerGetCell(current.id,ch.id,f.id);
-            if(!trackerTaskHighlightActive(f,cell))return '<td class="track-cell dbt-hi-empty"></td>';
-            const key=trackerCellKey(current.id,ch.id,f.id);
-            const date=trackerTaskHighlightDate(f,cell);
-            const badge='<button type="button" class="week-task-highlight-date dbt-hi-short-date" data-chapter-highlight="'+esc(key)+'" title="Change highlight date" aria-label="Change highlight date">📅 '+esc(shortDate(date))+'</button>';
-            const content=cellHtml(current,ch,f);
-            // The built-in cell renders no badge in Weekly route, so append one
-            // inside the same cell-box while keeping main Tracker controls intact.
+          fields.map((f,index)=>{
+            const merges=highlightedMerges(current,ch);
+            const group=merges.find(g=>g.members.includes(f.id));
+            // Covered members disappear as TDs, exactly like Main Tracker.
+            if(group&&group.anchor!==f.id)return '';
+            const members=group?group.members:[f.id];
+            const highlighted=members.map(id=>{
+              const memberField=fields.find(x=>x.id===id);
+              if(!memberField)return null;
+              const memberCell=trackerGetCell(current.id,ch.id,id);
+              return trackerTaskHighlightActive(memberField,memberCell)
+                ?{f:memberField,cell:memberCell}:null;
+            }).filter(Boolean);
+            if(!highlighted.length)
+              return '<td class="track-cell dbt-hi-empty"'+(group?' colspan="'+members.length+'"':'')+'></td>';
+            // Use the existing anchor editor so merged cells have one visible
+            // surface. Highlight badges continue pointing to their real cells.
+            const display=highlighted[0],first=group?fields.find(x=>x.id===group.anchor):f;
+            const dates=highlighted.map(({f:memberField,cell:memberCell})=>{
+              const key=trackerCellKey(current.id,ch.id,memberField.id);
+              return '<button type="button" class="week-task-highlight-date dbt-hi-short-date" data-chapter-highlight="'+esc(key)+'" title="'+esc(memberField.name)+' · Change highlight date" aria-label="Change '+esc(memberField.name)+' highlight date">📅 '+esc(shortDate(trackerTaskHighlightDate(memberField,memberCell)))+'</button>';
+            }).join('');
+            const content=cellHtml(current,ch,first);
             const end=content.lastIndexOf('</div>');
-            const marked=end>=0?content.slice(0,end)+badge+content.slice(end):content;
-            return '<td class="track-cell field-date-highlight-cell">'+marked+'</td>';
+            const marked=end>=0?content.slice(0,end)+dates+content.slice(end):content;
+            return '<td class="track-cell field-date-highlight-cell'+(group?' dbt-merged-cell dbt-hi-merged':'')+'"'+
+              (group?' colspan="'+members.length+'"':'')+'>'+marked+'</td>';
           }).join('')+'</tr>';
       }).join('')+'</tbody></table></div>';
   }
@@ -140,7 +181,7 @@ style.textContent=`
 .dbt-hi-main-table .chapter-name{min-width:0}
 .dbt-hi-main-table .chapter-name strong{white-space:normal;overflow-wrap:anywhere}
 .dbt-hi-main-table td.track-cell{padding:3px 4px}
-.dbt-hi-main-table td.dbt-hi-empty{background:#0a0f16!important;opacity:.25}
+.dbt-hi-main-table td.dbt-hi-merged{min-width:0!important;padding:3px 4px!important}\n.dbt-hi-main-table td.dbt-hi-empty{background:#0a0f16!important;opacity:.25}
 .dbt-hi-main-table .cell-box{min-height:43px!important}
 .dbt-hi-main-table .dbt-hi-short-date.week-task-highlight-date{position:absolute!important;top:3px!important;right:4px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;width:auto!important;max-width:none!important;min-width:0!important;padding:3px 5px!important;font-size:10px!important;line-height:1.2!important;color:#e5c279!important;background:rgba(199,156,75,.09)!important;border:1px solid rgba(199,156,75,.22)!important;border-radius:5px!important}
 .dbt-hi-main-table .dbt-hi-short-date:hover{border-color:rgba(236,185,89,.7)!important}
