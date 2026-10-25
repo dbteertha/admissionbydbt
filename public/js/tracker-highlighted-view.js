@@ -64,6 +64,15 @@ function highlightedMerges(s,ch){
   return groups;
 }
 
+function highlightedWeekTimerHtml(){
+  return '<div class="dbt-hi-week-timer" role="group" aria-label="This Week countdown">'+
+    '<span class="dbt-hi-week-label"><i></i>THIS WEEK</span>'+
+    '<button type="button" class="dbt-hi-week-date" id="weekRoutineCountdownDate" title="Change weekly deadline" aria-label="Change weekly deadline">—</button>'+
+    '<label class="dbt-hi-week-time"><span>TIME</span><input id="weekRoutineTime" type="time" step="60" aria-label="Weekly countdown time in Bangladesh"></label>'+
+    '<div class="week-top-countdown dbt-hi-week-countdown" id="weekRoutineCountdown" role="timer" aria-live="off"></div>'+
+  '</div>';
+}
+
 let highlightedSubjectId='';
 function renderHighlighted(){
   const refs=activeRefs();
@@ -72,7 +81,7 @@ function renderHighlighted(){
   if(!subjects.some(s=>s.id===highlightedSubjectId))
     highlightedSubjectId=subjects[0]?.id||'';
   const current=subjects.find(s=>s.id===highlightedSubjectId);
-  let html='<div class="week-simple-head dbt-hi-top">'+
+  let html=highlightedWeekTimerHtml()+'<div class="week-simple-head dbt-hi-top">'+
     '<div class="week-simple-title"><b>Highlighted</b><em><strong>'+refs.length+'</strong></em></div>'+
     '<div class="week-simple-actions">'+
       '<button type="button" class="week-pdf-btn" id="dbtHighlightedViewPdf">PDF Studio</button>'+
@@ -142,6 +151,15 @@ function renderHighlighted(){
   document.getElementById('dbtHighlightedViewPdf').onclick=openPdf;
   document.getElementById('dbtHighlightedViewWeekly').onclick=()=>window.open(TRACKER_WEEK_PATH,'_blank','noopener');
   document.getElementById('dbtHighlightedViewBack').onclick=()=>{location.href=trackerSubjectPath(trackerActiveSubject)};
+  // Share the same deadline, server clock, and per-second updater as Main Tracker.
+  const deadline=document.getElementById('weekRoutineCountdownDate');
+  if(deadline)deadline.onclick=()=>{
+    try{
+      if(typeof trackerWeekDate.showPicker==='function')trackerWeekDate.showPicker();
+      else trackerWeekDate.focus();
+    }catch(_){trackerWeekDate.focus()}
+  };
+  trackerUpdateWeekCountdown();
   trackerTableHost.querySelectorAll('[data-hi-sub]').forEach(button=>{
     button.onclick=()=>{
       highlightedSubjectId=button.dataset.hiSub;
@@ -170,6 +188,17 @@ function addLaunch(){
 const style=document.createElement('style');
 style.textContent=`
 .dbt-open-highlighted{white-space:nowrap;margin-right:6px}
+.dbt-hi-week-timer{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-height:40px;padding:6px 10px;margin:0 0 9px;border:1px solid #263244;border-radius:8px;background:#0c121b}
+.dbt-hi-week-label{display:inline-flex;align-items:center;gap:6px;color:#d6e2f6;letter-spacing:.08em;font-weight:850;font-size:10px;white-space:nowrap}
+.dbt-hi-week-label i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#f56582;box-shadow:0 0 8px rgba(245,101,130,.45)}
+.dbt-hi-week-date{padding:5px 6px;color:#f0f4ff;border:1px solid transparent;border-radius:5px;background:transparent;font-weight:750;font-size:11px;cursor:pointer}
+.dbt-hi-week-date:hover,.dbt-hi-week-date:focus-visible{border-color:#425778;background:#182337}
+.dbt-hi-week-time{display:inline-flex;align-items:center;gap:7px;padding:3px 7px;border:1px solid #27364d;border-radius:5px;background:#111927}
+.dbt-hi-week-time span{font-size:9px;color:#96a9c2;font-weight:700}
+.dbt-hi-week-time input{border:0;outline-offset:2px;background:transparent;color:#f3f6ff;font-size:11px;font-weight:650;min-width:82px;color-scheme:dark}
+.dbt-hi-week-countdown.week-top-countdown{margin:0;display:flex;align-items:center;gap:4px;min-height:29px;padding:4px 8px;white-space:nowrap}
+@media(max-width:680px){.dbt-hi-week-timer{gap:6px;padding:6px}.dbt-hi-week-date{font-size:10px}.dbt-hi-week-time{gap:3px;padding:3px 5px}.dbt-hi-week-countdown.week-top-countdown{font-size:10px}}
+
 .dbt-hi-top{margin-bottom:9px!important}
 .dbt-hi-subject-tabs{display:flex;gap:5px;align-items:stretch;overflow-x:auto;padding:0 0 9px;scrollbar-width:thin}
 .dbt-hi-subtab{flex:1 0 105px;display:flex;align-items:center;justify-content:center;gap:7px;min-height:34px;padding:7px 10px;color:#bacbe3;font-weight:750;font-size:11px;background:#101722;border:1px solid #283343;border-radius:7px;cursor:pointer}
