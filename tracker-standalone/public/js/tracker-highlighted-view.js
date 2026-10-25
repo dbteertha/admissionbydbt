@@ -76,6 +76,7 @@ function renderHighlighted(){
     '<div class="week-simple-title"><b>Highlighted</b><em><strong>'+refs.length+'</strong></em></div>'+
     '<div class="week-simple-actions">'+
       '<button type="button" class="week-pdf-btn" id="dbtHighlightedViewPdf">PDF Studio</button>'+
+      '<button type="button" class="week-pdf-btn dbt-highlighted-weekly-btn" id="dbtHighlightedViewWeekly">Open This Week</button>'+
       '<button type="button" class="week-back-btn" id="dbtHighlightedViewBack">← Tracker</button>'+
     '</div></div>';
   if(!current){
@@ -139,6 +140,7 @@ function renderHighlighted(){
   }
   trackerTableHost.innerHTML=html;
   document.getElementById('dbtHighlightedViewPdf').onclick=openPdf;
+  document.getElementById('dbtHighlightedViewWeekly').onclick=()=>window.open(TRACKER_WEEK_PATH,'_blank','noopener');
   document.getElementById('dbtHighlightedViewBack').onclick=()=>{location.href=trackerSubjectPath(trackerActiveSubject)};
   trackerTableHost.querySelectorAll('[data-hi-sub]').forEach(button=>{
     button.onclick=()=>{
