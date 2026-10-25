@@ -74,6 +74,39 @@ function highlightedWeekTimerHtml(){
 }
 
 let highlightedSubjectId='';
+function highlightedVisibleKeys(){
+ const s=trackerState.subjects.find(x=>x.id===highlightedSubjectId);
+ if(!s)return [];
+ const keys=new Set();
+ for(const ref of activeRefs().filter(x=>x.s.id===s.id)){
+   const merge=highlightedMerges(s,ref.ch).find(g=>g.members.includes(ref.f.id));
+   keys.add(trackerCellKey(s.id,ref.ch.id,merge?merge.anchor:ref.f.id));
+ }
+ return [...keys];
+}
+function highlightedSelectKeys(keys){
+ if(!keys.length)return;
+ const all=keys.every(k=>trackerSelectedCells.has(k));
+ keys.forEach(k=>all?trackerSelectedCells.delete(k):trackerSelectedCells.add(k));
+ trackerUpdateSelectionUI();
+}
+function highlightedSelectionBindings(){
+ const selectAll=document.getElementById('dbtHighlightedSelectAll');
+ if(selectAll)selectAll.onclick=()=>highlightedSelectKeys(highlightedVisibleKeys());
+ const allowed=new Set(highlightedVisibleKeys());
+ trackerTableHost.querySelectorAll('[data-hi-select-column]').forEach(b=>b.onclick=e=>{
+   e.stopPropagation();e.preventDefault();
+   const s=trackerState.subjects.find(x=>x.id===highlightedSubjectId);
+   if(!s)return;
+   highlightedSelectKeys(s.chapters.map(ch=>trackerCellKey(s.id,ch.id,b.dataset.hiSelectColumn)).filter(k=>allowed.has(k)));
+ });
+ trackerTableHost.querySelectorAll('[data-hi-select-row]').forEach(b=>b.onclick=e=>{
+   e.stopPropagation();e.preventDefault();
+   highlightedSelectKeys([...allowed].filter(k=>k.split('|')[1]===b.dataset.hiSelectRow));
+ });
+ trackerUpdateSelectionUI();
+}
+
 function renderHighlighted(){
   const refs=activeRefs();
   trackerMobileHost.innerHTML='';
@@ -84,7 +117,7 @@ function renderHighlighted(){
   let html=highlightedWeekTimerHtml()+'<div class="week-simple-head dbt-hi-top">'+
     '<div class="week-simple-title"><b>Highlighted</b><em><strong>'+refs.length+'</strong></em></div>'+
     '<div class="week-simple-actions">'+
-      '<button type="button" class="week-pdf-btn" id="dbtHighlightedViewPdf">PDF Studio</button>'+
+      '<button type="button" class="week-pdf-btn dbt-hi-select-all" id="dbtHighlightedSelectAll">Select all</button><button type="button" class="week-pdf-btn" id="dbtHighlightedViewPdf">PDF Studio</button>'+
       '<button type="button" class="week-pdf-btn dbt-highlighted-weekly-btn" id="dbtHighlightedViewWeekly">Open This Week</button>'+
       '<button type="button" class="week-back-btn" id="dbtHighlightedViewBack">← Tracker</button>'+
     '</div></div>';
@@ -109,12 +142,12 @@ function renderHighlighted(){
     const fields=trackerVisibleFields(current).filter(f=>included.has(f.id));
     html+='<div class="dbt-hi-main-table-wrap"><table class="tracker-table dbt-hi-main-table"><thead><tr>'+
       '<th><div class="field-head"><span>'+esc(current.name)+' • CHAPTER</span></div></th>'+
-      fields.map(f=>'<th><div class="field-head"><span>'+esc(f.name)+'</span></div></th>').join('')+
+      fields.map(f=>'<th><div class="field-head"><button type="button" class="axis-select-btn col-select-btn dbt-hi-axis" data-hi-select-column="'+esc(f.id)+'" title="Select highlighted column">↓</button><span>'+esc(f.name)+'</span></div></th>').join('')+
       '</tr></thead><tbody>'+
       chapters.map(ch=>{
         const num=String(current.chapters.indexOf(ch)+1).padStart(2,'0');
         return '<tr><td><div class="chapter-cell">'+
-          '<span class="chapter-num">'+num+'</span>'+
+          '<button type="button" class="axis-select-btn row-select-btn dbt-hi-axis" data-hi-select-row="'+esc(ch.id)+'" title="Select highlighted row">→</button><span class="chapter-num">'+num+'</span>'+
           '<div class="chapter-name"><strong>'+esc(ch.name)+'</strong></div>'+
           '</div></td>'+
           fields.map((f,index)=>{
@@ -162,11 +195,13 @@ function renderHighlighted(){
   trackerUpdateWeekCountdown();
   trackerTableHost.querySelectorAll('[data-hi-sub]').forEach(button=>{
     button.onclick=()=>{
+      trackerClearSelection();
       highlightedSubjectId=button.dataset.hiSub;
       renderHighlighted();
     };
   });
   bindTrackerCells(trackerTableHost);
+  highlightedSelectionBindings();
 }
 const baseRender=renderThisWeekView;
 renderThisWeekView=function(){
@@ -188,6 +223,13 @@ function addLaunch(){
 const style=document.createElement('style');
 style.textContent=`
 .dbt-open-highlighted{white-space:nowrap;margin-right:6px}
+body.tracker-week-page:has(.dbt-hi-main-table) #trackerBulkBar.show{display:flex!important;position:relative!important;flex-wrap:wrap;gap:5px;padding:7px 9px;max-height:180px;overflow:auto}
+body.tracker-week-page:has(.dbt-hi-main-table) #trackerBulkBar.show .bulk-live-hint{display:none!important}
+.dbt-hi-axis{position:static!important;display:inline-flex!important;opacity:.7!important;pointer-events:auto!important;margin-right:5px!important}
+.dbt-hi-axis:hover{opacity:1!important}
+.dbt-hi-select-all{white-space:nowrap}
+.dbt-hi-main-table .cell-box.selected{outline:2px solid rgba(104,166,255,.76)!important;background:rgba(74,119,228,.13)!important}
+
 .dbt-hi-week-timer{display:flex;align-items:center;gap:9px;flex-wrap:wrap;min-height:40px;padding:6px 10px;margin:0 0 9px;border:1px solid #263244;border-radius:8px;background:#0c121b}
 .dbt-hi-week-label{display:inline-flex;align-items:center;gap:6px;color:#d6e2f6;letter-spacing:.08em;font-weight:850;font-size:10px;white-space:nowrap}
 .dbt-hi-week-label i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#f56582;box-shadow:0 0 8px rgba(245,101,130,.45)}
