@@ -22,7 +22,7 @@ const originalBadge=trackerTaskHighlightBadge;
 trackerTaskHighlightBadge=function(s,ch,f,cell){
   const key=trackerCellKey(s.id,ch.id,f.id);
   if(cell&&cell.highlightExcluded===true)
-    return '<button class="week-task-highlight-date dbt-highlight-off" type="button" data-chapter-highlight="'+esc(key)+'" title="Highlight is disabled for this cell — click to change">◌ No highlight</button>';
+    return '<button class="week-task-highlight-date dbt-highlight-off dbt-highlight-icon" type="button" data-chapter-highlight="'+esc(key)+'" aria-label="Set highlight date for this cell" title="Set highlight date for this cell">📅</button>';
   const date=trackerTaskHighlightDate(f,cell);
   if(!date)
     return '<button class="week-task-highlight-date dbt-highlight-add" type="button" data-chapter-highlight="'+esc(key)+'" title="Highlight this cell only">📅</button>';
@@ -232,6 +232,8 @@ trackerUpdateSelectionUI=function(){
 const style=document.createElement('style');
 style.textContent=`
 .dbt-highlight-off{opacity:.8!important;border-color:rgba(160,170,185,.25)!important;background:rgba(122,134,154,.08)!important;color:#b7c0cd!important}
+.dbt-highlight-off.dbt-highlight-icon{display:inline-flex!important;align-items:center;justify-content:center;min-width:24px!important;width:24px!important;min-height:19px!important;padding:1px 3px!important;font-size:12px!important;line-height:1.1!important;white-space:nowrap!important;background:transparent!important;border:1px solid rgba(151,185,232,.16)!important;border-radius:5px!important;color:#a4b4c9!important;opacity:.7!important}
+.dbt-highlight-off.dbt-highlight-icon:hover,.dbt-highlight-off.dbt-highlight-icon:focus-visible{opacity:1!important;border-color:rgba(151,185,232,.5)!important;color:#eef4ff!important}
 .dbt-highlight-info{padding:9px 12px;margin:8px 0;border:1px solid rgba(138,166,200,.25);border-radius:8px;color:#bed3ed;font-size:12px}
 .dbt-merge-action{white-space:nowrap}.dbt-merge-action:disabled{opacity:.45;cursor:not-allowed}
 td.dbt-merged-cell{position:relative;padding:5px!important;min-width:170px}
