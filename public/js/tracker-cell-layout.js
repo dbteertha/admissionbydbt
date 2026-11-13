@@ -26,7 +26,9 @@ function attemptDateState(f,c){
  return {dates:checks.map((_,i)=>ds[i]||''),pending:ds.slice(checks.length)};
 }
 function syncAttemptDates(c){
- const ds=[...new Set([...(c.checks||[]).map(x=>x.highlightDate),...(c.pendingHighlightDates||[])].filter(validDate))].sort();
+ const assigned=new Set((c.checks||[]).map(x=>x.highlightDate).filter(validDate));
+ c.pendingHighlightDates=[...new Set((c.pendingHighlightDates||[]).filter(d=>validDate(d)&&!assigned.has(d)))].sort();
+ const ds=[...new Set([...assigned,...c.pendingHighlightDates])].sort();
  c.highlightDates=ds;c.chapterHighlightUntil=ds.at(-1)||'';c.highlightExcluded=!ds.length;
  c.updatedAt=new Date().toISOString();
 }
@@ -240,16 +242,18 @@ function attemptDateSlots(r,td){
   return [...byDate.values()].sort((a,b)=>a.date.localeCompare(b.date));
 }
 function addAttemptForDate(r,index,slot){
-  const checks=trackerCheckboxItems(r.cell);
+  const checks=trackerCheckboxItems(r.cell),previousCount=checks.length;
   while(checks.length<=index)checks.push({
     id:uid('try'),label:String(checks.length+1),checked:false,comment:'',updatedAt:new Date().toISOString()
   });
-  if(r.cell.attemptHighlightMode===true&&slot?.ref?.cell===r.cell){
+  if(r.cell.attemptHighlightMode===true){
+    // Only newly created attempts receive pending dates. Existing unhighlighted
+    // attempts stay untouched, even when they precede the pending date.
     const pending=r.cell.pendingHighlightDates||[];
-    const items=trackerCheckboxItems(r.cell);
-    const start=items.length-1;
-    // Assign pending dates to newly added empty attempts in their stored order.
-    for(const item of items)if(!validDate(item.highlightDate)&&pending.length)item.highlightDate=pending.shift();
+    for(let i=previousCount;i<checks.length;i++){
+      if(pending.length)checks[i].highlightDate=pending.shift();
+    }
+    if(slot&&validDate(slot.date)&&!checks.some(x=>x.highlightDate===slot.date))checks[index].highlightDate=slot.date;
     syncAttemptDates(r.cell);
   }
   trackerSyncLegacyCheckbox(r.cell);
@@ -345,6 +349,14 @@ function decorateDates(root){
     b.onclick=e=>{e.preventDefault();e.stopPropagation();trackerOpenChapterHighlightDate(b.dataset.chapterHighlight)};
   });
 }
+// Keep compatibility summaries in sync when existing checkbox operations
+// delete, add, or edit an explicitly dated attempt.
+const originalSyncCheckbox=trackerSyncLegacyCheckbox;
+trackerSyncLegacyCheckbox=function(cell){
+ const result=originalSyncCheckbox.apply(this,arguments);
+ if(cell?.attemptHighlightMode===true)syncAttemptDates(cell);
+ return result;
+};
 const baseBind=bindTrackerCells;
 bindTrackerCells=function(root){const out=baseBind.apply(this,arguments);decorateDates(root);return out};
 const isWeek=()=>!!trackerWeekView;
