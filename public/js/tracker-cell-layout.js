@@ -321,6 +321,7 @@ function decorateDates(root){
         if(!slot)return;
         const index=attempts.length+j,wrap=document.createElement('div');
         wrap.className='dbt-date-pending dbt-attempt-slot';
+        wrap.dataset.dbtHighlightDate=slot.date;
         const plus=document.createElement('button');
         plus.type='button';plus.className='dbt-date-add-attempt';plus.textContent='+';
         plus.title='Add missing checkboxes through '+slot.date;

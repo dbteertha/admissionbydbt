@@ -443,19 +443,27 @@ function compactTopBar(){
 function installAttemptColumns(){
   const host=trackerTableHost,table=host.querySelector('table.tracker-table');
   if(!table)return;
-  const counts=new Map(),boxes=[...table.querySelectorAll('.cell-box.multi-check[data-fid]')];
+  const filtered=table.classList.contains('dbt-hi-main-table'),counts=new Map(),visibleIndices=new Map(),boxes=[...table.querySelectorAll('.cell-box.multi-check[data-fid]')];
+  // Date decoration has already resolved active dates, including merged groups.
+  // Keep original attempt positions; remove only the nonmatching rendered nodes.
+  const matchesAttempt=attempt=>!!attempt?.querySelector('[data-check-toggle].dbt-dated-check');
   boxes.forEach(box=>{
-    const count=box.querySelectorAll('.check-stack > .check-attempt').length;
-    counts.set(box.dataset.fid,Math.max(counts.get(box.dataset.fid)||1,count));
+    const attempts=[...box.querySelectorAll('.check-stack > .check-attempt')],id=box.dataset.fid;
+    counts.set(id,Math.max(counts.get(id)||1,attempts.length));
+    if(filtered){
+      if(!visibleIndices.has(id))visibleIndices.set(id,new Set());
+      attempts.forEach((attempt,i)=>{if(matchesAttempt(attempt))visibleIndices.get(id).add(i);});
+    }
   });
+  const indicesFor=id=>filtered?[...(visibleIndices.get(id)||[])].sort((a,b)=>a-b):Array.from({length:counts.get(id)||1},(_,i)=>i);
   table.querySelectorAll('thead th').forEach(th=>{
     const head=th.querySelector('.field-head');
     const id=head?.querySelector('[data-edit-field]')?.dataset.editField||head?.querySelector('[data-hi-select-column]')?.dataset.hiSelectColumn;
-    const n=counts.get(id)||1;
-    if(n<2||th.querySelector('.dbt-attempt-head'))return;
+    const indices=indicesFor(id),n=indices.length;
+    if(!n||(!filtered&&n<2)||(filtered&&(counts.get(id)||1)<2)||th.querySelector('.dbt-attempt-head'))return;
     th.classList.add('dbt-attempt-parent');
     const sub=document.createElement('div');sub.className='dbt-attempt-head';sub.style.setProperty('--attempt-cols',n);
-    for(let i=0;i<n;i++){
+    for(const i of indices){
       const b=document.createElement('button');b.type='button';b.textContent=String(i+1);
       b.dataset.dbtField=id;b.dataset.dbtAttemptColumn=String(i);b.title='Select checkbox column '+(i+1);
       b.setAttribute('aria-label',head.textContent.trim()+' checkbox column '+(i+1));
@@ -465,15 +473,23 @@ function installAttemptColumns(){
     th.appendChild(sub);
   });
   boxes.forEach(box=>{
-    const n=counts.get(box.dataset.fid)||1,stack=box.querySelector('.check-stack');
+    const indices=indicesFor(box.dataset.fid),n=indices.length,stack=box.querySelector('.check-stack');
     if(!stack||stack.querySelector('.dbt-attempt-lane'))return;
     const attempts=[...stack.querySelectorAll(':scope > .check-attempt')],add=stack.querySelector('.add-check');
-    if(n>1)box.classList.add('dbt-attempt-split');stack.style.setProperty('--attempt-cols',n);
+    if(n>1)box.classList.add('dbt-attempt-split');stack.style.setProperty('--attempt-cols',Math.max(1,n));
+    if(filtered){
+      // Hide nonmatching siblings without renumbering or modifying saved attempts.
+      attempts.forEach(attempt=>{if(!matchesAttempt(attempt))attempt.remove();});
+      const date=highlights.filterDate(),today=trackerLocalDateKey();
+      stack.querySelectorAll('.dbt-date-pending').forEach(el=>{const d=el.dataset.dbtHighlightDate;if(!d||d<today||(date&&d!==date))el.remove();});
+      // A generic add would create an unhighlighted task in this filtered view.
+      if(add)add.hidden=true;
+    }
     const key=trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid);
-    for(let i=0;i<n;i++){
+    for(const i of indices){
       const lane=document.createElement('div');lane.className='dbt-attempt-lane';
       const attempt=attempts[i];
-      if(attempt){
+      if(attempt&&(!filtered||matchesAttempt(attempt))){
         lane.dataset.dbtAttemptKey=attemptKey(key,attempt.dataset.attemptId);lane.dataset.dbtField=box.dataset.fid;lane.dataset.dbtAttemptIndex=String(i);
         const k=lane.dataset.dbtAttemptKey;
         lane.tabIndex=0;lane.setAttribute('aria-label','Select checkbox '+(i+1));
@@ -834,6 +850,11 @@ style.textContent+=`
 #tracker .tracker-table tr:has(.dbt-empty-check) td:first-child{height:34px!important;min-height:34px!important;max-height:none!important;padding-block:1px!important}
 #tracker .tracker-table tr:has(.dbt-empty-check) .chapter-cell{min-height:30px!important}
 @media(hover:none){#tracker .tracker-table .dbt-empty-check>.cell-week-tools,#tracker .tracker-table .dbt-empty-check>[data-chapter-highlight],#tracker .tracker-table .dbt-empty-check>.dbt-date-stack{opacity:1!important;visibility:visible!important;pointer-events:auto!important}}
+`;
+style.textContent+=`
+#tracker .dbt-hi-main-table .add-check[hidden]{display:none!important}
+#tracker .dbt-hi-main-table .dbt-attempt-missing{visibility:hidden!important;pointer-events:none!important}
+#tracker .dbt-hi-main-table .cell-box.dbt-empty-check .check-stack{min-height:26px!important}
 `;
 document.head.appendChild(style);
 addLaunch();
