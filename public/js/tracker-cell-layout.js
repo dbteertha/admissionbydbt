@@ -4,95 +4,105 @@
 (()=>{
 'use strict';
 if(typeof trackerGetCell!=='function'||typeof renderTrackerRows!=='function')return;
-const currentDate=trackerTaskHighlightDate;
 const currentColumnActive=trackerFieldHighlightActive;
 // A cell-specific highlight date never changes other cells. Legacy column
 // highlights remain supported unless the user explicitly selects cell-only mode.
-trackerTaskHighlightDate=function(field,cell){
-  if(cell&&cell.highlightExcluded===true)return '';
-  if(cell&&typeof cell.chapterHighlightUntil==='string'&&cell.chapterHighlightUntil)
-    return cell.chapterHighlightUntil;
-  if(field&&field.highlightScope==='individual')return '';
-  return currentDate(field,cell);
-};
-trackerFieldHighlightActive=function(field){
-  return !!(field&&field.highlightScope!=='individual'&&currentColumnActive(field));
-};
-const originalBadge=trackerTaskHighlightBadge;
-trackerTaskHighlightBadge=function(s,ch,f,cell){
-  const key=trackerCellKey(s.id,ch.id,f.id);
-  if(cell&&cell.highlightExcluded===true)
-    return '<button class="week-task-highlight-date dbt-highlight-off dbt-highlight-icon" type="button" data-chapter-highlight="'+esc(key)+'" aria-label="Set highlight date for this cell" title="Set highlight date for this cell">📅</button>';
-  const date=trackerTaskHighlightDate(f,cell);
-  if(!date)
-    return '<button class="week-task-highlight-date dbt-highlight-add" type="button" data-chapter-highlight="'+esc(key)+'" title="Highlight this cell only">📅</button>';
-  return originalBadge(s,ch,f,cell);
+function validDate(d){return typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isFinite(Date.parse(d+'T00:00:00'))}
+function datesFor(f,c){
+ if(c?.highlightExcluded===true)return [];
+ const own=[...new Set([...(Array.isArray(c?.highlightDates)?c.highlightDates:[]),c?.chapterHighlightUntil].filter(validDate))].sort();
+ if(own.length)return own;
+ return f?.highlightScope!=='individual'&&validDate(f?.highlightUntil)?[f.highlightUntil]:[];
+}
+function putDates(c,ds){
+ c.highlightDates=[...new Set(ds.filter(validDate))].sort();
+ c.chapterHighlightUntil=c.highlightDates.at(-1)||'';
+ c.highlightExcluded=!c.highlightDates.length;
+ c.updatedAt=new Date().toISOString();
+}
+function hue(d){return ((Math.round(Date.parse(d+'T00:00:00Z')/86400000)*137.508)%360+360)%360}
+function tint(d){return 'hsl('+hue(d)+' 65% 25% / .65)'}
+function short(d){return new Date(d+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
+function dateLabels(ds){return ds.slice(0,2).map(d=>'<span style="color:hsl('+hue(d)+' 85% 75%)">'+esc(short(d))+'</span>').join(' · ')+(ds.length>2?' +'+(ds.length-2):'')}
+trackerTaskHighlightDate=function(f,c){return datesFor(f,c).at(-1)||''};
+trackerFieldHighlightActive=function(f){return !!(f&&f.highlightScope!=='individual'&&currentColumnActive(f))};
+trackerTaskHighlightBadge=function(s,ch,f,c){
+ const key=trackerCellKey(s.id,ch.id,f.id),ds=datesFor(f,c);
+ return '<button type="button" class="week-task-highlight-date dbt-multi-date'+(ds.length?'':' dbt-highlight-icon')+'" data-chapter-highlight="'+esc(key)+'" title="'+esc(ds.join(', ')||'Set highlight dates')+'" aria-label="Edit highlight dates">📅 '+dateLabels(ds)+'</button>';
 };
 trackerOpenChapterHighlightDate=function(key){
-  const ref=trackerResolveCellKey(key);
-  if(!ref)return;
-  const {s,ch,f,cell}=ref;
-  const matches=[...document.querySelectorAll('[data-chapter-highlight]')].filter(el=>el.dataset.chapterHighlight===key);
-  const anchor=matches.find(el=>el===document.activeElement||el.matches(':hover'))||matches[0];
-  if(!anchor)return;
-  const chosen=cell.chapterHighlightUntil||f.highlightUntil||'';
-  const excluded=cell.highlightExcluded===true;
-  trackerShowCellPopover(anchor,
-    '<div class="cell-pop-title">📅 '+esc(ch.name)+' · '+esc(f.name)+'</div>'+
-    '<div class="dbt-date-pop-body">'+
-      '<label class="dbt-date-pop-label">Highlight until <input id="dbtCellHighlightDate" type="date" value="'+esc(chosen)+'"></label>'+
-      '<div class="dbt-date-pop-default">'+(f.highlightScope==='individual'?
-         'Cell-only mode. Other cells keep their individual dates.':
-         'Column-wide date: '+esc(f.highlightUntil?trackerWeekDateText(f.highlightUntil):'None'))+'</div>'+
-      '<label class="dbt-date-pop-check"><input id="dbtCellHighlightOff" type="checkbox" '+(excluded?'checked':'')+'> <span>Do not highlight this cell</span></label>'+
-      '<div class="dbt-date-pop-actions dbt-date-pop-actions-wrap">'+
-        '<button class="cell-pop-btn" type="button" id="dbtDateCancel">Cancel</button>'+
-        '<button class="cell-pop-btn" type="button" id="dbtDateClear">Clear this cell</button>'+
-        '<button class="cell-pop-btn primary" type="button" id="dbtDateSave">Only this cell</button>'+
-        '<button class="cell-pop-btn dbt-date-whole" type="button" id="dbtDateColumn">Whole column</button>'+
-      '</div>'+
-    '</div>'
-  );
-  const input=trackerCellPopover.querySelector('#dbtCellHighlightDate');
-  const off=trackerCellPopover.querySelector('#dbtCellHighlightOff');
-  const close=()=>trackerCloseCellPopover();
-  trackerCellPopover.querySelector('#dbtDateCancel').onclick=close;
-  const commit=mode=>{
-    const date=input.value,skip=off.checked;
-    if((mode==='cell'||mode==='column')&&!skip&&
-      (!/^\d{4}-\d{2}-\d{2}$/.test(date)||!Number.isFinite(Date.parse(date+'T00:00:00')))){
-      trackerToastMsg('Choose a valid date or select Do not highlight');
-      input.focus();return;
-    }
-    const before=JSON.stringify([cell.highlightExcluded===true,cell.chapterHighlightUntil||'',f.highlightScope||'',f.highlightUntil||'']);
-    if(mode==='cell'){
-      if(!skip)cell.chapterHighlightUntil=date;
-      cell.highlightExcluded=skip;
-      // Do not erase the old column deadline. It can be reinstated later
-      // through Whole column; simply suppress its inheritance.
-      f.highlightScope='individual';
-    }else if(mode==='column'){
-      if(!skip)f.highlightUntil=date;
-      f.highlightScope='column';
-      delete cell.chapterHighlightUntil;
-      cell.highlightExcluded=skip;
-    }else if(mode==='clear'){
-      delete cell.chapterHighlightUntil;
-      cell.highlightExcluded=true;
-    }
-    const after=JSON.stringify([cell.highlightExcluded===true,cell.chapterHighlightUntil||'',f.highlightScope||'',f.highlightUntil||'']);
-    close();
-    if(before===after)return;
-    const stamp=new Date().toISOString();
-    cell.updatedAt=stamp;
-    if(mode==='cell'||mode==='column')f.updatedAt=stamp;
-    trackerSave(mode==='column'?'Column highlight changed':mode==='cell'?'Single cell highlight changed':'Cell highlight cleared');
-    trackerToastMsg(mode==='cell'?'Only this cell uses this date':mode==='column'?'Column-wide highlighting enabled':'Highlight disabled for this cell');
-  };
-  trackerCellPopover.querySelector('#dbtDateSave').onclick=()=>commit('cell');
-  trackerCellPopover.querySelector('#dbtDateColumn').onclick=()=>commit('column');
-  trackerCellPopover.querySelector('#dbtDateClear').onclick=()=>commit('clear');
+ const ref=trackerResolveCellKey(key);if(!ref)return;
+ const {ch,f,cell}=ref;
+ const anchors=[...document.querySelectorAll('[data-chapter-highlight]')].filter(el=>el.dataset.chapterHighlight===key);
+ const anchor=anchors.find(el=>el===document.activeElement||el.matches(':hover'))||anchors[0];if(!anchor)return;
+ let draft=datesFor(f,cell).slice(),pending=!draft.length;
+ trackerShowCellPopover(anchor,'<div class="cell-pop-title">'+esc(ch.name)+' · '+esc(f.name)+'</div>'+
+ '<div class="dbt-date-pop-body"><div id="dbtDatesList"></div><label class="dbt-date-pop-label">Date <input id="dbtCellHighlightDate" type="date" value="'+esc(draft.at(-1)||trackerLocalDateKey())+'"></label>'+
+ '<div class="dbt-date-pop-actions dbt-date-pop-actions-wrap"><button type="button" class="cell-pop-btn" id="dbtDateAdd">+ Add date</button><button type="button" class="cell-pop-btn" id="dbtDateClear">Clear</button><button type="button" class="cell-pop-btn" id="dbtDateCancel">Cancel</button><button type="button" class="cell-pop-btn primary" id="dbtDateSave">Save</button><button type="button" class="cell-pop-btn" id="dbtDateColumn">Whole column</button></div></div>');
+ const q=x=>trackerCellPopover.querySelector(x),input=q('#dbtCellHighlightDate'),list=q('#dbtDatesList');
+ function redraw(){
+  list.innerHTML=draft.map(d=>'<div class="dbt-date-entry"><span style="color:hsl('+hue(d)+' 85% 75%)">'+esc(short(d))+'</span><button type="button" class="cell-pop-btn" data-remove-date="'+esc(d)+'" aria-label="Remove '+esc(d)+'">×</button></div>').join('');
+  list.querySelectorAll('[data-remove-date]').forEach(b=>b.onclick=()=>{draft=draft.filter(d=>d!==b.dataset.removeDate);pending=false;redraw()});
+ }
+ function add(){if(!validDate(input.value)){trackerToastMsg('Choose a valid date');return false}draft=[...new Set([...draft,input.value])].sort();pending=false;redraw();return true}
+ q('#dbtDateAdd').onclick=add;
+ q('#dbtDateCancel').onclick=()=>trackerCloseCellPopover();
+ q('#dbtDateClear').onclick=()=>{draft=[];pending=false;redraw()};
+ q('#dbtDateSave').onclick=()=>{
+  if(pending&&!add())return;
+  putDates(cell,draft);trackerCloseCellPopover();trackerSave('Cell highlight dates changed');
+ };
+ input.onchange=()=>{pending=true};
+ q('#dbtDateColumn').onclick=()=>{
+  if(!validDate(input.value)){trackerToastMsg('Choose a valid date');return}
+  const hadOwn=cell.highlightExcluded===true||validDate(cell.chapterHighlightUntil)||(Array.isArray(cell.highlightDates)&&cell.highlightDates.length>0);
+  if(hadOwn)putDates(cell,[...datesFor(f,cell),input.value]);
+  f.highlightUntil=input.value;f.highlightScope='column';f.updatedAt=new Date().toISOString();
+  trackerCloseCellPopover();trackerSave('Column highlight changed');
+ };
+ redraw();
 };
+function decorateDates(root){
+ if(!root)return;
+ root.querySelectorAll('.cell-box[data-sid][data-cid][data-fid]').forEach(box=>{
+  const r=trackerResolveCellKey(trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid));if(!r)return;
+  const td=box.closest('td')||box.closest('.mobile-field');
+  let ds=datesFor(r.f,r.cell).filter(d=>d>=trackerLocalDateKey());
+  if(td?.colSpan>1&&Array.isArray(r.cell.mergedWith))for(const id of r.cell.mergedWith){
+   const f=r.s.fields.find(x=>x.id===id);if(f)ds.push(...datesFor(f,trackerGetCell(r.s.id,r.ch.id,id)).filter(d=>d>=trackerLocalDateKey()));
+  }
+  ds=[...new Set(ds)].sort();
+  if(td&&ds.length){
+   const fill=ds.length===1?tint(ds[0]):'linear-gradient(110deg,'+ds.map((d,i)=>tint(d)+' '+(100*i/ds.length)+'%, '+tint(d)+' '+(100*(i+1)/ds.length)+'%').join(',')+')';
+   td.style.setProperty('--dbt-date-fill',fill);td.classList.add('dbt-date-colored');
+  }else if(td){td.style.removeProperty('--dbt-date-fill');td.classList.remove('dbt-date-colored')}
+  if(td?.colSpan>1&&Array.isArray(r.cell.mergedWith)){
+   for(const id of r.cell.mergedWith){
+    const f=r.s.fields.find(x=>x.id===id);if(!f)continue;
+    const key=trackerCellKey(r.s.id,r.ch.id,id),member=trackerGetCell(r.s.id,r.ch.id,id);
+    if(!datesFor(f,member).length)continue;
+    if(![...box.querySelectorAll('[data-chapter-highlight]')].some(b=>b.dataset.chapterHighlight===key)){
+     const b=document.createElement('button');b.type='button';b.className='week-task-highlight-date dbt-multi-date';
+     b.dataset.chapterHighlight=key;box.appendChild(b);
+    }
+   }
+   const badges=[...box.querySelectorAll('[data-chapter-highlight]')];
+   if(badges.length>1&&!box.querySelector('.dbt-date-stack')){
+    const stack=document.createElement('div');stack.className='dbt-date-stack';
+    box.appendChild(stack);badges.forEach(b=>stack.appendChild(b));
+   }
+  }
+  box.querySelectorAll('[data-chapter-highlight]').forEach(b=>{
+   const ref=trackerResolveCellKey(b.dataset.chapterHighlight);if(!ref)return;
+   const dates=datesFor(ref.f,ref.cell);
+   b.innerHTML='📅 '+dateLabels(dates);
+   b.title=ref.f.name+' · '+(dates.join(', ')||'Set highlight dates');b.setAttribute('aria-label','Edit '+ref.f.name+' highlight dates');b.classList.add('dbt-multi-date');b.classList.toggle('dbt-highlight-icon',!dates.length);
+   b.onclick=e=>{e.preventDefault();e.stopPropagation();trackerOpenChapterHighlightDate(b.dataset.chapterHighlight)};
+  });
+ });
+}
+const baseBind=bindTrackerCells;
+bindTrackerCells=function(root){const out=baseBind.apply(this,arguments);decorateDates(root);return out};
 const isWeek=()=>!!trackerWeekView;
 function fields(s){return trackerVisibleFields(s)}
 function parseSelection(){
@@ -220,6 +230,7 @@ const previousRows=renderTrackerRows;
 renderTrackerRows=function(s){
   const value=previousRows.apply(this,arguments);
   applyMerges(s);
+  decorateDates(document.getElementById('trackerTableHost'));
   return value;
 };
 const previousSelection=trackerUpdateSelectionUI;
@@ -231,6 +242,8 @@ trackerUpdateSelectionUI=function(){
 };
 const style=document.createElement('style');
 style.textContent=`
+.tracker-table tr td.track-cell.dbt-date-colored,.tracker-table tr:nth-child(even) td.track-cell.dbt-date-colored:not(:first-child),.tracker-table tr:hover td.track-cell.dbt-date-colored{background:var(--dbt-date-fill)!important;box-shadow:none!important}.tracker-table td.track-cell.dbt-date-colored .cell-box:not(.selected){background:transparent!important;border-color:rgba(255,255,255,.1)!important}.mobile-field.dbt-date-colored .cell-box:not(.selected){background:var(--dbt-date-fill)!important}.dbt-multi-date{white-space:nowrap!important;max-width:calc(100% - 8px)!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:9px!important}.dbt-multi-date.dbt-highlight-icon{font-size:11px!important;background:transparent!important;border-color:transparent!important}.dbt-date-colored .dbt-multi-date{background:rgba(8,12,18,.58)!important;border-color:rgba(255,255,255,.14)!important}#dbtDatesList{max-height:180px;overflow:auto}.dbt-date-stack{position:absolute;right:8px;bottom:20px;z-index:3;display:flex;justify-content:flex-end;gap:3px;flex-wrap:wrap;max-width:calc(100% - 16px)}.dbt-hi-main-table .dbt-date-stack{top:3px;bottom:auto;right:4px}#tracker .tracker-table .dbt-date-stack .week-task-highlight-date{position:static!important;inset:auto!important;max-width:100%!important;flex:0 1 auto!important;margin:0!important}.dbt-date-entry{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}.dbt-date-entry button{padding:2px 7px!important}
+
 .dbt-highlight-off{opacity:.8!important;border-color:rgba(160,170,185,.25)!important;background:rgba(122,134,154,.08)!important;color:#b7c0cd!important}
 .dbt-highlight-off.dbt-highlight-icon{display:inline-flex!important;align-items:center;justify-content:center;min-width:24px!important;width:24px!important;min-height:19px!important;padding:1px 3px!important;font-size:12px!important;line-height:1.1!important;white-space:nowrap!important;background:transparent!important;border:1px solid rgba(151,185,232,.16)!important;border-radius:5px!important;color:#a4b4c9!important;opacity:.7!important}
 .dbt-highlight-off.dbt-highlight-icon:hover,.dbt-highlight-off.dbt-highlight-icon:focus-visible{opacity:1!important;border-color:rgba(151,185,232,.5)!important;color:#eef4ff!important}
@@ -281,7 +294,7 @@ function trackerBindSelectedCellHighlight(){
         '<div class="dbt-date-pop-actions dbt-date-pop-actions-wrap">'+
           '<button class="cell-pop-btn" type="button" id="dbtSelectedHighlightCancel">Cancel</button>'+
           '<button class="cell-pop-btn" type="button" id="dbtSelectedHighlightClear">Clear selected</button>'+
-          '<button class="cell-pop-btn primary" type="button" id="dbtSelectedHighlightApply">Apply to selected</button>'+
+          '<button class="cell-pop-btn primary" type="button" id="dbtSelectedHighlightApply">Add to selected</button>'+
         '</div>'+
       '</div>'
     );
@@ -293,24 +306,22 @@ function trackerBindSelectedCellHighlight(){
       }
       const stamp=new Date().toISOString();
       let changes=0;
-      const fieldChanges=new Map();
-      for(const {s,f,cell} of refs){
+      for(const {f,cell} of refs){
         // A column can carry an old default date, but selected-cell mode
         // must not pass that date through to unselected chapter cells.
-        if(f.highlightScope!=='individual')fieldChanges.set(s.id+'|'+f.id,f);
+        // Explicit dates override inheritance for each selected cell only.
         if(clear){
           if(cell.highlightExcluded!==true||cell.chapterHighlightUntil){
             delete cell.chapterHighlightUntil;
+            cell.highlightDates=[];
             cell.highlightExcluded=true;
             cell.updatedAt=stamp;changes++;
           }
-        }else if(cell.highlightExcluded===true||cell.chapterHighlightUntil!==date){
-          cell.chapterHighlightUntil=date;
-          cell.highlightExcluded=false;
+        }else if(!datesFor(f,cell).includes(date)){
+          putDates(cell,[...datesFor(f,cell),date]);
           cell.updatedAt=stamp;changes++;
         }
       }
-      fieldChanges.forEach(f=>{f.highlightScope='individual';f.updatedAt=stamp;changes++});
       trackerCloseCellPopover();
       if(changes){
         trackerSave(clear?'Selected cell highlights cleared':'Selected cells highlighted');
