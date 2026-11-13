@@ -8,9 +8,10 @@ const currentColumnActive=trackerFieldHighlightActive;
 // A cell-specific highlight date never changes other cells. Legacy column
 // highlights remain supported unless the user explicitly selects cell-only mode.
 function validDate(d){return typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isFinite(Date.parse(d+'T00:00:00'))}
+function storedDates(c){return [...new Set([...(Array.isArray(c?.highlightDates)?c.highlightDates:[]),c?.chapterHighlightUntil].filter(validDate))].sort()}
 function datesFor(f,c){
  if(c?.highlightExcluded===true)return [];
- const own=[...new Set([...(Array.isArray(c?.highlightDates)?c.highlightDates:[]),c?.chapterHighlightUntil].filter(validDate))].sort();
+ const own=storedDates(c);
  if(own.length)return own;
  return f?.highlightScope!=='individual'&&validDate(f?.highlightUntil)?[f.highlightUntil]:[];
 }
@@ -173,6 +174,7 @@ function decorateDates(root){
     b.classList.add('dbt-multi-date');b.classList.add('dbt-highlight-icon');
     b.onclick=e=>{e.preventDefault();e.stopPropagation();trackerOpenChapterHighlightDate(b.dataset.chapterHighlight)};
   });
+  if(trackerPath()==='/tracker/weekly'&&root===document.getElementById('trackerTableHost'))renderWeeklyDateLegend(root);
 }
 // Shared date membership and navigation for the table, legend and PDF Studio.
 function activeDatesFor(f,c){return datesFor(f,c).filter(d=>d>=trackerLocalDateKey())}
@@ -201,6 +203,7 @@ function renderDateLegend(host,selected,onChoose,includeAll){
   if(selected&&!ds.includes(selected))ds.push(selected);
   ds.sort();
   host.className='dbt-date-legend';
+  host.setAttribute('role','group');host.setAttribute('aria-label','Open highlighted by date');
   host.hidden=!ds.length&&!includeAll;
   host.innerHTML='<span class="dbt-date-legend-title">Highlights</span>'+
     (includeAll?'<button type="button" class="dbt-date-chip'+(!selected?' active':'')+'" data-dbt-filter-date="" aria-pressed="'+(!selected)+'">All dates</button>':'')+
@@ -225,6 +228,12 @@ function renderMainDateLegend(){
   }
   renderDateLegend(host,'',date=>window.open(highlightedUrl(date,false),'_blank','noopener'),false);
 }
+function renderWeeklyDateLegend(root){
+  const head=root.querySelector('.week-simple-head');if(!head)return;
+  let host=root.querySelector('#dbtWeeklyDateLegend');
+  if(!host){host=document.createElement('div');host.id='dbtWeeklyDateLegend';head.insertAdjacentElement('afterend',host);}
+  renderDateLegend(host,'',date=>window.open(highlightedUrl(date,false),'_blank','noopener'),false);
+}
 function addDateToColumn(s,f,date){
   if(!validDate(date))return 0;
   let count=0;
@@ -233,8 +242,8 @@ function addDateToColumn(s,f,date){
     const before=datesFor(f,cell);
     if(before.includes(date))continue;
     // Explicit whole-column action targets every existing chapter, including
-    // excluded cells. Preserve all previously effective dates.
-    putDates(cell,[...before,date]);count++;
+    // excluded cells. Preserve every saved and previously effective date.
+    putDates(cell,[...before,...storedDates(cell),date]);count++;
   }
   if(count)trackerSave('Added highlight date to column '+f.name);
   return count;
@@ -244,7 +253,7 @@ function openColumnDate(anchor,s,f){
     '<div class="cell-pop-title">'+esc(s.name)+' · '+esc(f.name)+'</div>'+
     '<div class="dbt-date-pop-body"><label class="dbt-date-pop-label">Date <input id="dbtColumnHighlightInput" type="date" value="'+esc(trackerLocalDateKey())+'"></label>'+
     '<div class="dbt-date-pop-actions"><button type="button" class="cell-pop-btn" id="dbtColumnHighlightCancel">Cancel</button>'+
-    '<button type="button" class="cell-pop-btn primary" id="dbtColumnHighlightApply">Add to whole column</button></div></div>');
+    '<button type="button" class="cell-pop-btn primary" id="dbtColumnHighlightApply">Add to all '+s.chapters.length+' chapters</button></div></div>');
   const input=trackerCellPopover.querySelector('#dbtColumnHighlightInput');
   trackerCellPopover.querySelector('#dbtColumnHighlightCancel').onclick=()=>trackerCloseCellPopover();
   trackerCellPopover.querySelector('#dbtColumnHighlightApply').onclick=()=>{
