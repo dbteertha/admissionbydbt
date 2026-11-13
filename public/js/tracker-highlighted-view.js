@@ -82,11 +82,12 @@ function highlightedSelectionBindings(){
  const selectAll=document.getElementById('dbtHighlightedSelectAll');
  if(selectAll)selectAll.onclick=()=>highlightedSelectKeys(highlightedVisibleKeys());
  const allowed=new Set(highlightedVisibleKeys());
+ for(const key of [...trackerSelectedCells])if(!allowed.has(key))trackerSelectedCells.delete(key);
  trackerTableHost.querySelectorAll('[data-hi-select-column]').forEach(b=>b.onclick=e=>{
    e.stopPropagation();e.preventDefault();
    const s=trackerState.subjects.find(x=>x.id===highlightedSubjectId);
    if(!s)return;
-   highlightedSelectKeys(s.chapters.map(ch=>trackerCellKey(s.id,ch.id,b.dataset.hiSelectColumn)).filter(k=>allowed.has(k)));
+   highlightedSelectKeys([...new Set(s.chapters.map(ch=>{const id=b.dataset.hiSelectColumn;const merge=highlightedMerges(s,ch).find(g=>g.members.includes(id));return trackerCellKey(s.id,ch.id,merge?merge.anchor:id)}).filter(k=>allowed.has(k)))]);
  });
  trackerTableHost.querySelectorAll('[data-hi-select-row]').forEach(b=>b.onclick=e=>{
    e.stopPropagation();e.preventDefault();
@@ -198,6 +199,7 @@ function renderHighlighted(){
     };
   });
   bindTrackerCells(trackerTableHost);
+  highlights.bindColumnDateButtons(trackerTableHost,current);
   highlightedSelectionBindings();
 }
 const baseRender=renderThisWeekView;
@@ -251,7 +253,8 @@ body.tracker-week-page:has(.dbt-hi-main-table) #trackerBulkBar.show .bulk-live-h
 .dbt-hi-main-table .chapter-name{min-width:0}
 .dbt-hi-main-table .chapter-name strong{white-space:normal;overflow-wrap:anywhere}
 .dbt-hi-main-table td.track-cell{padding:3px 4px}
-.dbt-hi-main-table td.dbt-hi-merged{min-width:0!important;padding:3px 4px!important}\n.dbt-hi-main-table td.dbt-hi-empty{background:#0a0f16!important;opacity:.25}
+.dbt-hi-main-table td.dbt-hi-merged{min-width:0!important;padding:3px 4px!important}
+.dbt-hi-main-table td.dbt-hi-empty{background:#0a0f16!important;opacity:.25}
 .dbt-hi-main-table .cell-box{min-height:43px!important}
 @media(max-width:680px){.dbt-open-highlighted{font-size:10px;padding:5px 7px;margin-right:4px}.dbt-hi-subtab{flex-basis:90px}.dbt-hi-main-table-wrap{max-height:calc(100vh - 185px)}}
 `;
