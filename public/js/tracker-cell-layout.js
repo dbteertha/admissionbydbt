@@ -191,7 +191,9 @@ trackerOpenChapterHighlightDate=function(key){
  const {ch,f,cell}=ref;
  const anchors=[...document.querySelectorAll('[data-chapter-highlight],[data-dbt-edit-date]')].filter(el=>el.dataset.chapterHighlight===key||el.dataset.dbtEditDate===key);
  const anchor=anchors.find(el=>el===document.activeElement||el.matches(':hover'))||anchors[0];if(!anchor)return;
- let draft=datesFor(f,cell).slice(),pending=!draft.length;
+ const originalDates=datesFor(f,cell).slice();
+ const selected=trackerSelectedCells.has(key)?[...trackerSelectedCells].map(k=>trackerResolveCellKey(k)).filter(Boolean):[ref];
+ let draft=originalDates.slice(),pending=!draft.length,clearAll=false;
  trackerShowCellPopover(anchor,'<div class="cell-pop-title">'+esc(ch.name)+' · '+esc(f.name)+'</div>'+
  '<div class="dbt-date-pop-body"><div id="dbtDatesList"></div><label class="dbt-date-pop-label">Date <input id="dbtCellHighlightDate" type="date" value="'+esc(draft.at(-1)||trackerLocalDateKey())+'"></label>'+
  '<div class="dbt-date-pop-actions dbt-date-pop-actions-wrap"><button type="button" class="cell-pop-btn" id="dbtDateAdd">+ Add date</button><button type="button" class="cell-pop-btn" id="dbtDateClear">Clear</button><button type="button" class="cell-pop-btn" id="dbtDateCancel">Cancel</button><button type="button" class="cell-pop-btn primary" id="dbtDateSave">Save</button><button type="button" class="cell-pop-btn" id="dbtDateColumn">Whole column</button></div></div>');
@@ -203,10 +205,15 @@ trackerOpenChapterHighlightDate=function(key){
  function add(){if(!validDate(input.value)){trackerToastMsg('Choose a valid date');return false}draft=[...new Set([...draft,input.value])].sort();pending=false;redraw();return true}
  q('#dbtDateAdd').onclick=add;
  q('#dbtDateCancel').onclick=()=>trackerCloseCellPopover();
- q('#dbtDateClear').onclick=()=>{draft=[];pending=false;redraw()};
+ q('#dbtDateClear').onclick=()=>{draft=[];pending=false;clearAll=true;redraw()};
  q('#dbtDateSave').onclick=()=>{
   if(pending&&!add())return;
-  putDates(cell,draft);trackerCloseCellPopover();trackerSave('Cell highlight dates changed');
+  const added=draft.filter(d=>!originalDates.includes(d)),removed=originalDates.filter(d=>!draft.includes(d));
+  for(const target of selected){
+    const existing=datesFor(target.f,target.cell);
+    putDates(target.cell,clearAll?draft:[...existing.filter(d=>!removed.includes(d)),...added]);
+  }
+  trackerCloseCellPopover();trackerSave('Selected cell highlight dates changed');
  };
  input.onchange=()=>{pending=true};
  q('#dbtDateColumn').onclick=()=>{
