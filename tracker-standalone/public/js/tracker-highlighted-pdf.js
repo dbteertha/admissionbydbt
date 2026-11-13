@@ -11,7 +11,9 @@ function highlightedRefs(){
     for(const ch of s.chapters||[]){
       for(const f of trackerVisibleFields(s)){
         const cell=trackerGetCell(s.id,ch.id,f.id);
-        if(!trackerTaskHighlightActive(f,cell))continue;
+        const api=window.dbtHighlightDates;
+        const date=trackerPath()==='/tracker/pdf/highlighted'||trackerPath()==='/tracker/highlighted'?api?.readFilter()||'':'';
+        if(!(api?api.matchesDate(f,cell,date):trackerTaskHighlightActive(f,cell)))continue;
         results.push({s,ch,f,cell,key:trackerCellKey(s.id,ch.id,f.id)});
       }
     }
@@ -55,4 +57,5 @@ style.textContent=`
 `;
 document.head.appendChild(style);
 addButton();
+if(trackerPath()==='/tracker/pdf/highlighted'&&trackerPdfStudioRouteActive&&trackerPdfSourceMode==='highlighted'&&typeof trackerRefreshWeeklyPdfPreview==='function')trackerRefreshWeeklyPdfPreview(true);
 })();
