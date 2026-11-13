@@ -8,9 +8,10 @@ const currentColumnActive=trackerFieldHighlightActive;
 // A cell-specific highlight date never changes other cells. Legacy column
 // highlights remain supported unless the user explicitly selects cell-only mode.
 function validDate(d){return typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isFinite(Date.parse(d+'T00:00:00'))}
+function storedDates(c){return [...new Set([...(Array.isArray(c?.highlightDates)?c.highlightDates:[]),c?.chapterHighlightUntil].filter(validDate))].sort()}
 function datesFor(f,c){
  if(c?.highlightExcluded===true)return [];
- const own=[...new Set([...(Array.isArray(c?.highlightDates)?c.highlightDates:[]),c?.chapterHighlightUntil].filter(validDate))].sort();
+ const own=storedDates(c);
  if(own.length)return own;
  return f?.highlightScope!=='individual'&&validDate(f?.highlightUntil)?[f.highlightUntil]:[];
 }
@@ -72,9 +73,57 @@ function renderMainHighlightLegend(){
  if(!host){host=document.createElement('div');host.id='dbtMainHighlightLegend';wrap.before(host);}
  host.innerHTML=html;
 }
+function addDateToColumn(s,f,date){
+  if(!validDate(date))return 0;
+  let count=0;
+  for(const ch of s.chapters||[]){
+    const cell=trackerGetCell(s.id,ch.id,f.id);
+    const before=datesFor(f,cell);
+    if(before.includes(date))continue;
+    // Explicit whole-column action targets every existing chapter, including
+    // excluded cells. Preserve every saved and previously effective date.
+    putDates(cell,[...before,...storedDates(cell),date]);count++;
+  }
+  if(count)trackerSave('Added highlight date to column '+f.name);
+  return count;
+}
+function openColumnDate(anchor,s,f){
+  trackerShowCellPopover(anchor,
+    '<div class="cell-pop-title">'+esc(s.name)+' · '+esc(f.name)+'</div>'+
+    '<div class="dbt-date-pop-body"><label class="dbt-date-pop-label">Date <input id="dbtColumnHighlightInput" type="date" value="'+esc(trackerLocalDateKey())+'"></label>'+
+    '<div class="dbt-date-pop-actions"><button type="button" class="cell-pop-btn" id="dbtColumnHighlightCancel">Cancel</button>'+
+    '<button type="button" class="cell-pop-btn primary" id="dbtColumnHighlightApply">Add to all '+s.chapters.length+' chapters</button></div></div>');
+  const input=trackerCellPopover.querySelector('#dbtColumnHighlightInput');
+  trackerCellPopover.querySelector('#dbtColumnHighlightCancel').onclick=()=>trackerCloseCellPopover();
+  trackerCellPopover.querySelector('#dbtColumnHighlightApply').onclick=()=>{
+    const date=input.value;
+    if(!validDate(date)){trackerToastMsg('Choose a valid date');input.focus();return}
+    trackerCloseCellPopover();
+    const n=addDateToColumn(s,f,date);
+    trackerToastMsg(n?'Added '+short(date)+' to '+n+' cells':'All cells already have '+short(date));
+  };
+}
+function bindColumnDateButtons(root,s){
+  if(!root||!s)return;
+  root.querySelectorAll('thead .field-head').forEach(head=>{
+    const edit=head.querySelector('[data-edit-field]');
+    const selector=head.querySelector('[data-hi-select-column]');
+    const id=edit?.dataset.editField||selector?.dataset.hiSelectColumn;
+    const f=trackerVisibleFields(s).find(x=>x.id===id);
+    if(!f||head.querySelector('.dbt-column-calendar'))return;
+    head.classList.add('dbt-column-date-head');
+    head.querySelectorAll('.field-until-badge').forEach(el=>el.remove());
+    const b=document.createElement('button');b.type='button';b.className='dbt-column-calendar';
+    b.textContent='📅';b.title='Add highlight date to all '+f.name+' cells';
+    b.setAttribute('aria-label',b.title);
+    b.onclick=e=>{e.preventDefault();e.stopPropagation();openColumnDate(b,s,f)};
+    head.appendChild(b);
+  });
+}
+
 window.dbtHighlightDates=Object.freeze({
  datesFor, matches:matchesHighlightDate, filterDate:highlightFilterDate,
- activeDates:activeHighlightDates, url:highlightedUrl, legendHtml:highlightLegendHtml
+ activeDates:activeHighlightDates, url:highlightedUrl, legendHtml:highlightLegendHtml, addDateToColumn, bindColumnDateButtons
 });
 
 trackerTaskHighlightDate=function(f,c){return datesFor(f,c).at(-1)||''};
@@ -108,10 +157,9 @@ trackerOpenChapterHighlightDate=function(key){
  input.onchange=()=>{pending=true};
  q('#dbtDateColumn').onclick=()=>{
   if(!validDate(input.value)){trackerToastMsg('Choose a valid date');return}
-  const hadOwn=cell.highlightExcluded===true||validDate(cell.chapterHighlightUntil)||(Array.isArray(cell.highlightDates)&&cell.highlightDates.length>0);
-  if(hadOwn)putDates(cell,[...datesFor(f,cell),input.value]);
-  f.highlightUntil=input.value;f.highlightScope='column';f.updatedAt=new Date().toISOString();
-  trackerCloseCellPopover();trackerSave('Column highlight changed');
+  trackerCloseCellPopover();
+  const n=addDateToColumn(ref.s,f,input.value);
+  trackerToastMsg(n?'Added '+short(input.value)+' to '+n+' cells':'All cells already have '+short(input.value));
  };
  redraw();
 };
@@ -359,6 +407,7 @@ renderTrackerRows=function(s){
   applyMerges(s);
   decorateDates(document.getElementById('trackerTableHost'));
   renderMainHighlightLegend();
+  if(!isWeek())bindColumnDateButtons(document.getElementById('trackerTableHost'),s);
   return value;
 };
 const previousSelection=trackerUpdateSelectionUI;
@@ -371,6 +420,15 @@ trackerUpdateSelectionUI=function(){
 const style=document.createElement('style');
 style.textContent=`
 /* Date colors are confined to checkboxes and the shared legend. */
+#tracker .tracker-table th .field-head.dbt-column-date-head{display:flex!important;align-items:center!important;justify-content:center!important;gap:3px!important}
+#tracker .tracker-table th .field-head.dbt-column-date-head>button,#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-reorder-controls{position:static!important;inset:auto!important;transform:none!important;margin:0!important;flex:0 0 auto!important}
+#tracker .tracker-table th .field-head.dbt-column-date-head>.col-select-btn{order:0}
+#tracker .tracker-table th .field-head.dbt-column-date-head>span:not(.dbt-reorder-controls){order:1}
+#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-column-calendar{order:2;display:inline-flex!important;align-items:center!important;justify-content:center!important;width:20px!important;height:21px!important;padding:1px!important;font-size:11px!important;line-height:1!important;opacity:.8!important;pointer-events:auto!important;cursor:pointer}
+#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-column-calendar:hover,#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-column-calendar:focus-visible{opacity:1!important;border-color:rgba(170,185,205,.35)!important}
+#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-reorder-controls{order:3}
+#tracker .tracker-table th .field-head.dbt-column-date-head>button[data-edit-field]{order:4}
+
 #tracker .dbt-highlight-legend{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:4px 0;min-width:0}
 #tracker #dbtMainHighlightLegend{flex:0 0 auto;min-width:0;margin:0 0 4px}
 #tracker .dbt-highlight-legend-label{color:#a3adb9;font-size:10px;font-weight:650;white-space:nowrap;margin-right:3px}
