@@ -22,12 +22,11 @@ function putDates(c,ds){
 }
 function hue(d){return ((Math.round(Date.parse(d+'T00:00:00Z')/86400000)*137.508)%360+360)%360}
 function short(d){return new Date(d+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
-function dateLabels(ds){return ds.slice(0,2).map(d=>esc(short(d))).join(' · ')+(ds.length>2?' +'+(ds.length-2):'')}
 trackerTaskHighlightDate=function(f,c){return datesFor(f,c).at(-1)||''};
 trackerFieldHighlightActive=function(f){return !!(f&&f.highlightScope!=='individual'&&currentColumnActive(f))};
 trackerTaskHighlightBadge=function(s,ch,f,c){
  const key=trackerCellKey(s.id,ch.id,f.id),ds=datesFor(f,c);
- return '<button type="button" class="week-task-highlight-date dbt-multi-date'+(f.type==='checkbox'||!ds.length?' dbt-highlight-icon':'')+'" data-chapter-highlight="'+esc(key)+'" title="'+esc(ds.join(', ')||'Set highlight dates')+'" aria-label="Edit highlight dates">📅'+(f.type==='checkbox'||!ds.length?'':' '+dateLabels(ds))+'</button>';
+ return '<button type="button" class="week-task-highlight-date dbt-multi-date dbt-highlight-icon" data-chapter-highlight="'+esc(key)+'" title="'+esc(ds.join(', ')||'Set highlight dates')+'" aria-label="Edit highlight dates">📅</button>';
 };
 trackerOpenChapterHighlightDate=function(key){
  const ref=trackerResolveCellKey(key);if(!ref)return;
@@ -54,10 +53,9 @@ trackerOpenChapterHighlightDate=function(key){
  input.onchange=()=>{pending=true};
  q('#dbtDateColumn').onclick=()=>{
   if(!validDate(input.value)){trackerToastMsg('Choose a valid date');return}
-  const hadOwn=cell.highlightExcluded===true||validDate(cell.chapterHighlightUntil)||(Array.isArray(cell.highlightDates)&&cell.highlightDates.length>0);
-  if(hadOwn)putDates(cell,[...datesFor(f,cell),input.value]);
-  f.highlightUntil=input.value;f.highlightScope='column';f.updatedAt=new Date().toISOString();
-  trackerCloseCellPopover();trackerSave('Column highlight changed');
+  trackerCloseCellPopover();
+  const n=addDateToColumn(ref.s,f,input.value);
+  trackerToastMsg(n?'Added '+short(input.value)+' to '+n+' cells':'All cells already have '+short(input.value));
  };
  redraw();
 };
@@ -76,16 +74,6 @@ function attemptDateSlots(r,td){
     if(!byDate.has(date))byDate.set(date,{date,ref});
   }
   return [...byDate.values()].sort((a,b)=>a.date.localeCompare(b.date));
-}
-function appendAttemptDate(parent,slot){
-  const label=document.createElement('button');
-  label.type='button';label.className='dbt-attempt-date';
-  label.textContent=short(slot.date);
-  label.title=slot.ref.f.name+' · '+slot.date+' — edit dates';
-  label.setAttribute('aria-label','Edit '+slot.ref.f.name+' highlight date '+slot.date);
-  label.dataset.dbtEditDate=slot.ref.key;
-  label.onclick=e=>{e.preventDefault();e.stopPropagation();trackerOpenChapterHighlightDate(slot.ref.key)};
-  parent.appendChild(label);
 }
 function addAttemptForDate(r,index){
   const checks=trackerCheckboxItems(r.cell);
@@ -126,7 +114,7 @@ function decorateDates(root){
           check.removeAttribute('title');check.removeAttribute('aria-label');delete check.dataset.dbtHighlightDate;
         }
         const slot=slots[i];
-        attempt.classList.toggle('dbt-attempt-slot',has);
+        attempt.classList.remove('dbt-attempt-slot');
         if(!slot)return;
         check.dataset.dbtHighlightDate=slot.date;
         check.title='Attempt '+(i+1)+' · '+slot.date;
@@ -137,7 +125,6 @@ function decorateDates(root){
           check.style.setProperty('--dbt-check-color','hsl('+h+' 72% 65%)');
           check.style.setProperty('--dbt-check-tint','hsl('+h+' 58% 25%)');
         }
-        appendAttemptDate(attempt,slot);
       });
       // Existing dates without attempts remain visible. Only an explicit click
       // creates real unchecked attempts, avoiding a silent change to progress.
@@ -149,7 +136,11 @@ function decorateDates(root){
         plus.title='Add missing checkboxes through '+slot.date;
         plus.setAttribute('aria-label','Add checkbox for '+slot.date);
         plus.onclick=e=>{e.preventDefault();e.stopPropagation();addAttemptForDate(r,index)};
-        wrap.appendChild(plus);appendAttemptDate(wrap,slot);
+        if(slot.date>=trackerLocalDateKey()){
+          const h=hue(slot.date);plus.style.setProperty('--dbt-check-color','hsl('+h+' 72% 65%)');
+          plus.style.setProperty('--dbt-check-tint','hsl('+h+' 58% 25%)');
+        }
+        wrap.appendChild(plus);
         const add=stack.querySelector('.add-check');
         if(add)stack.insertBefore(wrap,add);else stack.appendChild(wrap);
       });
@@ -172,18 +163,117 @@ function decorateDates(root){
       }
     }
   });
-  // Checkbox cells use a calendar icon, with their dates below the attempts.
-  // Non-checkbox cells retain a neutral short-date label.
+  // The calendar opens the date editor. Dates are mapped by the top legend.
   root.querySelectorAll('button[data-chapter-highlight]').forEach(b=>{
     const ref=trackerResolveCellKey(b.dataset.chapterHighlight);if(!ref)return;
-    const dates=datesFor(ref.f,ref.cell),iconOnly=ref.f.type==='checkbox'||!!b.closest('.multi-check');
-    b.innerHTML='📅'+(!iconOnly&&dates.length?' '+dateLabels(dates):'');
+    const dates=datesFor(ref.f,ref.cell);
+    b.innerHTML='📅';
     b.title=ref.f.name+' · '+(dates.join(', ')||'Set highlight dates');
     b.setAttribute('aria-label','Edit '+ref.f.name+' highlight dates');
-    b.classList.add('dbt-multi-date');b.classList.toggle('dbt-highlight-icon',iconOnly||!dates.length);
+    b.classList.add('dbt-multi-date');b.classList.add('dbt-highlight-icon');
     b.onclick=e=>{e.preventDefault();e.stopPropagation();trackerOpenChapterHighlightDate(b.dataset.chapterHighlight)};
   });
 }
+// Shared date membership and navigation for the table, legend and PDF Studio.
+function activeDatesFor(f,c){return datesFor(f,c).filter(d=>d>=trackerLocalDateKey())}
+function readFilter(){
+  const date=new URLSearchParams(location.search).get('date')||'';
+  return validDate(date)?date:'';
+}
+function matchesDate(f,c,date){
+  const ds=activeDatesFor(f,c);
+  return date?ds.includes(date):ds.length>0;
+}
+function highlightedUrl(date,pdf){
+  return (pdf?'/tracker/pdf/highlighted':'/tracker/highlighted')+(validDate(date)?'?date='+encodeURIComponent(date):'');
+}
+function collectActiveDates(){
+  const dates=new Set();
+  for(const s of trackerState.subjects||[])for(const ch of s.chapters||[])for(const f of trackerVisibleFields(s)){
+    const c=trackerState.cells?.[trackerCellKey(s.id,ch.id,f.id)];
+    for(const d of activeDatesFor(f,c))dates.add(d);
+  }
+  return [...dates].sort();
+}
+function renderDateLegend(host,selected,onChoose,includeAll){
+  if(!host)return;
+  const ds=collectActiveDates();
+  if(selected&&!ds.includes(selected))ds.push(selected);
+  ds.sort();
+  host.className='dbt-date-legend';
+  host.hidden=!ds.length&&!includeAll;
+  host.innerHTML='<span class="dbt-date-legend-title">Highlights</span>'+
+    (includeAll?'<button type="button" class="dbt-date-chip'+(!selected?' active':'')+'" data-dbt-filter-date="" aria-pressed="'+(!selected)+'">All dates</button>':'')+
+    ds.map(d=>{
+      const sameShort=ds.some(other=>other!==d&&short(other)===short(d));
+      const text=short(d)+(sameShort?' '+d.slice(0,4):'');
+      return '<button type="button" class="dbt-date-chip'+(selected===d?' active':'')+'" data-dbt-filter-date="'+esc(d)+'" aria-pressed="'+(selected===d)+'" title="Open highlighted cells for '+esc(d)+'"><span class="dbt-date-swatch" style="--dbt-swatch:hsl('+hue(d)+' 72% 65%)"></span>'+esc(text)+'</button>';
+    }).join('');
+  host.querySelectorAll('[data-dbt-filter-date]').forEach(b=>b.onclick=()=>{
+    const date=b.dataset.dbtFilterDate||'';
+    onChoose(date);
+  });
+}
+function renderMainDateLegend(){
+  if(trackerWeekView)return;
+  const bar=document.querySelector('#tracker .week-launchbar');
+  if(!bar)return;
+  let host=document.getElementById('dbtMainDateLegend');
+  if(!host){
+    host=document.createElement('div');host.id='dbtMainDateLegend';
+    bar.insertAdjacentElement('afterend',host);
+  }
+  renderDateLegend(host,'',date=>window.open(highlightedUrl(date,false),'_blank','noopener'),false);
+}
+function addDateToColumn(s,f,date){
+  if(!validDate(date))return 0;
+  let count=0;
+  for(const ch of s.chapters||[]){
+    const cell=trackerGetCell(s.id,ch.id,f.id);
+    const before=datesFor(f,cell);
+    if(before.includes(date))continue;
+    // Explicit whole-column action targets every existing chapter, including
+    // excluded cells. Preserve all previously effective dates.
+    putDates(cell,[...before,date]);count++;
+  }
+  if(count)trackerSave('Added highlight date to column '+f.name);
+  return count;
+}
+function openColumnDate(anchor,s,f){
+  trackerShowCellPopover(anchor,
+    '<div class="cell-pop-title">'+esc(s.name)+' · '+esc(f.name)+'</div>'+
+    '<div class="dbt-date-pop-body"><label class="dbt-date-pop-label">Date <input id="dbtColumnHighlightInput" type="date" value="'+esc(trackerLocalDateKey())+'"></label>'+
+    '<div class="dbt-date-pop-actions"><button type="button" class="cell-pop-btn" id="dbtColumnHighlightCancel">Cancel</button>'+
+    '<button type="button" class="cell-pop-btn primary" id="dbtColumnHighlightApply">Add to whole column</button></div></div>');
+  const input=trackerCellPopover.querySelector('#dbtColumnHighlightInput');
+  trackerCellPopover.querySelector('#dbtColumnHighlightCancel').onclick=()=>trackerCloseCellPopover();
+  trackerCellPopover.querySelector('#dbtColumnHighlightApply').onclick=()=>{
+    const date=input.value;
+    if(!validDate(date)){trackerToastMsg('Choose a valid date');input.focus();return}
+    trackerCloseCellPopover();
+    const n=addDateToColumn(s,f,date);
+    trackerToastMsg(n?'Added '+short(date)+' to '+n+' cells':'All cells already have '+short(date));
+  };
+}
+function bindColumnDateButtons(root,s){
+  if(!root||!s)return;
+  root.querySelectorAll('thead .field-head').forEach(head=>{
+    const edit=head.querySelector('[data-edit-field]');
+    const selector=head.querySelector('[data-hi-select-column]');
+    const id=edit?.dataset.editField||selector?.dataset.hiSelectColumn;
+    const f=trackerVisibleFields(s).find(x=>x.id===id);
+    if(!f||head.querySelector('.dbt-column-calendar'))return;
+    head.classList.add('dbt-column-date-head');
+    head.querySelectorAll('.field-until-badge').forEach(el=>el.remove());
+    const b=document.createElement('button');b.type='button';b.className='dbt-column-calendar';
+    b.textContent='📅';b.title='Add highlight date to all '+f.name+' cells';
+    b.setAttribute('aria-label',b.title);
+    b.onclick=e=>{e.preventDefault();e.stopPropagation();openColumnDate(b,s,f)};
+    head.appendChild(b);
+  });
+}
+window.dbtHighlightDates={datesFor,activeDatesFor,matchesDate,readFilter,highlightedUrl,collectActiveDates,renderDateLegend,addDateToColumn,bindColumnDateButtons};
+
 const baseBind=bindTrackerCells;
 bindTrackerCells=function(root){const out=baseBind.apply(this,arguments);decorateDates(root);return out};
 const isWeek=()=>!!trackerWeekView;
@@ -313,7 +403,9 @@ const previousRows=renderTrackerRows;
 renderTrackerRows=function(s){
   const value=previousRows.apply(this,arguments);
   applyMerges(s);
-  decorateDates(document.getElementById('trackerTableHost'));
+  const host=document.getElementById('trackerTableHost');
+  decorateDates(host);
+  if(!isWeek()){renderMainDateLegend();bindColumnDateButtons(host,s);}
   return value;
 };
 const previousSelection=trackerUpdateSelectionUI;
@@ -325,25 +417,30 @@ trackerUpdateSelectionUI=function(){
 };
 const style=document.createElement('style');
 style.textContent=`
-/* Dates belong to attempts, not to table backgrounds. */
-#tracker .field-until-badge{color:#929daa!important}
-#tracker .week-task-highlight-date.dbt-multi-date{color:#aeb8c5!important;background:transparent!important;border:1px solid rgba(150,165,185,.16)!important;white-space:nowrap!important;max-width:calc(100% - 8px)!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:9px!important}
-#tracker .week-task-highlight-date.dbt-multi-date.dbt-highlight-icon{font-size:11px!important;padding:1px 3px!important;border-color:transparent!important;min-width:19px!important}
-#tracker .week-task-highlight-date.dbt-multi-date:hover{background:rgba(255,255,255,.055)!important;border-color:rgba(150,165,185,.35)!important}
-#tracker .tracker-table td.dbt-has-attempt-dates{height:auto!important;min-height:46px!important;max-height:none!important}
-#tracker .cell-box.dbt-dated-attempts{height:auto!important;min-height:48px!important;max-height:none!important;overflow:visible!important}
-#tracker .cell-box.dbt-dated-attempts .check-stack{height:auto!important;min-height:32px!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;flex-wrap:wrap!important;overflow:visible!important;gap:4px!important;padding:4px 20px 19px 4px!important}
-#tracker .cell-box.dbt-dated-attempts .dbt-attempt-slot{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:2px!important;min-width:29px!important;padding:1px!important;flex:0 0 auto!important;background:transparent!important}
-#tracker .cell-box.dbt-dated-attempts .dbt-attempt-date{display:block!important;position:static!important;width:auto!important;min-width:0!important;max-width:none!important;min-height:0!important;height:auto!important;padding:0!important;margin:0!important;background:transparent!important;border:0!important;box-shadow:none!important;color:#aeb9c7!important;font-size:8px!important;font-weight:600!important;line-height:11px!important;white-space:nowrap!important;cursor:pointer}
-#tracker .cell-box.dbt-dated-attempts .dbt-attempt-date:hover{color:#f3f6fa!important;text-decoration:underline}
+/* Compact date legend and column calendar, with no per-attempt date labels. */
+#tracker .dbt-date-legend{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:4px 2px;color:#c1c9d3}
+#tracker .dbt-date-legend[hidden]{display:none!important}
+#tracker .dbt-date-legend-title{font-size:9px;font-weight:800;white-space:nowrap;margin-right:2px;color:#929da9}
+#tracker .dbt-date-chip{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:25px;padding:3px 7px;border:1px solid rgba(170,185,205,.14);border-radius:5px;background:#101419;color:#d7dfe9;font-size:10px;font-weight:650;cursor:pointer;white-space:nowrap}
+#tracker .dbt-date-chip:hover,#tracker .dbt-date-chip:focus-visible,#tracker .dbt-date-chip.active{border-color:#8cabc9;background:#1a2635;color:#fff}
+#tracker .dbt-date-swatch{width:11px;height:11px;border-radius:3px;background:var(--dbt-swatch);border:1px solid var(--dbt-swatch);flex:0 0 auto}
+#tracker .tracker-table th .field-head.dbt-column-date-head{display:flex!important;align-items:center!important;justify-content:center!important;gap:3px!important}
+#tracker .tracker-table th .field-head.dbt-column-date-head>button,#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-reorder-controls{position:static!important;inset:auto!important;transform:none!important;margin:0!important;flex:0 0 auto!important}
+#tracker .tracker-table th .field-head.dbt-column-date-head>.col-select-btn{order:0}
+#tracker .tracker-table th .field-head.dbt-column-date-head>span:not(.dbt-reorder-controls){order:1}
+#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-column-calendar{order:2;display:inline-flex!important;align-items:center!important;justify-content:center!important;width:20px!important;height:21px!important;padding:1px!important;font-size:11px!important;line-height:1!important;opacity:.8!important;pointer-events:auto!important;cursor:pointer}
+#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-column-calendar:hover,#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-column-calendar:focus-visible{opacity:1!important;border-color:rgba(170,185,205,.35)!important}
+#tracker .tracker-table th .field-head.dbt-column-date-head>.dbt-reorder-controls{order:3}
+#tracker .tracker-table th .field-head.dbt-column-date-head>button[data-edit-field]{order:4}
 #tracker .cell-box .tracker-check.dbt-dated-check{appearance:none!important;accent-color:var(--dbt-check-color)!important;border:1px solid var(--dbt-check-color)!important;background:var(--dbt-check-tint)!important;box-shadow:none!important}
 #tracker .cell-box .tracker-check.dbt-dated-check:checked{background:var(--dbt-check-color)!important;border-color:var(--dbt-check-color)!important;box-shadow:none!important}
 #tracker .cell-box .tracker-check.dbt-dated-check:checked:after{color:#0a1019!important}
-#tracker .cell-box.dbt-dated-attempts .dbt-date-add-attempt{display:grid!important;place-items:center!important;width:18px!important;height:18px!important;padding:0!important;border:1px dashed rgba(150,165,185,.5)!important;border-radius:5px!important;background:transparent!important;color:#9eabbc!important;font-size:12px!important;line-height:1!important;cursor:pointer}
-#tracker .cell-box.dbt-dated-attempts .dbt-date-add-attempt:hover{border-color:#e2e9f2!important;color:#e2e9f2!important}
+#tracker .cell-box .dbt-date-pending{display:inline-flex!important;align-items:center;justify-content:center;flex:0 0 auto}
+#tracker .cell-box .dbt-date-add-attempt{display:grid!important;place-items:center!important;width:18px!important;height:18px!important;padding:0!important;border:1px dashed var(--dbt-check-color,rgba(150,165,185,.5))!important;border-radius:5px!important;background:transparent!important;color:var(--dbt-check-color,#9eabbc)!important;font-size:12px!important;line-height:1!important;cursor:pointer}
+#tracker .cell-box .dbt-date-add-attempt:hover{background:var(--dbt-check-tint,rgba(150,165,185,.1))!important}
+#tracker .week-task-highlight-date.dbt-multi-date{color:#aeb8c5!important;background:transparent!important;border:1px solid transparent!important;white-space:nowrap!important;font-size:11px!important;padding:1px 3px!important;min-width:19px!important}
+#tracker .week-task-highlight-date.dbt-multi-date:hover{background:rgba(255,255,255,.055)!important;border-color:rgba(150,165,185,.35)!important}
 #tracker .cell-box.dbt-dated-attempts>.dbt-multi-date{top:3px!important;right:3px!important;bottom:auto!important}
-#tracker .week-task-control .cell-box.dbt-dated-attempts{max-width:none!important;min-width:0!important;flex:1 1 auto!important}
-#tracker .week-task-control .cell-box.dbt-dated-attempts .check-stack{padding:3px 3px 16px!important}
 #dbtDatesList{max-height:180px;overflow:auto}
 .dbt-date-stack{position:absolute;right:8px;top:3px;z-index:3;display:flex;justify-content:flex-end;gap:3px;flex-wrap:wrap;max-width:calc(100% - 16px)}
 #tracker .tracker-table .dbt-date-stack .week-task-highlight-date{position:static!important;inset:auto!important;max-width:100%!important;flex:0 1 auto!important;margin:0!important}
