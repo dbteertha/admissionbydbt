@@ -9,13 +9,65 @@ const currentColumnActive=trackerFieldHighlightActive;
 // highlights remain supported unless the user explicitly selects cell-only mode.
 function validDate(d){return typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isFinite(Date.parse(d+'T00:00:00'))}
 function storedDates(c){return [...new Set([...(Array.isArray(c?.highlightDates)?c.highlightDates:[]),c?.chapterHighlightUntil].filter(validDate))].sort()}
-function datesFor(f,c){
+function legacyDatesFor(f,c){
  if(c?.highlightExcluded===true)return [];
  const own=storedDates(c);
  if(own.length)return own;
  return f?.highlightScope!=='individual'&&validDate(f?.highlightUntil)?[f.highlightUntil]:[];
 }
+// Explicit attempt dates are stored on the existing stable checkbox records.
+// Legacy cell-level dates are materialized only when the user edits an attempt date.
+function attemptDateState(f,c){
+ const checks=Array.isArray(c?.checks)?c.checks:[];
+ if(c?.attemptHighlightMode===true){
+  return {dates:checks.map(x=>validDate(x.highlightDate)?x.highlightDate:''),pending:(Array.isArray(c.pendingHighlightDates)?c.pendingHighlightDates:[]).filter(validDate)};
+ }
+ const ds=legacyDatesFor(f,c);
+ return {dates:checks.map((_,i)=>ds[i]||''),pending:ds.slice(checks.length)};
+}
+function syncAttemptDates(c){
+ const ds=[...new Set([...(c.checks||[]).map(x=>x.highlightDate),...(c.pendingHighlightDates||[])].filter(validDate))].sort();
+ c.highlightDates=ds;c.chapterHighlightUntil=ds.at(-1)||'';c.highlightExcluded=!ds.length;
+ c.updatedAt=new Date().toISOString();
+}
+function ensureAttemptDates(f,c){
+ if(c.attemptHighlightMode===true)return;
+ trackerCheckboxItems(c);
+ const old=attemptDateState(f,c);
+ c.checks.forEach((x,i)=>{if(old.dates[i])x.highlightDate=old.dates[i];else delete x.highlightDate});
+ c.pendingHighlightDates=old.pending;
+ c.attemptHighlightMode=true;
+}
+function setAttemptDate(f,c,item,date){
+ if(date&&!validDate(date))return false;
+ ensureAttemptDates(f,c);
+ const actual=c.checks.find(x=>x.id===item.id);
+ if(!actual)return false;
+ if(date)actual.highlightDate=date;else delete actual.highlightDate;
+ actual.updatedAt=new Date().toISOString();
+ syncAttemptDates(c);
+ return true;
+}
+function datesFor(f,c){
+ if(c?.attemptHighlightMode===true){
+  if(c.highlightExcluded===true)return [];
+  const state=attemptDateState(f,c);
+  return [...new Set([...state.dates,...state.pending].filter(validDate))].sort();
+ }
+ return legacyDatesFor(f,c);
+}
+
 function putDates(c,ds){
+ if(c.attemptHighlightMode===true){
+  const desired=[...new Set(ds.filter(validDate))].sort();
+  const checks=c.checks||[];
+  for(const x of checks)if(!desired.includes(x.highlightDate))delete x.highlightDate;
+  const assigned=new Set(checks.map(x=>x.highlightDate).filter(validDate));
+  c.pendingHighlightDates=[];
+  for(const d of desired){if(assigned.has(d))continue;const blank=checks.find(x=>!validDate(x.highlightDate));if(blank)blank.highlightDate=d;else c.pendingHighlightDates.push(d);}
+  syncAttemptDates(c);return;
+ }
+
  c.highlightDates=[...new Set(ds.filter(validDate))].sort();
  c.chapterHighlightUntil=c.highlightDates.at(-1)||'';
  c.highlightExcluded=!c.highlightDates.length;
@@ -122,7 +174,7 @@ function bindColumnDateButtons(root,s){
 }
 
 window.dbtHighlightDates=Object.freeze({
- datesFor, matches:matchesHighlightDate, filterDate:highlightFilterDate,
+ datesFor, setAttemptDate, attemptDateState, matches:matchesHighlightDate, filterDate:highlightFilterDate,
  activeDates:activeHighlightDates, url:highlightedUrl, legendHtml:highlightLegendHtml, addDateToColumn, bindColumnDateButtons
 });
 
@@ -173,17 +225,33 @@ function attemptDateSlots(r,td){
       if(f)refs.push({s:r.s,ch:r.ch,f,cell:trackerGetCell(r.s.id,r.ch.id,id),key:trackerCellKey(r.s.id,r.ch.id,id)});
     }
   }
+  if(r.cell.attemptHighlightMode===true){
+    const state=attemptDateState(r.f,r.cell);
+    const own=state.dates.map(date=>date?{date,ref:r}:null);
+    const pending=state.pending.map(date=>({date,ref:r}));
+    const used=new Set([...state.dates,...state.pending]);
+    for(const ref of refs.slice(1))for(const date of datesFor(ref.f,ref.cell))if(!used.has(date)){used.add(date);pending.push({date,ref})}
+    return [...own,...pending];
+  }
   const byDate=new Map();
   for(const ref of refs)for(const date of datesFor(ref.f,ref.cell)){
     if(!byDate.has(date))byDate.set(date,{date,ref});
   }
   return [...byDate.values()].sort((a,b)=>a.date.localeCompare(b.date));
 }
-function addAttemptForDate(r,index){
+function addAttemptForDate(r,index,slot){
   const checks=trackerCheckboxItems(r.cell);
   while(checks.length<=index)checks.push({
     id:uid('try'),label:String(checks.length+1),checked:false,comment:'',updatedAt:new Date().toISOString()
   });
+  if(r.cell.attemptHighlightMode===true&&slot?.ref?.cell===r.cell){
+    const pending=r.cell.pendingHighlightDates||[];
+    const items=trackerCheckboxItems(r.cell);
+    const start=items.length-1;
+    // Assign pending dates to newly added empty attempts in their stored order.
+    for(const item of items)if(!validDate(item.highlightDate)&&pending.length)item.highlightDate=pending.shift();
+    syncAttemptDates(r.cell);
+  }
   trackerSyncLegacyCheckbox(r.cell);
   trackerSave('Checkbox added for highlight date');
 }
@@ -203,7 +271,7 @@ function decorateDates(root){
     if(stack){
       // A merged surface uses the visible anchor's attempts, with all unique
       // dates from its covered members. Date editors still target their source.
-      const has=slots.length>0;
+      const has=slots.some(Boolean);
       box.classList.toggle('dbt-dated-attempts',has);
       if(td)td.classList.toggle('dbt-has-attempt-dates',has);
       stack.querySelectorAll('.dbt-date-pending,.dbt-attempt-date').forEach(el=>el.remove());
@@ -234,13 +302,14 @@ function decorateDates(root){
       // Existing dates without attempts remain visible. Only an explicit click
       // creates real unchecked attempts, avoiding a silent change to progress.
       slots.slice(attempts.length).forEach((slot,j)=>{
+        if(!slot)return;
         const index=attempts.length+j,wrap=document.createElement('div');
         wrap.className='dbt-date-pending dbt-attempt-slot';
         const plus=document.createElement('button');
         plus.type='button';plus.className='dbt-date-add-attempt';plus.textContent='+';
         plus.title='Add missing checkboxes through '+slot.date;
         plus.setAttribute('aria-label','Add checkbox for '+slot.date);
-        plus.onclick=e=>{e.preventDefault();e.stopPropagation();addAttemptForDate(r,index)};
+        plus.onclick=e=>{e.preventDefault();e.stopPropagation();addAttemptForDate(r,index,slot)};
         wrap.appendChild(plus);
         const add=stack.querySelector('.add-check');
         if(add)stack.insertBefore(wrap,add);else stack.appendChild(wrap);
@@ -530,9 +599,7 @@ function trackerBindSelectedCellHighlight(){
         // Explicit dates override inheritance for each selected cell only.
         if(clear){
           if(cell.highlightExcluded!==true||cell.chapterHighlightUntil){
-            delete cell.chapterHighlightUntil;
-            cell.highlightDates=[];
-            cell.highlightExcluded=true;
+            putDates(cell,[]);
             cell.updatedAt=stamp;changes++;
           }
         }else if(!datesFor(f,cell).includes(date)){
