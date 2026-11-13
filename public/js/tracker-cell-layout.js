@@ -55,6 +55,8 @@ trackerOpenChapterHighlightDate=function(key){
  input.onchange=()=>{pending=true};
  q('#dbtDateColumn').onclick=()=>{
   if(!validDate(input.value)){trackerToastMsg('Choose a valid date');return}
+  const hadOwn=cell.highlightExcluded===true||validDate(cell.chapterHighlightUntil)||(Array.isArray(cell.highlightDates)&&cell.highlightDates.length>0);
+  if(hadOwn)putDates(cell,[...datesFor(f,cell),input.value]);
   f.highlightUntil=input.value;f.highlightScope='column';f.updatedAt=new Date().toISOString();
   trackerCloseCellPopover();trackerSave('Column highlight changed');
  };
@@ -74,11 +76,27 @@ function decorateDates(root){
    const fill=ds.length===1?tint(ds[0]):'linear-gradient(110deg,'+ds.map((d,i)=>tint(d)+' '+(100*i/ds.length)+'%, '+tint(d)+' '+(100*(i+1)/ds.length)+'%').join(',')+')';
    td.style.setProperty('--dbt-date-fill',fill);td.classList.add('dbt-date-colored');
   }else if(td){td.style.removeProperty('--dbt-date-fill');td.classList.remove('dbt-date-colored')}
+  if(td?.colSpan>1&&Array.isArray(r.cell.mergedWith)){
+   for(const id of r.cell.mergedWith){
+    const f=r.s.fields.find(x=>x.id===id);if(!f)continue;
+    const key=trackerCellKey(r.s.id,r.ch.id,id),member=trackerGetCell(r.s.id,r.ch.id,id);
+    if(!datesFor(f,member).length)continue;
+    if(![...box.querySelectorAll('[data-chapter-highlight]')].some(b=>b.dataset.chapterHighlight===key)){
+     const b=document.createElement('button');b.type='button';b.className='week-task-highlight-date dbt-multi-date';
+     b.dataset.chapterHighlight=key;box.appendChild(b);
+    }
+   }
+   const badges=[...box.querySelectorAll('[data-chapter-highlight]')];
+   if(badges.length>1&&!box.querySelector('.dbt-date-stack')){
+    const stack=document.createElement('div');stack.className='dbt-date-stack';
+    box.appendChild(stack);badges.forEach(b=>stack.appendChild(b));
+   }
+  }
   box.querySelectorAll('[data-chapter-highlight]').forEach(b=>{
    const ref=trackerResolveCellKey(b.dataset.chapterHighlight);if(!ref)return;
    const dates=datesFor(ref.f,ref.cell);
    b.innerHTML='📅 '+dateLabels(dates);
-   b.title=dates.join(', ')||'Set highlight dates';b.classList.add('dbt-multi-date');b.classList.toggle('dbt-highlight-icon',!dates.length);
+   b.title=ref.f.name+' · '+(dates.join(', ')||'Set highlight dates');b.setAttribute('aria-label','Edit '+ref.f.name+' highlight dates');b.classList.add('dbt-multi-date');b.classList.toggle('dbt-highlight-icon',!dates.length);
    b.onclick=e=>{e.preventDefault();e.stopPropagation();trackerOpenChapterHighlightDate(b.dataset.chapterHighlight)};
   });
  });
@@ -224,7 +242,7 @@ trackerUpdateSelectionUI=function(){
 };
 const style=document.createElement('style');
 style.textContent=`
-.tracker-table tr td.track-cell.dbt-date-colored,.tracker-table tr:nth-child(even) td.track-cell.dbt-date-colored:not(:first-child),.tracker-table tr:hover td.track-cell.dbt-date-colored{background:var(--dbt-date-fill)!important;box-shadow:none!important}.tracker-table td.track-cell.dbt-date-colored .cell-box:not(.selected){background:transparent!important;border-color:rgba(255,255,255,.1)!important}.mobile-field.dbt-date-colored .cell-box:not(.selected){background:var(--dbt-date-fill)!important}.dbt-multi-date{white-space:nowrap!important;max-width:calc(100% - 8px)!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:9px!important}.dbt-multi-date.dbt-highlight-icon{font-size:11px!important;background:transparent!important;border-color:transparent!important}.dbt-date-colored .dbt-multi-date{background:rgba(8,12,18,.58)!important;border-color:rgba(255,255,255,.14)!important}.dbt-date-entry{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}.dbt-date-entry button{padding:2px 7px!important}
+.tracker-table tr td.track-cell.dbt-date-colored,.tracker-table tr:nth-child(even) td.track-cell.dbt-date-colored:not(:first-child),.tracker-table tr:hover td.track-cell.dbt-date-colored{background:var(--dbt-date-fill)!important;box-shadow:none!important}.tracker-table td.track-cell.dbt-date-colored .cell-box:not(.selected){background:transparent!important;border-color:rgba(255,255,255,.1)!important}.mobile-field.dbt-date-colored .cell-box:not(.selected){background:var(--dbt-date-fill)!important}.dbt-multi-date{white-space:nowrap!important;max-width:calc(100% - 8px)!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:9px!important}.dbt-multi-date.dbt-highlight-icon{font-size:11px!important;background:transparent!important;border-color:transparent!important}.dbt-date-colored .dbt-multi-date{background:rgba(8,12,18,.58)!important;border-color:rgba(255,255,255,.14)!important}#dbtDatesList{max-height:180px;overflow:auto}.dbt-date-stack{position:absolute;right:8px;bottom:20px;z-index:3;display:flex;justify-content:flex-end;gap:3px;flex-wrap:wrap;max-width:calc(100% - 16px)}.dbt-hi-main-table .dbt-date-stack{top:3px;bottom:auto;right:4px}#tracker .tracker-table .dbt-date-stack .week-task-highlight-date{position:static!important;inset:auto!important;max-width:100%!important;flex:0 1 auto!important;margin:0!important}.dbt-date-entry{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}.dbt-date-entry button{padding:2px 7px!important}
 
 .dbt-highlight-off{opacity:.8!important;border-color:rgba(160,170,185,.25)!important;background:rgba(122,134,154,.08)!important;color:#b7c0cd!important}
 .dbt-highlight-off.dbt-highlight-icon{display:inline-flex!important;align-items:center;justify-content:center;min-width:24px!important;width:24px!important;min-height:19px!important;padding:1px 3px!important;font-size:12px!important;line-height:1.1!important;white-space:nowrap!important;background:transparent!important;border:1px solid rgba(151,185,232,.16)!important;border-radius:5px!important;color:#a4b4c9!important;opacity:.7!important}
