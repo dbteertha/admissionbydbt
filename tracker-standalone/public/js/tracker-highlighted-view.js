@@ -4,13 +4,15 @@
 'use strict';
 if(typeof renderThisWeekView!=='function'||typeof trackerTaskHighlightActive!=='function')return;
 const PATH='/tracker/highlighted';
+const highlights=window.dbtHighlightDates;
+if(!highlights)return;
 function activeRefs(){
-  const refs=[];
+  const refs=[],date=highlights.filterDate();
   for(const s of trackerState.subjects||[]){
     for(const ch of s.chapters||[]){
       for(const f of trackerVisibleFields(s)){
         const cell=trackerGetCell(s.id,ch.id,f.id);
-        if(trackerTaskHighlightActive(f,cell))
+        if(highlights.matches(f,cell,date))
           refs.push({s,ch,f,cell,key:trackerCellKey(s.id,ch.id,f.id)});
       }
     }
@@ -21,8 +23,9 @@ function openPdf(){
   const refs=activeRefs();
   if(!refs.length){trackerToastMsg('No highlighted cells to print');return;}
   trackerPdfSourceMode='highlighted';
-  const path='/tracker/pdf/highlighted';
-  if(trackerPath()!==path)history.pushState({trackerRoute:'pdf',mode:'highlighted'},'',path);
+  const date=highlights.filterDate();
+  const path=highlights.url(date,true);
+  if(location.pathname+location.search!==path)history.pushState({trackerRoute:'pdf',mode:'highlighted'},'',path);
   trackerOpenWeeklyPdfSettings();
 }
 function shortDate(raw){
@@ -31,21 +34,6 @@ function shortDate(raw){
   return Number.isFinite(date.getTime())
     ? date.toLocaleDateString('en-GB',{day:'numeric',month:'short'})
     : '';
-}
-function taskLine(r){
-  const weekly=trackerCellIsWeekly(r.cell);
-  const complete=r.f.type==='checkbox'&&trackerCheckboxItems(r.cell).length>0&&
-    trackerCheckboxItems(r.cell).every(x=>x.checked);
-  const date=trackerTaskHighlightDate(r.f,r.cell);
-  return '<div class="dbt-hi-task'+(weekly?' dbt-hi-weekly':'')+'" data-highlight-key="'+esc(r.key)+'">'+
-    '<div class="dbt-hi-task-name" title="'+esc(r.f.name)+'">'+
-      (complete?'<span class="dbt-hi-done" aria-label="Complete">✓</span>':'')+
-      '<span>'+esc(r.f.name)+'</span></div>'+
-    '<div class="cell-box dbt-hi-cell-box" data-sid="'+esc(r.s.id)+'" data-cid="'+esc(r.ch.id)+'" data-fid="'+esc(r.f.id)+'">'+
-      trackerWeeklyToggleHtml(r.cell)+
-      '<button type="button" class="week-task-highlight-date dbt-hi-date" data-chapter-highlight="'+esc(r.key)+'" title="Change highlight date for '+esc(r.f.name)+'" aria-label="Change highlight date for '+esc(r.f.name)+'">📅 '+esc(shortDate(date))+'</button>'+
-    '</div>'+
-  '</div>';
 }
 // Match the Main Tracker's lossless horizontal merge metadata.
 function highlightedMerges(s,ch){
@@ -108,6 +96,7 @@ function highlightedSelectionBindings(){
 }
 
 function renderHighlighted(){
+  const date=highlights.filterDate();
   const refs=activeRefs();
   trackerMobileHost.innerHTML='';
   const subjects=trackerState.subjects.filter(s=>refs.some(r=>r.s.id===s.id));
@@ -115,12 +104,12 @@ function renderHighlighted(){
     highlightedSubjectId=subjects[0]?.id||'';
   const current=subjects.find(s=>s.id===highlightedSubjectId);
   let html=highlightedWeekTimerHtml()+'<div class="week-simple-head dbt-hi-top">'+
-    '<div class="week-simple-title"><b>Highlighted</b><em><strong>'+refs.length+'</strong></em></div>'+
+    '<div class="week-simple-title"><b>Highlighted'+(date?' · '+esc(shortDate(date)):'')+'</b><em><strong>'+refs.length+'</strong></em></div>'+
     '<div class="week-simple-actions">'+
       '<button type="button" class="week-pdf-btn dbt-hi-select-all" id="dbtHighlightedSelectAll">Select all</button><button type="button" class="week-pdf-btn" id="dbtHighlightedViewPdf">PDF Studio</button>'+
       '<button type="button" class="week-pdf-btn dbt-highlighted-weekly-btn" id="dbtHighlightedViewWeekly">Open This Week</button>'+
       '<button type="button" class="week-back-btn" id="dbtHighlightedViewBack">← Tracker</button>'+
-    '</div></div>';
+    '</div></div>'+highlights.legendHtml(date,false);
   if(!current){
     html+='<div class="week-empty"><strong>No highlighted cells</strong></div>';
   }else{
@@ -152,7 +141,7 @@ function renderHighlighted(){
           '</div></td>'+
           fields.map((f,index)=>{
             const merges=highlightedMerges(current,ch);
-            const group=merges.find(g=>g.members.includes(f.id));
+            const group=merges.find(g=>g.members.includes(f.id)&&g.members.some(id=>own.some(r=>r.ch.id===ch.id&&r.f.id===id)));
             // Covered members disappear as TDs, exactly like Main Tracker.
             if(group&&group.anchor!==f.id)return '';
             const members=group?group.members:[f.id];
@@ -160,18 +149,15 @@ function renderHighlighted(){
               const memberField=fields.find(x=>x.id===id);
               if(!memberField)return null;
               const memberCell=trackerGetCell(current.id,ch.id,id);
-              return trackerTaskHighlightActive(memberField,memberCell)
+              return highlights.matches(memberField,memberCell,date)
                 ?{f:memberField,cell:memberCell}:null;
             }).filter(Boolean);
             if(!highlighted.length)
               return '<td class="track-cell dbt-hi-empty"'+(group?' colspan="'+members.length+'"':'')+'></td>';
             // Use the existing anchor editor so merged cells have one visible
             // surface. Highlight badges continue pointing to their real cells.
-            const display=highlighted[0],first=group?fields.find(x=>x.id===group.anchor):f;
-            const dates=highlighted.map(({f:memberField,cell:memberCell})=>{
-              const key=trackerCellKey(current.id,ch.id,memberField.id);
-              return '<button type="button" class="week-task-highlight-date dbt-hi-short-date" data-chapter-highlight="'+esc(key)+'" title="'+esc(memberField.name)+' · Change highlight date" aria-label="Change '+esc(memberField.name)+' highlight date">📅 '+esc(shortDate(trackerTaskHighlightDate(memberField,memberCell)))+'</button>';
-            }).join('');
+            const first=group?fields.find(x=>x.id===group.anchor):f;
+            const dates=highlighted.map(({f:memberField,cell:memberCell})=>trackerTaskHighlightBadge(current,ch,memberField,memberCell)).join('');
             const content=cellHtml(current,ch,first);
             const end=content.lastIndexOf('</div>');
             const marked=end>=0?content.slice(0,end)+dates+content.slice(end):content;
@@ -181,6 +167,17 @@ function renderHighlighted(){
       }).join('')+'</tbody></table></div>';
   }
   trackerTableHost.innerHTML=html;
+  trackerTableHost.querySelectorAll('.dbt-highlight-legend-link').forEach(link=>{
+    link.onclick=e=>{
+      if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;
+      e.preventDefault();
+      const next=link.getAttribute('href');
+      if(next===location.pathname+location.search)return;
+      trackerClearSelection();
+      history.pushState({trackerRoute:'highlighted'},'',next);
+      renderHighlighted();
+    };
+  });
   document.getElementById('dbtHighlightedViewPdf').onclick=openPdf;
   document.getElementById('dbtHighlightedViewWeekly').onclick=()=>window.open(TRACKER_WEEK_PATH,'_blank','noopener');
   document.getElementById('dbtHighlightedViewBack').onclick=()=>{location.href=trackerSubjectPath(trackerActiveSubject)};
@@ -215,7 +212,7 @@ function addLaunch(){
   button.id='dbtOpenHighlighted';button.type='button';
   button.className='week-launch-btn dbt-open-highlighted';
   button.textContent='Open Highlighted';
-  button.title='Open all currently highlighted cells';
+  button.title='Open all active highlight dates';
   button.onclick=()=>window.open(PATH,'_blank','noopener');
   const weekly=document.getElementById('trackerWeekBtn');
   if(weekly)weekly.insertAdjacentElement('beforebegin',button);else bar.appendChild(button);
@@ -256,8 +253,6 @@ body.tracker-week-page:has(.dbt-hi-main-table) #trackerBulkBar.show .bulk-live-h
 .dbt-hi-main-table td.track-cell{padding:3px 4px}
 .dbt-hi-main-table td.dbt-hi-merged{min-width:0!important;padding:3px 4px!important}\n.dbt-hi-main-table td.dbt-hi-empty{background:#0a0f16!important;opacity:.25}
 .dbt-hi-main-table .cell-box{min-height:43px!important}
-.dbt-hi-main-table .dbt-hi-short-date.week-task-highlight-date{position:absolute!important;top:3px!important;right:4px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;width:auto!important;max-width:none!important;min-width:0!important;padding:3px 5px!important;font-size:10px!important;line-height:1.2!important;color:#e5c279!important;background:rgba(199,156,75,.09)!important;border:1px solid rgba(199,156,75,.22)!important;border-radius:5px!important}
-.dbt-hi-main-table .dbt-hi-short-date:hover{border-color:rgba(236,185,89,.7)!important}
 @media(max-width:680px){.dbt-open-highlighted{font-size:10px;padding:5px 7px;margin-right:4px}.dbt-hi-subtab{flex-basis:90px}.dbt-hi-main-table-wrap{max-height:calc(100vh - 185px)}}
 `;
 document.head.appendChild(style);
