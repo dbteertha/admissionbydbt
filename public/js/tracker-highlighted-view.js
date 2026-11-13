@@ -230,7 +230,7 @@ function updateAttemptSelection(){
     b.classList.toggle('active',all);b.setAttribute('aria-pressed',String(!!all));
   });
   const bar=host.querySelector('.dbt-attempt-bulk');
-  if(bar){bar.hidden=!attemptSelection.size;bar.querySelector('.dbt-attempt-count').textContent=attemptSelection.size+' checkboxes selected';}
+  if(bar){bar.hidden=false;bar.classList.toggle('dbt-no-attempt-selection',!attemptSelection.size);bar.querySelector('.dbt-attempt-count').textContent=attemptSelection.size+' checkboxes selected';}
 }
 function columnAttemptKeys(fid,index){
   return [...trackerTableHost.querySelectorAll('[data-dbt-attempt-key]')].filter(el=>el.dataset.dbtField===fid&&el.dataset.dbtAttemptIndex===String(index)).map(el=>el.dataset.dbtAttemptKey);
@@ -253,6 +253,26 @@ function applyAttemptEdit(patch){
   if(refs.length)trackerSave('Edited selected checkbox attempts');
   return refs.length;
 }
+function openAttemptHighlight(anchor){
+  const refs=attemptRefs();if(!refs.length)return;
+  trackerShowCellPopover(anchor,
+    '<div class="cell-pop-title">Highlight '+refs.length+' selected checkboxes</div>'+
+    '<div class="dbt-date-pop-body"><label class="dbt-date-pop-label">Date <input type="date" id="dbtAttemptHighlightDate" value="'+esc(trackerLocalDateKey())+'"></label>'+
+    '<div class="dbt-date-pop-actions"><button type="button" class="cell-pop-btn" id="dbtAttemptHighlightClear">Clear dates</button><button type="button" class="cell-pop-btn" id="dbtAttemptHighlightCancel">Cancel</button><button type="button" class="cell-pop-btn primary" id="dbtAttemptHighlightApply">Apply date</button></div></div>');
+  const input=trackerCellPopover.querySelector('#dbtAttemptHighlightDate');
+  const apply=clear=>{
+    const date=clear?'':input.value;
+    if(!clear&&!/^\d{4}-\d{2}-\d{2}$/.test(date)){trackerToastMsg('Choose a date');return;}
+    const current=attemptRefs();let changed=0;
+    for(const r of current)if(highlights.setAttemptDate(r.f,r.cell,r.item,date))changed++;
+    trackerCloseCellPopover();
+    if(changed){trackerSave(clear?'Cleared selected checkbox dates':'Highlighted selected checkboxes');trackerToastMsg(changed+' checkboxes updated');}
+  };
+  trackerCellPopover.querySelector('#dbtAttemptHighlightApply').onclick=()=>apply(false);
+  trackerCellPopover.querySelector('#dbtAttemptHighlightClear').onclick=()=>apply(true);
+  trackerCellPopover.querySelector('#dbtAttemptHighlightCancel').onclick=()=>trackerCloseCellPopover();
+}
+
 function openAttemptBulk(){
   const refs=attemptRefs();if(!refs.length)return;
   modalOpen('Edit selected checkboxes',refs.length+' checkboxes selected',
@@ -297,9 +317,9 @@ function installAttemptColumns(){
   });
   boxes.forEach(box=>{
     const n=counts.get(box.dataset.fid)||1,stack=box.querySelector('.check-stack');
-    if(n<2||!stack||stack.querySelector('.dbt-attempt-lane'))return;
+    if(!stack||stack.querySelector('.dbt-attempt-lane'))return;
     const attempts=[...stack.querySelectorAll(':scope > .check-attempt')],add=stack.querySelector('.add-check');
-    box.classList.add('dbt-attempt-split');stack.style.setProperty('--attempt-cols',n);
+    if(n>1)box.classList.add('dbt-attempt-split');stack.style.setProperty('--attempt-cols',n);
     const key=trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid);
     for(let i=0;i<n;i++){
       const lane=document.createElement('div');lane.className='dbt-attempt-lane';
@@ -344,7 +364,9 @@ function installAttemptColumns(){
   });
   if(!host.querySelector('.dbt-attempt-bulk')){
     const bar=document.createElement('div');bar.className='dbt-attempt-bulk';bar.hidden=true;
-    bar.innerHTML='<span class="dbt-attempt-count"></span><button type="button" class="btn primary" data-attempt-edit>Edit selected</button><button type="button" class="btn" data-attempt-check>✓ Check</button><button type="button" class="btn" data-attempt-uncheck>○ Uncheck</button><button type="button" class="btn" data-attempt-clear>Clear selection</button>';
+    bar.innerHTML='<button type="button" class="btn" data-attempt-select-all>Select all checkboxes</button><span class="dbt-attempt-count"></span><button type="button" class="btn" data-attempt-highlight>📅 Highlight selected</button><button type="button" class="btn primary" data-attempt-edit>Edit selected</button><button type="button" class="btn" data-attempt-check>✓ Check</button><button type="button" class="btn" data-attempt-uncheck>○ Uncheck</button><button type="button" class="btn" data-attempt-clear>Clear selection</button>';
+    bar.querySelector('[data-attempt-select-all]').onclick=()=>selectAttemptKeys([...new Set([...host.querySelectorAll('[data-dbt-attempt-key]')].map(el=>el.dataset.dbtAttemptKey))]);
+    const calendar=bar.querySelector('[data-attempt-highlight]');calendar.onclick=()=>openAttemptHighlight(calendar);
     bar.querySelector('[data-attempt-edit]').onclick=openAttemptBulk;
     bar.querySelector('[data-attempt-check]').onclick=()=>applyAttemptEdit({checked:true});
     bar.querySelector('[data-attempt-uncheck]').onclick=()=>applyAttemptEdit({checked:false});
@@ -405,6 +427,9 @@ style.textContent=`
 #tracker .dbt-attempt-split .check-stack>.add-check,#tracker .dbt-attempt-split .check-stack>.dbt-date-pending{grid-column:1/-1;justify-self:center}
 #tracker .dbt-attempt-bulk{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:5px 8px;background:#111820;border:1px solid #32445d;border-radius:6px;margin:4px 0;flex:none}
 #tracker .dbt-attempt-bulk[hidden]{display:none!important}
+#tracker .dbt-attempt-bulk.dbt-no-attempt-selection>*:not([data-attempt-select-all]){display:none!important}
+#tracker .dbt-attempt-bulk.dbt-no-attempt-selection{padding:2px 0;border:0;background:transparent}
+#tracker .cell-box:not(.dbt-attempt-split) .dbt-attempt-lane{border:0;min-height:22px;flex:1 1 auto}
 #tracker .dbt-attempt-count{font-size:11px;color:#d3e0f0;font-weight:700;margin-right:4px}
 
 .dbt-open-highlighted{white-space:nowrap;margin-right:6px}
