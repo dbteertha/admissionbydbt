@@ -21,19 +21,18 @@ function putDates(c,ds){
  c.updatedAt=new Date().toISOString();
 }
 function hue(d){return ((Math.round(Date.parse(d+'T00:00:00Z')/86400000)*137.508)%360+360)%360}
-function tint(d){return 'hsl('+hue(d)+' 65% 25% / .65)'}
 function short(d){return new Date(d+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
-function dateLabels(ds){return ds.slice(0,2).map(d=>'<span style="color:hsl('+hue(d)+' 85% 75%)">'+esc(short(d))+'</span>').join(' · ')+(ds.length>2?' +'+(ds.length-2):'')}
+function dateLabels(ds){return ds.slice(0,2).map(d=>esc(short(d))).join(' · ')+(ds.length>2?' +'+(ds.length-2):'')}
 trackerTaskHighlightDate=function(f,c){return datesFor(f,c).at(-1)||''};
 trackerFieldHighlightActive=function(f){return !!(f&&f.highlightScope!=='individual'&&currentColumnActive(f))};
 trackerTaskHighlightBadge=function(s,ch,f,c){
  const key=trackerCellKey(s.id,ch.id,f.id),ds=datesFor(f,c);
- return '<button type="button" class="week-task-highlight-date dbt-multi-date'+(ds.length?'':' dbt-highlight-icon')+'" data-chapter-highlight="'+esc(key)+'" title="'+esc(ds.join(', ')||'Set highlight dates')+'" aria-label="Edit highlight dates">📅 '+dateLabels(ds)+'</button>';
+ return '<button type="button" class="week-task-highlight-date dbt-multi-date'+(f.type==='checkbox'||!ds.length?' dbt-highlight-icon':'')+'" data-chapter-highlight="'+esc(key)+'" title="'+esc(ds.join(', ')||'Set highlight dates')+'" aria-label="Edit highlight dates">📅'+(f.type==='checkbox'||!ds.length?'':' '+dateLabels(ds))+'</button>';
 };
 trackerOpenChapterHighlightDate=function(key){
  const ref=trackerResolveCellKey(key);if(!ref)return;
  const {ch,f,cell}=ref;
- const anchors=[...document.querySelectorAll('[data-chapter-highlight]')].filter(el=>el.dataset.chapterHighlight===key);
+ const anchors=[...document.querySelectorAll('[data-chapter-highlight],[data-dbt-edit-date]')].filter(el=>el.dataset.chapterHighlight===key||el.dataset.dbtEditDate===key);
  const anchor=anchors.find(el=>el===document.activeElement||el.matches(':hover'))||anchors[0];if(!anchor)return;
  let draft=datesFor(f,cell).slice(),pending=!draft.length;
  trackerShowCellPopover(anchor,'<div class="cell-pop-title">'+esc(ch.name)+' · '+esc(f.name)+'</div>'+
@@ -41,7 +40,7 @@ trackerOpenChapterHighlightDate=function(key){
  '<div class="dbt-date-pop-actions dbt-date-pop-actions-wrap"><button type="button" class="cell-pop-btn" id="dbtDateAdd">+ Add date</button><button type="button" class="cell-pop-btn" id="dbtDateClear">Clear</button><button type="button" class="cell-pop-btn" id="dbtDateCancel">Cancel</button><button type="button" class="cell-pop-btn primary" id="dbtDateSave">Save</button><button type="button" class="cell-pop-btn" id="dbtDateColumn">Whole column</button></div></div>');
  const q=x=>trackerCellPopover.querySelector(x),input=q('#dbtCellHighlightDate'),list=q('#dbtDatesList');
  function redraw(){
-  list.innerHTML=draft.map(d=>'<div class="dbt-date-entry"><span style="color:hsl('+hue(d)+' 85% 75%)">'+esc(short(d))+'</span><button type="button" class="cell-pop-btn" data-remove-date="'+esc(d)+'" aria-label="Remove '+esc(d)+'">×</button></div>').join('');
+  list.innerHTML=draft.map(d=>'<div class="dbt-date-entry"><span>'+esc(short(d))+'</span><button type="button" class="cell-pop-btn" data-remove-date="'+esc(d)+'" aria-label="Remove '+esc(d)+'">×</button></div>').join('');
   list.querySelectorAll('[data-remove-date]').forEach(b=>b.onclick=()=>{draft=draft.filter(d=>d!==b.dataset.removeDate);pending=false;redraw()});
  }
  function add(){if(!validDate(input.value)){trackerToastMsg('Choose a valid date');return false}draft=[...new Set([...draft,input.value])].sort();pending=false;redraw();return true}
@@ -62,44 +61,128 @@ trackerOpenChapterHighlightDate=function(key){
  };
  redraw();
 };
-function decorateDates(root){
- if(!root)return;
- root.querySelectorAll('.cell-box[data-sid][data-cid][data-fid]').forEach(box=>{
-  const r=trackerResolveCellKey(trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid));if(!r)return;
-  const td=box.closest('td')||box.closest('.mobile-field');
-  let ds=datesFor(r.f,r.cell).filter(d=>d>=trackerLocalDateKey());
-  if(td?.colSpan>1&&Array.isArray(r.cell.mergedWith))for(const id of r.cell.mergedWith){
-   const f=r.s.fields.find(x=>x.id===id);if(f)ds.push(...datesFor(f,trackerGetCell(r.s.id,r.ch.id,id)).filter(d=>d>=trackerLocalDateKey()));
-  }
-  ds=[...new Set(ds)].sort();
-  if(td&&ds.length){
-   const fill=ds.length===1?tint(ds[0]):'linear-gradient(110deg,'+ds.map((d,i)=>tint(d)+' '+(100*i/ds.length)+'%, '+tint(d)+' '+(100*(i+1)/ds.length)+'%').join(',')+')';
-   td.style.setProperty('--dbt-date-fill',fill);td.classList.add('dbt-date-colored');
-  }else if(td){td.style.removeProperty('--dbt-date-fill');td.classList.remove('dbt-date-colored')}
-  if(td?.colSpan>1&&Array.isArray(r.cell.mergedWith)){
-   for(const id of r.cell.mergedWith){
-    const f=r.s.fields.find(x=>x.id===id);if(!f)continue;
-    const key=trackerCellKey(r.s.id,r.ch.id,id),member=trackerGetCell(r.s.id,r.ch.id,id);
-    if(!datesFor(f,member).length)continue;
-    if(![...box.querySelectorAll('[data-chapter-highlight]')].some(b=>b.dataset.chapterHighlight===key)){
-     const b=document.createElement('button');b.type='button';b.className='week-task-highlight-date dbt-multi-date';
-     b.dataset.chapterHighlight=key;box.appendChild(b);
+// Present dates in chronological attempt order; never mutate data during rendering.
+function attemptDateSlots(r,td){
+  const refs=[r];
+  if(td?.colSpan>1){
+    const group=groups(r.s,r.ch).find(g=>g.anchor===r.f.id);
+    if(group)for(const id of group.fields.slice(1)){
+      const f=r.s.fields.find(x=>x.id===id);
+      if(f)refs.push({s:r.s,ch:r.ch,f,cell:trackerGetCell(r.s.id,r.ch.id,id),key:trackerCellKey(r.s.id,r.ch.id,id)});
     }
-   }
-   const badges=[...box.querySelectorAll('[data-chapter-highlight]')];
-   if(badges.length>1&&!box.querySelector('.dbt-date-stack')){
-    const stack=document.createElement('div');stack.className='dbt-date-stack';
-    box.appendChild(stack);badges.forEach(b=>stack.appendChild(b));
-   }
   }
-  box.querySelectorAll('[data-chapter-highlight]').forEach(b=>{
-   const ref=trackerResolveCellKey(b.dataset.chapterHighlight);if(!ref)return;
-   const dates=datesFor(ref.f,ref.cell);
-   b.innerHTML='📅 '+dateLabels(dates);
-   b.title=ref.f.name+' · '+(dates.join(', ')||'Set highlight dates');b.setAttribute('aria-label','Edit '+ref.f.name+' highlight dates');b.classList.add('dbt-multi-date');b.classList.toggle('dbt-highlight-icon',!dates.length);
-   b.onclick=e=>{e.preventDefault();e.stopPropagation();trackerOpenChapterHighlightDate(b.dataset.chapterHighlight)};
+  const byDate=new Map();
+  for(const ref of refs)for(const date of datesFor(ref.f,ref.cell)){
+    if(!byDate.has(date))byDate.set(date,{date,ref});
+  }
+  return [...byDate.values()].sort((a,b)=>a.date.localeCompare(b.date));
+}
+function appendAttemptDate(parent,slot){
+  const label=document.createElement('button');
+  label.type='button';label.className='dbt-attempt-date';
+  label.textContent=short(slot.date);
+  label.title=slot.ref.f.name+' · '+slot.date+' — edit dates';
+  label.setAttribute('aria-label','Edit '+slot.ref.f.name+' highlight date '+slot.date);
+  label.dataset.dbtEditDate=slot.ref.key;
+  label.onclick=e=>{e.preventDefault();e.stopPropagation();trackerOpenChapterHighlightDate(slot.ref.key)};
+  parent.appendChild(label);
+}
+function addAttemptForDate(r,index){
+  const checks=trackerCheckboxItems(r.cell);
+  while(checks.length<=index)checks.push({
+    id:uid('try'),label:String(checks.length+1),checked:false,comment:'',updatedAt:new Date().toISOString()
   });
- });
+  trackerSyncLegacyCheckbox(r.cell);
+  trackerSave('Checkbox added for highlight date');
+}
+function decorateDates(root){
+  if(!root)return;
+  // Retire the old full-cell and column-header highlight styles.
+  root.querySelectorAll('.field-date-highlight-head,.field-date-highlight-cell,.dbt-date-colored').forEach(el=>{
+    el.classList.remove('field-date-highlight-head','field-date-highlight-cell','dbt-date-colored');
+    el.style.removeProperty('--dbt-date-fill');
+  });
+  root.querySelectorAll('.cell-box[data-sid][data-cid][data-fid]').forEach(box=>{
+    const r=trackerResolveCellKey(trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid));
+    if(!r)return;
+    const td=box.closest('td')||box.closest('.mobile-field');
+    const stack=box.querySelector('.check-stack');
+    const slots=attemptDateSlots(r,td);
+    if(stack){
+      // A merged surface uses the visible anchor's attempts, with all unique
+      // dates from its covered members. Date editors still target their source.
+      const has=slots.length>0;
+      box.classList.toggle('dbt-dated-attempts',has);
+      if(td)td.classList.toggle('dbt-has-attempt-dates',has);
+      stack.querySelectorAll('.dbt-date-pending,.dbt-attempt-date').forEach(el=>el.remove());
+      const attempts=[...stack.querySelectorAll('.check-attempt')];
+      attempts.forEach((attempt,i)=>{
+        const check=attempt.querySelector('[data-check-toggle]');
+        if(!check)return;
+        check.classList.remove('dbt-dated-check');
+        check.style.removeProperty('--dbt-check-color');
+        check.style.removeProperty('--dbt-check-tint');
+        if(check.dataset.dbtHighlightDate){
+          check.removeAttribute('title');check.removeAttribute('aria-label');delete check.dataset.dbtHighlightDate;
+        }
+        const slot=slots[i];
+        attempt.classList.toggle('dbt-attempt-slot',has);
+        if(!slot)return;
+        check.dataset.dbtHighlightDate=slot.date;
+        check.title='Attempt '+(i+1)+' · '+slot.date;
+        check.setAttribute('aria-label','Attempt '+(i+1)+', '+slot.date);
+        if(slot.date>=trackerLocalDateKey()){
+          const h=hue(slot.date);
+          check.classList.add('dbt-dated-check');
+          check.style.setProperty('--dbt-check-color','hsl('+h+' 72% 65%)');
+          check.style.setProperty('--dbt-check-tint','hsl('+h+' 58% 25%)');
+        }
+        appendAttemptDate(attempt,slot);
+      });
+      // Existing dates without attempts remain visible. Only an explicit click
+      // creates real unchecked attempts, avoiding a silent change to progress.
+      slots.slice(attempts.length).forEach((slot,j)=>{
+        const index=attempts.length+j,wrap=document.createElement('div');
+        wrap.className='dbt-date-pending dbt-attempt-slot';
+        const plus=document.createElement('button');
+        plus.type='button';plus.className='dbt-date-add-attempt';plus.textContent='+';
+        plus.title='Add missing checkboxes through '+slot.date;
+        plus.setAttribute('aria-label','Add checkbox for '+slot.date);
+        plus.onclick=e=>{e.preventDefault();e.stopPropagation();addAttemptForDate(r,index)};
+        wrap.appendChild(plus);appendAttemptDate(wrap,slot);
+        const add=stack.querySelector('.add-check');
+        if(add)stack.insertBefore(wrap,add);else stack.appendChild(wrap);
+      });
+    }
+    if(td?.colSpan>1){
+      const group=groups(r.s,r.ch).find(g=>g.anchor===r.f.id);
+      if(group)for(const id of group.fields.slice(1)){
+        const f=r.s.fields.find(x=>x.id===id);if(!f)continue;
+        const key=trackerCellKey(r.s.id,r.ch.id,id),member=trackerGetCell(r.s.id,r.ch.id,id);
+        if(!datesFor(f,member).length)continue;
+        if(![...box.querySelectorAll('[data-chapter-highlight]')].some(b=>b.dataset.chapterHighlight===key)){
+          const b=document.createElement('button');b.type='button';b.className='week-task-highlight-date dbt-multi-date';
+          b.dataset.chapterHighlight=key;box.appendChild(b);
+        }
+      }
+      const badges=[...box.querySelectorAll('[data-chapter-highlight]')];
+      if(badges.length>1&&!box.querySelector('.dbt-date-stack')){
+        const group=document.createElement('div');group.className='dbt-date-stack';
+        box.appendChild(group);badges.forEach(b=>group.appendChild(b));
+      }
+    }
+  });
+  // Checkbox cells use a calendar icon, with their dates below the attempts.
+  // Non-checkbox cells retain a neutral short-date label.
+  root.querySelectorAll('button[data-chapter-highlight]').forEach(b=>{
+    const ref=trackerResolveCellKey(b.dataset.chapterHighlight);if(!ref)return;
+    const dates=datesFor(ref.f,ref.cell),iconOnly=ref.f.type==='checkbox'||!!b.closest('.multi-check');
+    b.innerHTML='📅'+(!iconOnly&&dates.length?' '+dateLabels(dates):'');
+    b.title=ref.f.name+' · '+(dates.join(', ')||'Set highlight dates');
+    b.setAttribute('aria-label','Edit '+ref.f.name+' highlight dates');
+    b.classList.add('dbt-multi-date');b.classList.toggle('dbt-highlight-icon',iconOnly||!dates.length);
+    b.onclick=e=>{e.preventDefault();e.stopPropagation();trackerOpenChapterHighlightDate(b.dataset.chapterHighlight)};
+  });
 }
 const baseBind=bindTrackerCells;
 bindTrackerCells=function(root){const out=baseBind.apply(this,arguments);decorateDates(root);return out};
@@ -242,7 +325,30 @@ trackerUpdateSelectionUI=function(){
 };
 const style=document.createElement('style');
 style.textContent=`
-.tracker-table tr td.track-cell.dbt-date-colored,.tracker-table tr:nth-child(even) td.track-cell.dbt-date-colored:not(:first-child),.tracker-table tr:hover td.track-cell.dbt-date-colored{background:var(--dbt-date-fill)!important;box-shadow:none!important}.tracker-table td.track-cell.dbt-date-colored .cell-box:not(.selected){background:transparent!important;border-color:rgba(255,255,255,.1)!important}.mobile-field.dbt-date-colored .cell-box:not(.selected){background:var(--dbt-date-fill)!important}.dbt-multi-date{white-space:nowrap!important;max-width:calc(100% - 8px)!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:9px!important}.dbt-multi-date.dbt-highlight-icon{font-size:11px!important;background:transparent!important;border-color:transparent!important}.dbt-date-colored .dbt-multi-date{background:rgba(8,12,18,.58)!important;border-color:rgba(255,255,255,.14)!important}#dbtDatesList{max-height:180px;overflow:auto}.dbt-date-stack{position:absolute;right:8px;bottom:20px;z-index:3;display:flex;justify-content:flex-end;gap:3px;flex-wrap:wrap;max-width:calc(100% - 16px)}.dbt-hi-main-table .dbt-date-stack{top:3px;bottom:auto;right:4px}#tracker .tracker-table .dbt-date-stack .week-task-highlight-date{position:static!important;inset:auto!important;max-width:100%!important;flex:0 1 auto!important;margin:0!important}.dbt-date-entry{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}.dbt-date-entry button{padding:2px 7px!important}
+/* Dates belong to attempts, not to table backgrounds. */
+#tracker .field-until-badge{color:#929daa!important}
+#tracker .week-task-highlight-date.dbt-multi-date{color:#aeb8c5!important;background:transparent!important;border:1px solid rgba(150,165,185,.16)!important;white-space:nowrap!important;max-width:calc(100% - 8px)!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:9px!important}
+#tracker .week-task-highlight-date.dbt-multi-date.dbt-highlight-icon{font-size:11px!important;padding:1px 3px!important;border-color:transparent!important;min-width:19px!important}
+#tracker .week-task-highlight-date.dbt-multi-date:hover{background:rgba(255,255,255,.055)!important;border-color:rgba(150,165,185,.35)!important}
+#tracker .tracker-table td.dbt-has-attempt-dates{height:auto!important;min-height:46px!important;max-height:none!important}
+#tracker .cell-box.dbt-dated-attempts{height:auto!important;min-height:48px!important;max-height:none!important;overflow:visible!important}
+#tracker .cell-box.dbt-dated-attempts .check-stack{height:auto!important;min-height:32px!important;display:flex!important;align-items:flex-start!important;justify-content:center!important;flex-wrap:wrap!important;overflow:visible!important;gap:4px!important;padding:4px 20px 19px 4px!important}
+#tracker .cell-box.dbt-dated-attempts .dbt-attempt-slot{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:flex-start!important;gap:2px!important;min-width:29px!important;padding:1px!important;flex:0 0 auto!important;background:transparent!important}
+#tracker .cell-box.dbt-dated-attempts .dbt-attempt-date{display:block!important;position:static!important;width:auto!important;min-width:0!important;max-width:none!important;min-height:0!important;height:auto!important;padding:0!important;margin:0!important;background:transparent!important;border:0!important;box-shadow:none!important;color:#aeb9c7!important;font-size:8px!important;font-weight:600!important;line-height:11px!important;white-space:nowrap!important;cursor:pointer}
+#tracker .cell-box.dbt-dated-attempts .dbt-attempt-date:hover{color:#f3f6fa!important;text-decoration:underline}
+#tracker .cell-box .tracker-check.dbt-dated-check{appearance:none!important;accent-color:var(--dbt-check-color)!important;border:1px solid var(--dbt-check-color)!important;background:var(--dbt-check-tint)!important;box-shadow:none!important}
+#tracker .cell-box .tracker-check.dbt-dated-check:checked{background:var(--dbt-check-color)!important;border-color:var(--dbt-check-color)!important;box-shadow:none!important}
+#tracker .cell-box .tracker-check.dbt-dated-check:checked:after{color:#0a1019!important}
+#tracker .cell-box.dbt-dated-attempts .dbt-date-add-attempt{display:grid!important;place-items:center!important;width:18px!important;height:18px!important;padding:0!important;border:1px dashed rgba(150,165,185,.5)!important;border-radius:5px!important;background:transparent!important;color:#9eabbc!important;font-size:12px!important;line-height:1!important;cursor:pointer}
+#tracker .cell-box.dbt-dated-attempts .dbt-date-add-attempt:hover{border-color:#e2e9f2!important;color:#e2e9f2!important}
+#tracker .cell-box.dbt-dated-attempts>.dbt-multi-date{top:3px!important;right:3px!important;bottom:auto!important}
+#tracker .week-task-control .cell-box.dbt-dated-attempts{max-width:none!important;min-width:0!important;flex:1 1 auto!important}
+#tracker .week-task-control .cell-box.dbt-dated-attempts .check-stack{padding:3px 3px 16px!important}
+#dbtDatesList{max-height:180px;overflow:auto}
+.dbt-date-stack{position:absolute;right:8px;top:3px;z-index:3;display:flex;justify-content:flex-end;gap:3px;flex-wrap:wrap;max-width:calc(100% - 16px)}
+#tracker .tracker-table .dbt-date-stack .week-task-highlight-date{position:static!important;inset:auto!important;max-width:100%!important;flex:0 1 auto!important;margin:0!important}
+.dbt-date-entry{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px}
+.dbt-date-entry button{padding:2px 7px!important}
 
 .dbt-highlight-off{opacity:.8!important;border-color:rgba(160,170,185,.25)!important;background:rgba(122,134,154,.08)!important;color:#b7c0cd!important}
 .dbt-highlight-off.dbt-highlight-icon{display:inline-flex!important;align-items:center;justify-content:center;min-width:24px!important;width:24px!important;min-height:19px!important;padding:1px 3px!important;font-size:12px!important;line-height:1.1!important;white-space:nowrap!important;background:transparent!important;border:1px solid rgba(151,185,232,.16)!important;border-radius:5px!important;color:#a4b4c9!important;opacity:.7!important}
