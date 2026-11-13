@@ -4,13 +4,16 @@
 'use strict';
 if(typeof renderThisWeekView!=='function'||typeof trackerTaskHighlightActive!=='function')return;
 const PATH='/tracker/highlighted';
+const dateApi=window.dbtHighlightDates;
+const dateFilter=()=>dateApi?.readFilter()||'';
+const matchesHighlight=(f,c)=>dateApi?dateApi.matchesDate(f,c,dateFilter()):trackerTaskHighlightActive(f,c);
 function activeRefs(){
   const refs=[];
   for(const s of trackerState.subjects||[]){
     for(const ch of s.chapters||[]){
       for(const f of trackerVisibleFields(s)){
         const cell=trackerGetCell(s.id,ch.id,f.id);
-        if(trackerTaskHighlightActive(f,cell))
+        if(matchesHighlight(f,cell))
           refs.push({s,ch,f,cell,key:trackerCellKey(s.id,ch.id,f.id)});
       }
     }
@@ -21,10 +24,12 @@ function openPdf(){
   const refs=activeRefs();
   if(!refs.length){trackerToastMsg('No highlighted cells to print');return;}
   trackerPdfSourceMode='highlighted';
-  const path='/tracker/pdf/highlighted';
-  if(trackerPath()!==path)history.pushState({trackerRoute:'pdf',mode:'highlighted'},'',path);
+  const path=dateApi?dateApi.highlightedUrl(dateFilter(),true):'/tracker/pdf/highlighted';
+  highlightedPdfReturnUrl=location.pathname+location.search;
+  history.pushState({trackerRoute:'pdf',mode:'highlighted'},'',path);
   trackerOpenWeeklyPdfSettings();
 }
+let highlightedPdfReturnUrl='';
 function shortDate(raw){
   if(!/^\d{4}-\d{2}-\d{2}$/.test(String(raw||'')))return '';
   const date=new Date(raw+'T00:00:00');
@@ -120,7 +125,7 @@ function renderHighlighted(){
       '<button type="button" class="week-pdf-btn dbt-hi-select-all" id="dbtHighlightedSelectAll">Select all</button><button type="button" class="week-pdf-btn" id="dbtHighlightedViewPdf">PDF Studio</button>'+
       '<button type="button" class="week-pdf-btn dbt-highlighted-weekly-btn" id="dbtHighlightedViewWeekly">Open This Week</button>'+
       '<button type="button" class="week-back-btn" id="dbtHighlightedViewBack">← Tracker</button>'+
-    '</div></div>';
+    '</div></div><div id="dbtHiDateLegend"></div>';
   if(!current){
     html+='<div class="week-empty"><strong>No highlighted cells</strong></div>';
   }else{
@@ -154,20 +159,20 @@ function renderHighlighted(){
             const merges=highlightedMerges(current,ch);
             const group=merges.find(g=>g.members.includes(f.id));
             // Covered members disappear as TDs, exactly like Main Tracker.
-            if(group&&group.anchor!==f.id)return '';
-            const members=group?group.members:[f.id];
+            const members=group?group.members.filter(id=>fields.some(field=>field.id===id)):[f.id];
+            if(members[0]!==f.id)return '';
             const highlighted=members.map(id=>{
               const memberField=fields.find(x=>x.id===id);
               if(!memberField)return null;
               const memberCell=trackerGetCell(current.id,ch.id,id);
-              return trackerTaskHighlightActive(memberField,memberCell)
+              return matchesHighlight(memberField,memberCell)
                 ?{f:memberField,cell:memberCell}:null;
             }).filter(Boolean);
             if(!highlighted.length)
               return '<td class="track-cell dbt-hi-empty"'+(group?' colspan="'+members.length+'"':'')+'></td>';
             // Use the existing anchor editor so merged cells have one visible
             // surface. Highlight badges continue pointing to their real cells.
-            const display=highlighted[0],first=group?fields.find(x=>x.id===group.anchor):f;
+            const first=group?fields.find(x=>x.id===group.anchor)||f:f;
             const dates=highlighted.map(({f:memberField,cell:memberCell})=>{
               const key=trackerCellKey(current.id,ch.id,memberField.id);
               return '<button type="button" class="week-task-highlight-date dbt-hi-short-date" data-chapter-highlight="'+esc(key)+'" title="'+esc(memberField.name)+' · Change highlight date" aria-label="Change '+esc(memberField.name)+' highlight date">📅 '+esc(shortDate(trackerTaskHighlightDate(memberField,memberCell)))+'</button>';
@@ -201,8 +206,30 @@ function renderHighlighted(){
     };
   });
   bindTrackerCells(trackerTableHost);
+  if(dateApi){
+    dateApi.renderDateLegend(document.getElementById('dbtHiDateLegend'),dateFilter(),date=>{
+      if(date===dateFilter())return;
+      trackerClearSelection();
+      history.pushState({trackerRoute:'highlighted',date},'',dateApi.highlightedUrl(date,false));
+      renderHighlighted();
+    },true);
+    dateApi.bindColumnDateButtons(trackerTableHost,current);
+  }
   highlightedSelectionBindings();
 }
+// Preserve the date-specific view when closing its PDF Studio.
+const baseModalClose=modalClose;
+modalClose=function(preserveRoute){
+  const returnUrl=highlightedPdfReturnUrl||(dateFilter()&&dateApi?dateApi.highlightedUrl(dateFilter(),false):'');
+  if(preserveRoute!==true&&trackerPath()==='/tracker/pdf/highlighted'&&returnUrl&&trackerModal.classList.contains('pdf-studio-modal')){
+    const result=baseModalClose.call(this,true);
+    highlightedPdfReturnUrl='';
+    history.replaceState({trackerRoute:'highlighted'},'',returnUrl);
+    renderHighlighted();
+    return result;
+  }
+  return baseModalClose.apply(this,arguments);
+};
 const baseRender=renderThisWeekView;
 renderThisWeekView=function(){
   if(trackerPath()===PATH){renderHighlighted();return;}
@@ -254,7 +281,8 @@ body.tracker-week-page:has(.dbt-hi-main-table) #trackerBulkBar.show .bulk-live-h
 .dbt-hi-main-table .chapter-name{min-width:0}
 .dbt-hi-main-table .chapter-name strong{white-space:normal;overflow-wrap:anywhere}
 .dbt-hi-main-table td.track-cell{padding:3px 4px}
-.dbt-hi-main-table td.dbt-hi-merged{min-width:0!important;padding:3px 4px!important}\n.dbt-hi-main-table td.dbt-hi-empty{background:#0a0f16!important;opacity:.25}
+.dbt-hi-main-table td.dbt-hi-merged{min-width:0!important;padding:3px 4px!important}
+.dbt-hi-main-table td.dbt-hi-empty{background:#0a0f16!important;opacity:.25}
 .dbt-hi-main-table .cell-box{min-height:43px!important}
 .dbt-hi-main-table .dbt-hi-short-date.week-task-highlight-date{position:absolute!important;top:3px!important;right:4px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;white-space:nowrap!important;width:auto!important;max-width:none!important;min-width:0!important;padding:3px 5px!important;font-size:10px!important;line-height:1.2!important;color:#e5c279!important;background:rgba(199,156,75,.09)!important;border:1px solid rgba(199,156,75,.22)!important;border-radius:5px!important}
 .dbt-hi-main-table .dbt-hi-short-date:hover{border-color:rgba(236,185,89,.7)!important}
