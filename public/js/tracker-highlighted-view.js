@@ -396,17 +396,28 @@ function attachCompactControls(root,weeklyOnly=false){
   if(!root)return;
   root.querySelectorAll('.cell-box.multi-check[data-fid]').forEach(box=>{
     const r=trackerResolveCellKey(trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid));if(!r)return;
-    const attempts=[...box.querySelectorAll('.check-attempt')];
-    box.classList.toggle('dbt-empty-check',attempts.length===0);
-    attempts.forEach(attempt=>{
-      attachAttemptControls(box,attempt);
-      // Old weekly tags apply to all attempts. Explicit selections show only
-      // their chosen attempts in Weekly Routine; merged legacy cards are retained.
-      if(weeklyOnly&&r.cell.attemptWeeklyMode===true){
-        const item=trackerCheckboxItems(r.cell).find(x=>x.id===attempt.dataset.attemptId);
-        attempt.hidden=!item||!attemptWeekly(r.cell,item);
+    let attempts=[...box.querySelectorAll('.check-attempt')];
+    if(weeklyOnly){
+      const checks=trackerCheckboxItems(r.cell);
+      // Remove only rendered siblings, never saved records. Legacy whole-cell
+      // weekly tags and merged legacy cards still display their original attempts.
+      if(r.cell.attemptWeeklyMode===true){
+        attempts=attempts.filter(attempt=>{
+          const item=checks.find(x=>x.id===attempt.dataset.attemptId);
+          if(item&&attemptWeekly(r.cell,item))return true;
+          attempt.remove();return false;
+        });
       }
-    });
+      box.querySelectorAll('.dbt-date-pending,.add-check').forEach(el=>el.remove());
+      const card=box.closest('.week-task-card'),label=card?.querySelector('.week-task-label');
+      if(label&&checks.length>1&&attempts.length<checks.length&&attempts.length){
+        const numbers=attempts.map(attempt=>checks.findIndex(x=>x.id===attempt.dataset.attemptId)+1);
+        const badge=document.createElement('span');badge.className='dbt-week-attempt-numbers';badge.textContent=' · '+numbers.join(', ');
+        label.appendChild(badge);
+      }
+    }
+    box.classList.toggle('dbt-empty-check',attempts.length===0);
+    attempts.forEach(attempt=>attachAttemptControls(box,attempt));
   });
 }
 const originalAttemptPrint=trackerWeeklyPrintTaskText;
@@ -855,6 +866,11 @@ style.textContent+=`
 #tracker .dbt-hi-main-table .add-check[hidden]{display:none!important}
 #tracker .dbt-hi-main-table .dbt-attempt-missing{visibility:hidden!important;pointer-events:none!important}
 #tracker .dbt-hi-main-table .cell-box.dbt-empty-check .check-stack{min-height:26px!important}
+`;
+style.textContent+=`
+#tracker .week-task-control .dbt-attempt-compact .check-stack{display:flex!important;justify-content:center!important;align-items:center!important;flex-wrap:nowrap!important;padding:0!important;gap:4px!important}
+#tracker .week-task-control .cell-box.dbt-attempt-compact{padding:1px 3px!important;min-height:26px!important;max-width:none!important}
+#tracker .dbt-week-attempt-numbers{font-size:inherit;opacity:.75;white-space:nowrap}
 `;
 document.head.appendChild(style);
 addLaunch();
