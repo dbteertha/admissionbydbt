@@ -330,7 +330,7 @@ function attachAttemptControls(box,attempt){
   const r=trackerResolveCellKey(key);if(!r||r.f.type!=='checkbox')return;
   const item=trackerCheckboxItems(r.cell).find(x=>x.id===attempt.dataset.attemptId);if(!item)return;
   const tools=document.createElement('span');tools.className='dbt-attempt-tools';
-  const weekly=document.createElement('button');weekly.type='button';weekly.className='dbt-attempt-w'+(attemptWeekly(r.cell,item)?' active':'');weekly.textContent='W';
+  const weekly=document.createElement('button');weekly.type='button';weekly.className='dbt-attempt-w'+(attemptWeekly(r.cell,item)?' active':'');weekly.innerHTML='<i aria-hidden="true"></i><span>W</span>';
   weekly.title=attemptWeekly(r.cell,item)?'Remove this checkbox from weekly':'Add this checkbox to weekly';
   weekly.setAttribute('aria-pressed',String(attemptWeekly(r.cell,item)));
   weekly.onclick=e=>{e.preventDefault();e.stopPropagation();applyWeeklyToAttempts(attemptControlRefs(key,item.id),!attemptWeekly(r.cell,item))};
@@ -619,6 +619,25 @@ body.tracker-week-page #tracker .dbt-attempt-bulk.dbt-no-attempt-selection{displ
 #tracker .dbt-hi-toolbar-row .dbt-hi-week-timer{flex:none;flex-wrap:nowrap!important;margin:0!important;min-height:30px!important;padding:2px 5px!important}
 #tracker .dbt-hi-toolbar-row .dbt-hi-top{flex:none}
 #tracker .dbt-hi-toolbar-row .dbt-highlight-legend{flex:none;flex-wrap:nowrap!important;margin:0!important;padding:0!important}
+`;
+style.textContent+=`
+/* Keep compact rows readable; restore the original checkbox-style weekly tag. */
+#tracker .tracker-table .chapter-name strong{font-size:14px!important;line-height:1.2!important}
+#tracker .tracker-table .chapter-num{font-size:10px!important}
+#tracker .tracker-table .field-head>span:not(.dbt-reorder-controls){font-size:12px!important}
+#tracker .dbt-attempt-head button{font-size:11px!important}
+#tracker .dbt-compact-command-row .week-launch-btn,#tracker .dbt-compact-command-row .tracker-tools .btn,#tracker .dbt-compact-command-row .dbt-highlight-legend-link{font-size:10px!important}
+#tracker .dbt-attempt-tools{gap:3px!important}
+#tracker .dbt-attempt-tools .dbt-attempt-w{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:3px!important;width:26px!important;height:16px!important;padding:0 3px!important;border-radius:4px!important;background:#101317!important;border:1px solid rgba(255,255,255,.10)!important;color:#929ca9!important;font-size:8px!important;opacity:.8}
+#tracker .dbt-attempt-w i{display:grid;place-items:center;width:8px;height:8px;flex:none;border:1px solid #4b535c;border-radius:2px;background:#090b0e}
+#tracker .dbt-attempt-tools .dbt-attempt-w.active{background:#241014!important;border-color:rgba(255,107,120,.42)!important;color:#ff7886!important;opacity:1}
+#tracker .dbt-attempt-w.active i{background:#ff6675;border-color:#ff6675}
+#tracker .dbt-attempt-w.active i:after{content:"✓";color:#26080d;font-size:7px;font-weight:900;line-height:1}
+#tracker .dbt-attempt-tools .dbt-attempt-w:hover,#tracker .dbt-attempt-tools .dbt-attempt-w:focus-visible{opacity:1;border-color:rgba(255,107,120,.6)!important}
+#tracker .dbt-attempt-tools .dbt-attempt-calendar,#tracker .tracker-table .dbt-column-calendar{opacity:0!important;pointer-events:none!important}
+#tracker .check-attempt:hover .dbt-attempt-calendar,#tracker .check-attempt:focus-within .dbt-attempt-calendar,#tracker .dbt-attempt-calendar:focus-visible,#tracker .tracker-table th:hover .dbt-column-calendar,#tracker .tracker-table th:focus-within .dbt-column-calendar,#tracker .dbt-column-calendar:focus-visible{opacity:1!important;pointer-events:auto!important}
+#tracker .dbt-attempt-split .check-stack,#tracker .dbt-attempt-head{grid-template-columns:repeat(var(--attempt-cols),minmax(62px,1fr))!important}
+@media(hover:none){#tracker .dbt-attempt-tools .dbt-attempt-calendar,#tracker .tracker-table .dbt-column-calendar{opacity:1!important;pointer-events:auto!important}}
 `;
 document.head.appendChild(style);
 addLaunch();
