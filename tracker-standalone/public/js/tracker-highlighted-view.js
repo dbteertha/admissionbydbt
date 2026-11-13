@@ -104,13 +104,13 @@ function renderHighlighted(){
   if(!subjects.some(s=>s.id===highlightedSubjectId))
     highlightedSubjectId=subjects[0]?.id||'';
   const current=subjects.find(s=>s.id===highlightedSubjectId);
-  let html=highlightedWeekTimerHtml()+'<div class="week-simple-head dbt-hi-top">'+
+  let html='<div class="dbt-hi-toolbar-row">'+highlightedWeekTimerHtml()+'<div class="week-simple-head dbt-hi-top">'+
     '<div class="week-simple-title"><b>Highlighted'+(date?' · '+esc(shortDate(date)):'')+'</b><em><strong>'+refs.length+'</strong></em></div>'+
     '<div class="week-simple-actions">'+
       '<button type="button" class="week-pdf-btn dbt-hi-select-all" id="dbtHighlightedSelectAll">Select all</button><button type="button" class="week-pdf-btn" id="dbtHighlightedViewPdf">PDF Studio</button>'+
       '<button type="button" class="week-pdf-btn dbt-highlighted-weekly-btn" id="dbtHighlightedViewWeekly">Open This Week</button>'+
       '<button type="button" class="week-back-btn" id="dbtHighlightedViewBack">← Tracker</button>'+
-    '</div></div>'+highlights.legendHtml(date,false);
+    '</div></div>'+highlights.legendHtml(date,false)+'</div>';
   if(!current){
     html+='<div class="week-empty"><strong>No highlighted cells</strong></div>';
   }else{
@@ -253,17 +253,17 @@ function applyAttemptEdit(patch){
   if(refs.length)trackerSave('Edited selected checkbox attempts');
   return refs.length;
 }
-function openAttemptHighlight(anchor){
-  const refs=attemptRefs();if(!refs.length)return;
+function openAttemptHighlight(anchor,targets){
+  const refs=targets||attemptRefs();if(!refs.length)return;
   trackerShowCellPopover(anchor,
     '<div class="cell-pop-title">Highlight '+refs.length+' selected checkboxes</div>'+
-    '<div class="dbt-date-pop-body"><label class="dbt-date-pop-label">Date <input type="date" id="dbtAttemptHighlightDate" value="'+esc(trackerLocalDateKey())+'"></label>'+
+    '<div class="dbt-date-pop-body"><label class="dbt-date-pop-label">Date <input type="date" id="dbtAttemptHighlightDate" value="'+esc((refs.length===1?highlights.attemptDateState(refs[0].f,refs[0].cell).dates[trackerCheckboxItems(refs[0].cell).indexOf(refs[0].item)]:null)||trackerLocalDateKey())+'"></label>'+
     '<div class="dbt-date-pop-actions"><button type="button" class="cell-pop-btn" id="dbtAttemptHighlightClear">Clear dates</button><button type="button" class="cell-pop-btn" id="dbtAttemptHighlightCancel">Cancel</button><button type="button" class="cell-pop-btn primary" id="dbtAttemptHighlightApply">Apply date</button></div></div>');
   const input=trackerCellPopover.querySelector('#dbtAttemptHighlightDate');
   const apply=clear=>{
     const date=clear?'':input.value;
     if(!clear&&!/^\d{4}-\d{2}-\d{2}$/.test(date)){trackerToastMsg('Choose a date');return;}
-    const current=attemptRefs();let changed=0;
+    const current=refs;let changed=0;
     for(const r of current)if(highlights.setAttemptDate(r.f,r.cell,r.item,date))changed++;
     trackerCloseCellPopover();
     if(changed){trackerSave(clear?'Cleared selected checkbox dates':'Highlighted selected checkboxes');trackerToastMsg(changed+' checkboxes updated');}
@@ -291,6 +291,102 @@ function openAttemptBulk(){
     modalClose();
   };
 }
+
+/* Per-attempt weekly membership; legacy weekly cells initially mean all attempts.
+   Keep the parent tag as the compatibility index for Weekly/Daily and cloud sync. */
+function attemptWeekly(c,item){
+  if(!trackerCellIsWeekly(c))return false;
+  return c.attemptWeeklyMode===true?item.weeklySelected===true:true;
+}
+function setAttemptWeekly(r,on){
+  const c=r.cell,checks=trackerCheckboxItems(c),was=trackerCellIsWeekly(c);
+  if(c.attemptWeeklyMode!==true){
+    checks.forEach(x=>{x.weeklySelected=was});
+    c.attemptWeeklyMode=true;
+  }else if(!was)checks.forEach(x=>{x.weeklySelected=false});
+  const item=checks.find(x=>x.id===r.item.id);if(!item)return false;
+  item.weeklySelected=!!on;item.updatedAt=new Date().toISOString();
+  const any=checks.some(x=>x.weeklySelected===true);
+  c.tagIds=Array.isArray(c.tagIds)?c.tagIds.filter(id=>id!=='tag_red'):[];
+  if(any)c.tagIds.push('tag_red');
+  c.updatedAt=new Date().toISOString();
+  return true;
+}
+function attemptControlRefs(key,itemId){
+  const id=attemptKey(key,itemId);
+  if(attemptSelection.has(id))return attemptRefs();
+  const r=trackerResolveCellKey(key);if(!r)return [];
+  const item=trackerCheckboxItems(r.cell).find(x=>x.id===itemId);
+  return item?[{...r,item}]:[];
+}
+function applyWeeklyToAttempts(refs,on){
+  let n=0;
+  for(const r of refs)if(setAttemptWeekly(r,on))n++;
+  if(n)trackerSave(on?'Added selected checkboxes to weekly':'Removed selected checkboxes from weekly');
+}
+function attachAttemptControls(box,attempt){
+  if(attempt.querySelector('.dbt-attempt-tools'))return;
+  const key=trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid);
+  const r=trackerResolveCellKey(key);if(!r||r.f.type!=='checkbox')return;
+  const item=trackerCheckboxItems(r.cell).find(x=>x.id===attempt.dataset.attemptId);if(!item)return;
+  const tools=document.createElement('span');tools.className='dbt-attempt-tools';
+  const weekly=document.createElement('button');weekly.type='button';weekly.className='dbt-attempt-w'+(attemptWeekly(r.cell,item)?' active':'');weekly.textContent='W';
+  weekly.title=attemptWeekly(r.cell,item)?'Remove this checkbox from weekly':'Add this checkbox to weekly';
+  weekly.setAttribute('aria-pressed',String(attemptWeekly(r.cell,item)));
+  weekly.onclick=e=>{e.preventDefault();e.stopPropagation();applyWeeklyToAttempts(attemptControlRefs(key,item.id),!attemptWeekly(r.cell,item))};
+  const cal=document.createElement('button');cal.type='button';cal.className='dbt-attempt-calendar';
+  cal.textContent='▦';cal.setAttribute('aria-label','Edit checkbox highlight date');cal.title='Highlight date: '+(highlights.attemptDateState(r.f,r.cell).dates[trackerCheckboxItems(r.cell).indexOf(item)]||'None');
+  cal.onclick=e=>{e.preventDefault();e.stopPropagation();openAttemptHighlight(cal,attemptControlRefs(key,item.id))};
+  tools.append(weekly,cal);attempt.appendChild(tools);
+  box.classList.add('dbt-attempt-compact');
+}
+function attachCompactControls(root,weeklyOnly=false){
+  if(!root)return;
+  root.querySelectorAll('.cell-box.multi-check[data-fid]').forEach(box=>{
+    const r=trackerResolveCellKey(trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid));if(!r)return;
+    const attempts=[...box.querySelectorAll('.check-attempt')];
+    attempts.forEach(attempt=>{
+      attachAttemptControls(box,attempt);
+      // Old weekly tags apply to all attempts. Explicit selections show only
+      // their chosen attempts in Weekly Routine; merged legacy cards are retained.
+      if(weeklyOnly&&r.cell.attemptWeeklyMode===true){
+        const item=trackerCheckboxItems(r.cell).find(x=>x.id===attempt.dataset.attemptId);
+        attempt.hidden=!item||!attemptWeekly(r.cell,item);
+      }
+    });
+  });
+}
+const originalAttemptPrint=trackerWeeklyPrintTaskText;
+trackerWeeklyPrintTaskText=function(r){
+  if((trackerPdfSourceMode==='week'||trackerPdfSourceMode==='day')&&r.f.type==='checkbox'){
+    if(Array.isArray(r.mergedMembers)&&r.mergedMembers.length>1)return r.mergedMembers.map(m=>trackerWeeklyPrintTaskText({...m,mergedMembers:undefined})).join(' + ');
+    if(r.cell.attemptWeeklyMode===true&&trackerCellIsWeekly(r.cell)){
+      const checks=trackerCheckboxItems(r.cell),selected=checks.map((item,i)=>({item,i})).filter(x=>attemptWeekly(r.cell,x.item));
+      if(selected.length)return selected.map(({item,i})=>(item.checked?'✓ ':'□ ')+r.f.name+(checks.length>1?' '+(i+1):'')+trackerWeekPartSuffix(r.cell)).join(' / ');
+    }
+  }
+  return originalAttemptPrint.apply(this,arguments);
+};
+// Keep a single compact command row; subjects retain their own tab strip.
+function compactTopBar(){
+  if(trackerWeekView)return;
+  const command=document.querySelector('#tracker .tracker-commandbar'),week=command?.querySelector('.week-launchbar'),toolbar=command?.querySelector('.tracker-toolbar');
+  if(!command||!week||!toolbar)return;
+  let row=command.querySelector('.dbt-compact-command-row');
+  if(!row){row=document.createElement('div');row.className='dbt-compact-command-row';command.appendChild(row);row.append(week,toolbar);}
+  const legend=document.getElementById('dbtMainHighlightLegend');
+  if(legend&&legend.parentElement!==row)row.insertBefore(legend,toolbar);
+  if(trackerSearch.value)trackerSearch.value='';
+  if(trackerFilter.value!=='all')trackerFilter.value='all';
+  const select=document.getElementById('trackerSelectAllBtn');
+  if(select&&!select.dataset.dbtCompactSelect){
+    const b=document.createElement('button');b.type='button';b.className='btn dbt-top-attempt-select';b.textContent='All checkboxes';
+    b.title='Select all visible checkbox attempts';
+    b.onclick=()=>selectAttemptKeys([...new Set([...trackerTableHost.querySelectorAll('[data-dbt-attempt-key]')].map(el=>el.dataset.dbtAttemptKey))]);
+    select.after(b);select.dataset.dbtCompactSelect='1';
+  }
+}
+
 function installAttemptColumns(){
   const host=trackerTableHost,table=host.querySelector('table.tracker-table');
   if(!table)return;
@@ -364,16 +460,20 @@ function installAttemptColumns(){
   });
   if(!host.querySelector('.dbt-attempt-bulk')){
     const bar=document.createElement('div');bar.className='dbt-attempt-bulk';bar.hidden=true;
-    bar.innerHTML='<button type="button" class="btn" data-attempt-select-all>Select all checkboxes</button><span class="dbt-attempt-count"></span><button type="button" class="btn" data-attempt-highlight>📅 Highlight selected</button><button type="button" class="btn primary" data-attempt-edit>Edit selected</button><button type="button" class="btn" data-attempt-check>✓ Check</button><button type="button" class="btn" data-attempt-uncheck>○ Uncheck</button><button type="button" class="btn" data-attempt-clear>Clear selection</button>';
+    bar.innerHTML='<button type="button" class="btn" data-attempt-select-all>Select all checkboxes</button><span class="dbt-attempt-count"></span><button type="button" class="btn" data-attempt-highlight>📅 Highlight selected</button><button type="button" class="btn primary" data-attempt-edit>Edit selected</button><button type="button" class="btn" data-attempt-check>✓ Check</button><button type="button" class="btn" data-attempt-uncheck>○ Uncheck</button><button type="button" class="btn" data-attempt-week>W Add weekly</button><button type="button" class="btn" data-attempt-unweek>Remove weekly</button><button type="button" class="btn" data-attempt-clear>Clear selection</button>';
     bar.querySelector('[data-attempt-select-all]').onclick=()=>selectAttemptKeys([...new Set([...host.querySelectorAll('[data-dbt-attempt-key]')].map(el=>el.dataset.dbtAttemptKey))]);
     const calendar=bar.querySelector('[data-attempt-highlight]');calendar.onclick=()=>openAttemptHighlight(calendar);
     bar.querySelector('[data-attempt-edit]').onclick=openAttemptBulk;
     bar.querySelector('[data-attempt-check]').onclick=()=>applyAttemptEdit({checked:true});
     bar.querySelector('[data-attempt-uncheck]').onclick=()=>applyAttemptEdit({checked:false});
+    bar.querySelector('[data-attempt-week]').onclick=()=>applyWeeklyToAttempts(attemptRefs(),true);
+    bar.querySelector('[data-attempt-unweek]').onclick=()=>applyWeeklyToAttempts(attemptRefs(),false);
     bar.querySelector('[data-attempt-clear]').onclick=()=>{attemptSelection.clear();updateAttemptSelection()};
     const wrap=table.closest('.dbt-hi-main-table-wrap')||table;
     wrap.before(bar);
   }
+  attachCompactControls(host);
+  attachCompactControls(trackerMobileHost);
   updateAttemptSelection();
 }
 document.addEventListener('pointerup',()=>{attemptDrag=false});
@@ -389,14 +489,16 @@ trackerClearSelection=function(){attemptSelection.clear();const r=beforeAttemptC
 const beforeAttemptRows=renderTrackerRows;
 renderTrackerRows=function(s){
   const r=beforeAttemptRows.apply(this,arguments);
-  if(!trackerWeekView)installAttemptColumns();
+  if(!trackerWeekView){installAttemptColumns();compactTopBar();}
   return r;
 };
 
 const baseRender=renderThisWeekView;
 renderThisWeekView=function(){
   if(trackerPath()===PATH){renderHighlighted();return;}
-  return baseRender.apply(this,arguments);
+  const result=baseRender.apply(this,arguments);
+  if(trackerPath()===TRACKER_WEEK_PATH)attachCompactControls(trackerTableHost,true);
+  return result;
 };
 function addLaunch(){
   const bar=document.querySelector('#tracker .week-launchbar');
@@ -469,8 +571,58 @@ body.tracker-week-page:has(.dbt-hi-main-table) #trackerBulkBar.show .bulk-live-h
 .dbt-hi-main-table .cell-box{min-height:43px!important}
 @media(max-width:680px){.dbt-open-highlighted{font-size:10px;padding:5px 7px;margin-right:4px}.dbt-hi-subtab{flex-basis:90px}.dbt-hi-main-table-wrap{max-height:calc(100vh - 185px)}}
 `;
+style.textContent+=`
+/* One compact control row and no target buttons. */
+#tracker .tracker-commandbar .tracker-tagbar,#tracker .tracker-toolbar .tracker-search,#tracker #trackerHighlightedPdfBtn,#tracker .cell-target-small,#tracker #trackerBulkTarget{display:none!important}
+#tracker .dbt-compact-command-row{display:flex;align-items:center;flex-wrap:nowrap;gap:5px;min-width:0;width:100%;padding:2px 0}
+#tracker .dbt-compact-command-row .week-launchbar{display:flex!important;flex:0 0 auto!important;flex-wrap:nowrap!important;justify-content:flex-start!important;gap:5px!important;width:auto!important;min-width:0!important;margin:0!important;padding:2px 4px!important;height:30px!important;min-height:30px!important}
+#tracker .dbt-compact-command-row .week-date-wrap{flex:0 0 auto!important;gap:4px!important;white-space:nowrap}
+#tracker .dbt-compact-command-row .week-launch-btn{height:25px!important;padding:0 6px!important;font-size:9px!important;margin:0!important}
+#tracker .dbt-compact-command-row .tracker-toolbar{display:flex!important;flex:0 0 auto!important;flex-wrap:nowrap!important;min-width:0!important;width:auto!important;gap:3px!important;margin:0!important;padding:0!important;height:30px!important;min-height:30px!important}
+#tracker .dbt-compact-command-row .tracker-tools{display:flex!important;flex-wrap:nowrap!important;gap:3px!important;align-items:center!important}
+#tracker .dbt-compact-command-row .tracker-tools .btn,#tracker .dbt-compact-command-row .tracker-tools .icon-btn{height:25px!important;min-height:25px!important;padding:0 6px!important;font-size:9px!important;white-space:nowrap}
+#tracker .dbt-compact-command-row #dbtMainHighlightLegend{flex:1 1 0!important;min-width:0!important;margin:0!important;overflow-x:auto;scrollbar-width:thin}
+#tracker .dbt-compact-command-row .dbt-highlight-legend{flex-wrap:nowrap!important;gap:4px!important;padding:0!important}
+#tracker .dbt-compact-command-row .dbt-highlight-legend-label{display:none!important}
+#tracker .dbt-compact-command-row .dbt-highlight-legend-link{flex:none;font-size:9px!important;padding:3px 5px!important}
+#tracker .dbt-compact-command-row .toolbar-cloud{max-width:100px;min-width:0}
+#tracker .dbt-compact-command-row .tracker-tools{margin-left:auto}
+@media(max-width:1100px){#tracker .dbt-compact-command-row{overflow-x:auto;scrollbar-width:thin}#tracker .dbt-compact-command-row #dbtMainHighlightLegend{flex:0 0 auto!important;max-width:220px}#tracker .dbt-compact-command-row .tracker-more-menu{position:fixed!important;right:8px;top:auto}}
+#tracker .dbt-compact-command-row .tracker-more{flex:none}
+#tracker .dbt-attempt-compact>.cell-week-tools,#tracker .dbt-attempt-compact>.cell-tags,#tracker .dbt-attempt-compact>[data-chapter-highlight],#tracker .dbt-attempt-compact>.dbt-date-stack{display:none!important}
+#tracker .cell-box.dbt-attempt-compact{height:auto!important;min-height:30px!important;max-height:none!important;padding:1px 15px 1px 1px!important;overflow:visible!important}
+#tracker .cell-box.dbt-attempt-compact .check-stack{min-height:26px!important;height:auto!important;padding:0!important;gap:0!important;align-items:center!important;overflow:visible!important}
+#tracker .cell-box.dbt-attempt-compact .dbt-attempt-lane{min-height:26px!important;padding:0 1px!important}
+#tracker .cell-box.dbt-attempt-compact .check-attempt{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:2px!important;padding:1px!important;white-space:nowrap}
+#tracker .dbt-attempt-compact .check-attempt[hidden]{display:none!important}
+#tracker .dbt-attempt-tools{display:inline-flex;align-items:center;gap:2px;flex:none}
+#tracker .dbt-attempt-tools button{display:grid;place-items:center;flex:none;width:13px;height:15px;padding:0;border:1px solid rgba(150,165,185,.22);border-radius:3px;background:transparent;color:#929ca9;font-size:8px;font-weight:750;cursor:pointer;line-height:1}
+#tracker .dbt-attempt-tools .dbt-attempt-w.active{background:rgba(255,86,114,.2);border-color:#d95b76;color:#ff8ba1}
+#tracker .dbt-attempt-tools button:hover{border-color:#adb9c9;color:#fff}
+#tracker .dbt-attempt-tools .dbt-attempt-calendar{font-size:12px}
+#tracker .dbt-attempt-compact .check-stack>.add-check{position:absolute!important;right:2px!important;top:50%!important;transform:translateY(-50%)!important;width:12px!important;height:17px!important;min-width:0!important;margin:0!important;font-size:10px!important;grid-column:auto!important}
+#tracker .dbt-attempt-compact .check-stack>.dbt-date-pending{grid-column:1/-1}
+#tracker .tracker-table td:has(.dbt-attempt-compact){height:34px!important;min-height:34px!important;max-height:none!important;padding:1px 2px!important}
+#tracker .tracker-table tr:has(.dbt-attempt-compact) td:first-child{height:34px!important;min-height:34px!important;max-height:none!important;padding-block:1px!important}
+#tracker .tracker-table tr:has(.dbt-attempt-compact) .chapter-cell{min-height:30px!important}
+#tracker .dbt-attempt-parent{min-height:34px!important;height:auto!important}
+#tracker .dbt-attempt-head{min-height:18px!important}
+#tracker .dbt-attempt-head button{padding:2px 0!important}
+#tracker .dbt-attempt-split .check-stack{grid-template-columns:repeat(var(--attempt-cols),minmax(49px,1fr))!important}
+#tracker .dbt-attempt-head{grid-template-columns:repeat(var(--attempt-cols),minmax(49px,1fr))!important}
+#tracker .dbt-attempt-bulk.dbt-no-attempt-selection{display:none!important}
+body.tracker-week-page #tracker .dbt-attempt-bulk.dbt-no-attempt-selection{display:flex!important}
+#tracker .week-task-control>.week-task-highlight-date{display:none!important}
+#tracker .dbt-hi-top{display:flex!important;flex-wrap:nowrap!important;gap:5px!important;min-height:30px!important;margin:0!important}
+#tracker .dbt-hi-top .week-simple-title,#tracker .dbt-hi-top .week-simple-actions{flex-wrap:nowrap!important;white-space:nowrap}
+#tracker .dbt-hi-toolbar-row{display:flex;align-items:center;gap:5px;flex-wrap:nowrap;min-width:0;overflow-x:auto;scrollbar-width:thin;margin-bottom:4px}
+#tracker .dbt-hi-toolbar-row .dbt-hi-week-timer{flex:none;flex-wrap:nowrap!important;margin:0!important;min-height:30px!important;padding:2px 5px!important}
+#tracker .dbt-hi-toolbar-row .dbt-hi-top{flex:none}
+#tracker .dbt-hi-toolbar-row .dbt-highlight-legend{flex:none;flex-wrap:nowrap!important;margin:0!important;padding:0!important}
+`;
 document.head.appendChild(style);
 addLaunch();
 if(trackerPath()===PATH){trackerWeekView=true;document.body.classList.add('tracker-week-page');renderTracker();}
-else if(!trackerWeekView)renderTrackerRows(trackerSubject());
+else if(!trackerWeekView){compactTopBar();renderTrackerRows(trackerSubject());}
+else if(trackerPath()===TRACKER_WEEK_PATH)renderThisWeekView();
 })();
