@@ -99,11 +99,17 @@ function highlightedSelectionBindings(){
  const selectAll=document.getElementById('dbtHighlightedSelectAll');
  if(selectAll)selectAll.onclick=()=>highlightedSelectKeys(highlightedVisibleKeys());
  const allowed=new Set(highlightedVisibleKeys());
+ // A date edit can remove a visible cell; never leave hidden cells selected.
+ for(const key of [...trackerSelectedCells])if(!allowed.has(key))trackerSelectedCells.delete(key);
  trackerTableHost.querySelectorAll('[data-hi-select-column]').forEach(b=>b.onclick=e=>{
    e.stopPropagation();e.preventDefault();
    const s=trackerState.subjects.find(x=>x.id===highlightedSubjectId);
    if(!s)return;
-   highlightedSelectKeys(s.chapters.map(ch=>trackerCellKey(s.id,ch.id,b.dataset.hiSelectColumn)).filter(k=>allowed.has(k)));
+   highlightedSelectKeys([...new Set(s.chapters.map(ch=>{
+     const id=b.dataset.hiSelectColumn;
+     const merge=highlightedMerges(s,ch).find(g=>g.members.includes(id));
+     return trackerCellKey(s.id,ch.id,merge?merge.anchor:id);
+   }).filter(k=>allowed.has(k)))]);
  });
  trackerTableHost.querySelectorAll('[data-hi-select-row]').forEach(b=>b.onclick=e=>{
    e.stopPropagation();e.preventDefault();
@@ -120,7 +126,7 @@ function renderHighlighted(){
     highlightedSubjectId=subjects[0]?.id||'';
   const current=subjects.find(s=>s.id===highlightedSubjectId);
   let html=highlightedWeekTimerHtml()+'<div class="week-simple-head dbt-hi-top">'+
-    '<div class="week-simple-title"><b>Highlighted</b><em><strong>'+refs.length+'</strong></em></div>'+
+    '<div class="week-simple-title"><b>Highlighted'+(dateFilter()?' · '+esc(shortDate(dateFilter())):'')+'</b><em><strong>'+refs.length+'</strong></em></div>'+
     '<div class="week-simple-actions">'+
       '<button type="button" class="week-pdf-btn dbt-hi-select-all" id="dbtHighlightedSelectAll">Select all</button><button type="button" class="week-pdf-btn" id="dbtHighlightedViewPdf">PDF Studio</button>'+
       '<button type="button" class="week-pdf-btn dbt-highlighted-weekly-btn" id="dbtHighlightedViewWeekly">Open This Week</button>'+
