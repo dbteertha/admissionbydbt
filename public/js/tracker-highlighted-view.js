@@ -348,8 +348,7 @@ function setWholeCellWeekly(refs,on){
     const c=r.cell;
     c.tagIds=Array.isArray(c.tagIds)?c.tagIds.filter(id=>id!=='tag_red'):[];
     if(on)c.tagIds.push('tag_red');
-    if(r.f.type==='checkbox'){
-      c.attemptWeeklyMode=true;
+    if(r.f.type==='checkbox'&&c.attemptWeeklyMode===true){
       for(const item of trackerCheckboxItems(c)){item.weeklySelected=!!on;item.updatedAt=stamp;}
     }
     if(!on){c.weeklyPart='';trackerRemoveDailyGoalKey(r.key||trackerCellKey(r.s.id,r.ch.id,r.f.id));}
@@ -364,7 +363,7 @@ function deleteAttemptTargets(refs){
   for(const r of existing){if(!byCell.has(r.cell))byCell.set(r.cell,{ref:r,ids:new Set()});byCell.get(r.cell).ids.add(r.item.id);}
   for(const {ref,ids} of byCell.values()){
     const c=ref.cell;c.checks=trackerCheckboxItems(c).filter(x=>!ids.has(x.id));
-    c.checks.forEach((x,i)=>{if(!x.label||/^\\d+$/.test(x.label))x.label=String(i+1)});
+    c.checks.forEach((x,i)=>{if(!x.label||/^\d+$/.test(x.label))x.label=String(i+1)});
     if(c.attemptWeeklyMode===true&&trackerCellIsWeekly(c)&&!c.checks.some(x=>x.weeklySelected===true)){
       c.tagIds=(c.tagIds||[]).filter(id=>id!=='tag_red');c.weeklyPart='';trackerRemoveDailyGoalKey(ref.key||trackerCellKey(ref.s.id,ref.ch.id,ref.f.id));
     }
@@ -583,6 +582,20 @@ bindTrackerCells=function(root){
     const key=trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid),r=trackerResolveCellKey(key);if(!r)return;
     const toggle=box.querySelector('[data-week-toggle]');
     if(toggle)toggle.onchange=e=>{e.stopPropagation();const refs=selectedWholeCells(key);setWholeCellWeekly(refs.length?refs:[r],toggle.checked);};
+    const inline=box.querySelector('[data-cell-inline]');
+    if(inline){
+      // The original editor persists the selected values. Mirror them in the
+      // visible inputs immediately instead of waiting for a future rerender.
+      const mirror=()=>{
+        if(!trackerSelectedCells.has(key))return;
+        const keys=new Set(trackerCompatibleMutationRefs(r.s,r.ch,r.f).map(x=>x.key));
+        document.querySelectorAll('.cell-box[data-sid][data-cid][data-fid]').forEach(other=>{
+          if(other===box||!keys.has(trackerCellKey(other.dataset.sid,other.dataset.cid,other.dataset.fid)))return;
+          const input=other.querySelector('[data-cell-inline]');if(input&&input.value!==inline.value)input.value=inline.value;
+        });
+      };
+      inline.addEventListener('input',mirror);inline.addEventListener('change',mirror);
+    }
     const part=box.querySelector('[data-week-part-inline]');
     if(part){const original=part.onclick;part.onclick=e=>{
       const refs=selectedWholeCells(key).filter(x=>trackerCellIsWeekly(x.cell));
@@ -603,6 +616,22 @@ trackerTagMutationRefs=function(s,ch,f,tagId){
   const key=trackerCellKey(s.id,ch.id,f.id);
   if(trackerSelectedCells.has(key))return trackerSelectedRefs();
   return beforeTagMutationRefs.apply(this,arguments);
+};
+const beforeTagsPopover=trackerShowTagsPopover;
+trackerShowTagsPopover=function(anchor,s,ch,f){
+  const result=beforeTagsPopover.apply(this,arguments),cell=trackerGetCell(s.id,ch.id,f.id);
+  const red=trackerCellPopover.querySelector('[data-pop-tag="tag_red"]');
+  if(red)red.onclick=e=>{
+    e.stopPropagation();const refs=trackerMutationRefs(s,ch,f),on=!trackerCellIsWeekly(cell);
+    trackerCloseCellPopover();setWholeCellWeekly(refs,on);
+  };
+  const clear=trackerCellPopover.querySelector('[data-pop-clear-tags]');
+  if(clear)clear.onclick=e=>{
+    e.stopPropagation();const refs=trackerMutationRefs(s,ch,f),stamp=new Date().toISOString();
+    refs.forEach(r=>{const c=r.cell;c.tagIds=[];c.weeklyPart='';if(r.f.type==='checkbox'&&c.attemptWeeklyMode===true)trackerCheckboxItems(c).forEach(item=>{item.weeklySelected=false;item.updatedAt=stamp;});trackerRemoveDailyGoalKey(r.key);c.updatedAt=stamp;});
+    trackerCloseCellPopover();trackerSave('Cell tags cleared');
+  };
+  return result;
 };
 const beforeCellEditor=openCellEditorPopover;
 openCellEditorPopover=function(anchor,s,ch,f,mode){
