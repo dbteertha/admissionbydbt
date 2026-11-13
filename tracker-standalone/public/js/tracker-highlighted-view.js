@@ -242,8 +242,8 @@ function selectAttemptKeys(keys){
   keys.forEach(k=>all?attemptSelection.delete(k):attemptSelection.add(k));
   updateAttemptSelection();
 }
-function applyAttemptEdit(patch){
-  const refs=attemptRefs(),stamp=new Date().toISOString();
+function applyAttemptEdit(patch,targets){
+  const refs=targets||attemptRefs(),stamp=new Date().toISOString();
   for(const r of refs){
     if(patch.checked!==undefined)r.item.checked=patch.checked;
     if(patch.label!==undefined)r.item.label=patch.label||String(trackerCheckboxItems(r.cell).indexOf(r.item)+1);
@@ -273,8 +273,8 @@ function openAttemptHighlight(anchor,targets){
   trackerCellPopover.querySelector('#dbtAttemptHighlightCancel').onclick=()=>trackerCloseCellPopover();
 }
 
-function openAttemptBulk(){
-  const refs=attemptRefs();if(!refs.length)return;
+function openAttemptBulk(targets){
+  const refs=Array.isArray(targets)?targets:attemptRefs();if(!refs.length)return;
   modalOpen('Edit selected checkboxes',refs.length+' checkboxes selected',
     '<div class="form-row"><label>State</label><select id="dbtAttemptState"><option value="keep">Keep existing</option><option value="true">Checked</option><option value="false">Unchecked</option></select></div>'+
     '<div class="form-row"><label>Label</label><input id="dbtAttemptLabel" placeholder="Keep existing"></div>'+
@@ -287,7 +287,7 @@ function openAttemptBulk(){
     if(state!=='keep')patch.checked=state==='true';
     if(label)patch.label=label;
     if(mode!=='keep')patch.comment=mode==='clear'?'':document.getElementById('dbtAttemptComment').value.trim();
-    if(Object.keys(patch).length)applyAttemptEdit(patch);
+    if(Object.keys(patch).length)applyAttemptEdit(patch,refs);
     modalClose();
   };
 }
@@ -316,8 +316,19 @@ function attemptControlRefs(key,itemId){
   const id=attemptKey(key,itemId);
   if(attemptSelection.has(id))return attemptRefs();
   const r=trackerResolveCellKey(key);if(!r)return [];
-  const item=trackerCheckboxItems(r.cell).find(x=>x.id===itemId);
-  return item?[{...r,item}]:[];
+  const items=trackerCheckboxItems(r.cell),index=items.findIndex(x=>x.id===itemId);
+  if(index<0)return [];
+  if(trackerSelectedCells.has(key)){
+    const refs=[];
+    for(const selectedKey of trackerSelectedCells){
+      const selected=trackerResolveCellKey(selectedKey);
+      if(!selected||selected.f.type!=='checkbox')continue;
+      const item=trackerCheckboxItems(selected.cell)[index];
+      if(item)refs.push({...selected,item});
+    }
+    return refs;
+  }
+  return [{...r,item:items[index]}];
 }
 function applyWeeklyToAttempts(refs,on){
   let n=0;
@@ -442,13 +453,13 @@ function installAttemptColumns(){
         if(toggle){
           const original=toggle.onchange;
           toggle.onchange=e=>{
-            if(attemptSelection.has(k)){e.stopPropagation();applyAttemptEdit({checked:toggle.checked});}
+            if(attemptSelection.has(k)||trackerSelectedCells.has(key)){e.stopPropagation();applyAttemptEdit({checked:toggle.checked},attemptControlRefs(key,attempt.dataset.attemptId));}
             else {if(attemptSelection.size){attemptSelection.clear();updateAttemptSelection()}if(original)original.call(toggle,e);}
           };
         }
         attempt.querySelectorAll('[data-check-edit],[data-check-comment]').forEach(b=>{
           const original=b.onclick;b.onclick=e=>{
-            if(attemptSelection.has(k)){e.preventDefault();e.stopPropagation();openAttemptBulk();}
+            if(attemptSelection.has(k)||trackerSelectedCells.has(key)){e.preventDefault();e.stopPropagation();openAttemptBulk(attemptControlRefs(key,attempt.dataset.attemptId));}
             else if(original)original.call(b,e);
           };
         });
