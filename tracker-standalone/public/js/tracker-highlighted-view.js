@@ -639,6 +639,20 @@ style.textContent+=`
 #tracker .dbt-attempt-split .check-stack,#tracker .dbt-attempt-head{grid-template-columns:repeat(var(--attempt-cols),minmax(62px,1fr))!important}
 @media(hover:none){#tracker .dbt-attempt-tools .dbt-attempt-calendar,#tracker .tracker-table .dbt-column-calendar{opacity:1!important;pointer-events:auto!important}}
 `;
+style.textContent+=`
+/* Keep attempt checkboxes centered; reveal weekly and date controls without shifting them. */
+#tracker .tracker-table .cell-box.dbt-attempt-compact{padding:1px 15px!important}
+#tracker .tracker-table .dbt-attempt-head{padding-inline:15px!important;box-sizing:border-box}
+#tracker .tracker-table .dbt-attempt-split .check-stack,#tracker .tracker-table .dbt-attempt-head{grid-template-columns:repeat(var(--attempt-cols),minmax(76px,1fr))!important}
+#tracker .tracker-table .dbt-attempt-lane{min-width:76px!important;box-sizing:border-box}
+#tracker .tracker-table .dbt-attempt-lane .check-attempt{position:relative!important;width:100%!important;min-width:0!important;justify-content:center!important;box-sizing:border-box}
+#tracker .tracker-table .dbt-attempt-lane .dbt-attempt-tools{position:absolute!important;inset:0!important;display:block!important;pointer-events:none!important}
+#tracker .tracker-table .dbt-attempt-lane .dbt-attempt-tools .dbt-attempt-w{position:absolute!important;left:1px!important;top:50%!important;transform:translateY(-50%)!important}
+#tracker .tracker-table .dbt-attempt-lane .dbt-attempt-tools .dbt-attempt-calendar{position:absolute!important;right:1px!important;top:50%!important;transform:translateY(-50%)!important}
+#tracker .dbt-attempt-tools .dbt-attempt-w{opacity:0!important;pointer-events:none!important}
+#tracker .check-attempt:hover .dbt-attempt-w,#tracker .check-attempt:focus-within .dbt-attempt-w,#tracker .dbt-attempt-w:focus-visible,#tracker .dbt-attempt-lane:hover .dbt-attempt-w{opacity:1!important;pointer-events:auto!important}
+@media(hover:none){#tracker .dbt-attempt-tools .dbt-attempt-w{opacity:1!important;pointer-events:auto!important}}
+`;
 document.head.appendChild(style);
 addLaunch();
 if(trackerPath()===PATH){trackerWeekView=true;document.body.classList.add('tracker-week-page');renderTracker();}
