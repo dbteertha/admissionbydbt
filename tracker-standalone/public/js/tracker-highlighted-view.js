@@ -397,6 +397,7 @@ function attachCompactControls(root,weeklyOnly=false){
   root.querySelectorAll('.cell-box.multi-check[data-fid]').forEach(box=>{
     const r=trackerResolveCellKey(trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid));if(!r)return;
     const attempts=[...box.querySelectorAll('.check-attempt')];
+    box.classList.toggle('dbt-empty-check',attempts.length===0);
     attempts.forEach(attempt=>{
       attachAttemptControls(box,attempt);
       // Old weekly tags apply to all attempts. Explicit selections show only
@@ -815,6 +816,24 @@ style.textContent+=`
 #tracker .dbt-attempt-tools .dbt-attempt-w{opacity:0!important;pointer-events:none!important}
 #tracker .check-attempt:hover .dbt-attempt-w,#tracker .check-attempt:focus-within .dbt-attempt-w,#tracker .dbt-attempt-w:focus-visible,#tracker .dbt-attempt-lane:hover .dbt-attempt-w{opacity:1!important;pointer-events:auto!important}
 @media(hover:none){#tracker .dbt-attempt-tools .dbt-attempt-w{opacity:1!important;pointer-events:auto!important}}
+`;
+style.textContent+=`
+/* Empty checkbox cells use the same compact row geometry as populated cells.
+   Leave the real add button and date-specific pending buttons functional. */
+#tracker .tracker-table .cell-box.dbt-empty-check{display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;box-sizing:border-box!important;width:100%!important;height:30px!important;min-height:30px!important;max-height:none!important;padding:1px 15px!important;overflow:visible!important}
+#tracker .tracker-table .cell-box.dbt-empty-check .check-stack{position:static!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:nowrap!important;min-width:0!important;width:100%!important;max-width:100%!important;height:auto!important;min-height:26px!important;gap:4px!important;padding:0!important;overflow:visible!important}
+#tracker .tracker-table .dbt-empty-check .dbt-attempt-lane{display:none!important}
+#tracker .tracker-table .dbt-empty-check .check-stack>.add-check{position:static!important;inset:auto!important;transform:none!important;display:grid!important;place-items:center!important;flex:0 0 auto!important;width:21px!important;height:21px!important;min-width:21px!important;margin:0!important;font-size:14px!important;opacity:.7!important;visibility:visible!important;pointer-events:auto!important}
+#tracker .tracker-table .dbt-empty-check .check-stack>.add-check:hover,#tracker .tracker-table .dbt-empty-check .check-stack>.add-check:focus-visible{opacity:1!important}
+#tracker .tracker-table .dbt-empty-check .check-stack>.dbt-date-pending{display:flex!important;align-items:center!important;justify-content:center!important;flex:0 0 auto!important;min-width:0!important;padding:0!important;gap:0!important}
+#tracker .tracker-table .dbt-empty-check .check-stack>.dbt-date-pending .dbt-date-add-attempt{width:21px!important;height:21px!important}
+#tracker .tracker-table .dbt-empty-check>.cell-week-tools{display:flex!important;position:absolute!important;left:3px!important;bottom:auto!important;top:50%!important;transform:translateY(-50%)!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;z-index:4!important}
+#tracker .tracker-table .dbt-empty-check>[data-chapter-highlight],#tracker .tracker-table .dbt-empty-check>.dbt-date-stack{display:inline-flex!important;position:absolute!important;right:3px!important;top:50%!important;bottom:auto!important;transform:translateY(-50%)!important;opacity:0!important;visibility:hidden!important;pointer-events:none!important;z-index:4!important}
+#tracker .tracker-table .dbt-empty-check:hover>.cell-week-tools,#tracker .tracker-table .dbt-empty-check:focus-within>.cell-week-tools,#tracker .tracker-table .dbt-empty-check:hover>[data-chapter-highlight],#tracker .tracker-table .dbt-empty-check:focus-within>[data-chapter-highlight],#tracker .tracker-table .dbt-empty-check:hover>.dbt-date-stack,#tracker .tracker-table .dbt-empty-check:focus-within>.dbt-date-stack{opacity:1!important;visibility:visible!important;pointer-events:auto!important}
+#tracker .tracker-table td:has(>.dbt-empty-check){height:34px!important;min-height:34px!important;max-height:none!important;padding:1px 2px!important;vertical-align:middle!important}
+#tracker .tracker-table tr:has(.dbt-empty-check) td:first-child{height:34px!important;min-height:34px!important;max-height:none!important;padding-block:1px!important}
+#tracker .tracker-table tr:has(.dbt-empty-check) .chapter-cell{min-height:30px!important}
+@media(hover:none){#tracker .tracker-table .dbt-empty-check>.cell-week-tools,#tracker .tracker-table .dbt-empty-check>[data-chapter-highlight],#tracker .tracker-table .dbt-empty-check>.dbt-date-stack{opacity:1!important;visibility:visible!important;pointer-events:auto!important}}
 `;
 document.head.appendChild(style);
 addLaunch();
