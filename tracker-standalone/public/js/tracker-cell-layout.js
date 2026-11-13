@@ -186,34 +186,39 @@ trackerTaskHighlightBadge=function(s,ch,f,c){
  const key=trackerCellKey(s.id,ch.id,f.id),ds=datesFor(f,c);
  return '<button type="button" class="week-task-highlight-date dbt-multi-date'+(f.type==='checkbox'||!ds.length?' dbt-highlight-icon':'')+'" data-chapter-highlight="'+esc(key)+'" title="'+esc(ds.join(', ')||'Set highlight dates')+'" aria-label="Edit highlight dates">📅'+(f.type==='checkbox'||!ds.length?'':' '+dateLabels(ds))+'</button>';
 };
-trackerOpenChapterHighlightDate=function(key){
+trackerOpenChapterHighlightDate=function(key,sourceAnchor){
  const ref=trackerResolveCellKey(key);if(!ref)return;
  const {ch,f,cell}=ref;
  const anchors=[...document.querySelectorAll('[data-chapter-highlight],[data-dbt-edit-date]')].filter(el=>el.dataset.chapterHighlight===key||el.dataset.dbtEditDate===key);
- const anchor=anchors.find(el=>el===document.activeElement||el.matches(':hover'))||anchors[0];if(!anchor)return;
+ const anchor=sourceAnchor||anchors.find(el=>el===document.activeElement||el.matches(':hover'))||anchors[0];if(!anchor)return;
  const originalDates=datesFor(f,cell).slice();
  const selected=trackerSelectedCells.has(key)?[...trackerSelectedCells].map(k=>trackerResolveCellKey(k)).filter(Boolean):[ref];
  let draft=originalDates.slice(),pending=!draft.length,clearAll=false;
- trackerShowCellPopover(anchor,'<div class="cell-pop-title">'+esc(ch.name)+' · '+esc(f.name)+'</div>'+
+ const requestedAdds=new Set(),requestedRemoves=new Set();
+ trackerShowCellPopover(anchor,'<div class="cell-pop-title">'+(selected.length>1?'Highlight '+selected.length+' selected cells':esc(ch.name)+' · '+esc(f.name))+'</div>'+
  '<div class="dbt-date-pop-body"><div id="dbtDatesList"></div><label class="dbt-date-pop-label">Date <input id="dbtCellHighlightDate" type="date" value="'+esc(draft.at(-1)||trackerLocalDateKey())+'"></label>'+
  '<div class="dbt-date-pop-actions dbt-date-pop-actions-wrap"><button type="button" class="cell-pop-btn" id="dbtDateAdd">+ Add date</button><button type="button" class="cell-pop-btn" id="dbtDateClear">Clear</button><button type="button" class="cell-pop-btn" id="dbtDateCancel">Cancel</button><button type="button" class="cell-pop-btn primary" id="dbtDateSave">Save</button><button type="button" class="cell-pop-btn" id="dbtDateColumn">Whole column</button></div></div>');
  const q=x=>trackerCellPopover.querySelector(x),input=q('#dbtCellHighlightDate'),list=q('#dbtDatesList');
  function redraw(){
   list.innerHTML=draft.map(d=>'<div class="dbt-date-entry"><span>'+esc(short(d))+'</span><button type="button" class="cell-pop-btn" data-remove-date="'+esc(d)+'" aria-label="Remove '+esc(d)+'">×</button></div>').join('');
-  list.querySelectorAll('[data-remove-date]').forEach(b=>b.onclick=()=>{draft=draft.filter(d=>d!==b.dataset.removeDate);pending=false;redraw()});
+  list.querySelectorAll('[data-remove-date]').forEach(b=>b.onclick=()=>{const d=b.dataset.removeDate;requestedRemoves.add(d);requestedAdds.delete(d);draft=draft.filter(x=>x!==d);pending=false;redraw()});
  }
- function add(){if(!validDate(input.value)){trackerToastMsg('Choose a valid date');return false}draft=[...new Set([...draft,input.value])].sort();pending=false;redraw();return true}
+ function add(){if(!validDate(input.value)){trackerToastMsg('Choose a valid date');return false}requestedAdds.add(input.value);requestedRemoves.delete(input.value);draft=[...new Set([...draft,input.value])].sort();pending=false;redraw();return true}
  q('#dbtDateAdd').onclick=add;
  q('#dbtDateCancel').onclick=()=>trackerCloseCellPopover();
- q('#dbtDateClear').onclick=()=>{draft=[];pending=false;clearAll=true;redraw()};
+ q('#dbtDateClear').onclick=()=>{draft=[];pending=false;clearAll=true;requestedAdds.clear();requestedRemoves.clear();redraw()};
  q('#dbtDateSave').onclick=()=>{
   if(pending&&!add())return;
-  const added=draft.filter(d=>!originalDates.includes(d)),removed=originalDates.filter(d=>!draft.includes(d));
+  // An explicit Add of a date already on the source still propagates it.
+  // Saving an unchanged valid date also applies it to the selected cells.
+  if(selected.length>1&&!clearAll&&!requestedAdds.size&&!requestedRemoves.size&&draft.includes(input.value))requestedAdds.add(input.value);
+  const added=[...new Set([...draft.filter(d=>!originalDates.includes(d)),...requestedAdds])].filter(d=>draft.includes(d));
+  const removed=new Set([...originalDates.filter(d=>!draft.includes(d)),...requestedRemoves]);
   for(const target of selected){
     const existing=datesFor(target.f,target.cell);
-    putDates(target.cell,clearAll?draft:[...existing.filter(d=>!removed.includes(d)),...added]);
+    putDates(target.cell,selected.length===1||clearAll?draft:[...existing.filter(d=>!removed.has(d)),...added]);
   }
-  trackerCloseCellPopover();trackerSave('Selected cell highlight dates changed');
+  trackerCloseCellPopover();trackerSave(selected.length>1?'Selected cell highlight dates changed':'Cell highlight dates changed');
  };
  input.onchange=()=>{pending=true};
  q('#dbtDateColumn').onclick=()=>{
