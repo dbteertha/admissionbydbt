@@ -201,7 +201,176 @@ function renderHighlighted(){
   bindTrackerCells(trackerTableHost);
   highlights.bindColumnDateButtons(trackerTableHost,current);
   highlightedSelectionBindings();
+  installAttemptColumns();
 }
+
+// Numbered attempt columns are a presentation of existing check IDs, not new fields.
+const attemptSelection=new Set();
+let attemptDrag=false,attemptDragAdd=true;
+const attemptKey=(key,id)=>key+'|'+id;
+function attemptRefs(){
+  const refs=[];
+  for(const k of attemptSelection){
+    const at=k.lastIndexOf('|'),r=trackerResolveCellKey(k.slice(0,at));
+    if(!r||r.f.type!=='checkbox')continue;
+    const item=trackerCheckboxItems(r.cell).find(x=>x.id===k.slice(at+1));
+    if(item)refs.push({...r,item});
+  }
+  return refs;
+}
+function updateAttemptSelection(){
+  const host=trackerTableHost;
+  if(!host)return;
+  const visible=new Set([...host.querySelectorAll('[data-dbt-attempt-key]')].map(el=>el.dataset.dbtAttemptKey));
+  for(const k of [...attemptSelection])if(!visible.has(k))attemptSelection.delete(k);
+  host.querySelectorAll('[data-dbt-attempt-key]').forEach(el=>el.classList.toggle('dbt-attempt-selected',attemptSelection.has(el.dataset.dbtAttemptKey)));
+  host.querySelectorAll('[data-dbt-attempt-column]').forEach(b=>{
+    const keys=columnAttemptKeys(b.dataset.dbtField,b.dataset.dbtAttemptColumn);
+    const all=keys.length>0&&keys.every(k=>attemptSelection.has(k));
+    b.classList.toggle('active',all);b.setAttribute('aria-pressed',String(!!all));
+  });
+  const bar=host.querySelector('.dbt-attempt-bulk');
+  if(bar){bar.hidden=!attemptSelection.size;bar.querySelector('.dbt-attempt-count').textContent=attemptSelection.size+' checkboxes selected';}
+}
+function columnAttemptKeys(fid,index){
+  return [...trackerTableHost.querySelectorAll('[data-dbt-attempt-key]')].filter(el=>el.dataset.dbtField===fid&&el.dataset.dbtAttemptIndex===String(index)).map(el=>el.dataset.dbtAttemptKey);
+}
+function selectAttemptKeys(keys){
+  if(!keys.length)return;
+  if(trackerSelectedCells.size){trackerSelectedCells.clear();trackerUpdateSelectionUI();}
+  const all=keys.every(k=>attemptSelection.has(k));
+  keys.forEach(k=>all?attemptSelection.delete(k):attemptSelection.add(k));
+  updateAttemptSelection();
+}
+function applyAttemptEdit(patch){
+  const refs=attemptRefs(),stamp=new Date().toISOString();
+  for(const r of refs){
+    if(patch.checked!==undefined)r.item.checked=patch.checked;
+    if(patch.label!==undefined)r.item.label=patch.label||String(trackerCheckboxItems(r.cell).indexOf(r.item)+1);
+    if(patch.comment!==undefined)r.item.comment=patch.comment;
+    r.item.updatedAt=stamp;trackerSyncLegacyCheckbox(r.cell);
+  }
+  if(refs.length)trackerSave('Edited selected checkbox attempts');
+  return refs.length;
+}
+function openAttemptBulk(){
+  const refs=attemptRefs();if(!refs.length)return;
+  modalOpen('Edit selected checkboxes',refs.length+' checkboxes selected',
+    '<div class="form-row"><label>State</label><select id="dbtAttemptState"><option value="keep">Keep existing</option><option value="true">Checked</option><option value="false">Unchecked</option></select></div>'+
+    '<div class="form-row"><label>Label</label><input id="dbtAttemptLabel" placeholder="Keep existing"></div>'+
+    '<div class="form-row"><label>Comment</label><textarea id="dbtAttemptComment" placeholder="Keep existing"></textarea></div>'+
+    '<div class="form-row"><label>Comment action</label><select id="dbtAttemptCommentMode"><option value="keep">Keep existing</option><option value="replace">Replace</option><option value="clear">Clear</option></select></div>',
+    '<button type="button" class="btn" id="dbtAttemptCancel">Cancel</button><button type="button" class="btn primary" id="dbtAttemptSave">Apply</button>');
+  document.getElementById('dbtAttemptCancel').onclick=()=>modalClose();
+  document.getElementById('dbtAttemptSave').onclick=()=>{
+    const patch={},state=document.getElementById('dbtAttemptState').value,label=document.getElementById('dbtAttemptLabel').value.trim(),mode=document.getElementById('dbtAttemptCommentMode').value;
+    if(state!=='keep')patch.checked=state==='true';
+    if(label)patch.label=label;
+    if(mode!=='keep')patch.comment=mode==='clear'?'':document.getElementById('dbtAttemptComment').value.trim();
+    if(Object.keys(patch).length)applyAttemptEdit(patch);
+    modalClose();
+  };
+}
+function installAttemptColumns(){
+  const host=trackerTableHost,table=host.querySelector('table.tracker-table');
+  if(!table)return;
+  const counts=new Map(),boxes=[...table.querySelectorAll('.cell-box.multi-check[data-fid]')];
+  boxes.forEach(box=>{
+    const count=box.querySelectorAll('.check-stack > .check-attempt').length;
+    counts.set(box.dataset.fid,Math.max(counts.get(box.dataset.fid)||1,count));
+  });
+  table.querySelectorAll('thead th').forEach(th=>{
+    const head=th.querySelector('.field-head');
+    const id=head?.querySelector('[data-edit-field]')?.dataset.editField||head?.querySelector('[data-hi-select-column]')?.dataset.hiSelectColumn;
+    const n=counts.get(id)||1;
+    if(n<2||th.querySelector('.dbt-attempt-head'))return;
+    th.classList.add('dbt-attempt-parent');
+    const sub=document.createElement('div');sub.className='dbt-attempt-head';sub.style.setProperty('--attempt-cols',n);
+    for(let i=0;i<n;i++){
+      const b=document.createElement('button');b.type='button';b.textContent=String(i+1);
+      b.dataset.dbtField=id;b.dataset.dbtAttemptColumn=String(i);b.title='Select checkbox column '+(i+1);
+      b.setAttribute('aria-label',head.textContent.trim()+' checkbox column '+(i+1));
+      b.onclick=e=>{e.preventDefault();e.stopPropagation();selectAttemptKeys(columnAttemptKeys(id,i))};
+      sub.appendChild(b);
+    }
+    th.appendChild(sub);
+  });
+  boxes.forEach(box=>{
+    const n=counts.get(box.dataset.fid)||1,stack=box.querySelector('.check-stack');
+    if(n<2||!stack||stack.querySelector('.dbt-attempt-lane'))return;
+    const attempts=[...stack.querySelectorAll(':scope > .check-attempt')],add=stack.querySelector('.add-check');
+    box.classList.add('dbt-attempt-split');stack.style.setProperty('--attempt-cols',n);
+    const key=trackerCellKey(box.dataset.sid,box.dataset.cid,box.dataset.fid);
+    for(let i=0;i<n;i++){
+      const lane=document.createElement('div');lane.className='dbt-attempt-lane';
+      const attempt=attempts[i];
+      if(attempt){
+        lane.dataset.dbtAttemptKey=attemptKey(key,attempt.dataset.attemptId);lane.dataset.dbtField=box.dataset.fid;lane.dataset.dbtAttemptIndex=String(i);
+        const k=lane.dataset.dbtAttemptKey;
+        lane.tabIndex=0;lane.setAttribute('aria-label','Select checkbox '+(i+1));
+        lane.onpointerdown=e=>{
+          if(e.button!==0||e.target.closest('input,button,.attempt-actions'))return;
+          e.preventDefault();e.stopPropagation();
+          if(trackerSelectedCells.size){trackerSelectedCells.clear();trackerUpdateSelectionUI();}
+          attemptDrag=true;attemptDragAdd=!attemptSelection.has(k);
+          if(attemptDragAdd)attemptSelection.add(k);else attemptSelection.delete(k);
+          updateAttemptSelection();
+        };
+        lane.onpointerenter=()=>{if(attemptDrag){if(attemptDragAdd)attemptSelection.add(k);else attemptSelection.delete(k);updateAttemptSelection()}};
+        lane.onkeydown=e=>{
+          if(e.target!==lane)return;
+          if(e.key===' '){e.preventDefault();e.stopPropagation();selectAttemptKeys([k])}
+          if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(!attemptSelection.has(k))selectAttemptKeys([k]);openAttemptBulk()}
+        };
+        const toggle=attempt.querySelector('[data-check-toggle]');
+        if(toggle){
+          const original=toggle.onchange;
+          toggle.onchange=e=>{
+            if(attemptSelection.has(k)){e.stopPropagation();applyAttemptEdit({checked:toggle.checked});}
+            else {if(attemptSelection.size){attemptSelection.clear();updateAttemptSelection()}if(original)original.call(toggle,e);}
+          };
+        }
+        attempt.querySelectorAll('[data-check-edit],[data-check-comment]').forEach(b=>{
+          const original=b.onclick;b.onclick=e=>{
+            if(attemptSelection.has(k)){e.preventDefault();e.stopPropagation();openAttemptBulk();}
+            else if(original)original.call(b,e);
+          };
+        });
+        lane.appendChild(attempt);
+      }else{lane.classList.add('dbt-attempt-missing');lane.setAttribute('aria-hidden','true');}
+      stack.insertBefore(lane,add||null);
+    }
+    // Keep existing add-attempt and calendar/weekly controls at parent-cell level.
+  });
+  if(!host.querySelector('.dbt-attempt-bulk')){
+    const bar=document.createElement('div');bar.className='dbt-attempt-bulk';bar.hidden=true;
+    bar.innerHTML='<span class="dbt-attempt-count"></span><button type="button" class="btn primary" data-attempt-edit>Edit selected</button><button type="button" class="btn" data-attempt-check>✓ Check</button><button type="button" class="btn" data-attempt-uncheck>○ Uncheck</button><button type="button" class="btn" data-attempt-clear>Clear selection</button>';
+    bar.querySelector('[data-attempt-edit]').onclick=openAttemptBulk;
+    bar.querySelector('[data-attempt-check]').onclick=()=>applyAttemptEdit({checked:true});
+    bar.querySelector('[data-attempt-uncheck]').onclick=()=>applyAttemptEdit({checked:false});
+    bar.querySelector('[data-attempt-clear]').onclick=()=>{attemptSelection.clear();updateAttemptSelection()};
+    const wrap=table.closest('.dbt-hi-main-table-wrap')||table;
+    wrap.before(bar);
+  }
+  updateAttemptSelection();
+}
+document.addEventListener('pointerup',()=>{attemptDrag=false});
+document.addEventListener('pointercancel',()=>{attemptDrag=false});
+const beforeAttemptSelection=trackerUpdateSelectionUI;
+trackerUpdateSelectionUI=function(){
+  const result=beforeAttemptSelection.apply(this,arguments);
+  if(trackerSelectedCells.size&&attemptSelection.size){attemptSelection.clear();updateAttemptSelection()}
+  return result;
+};
+const beforeAttemptClear=trackerClearSelection;
+trackerClearSelection=function(){attemptSelection.clear();const r=beforeAttemptClear.apply(this,arguments);updateAttemptSelection();return r};
+const beforeAttemptRows=renderTrackerRows;
+renderTrackerRows=function(s){
+  const r=beforeAttemptRows.apply(this,arguments);
+  if(!trackerWeekView)installAttemptColumns();
+  return r;
+};
+
 const baseRender=renderThisWeekView;
 renderThisWeekView=function(){
   if(trackerPath()===PATH){renderHighlighted();return;}
@@ -221,6 +390,23 @@ function addLaunch(){
 }
 const style=document.createElement('style');
 style.textContent=`
+
+#tracker .dbt-attempt-parent{height:auto!important;min-height:48px!important;padding-bottom:0!important}
+#tracker .dbt-attempt-head{display:grid;grid-template-columns:repeat(var(--attempt-cols),minmax(24px,1fr));border-top:1px solid rgba(255,255,255,.10);width:100%;min-height:24px}
+#tracker .dbt-attempt-head button{position:static!important;transform:none!important;opacity:1!important;pointer-events:auto!important;border:0;border-right:1px solid rgba(255,255,255,.10);border-radius:0;background:transparent;color:#aeb9c8;font-size:10px;cursor:pointer;padding:4px 0}
+#tracker .dbt-attempt-head button:last-child{border-right:0}
+#tracker .dbt-attempt-head button:hover,#tracker .dbt-attempt-head button.active{background:#26364c;color:#fff}
+#tracker .cell-box.dbt-attempt-split{height:auto!important;min-height:43px!important;overflow:visible!important;padding:0 0 15px!important}
+#tracker .cell-box.dbt-attempt-split .check-stack{display:grid!important;grid-template-columns:repeat(var(--attempt-cols),minmax(24px,1fr));width:100%!important;max-width:none!important;min-width:0!important;gap:0!important;padding:0!important;overflow:visible!important;align-items:stretch!important}
+#tracker .dbt-attempt-lane{display:flex;align-items:center;justify-content:center;min-height:30px;min-width:0;border-right:1px solid rgba(255,255,255,.10);cursor:cell;position:relative}
+#tracker .dbt-attempt-lane:last-of-type{border-right:0}
+#tracker .dbt-attempt-lane .check-attempt{display:flex!important;justify-content:center!important;align-items:center!important;padding:2px!important}
+#tracker .dbt-attempt-lane.dbt-attempt-selected{background:rgba(104,166,255,.19);outline:1px solid #76a9ed;outline-offset:-1px}
+#tracker .dbt-attempt-split .check-stack>.add-check,#tracker .dbt-attempt-split .check-stack>.dbt-date-pending{grid-column:1/-1;justify-self:center}
+#tracker .dbt-attempt-bulk{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:5px 8px;background:#111820;border:1px solid #32445d;border-radius:6px;margin:4px 0;flex:none}
+#tracker .dbt-attempt-bulk[hidden]{display:none!important}
+#tracker .dbt-attempt-count{font-size:11px;color:#d3e0f0;font-weight:700;margin-right:4px}
+
 .dbt-open-highlighted{white-space:nowrap;margin-right:6px}
 body.tracker-week-page:has(.dbt-hi-main-table) #trackerBulkBar.show{display:flex!important;position:relative!important;flex-wrap:wrap;gap:5px;padding:7px 9px;max-height:180px;overflow:auto}
 body.tracker-week-page:has(.dbt-hi-main-table) #trackerBulkBar.show .bulk-live-hint{display:none!important}
@@ -261,4 +447,5 @@ body.tracker-week-page:has(.dbt-hi-main-table) #trackerBulkBar.show .bulk-live-h
 document.head.appendChild(style);
 addLaunch();
 if(trackerPath()===PATH){trackerWeekView=true;document.body.classList.add('tracker-week-page');renderTracker();}
+else if(!trackerWeekView)renderTrackerRows(trackerSubject());
 })();
