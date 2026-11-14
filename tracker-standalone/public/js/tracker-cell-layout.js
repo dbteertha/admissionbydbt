@@ -75,7 +75,13 @@ function putDates(c,ds){
  c.highlightExcluded=!c.highlightDates.length;
  c.updatedAt=new Date().toISOString();
 }
-function hue(d){return ((Math.round(Date.parse(d+'T00:00:00Z')/86400000)*137.508)%360+360)%360}
+const DATE_COLOR_HUES=[350,210,45,145,275];
+function hue(d){
+ const dates=activeHighlightDates(),index=dates.indexOf(d);
+ if(index>=0)return DATE_COLOR_HUES[index%DATE_COLOR_HUES.length];
+ const day=Math.floor(Date.parse(d+'T00:00:00Z')/86400000);
+ return DATE_COLOR_HUES[((day%DATE_COLOR_HUES.length)+DATE_COLOR_HUES.length)%DATE_COLOR_HUES.length];
+}
 function short(d){return new Date(d+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}
 function dateLabels(ds){return ds.slice(0,2).map(d=>esc(short(d))).join(' · ')+(ds.length>2?' +'+(ds.length-2):'')}
 // Shared source for all highlighted views, legends and filtered PDF exports.
@@ -113,7 +119,7 @@ function highlightLegendHtml(selected='',newTab=false){
  const label=d=>short(d)+(yearNeeded?' '+d.slice(0,4):'');
  return '<nav class="dbt-highlight-legend" aria-label="Highlighted dates">'+
    (newTab?'<span class="dbt-highlight-legend-label">Highlighted dates</span>':'<a class="dbt-highlight-legend-link'+(!selected?' active':'')+'" href="'+highlightedUrl()+'"'+(!selected?' aria-current="page"':'')+'>All dates</a>')+
-   options.map(d=>'<a class="dbt-highlight-legend-link'+(d===selected?' active':'')+'" href="'+esc(highlightedUrl(d))+'"'+attrs+(d===selected?' aria-current="page"':'')+' title="Open highlighted cells for '+esc(d)+'"><i class="dbt-highlight-legend-swatch" style="--dbt-legend-color:hsl('+hue(d)+' 72% 65%)" aria-hidden="true"></i><span>'+esc(label(d))+'</span></a>').join('')+
+   options.map(d=>'<a class="dbt-highlight-legend-link'+(d===selected?' active':'')+'" href="'+esc(highlightedUrl(d))+'"'+attrs+(d===selected?' aria-current="page"':'')+' title="Open highlighted cells for '+esc(d)+'"><i class="dbt-highlight-legend-swatch" style="--dbt-legend-color:hsl('+hue(d)+' 88% 65%)" aria-hidden="true"></i><span>'+esc(label(d))+'</span></a>').join('')+
  '</nav>';
 }
 function renderMainHighlightLegend(){
@@ -310,8 +316,8 @@ function decorateDates(root){
         if(matchesHighlightDate(slot.ref.f,slot.ref.cell,slot.date)&&(!highlightFilterDate()||highlightFilterDate()===slot.date)){
           const h=hue(slot.date);
           check.classList.add('dbt-dated-check');
-          check.style.setProperty('--dbt-check-color','hsl('+h+' 72% 65%)');
-          check.style.setProperty('--dbt-check-tint','hsl('+h+' 58% 25%)');
+          check.style.setProperty('--dbt-check-color','hsl('+h+' 88% 65%)');
+          check.style.setProperty('--dbt-check-tint','hsl('+h+' 62% 27%)');
         }
 
       });

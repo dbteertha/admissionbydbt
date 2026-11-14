@@ -491,10 +491,6 @@ function installAttemptColumns(){
       b.onclick=e=>{e.preventDefault();e.stopPropagation();selectAttemptKeys(columnAttemptKeys(id,i))};
       sub.appendChild(b);
     }
-    // The third outlined square in compact cells is the Add checkbox control,
-    // not attempt #3. Give it a matching + header so it cannot be mistaken for
-    // a saved checkbox or incorrectly numbered.
-    if(!filtered){const addHead=document.createElement('span');addHead.className='dbt-attempt-add-head';addHead.textContent='+';addHead.title='Add another checkbox';addHead.setAttribute('aria-label','Add another checkbox');sub.appendChild(addHead);}
     th.appendChild(sub);
   });
   boxes.forEach(box=>{
@@ -915,6 +911,23 @@ style.textContent+=`
 #tracker .dbt-attempt-add-head{position:absolute!important;right:2px!important;top:50%!important;transform:translateY(-50%)!important;width:16px!important;height:16px!important;display:grid!important;place-items:center!important;border:1px dashed rgba(150,165,185,.42)!important;border-radius:4px!important;color:#aeb8c6!important;font-size:13px!important;font-weight:600!important;line-height:1!important;cursor:default!important}
 #tracker .tracker-table .cell-box.dbt-attempt-compact .check-stack>.add-check{position:absolute!important;right:2px!important;top:50%!important;left:auto!important;transform:translateY(-50%)!important;width:16px!important;height:16px!important;min-width:16px!important;display:grid!important;place-items:center!important;border:1px dashed rgba(150,165,185,.42)!important;border-radius:4px!important;background:transparent!important;color:#c4cedb!important;font-size:13px!important;font-weight:600!important;line-height:1!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;padding:0!important}
 #tracker .tracker-table .cell-box.dbt-attempt-compact .check-stack>.add-check:hover{border-color:#b7c6d8!important;color:#fff!important;background:rgba(255,255,255,.06)!important}
+`;
+style.textContent+=`
+/* Keep the add control in its own narrow gutter, outside numbered attempt lanes. */
+#tracker .dbt-attempt-head{box-sizing:border-box!important;padding-right:20px!important}
+#tracker .cell-box.dbt-attempt-compact{padding:1px 0 1px 1px!important}
+#tracker .cell-box.dbt-attempt-compact .check-stack{position:relative!important;box-sizing:border-box!important;padding-right:20px!important}
+#tracker .cell-box.dbt-attempt-compact .check-stack>.add-check{right:1px!important;width:16px!important;height:16px!important;min-width:16px!important}
+#tracker .dbt-attempt-add-head{display:none!important}
+/* Weekly is a read-only list of selected work: no add-attempt controls or pseudo-columns. */
+body.tracker-week-page #tracker .add-check,
+body.tracker-week-page #tracker .dbt-date-add-attempt,
+body.tracker-week-page #tracker .dbt-attempt-add-head,
+#tracker .week-task-control .add-check,
+#tracker .week-task-control .dbt-date-add-attempt{display:none!important}
+body.tracker-week-page #tracker .dbt-attempt-head{padding-right:0!important}
+body.tracker-week-page #tracker .cell-box.dbt-attempt-compact{padding-right:0!important}
+body.tracker-week-page #tracker .cell-box.dbt-attempt-compact .check-stack{padding-right:0!important}
 `;
 document.head.appendChild(style);
 addLaunch();
