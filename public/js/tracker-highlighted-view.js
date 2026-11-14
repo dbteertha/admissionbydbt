@@ -915,6 +915,7 @@ style.textContent+=`
 style.textContent+=`
 /* Keep the add control in its own narrow gutter, outside numbered attempt lanes. */
 #tracker .dbt-attempt-head{box-sizing:border-box!important;padding-right:20px!important}
+#tracker .cell-box.dbt-attempt-compact{padding:1px 0 1px 1px!important}
 #tracker .cell-box.dbt-attempt-compact .check-stack{position:relative!important;box-sizing:border-box!important;padding-right:20px!important}
 #tracker .cell-box.dbt-attempt-compact .check-stack>.add-check{right:1px!important;width:16px!important;height:16px!important;min-width:16px!important}
 #tracker .dbt-attempt-add-head{display:none!important}
@@ -925,6 +926,7 @@ body.tracker-week-page #tracker .dbt-attempt-add-head,
 #tracker .week-task-control .add-check,
 #tracker .week-task-control .dbt-date-add-attempt{display:none!important}
 body.tracker-week-page #tracker .dbt-attempt-head{padding-right:0!important}
+body.tracker-week-page #tracker .cell-box.dbt-attempt-compact{padding-right:0!important}
 body.tracker-week-page #tracker .cell-box.dbt-attempt-compact .check-stack{padding-right:0!important}
 `;
 document.head.appendChild(style);
