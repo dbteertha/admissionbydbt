@@ -418,6 +418,14 @@ function attachCompactControls(root,weeklyOnly=false){
       }
     }
     box.classList.toggle('dbt-empty-check',attempts.length===0);
+    // The compact attempt layout hides the original weekly tools. Move the
+    // existing portion button out of that hidden wrapper, retaining its handler.
+    if(!weeklyOnly){
+      const part=box.querySelector('[data-week-part-inline]');
+      if(part&&trackerCellIsWeekly(r.cell)&&!box.classList.contains('dbt-empty-check')){
+        part.classList.add('dbt-week-portion-restored');part.disabled=false;box.appendChild(part);
+      }
+    }
     box.classList.toggle('dbt-empty-weekly',attempts.length===0&&trackerCellIsWeekly(r.cell));
     attempts.forEach(attempt=>attachAttemptControls(box,attempt));
   });
@@ -637,12 +645,13 @@ bindTrackerCells=function(root){
       inline.addEventListener('input',mirror);inline.addEventListener('change',mirror);
     }
     const part=box.querySelector('[data-week-part-inline]');
-    if(part){const original=part.onclick;part.onclick=e=>{
-      const refs=selectedWholeCells(key).filter(x=>trackerCellIsWeekly(x.cell));
-      if(!refs.length){if(original)original.call(part,e);return;}
-      e.preventDefault();e.stopPropagation();if(part.disabled)return;
+    if(part){part.onclick=e=>{
+      const whole=selectedWholeCells(key);
+      const refs=(whole.length?whole:[r]).filter(x=>trackerCellIsWeekly(x.cell));
+      e.preventDefault();e.stopPropagation();if(part.disabled||!refs.length)return;
       const values=['','1','1/2','1/3','2/3','1/4','2/4','3/4'];
-      trackerShowCellPopover(part,'<div class="cell-pop-title">Weekly part · '+refs.length+' selected cells</div><div class="week-part-grid">'+values.map(v=>'<button type="button" class="week-part-option" data-week-part-value="'+esc(v)+'">'+esc(v||'None')+'</button>').join('')+'</div>');
+      const current=typeof r.cell.weeklyPart==='string'?r.cell.weeklyPart:'';
+      trackerShowCellPopover(part,'<div class="cell-pop-title">Weekly part · '+(refs.length===1?esc(r.ch.name)+' • '+esc(r.f.name):refs.length+' selected cells')+'</div><div class="week-part-grid">'+values.map(v=>'<button type="button" class="week-part-option '+(current===v?'active':'')+'" data-week-part-value="'+esc(v)+'">'+esc(v||'None')+'</button>').join('')+'</div>');
       trackerCellPopover.querySelectorAll('[data-week-part-value]').forEach(b=>b.onclick=ev=>{
         ev.stopPropagation();const value=b.dataset.weekPartValue||'',stamp=new Date().toISOString();
         refs.forEach(x=>{x.cell.weeklyPart=value;x.cell.updatedAt=stamp;});trackerCloseCellPopover();trackerSave('Weekly part changed for selected cells');
@@ -888,6 +897,13 @@ style.textContent+=`
 /* Keep the red weekly marker visible independently of hover controls. */
 #tracker .check-attempt.dbt-attempt-weekly::before{content:'';position:absolute;left:calc(50% - 15px);top:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:50%;background:#ff6675;box-shadow:0 0 5px rgba(255,102,117,.55);pointer-events:none;z-index:2}
 #tracker .cell-box.dbt-empty-weekly::before{content:'';position:absolute;left:7px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:#ff6675;box-shadow:0 0 5px rgba(255,102,117,.55);pointer-events:none;z-index:2}
+`;
+style.textContent+=`
+/* Weekly portion: compact, separate from hover-only attempt W controls. */
+#tracker .cell-box.dbt-attempt-compact:has(>.dbt-week-portion-restored){padding-bottom:18px!important}
+#tracker .cell-box>.dbt-week-portion-restored{display:block!important;position:absolute!important;left:50%!important;bottom:1px!important;top:auto!important;transform:translateX(-50%)!important;width:34px!important;height:15px!important;min-width:34px!important;z-index:5!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;color:#c9b46f!important;background:#15120b!important;border-color:rgba(242,199,102,.24)!important}
+#tracker .cell-box>.dbt-week-portion-restored.has-part{background:#2a2110!important;color:#ffe397!important;border-color:rgba(242,199,102,.52)!important}
+#tracker .cell-box>.dbt-week-portion-restored:hover{border-color:#e8d28f!important}
 `;
 document.head.appendChild(style);
 addLaunch();
