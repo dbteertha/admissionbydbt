@@ -477,11 +477,12 @@ function installAttemptColumns(){
     }
   });
   const indicesFor=id=>filtered?[...(visibleIndices.get(id)||[])].sort((a,b)=>a-b):Array.from({length:counts.get(id)||1},(_,i)=>i);
+  table.querySelectorAll('thead th .dbt-attempt-head').forEach(el=>el.remove());
   table.querySelectorAll('thead th').forEach(th=>{
     const head=th.querySelector('.field-head');
     const id=head?.querySelector('[data-edit-field]')?.dataset.editField||head?.querySelector('[data-hi-select-column]')?.dataset.hiSelectColumn;
     const indices=indicesFor(id),n=indices.length;
-    if(!n||(!filtered&&n<2)||(filtered&&(counts.get(id)||1)<2)||th.querySelector('.dbt-attempt-head'))return;
+    if(!n||(!filtered&&n<2)||(filtered&&(counts.get(id)||1)<2))return;
     th.classList.add('dbt-attempt-parent');
     const sub=document.createElement('div');sub.className='dbt-attempt-head';sub.style.setProperty('--attempt-cols',n);
     for(const i of indices){
@@ -701,7 +702,8 @@ openCellEditorPopover=function(anchor,s,ch,f,mode){
 const beforeAttemptRows=renderTrackerRows;
 renderTrackerRows=function(s){
   const r=beforeAttemptRows.apply(this,arguments);
-  if(!trackerWeekView){installAttemptColumns();compactTopBar();}
+  if(trackerTableHost.querySelector('table.tracker-table'))installAttemptColumns();
+  if(!trackerWeekView)compactTopBar();
   return r;
 };
 
@@ -709,7 +711,7 @@ const baseRender=renderThisWeekView;
 renderThisWeekView=function(){
   if(trackerPath()===PATH){renderHighlighted();return;}
   const result=baseRender.apply(this,arguments);
-  if(trackerPath()===TRACKER_WEEK_PATH)attachCompactControls(trackerTableHost,true);
+  if(trackerPath()===TRACKER_WEEK_PATH){installAttemptColumns();attachCompactControls(trackerTableHost,true);}
   return result;
 };
 function addLaunch(){
@@ -928,6 +930,30 @@ body.tracker-week-page #tracker .dbt-attempt-add-head,
 body.tracker-week-page #tracker .dbt-attempt-head{padding-right:0!important}
 body.tracker-week-page #tracker .cell-box.dbt-attempt-compact{padding-right:0!important}
 body.tracker-week-page #tracker .cell-box.dbt-attempt-compact .check-stack{padding-right:0!important}
+`;
+style.textContent+=`
+/* Exact shared geometry: header numbers sit on the same grid tracks as checkbox lanes. */
+#tracker .tracker-table th.dbt-attempt-parent,
+#tracker .tracker-table td:has(.dbt-attempt-split){padding-left:0!important;padding-right:0!important}
+#tracker .tracker-table .dbt-attempt-head{
+  display:grid!important;
+  grid-template-columns:repeat(var(--attempt-cols),minmax(32px,1fr))!important;
+  width:100%!important;max-width:100%!important;
+  margin:0!important;padding:0!important;box-sizing:border-box!important;
+}
+#tracker .tracker-table .dbt-attempt-split .check-stack{
+  display:grid!important;
+  grid-template-columns:repeat(var(--attempt-cols),minmax(32px,1fr))!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  margin:0!important;padding:0!important;gap:0!important;box-sizing:border-box!important;
+}
+#tracker .tracker-table .dbt-attempt-lane{width:auto!important;min-width:0!important;max-width:none!important;box-sizing:border-box!important}
+#tracker .tracker-table .dbt-attempt-head button{width:100%!important;min-width:0!important;text-align:center!important;box-sizing:border-box!important}
+/* Weekly is read-only: hide add controls with enough specificity to override compact-cell styles. */
+body.tracker-week-page #tracker .tracker-table .cell-box.dbt-attempt-compact .check-stack>.add-check,
+body.tracker-week-page #tracker .tracker-table .cell-box.dbt-attempt-compact .check-stack>.dbt-date-pending,
+body.tracker-week-page #tracker .week-task-control .cell-box .check-stack>.add-check,
+body.tracker-week-page #tracker .week-task-control .cell-box .check-stack>.dbt-date-pending{display:none!important}
 `;
 document.head.appendChild(style);
 addLaunch();
