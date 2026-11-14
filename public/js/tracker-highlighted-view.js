@@ -491,6 +491,10 @@ function installAttemptColumns(){
       b.onclick=e=>{e.preventDefault();e.stopPropagation();selectAttemptKeys(columnAttemptKeys(id,i))};
       sub.appendChild(b);
     }
+    // The third outlined square in compact cells is the Add checkbox control,
+    // not attempt #3. Give it a matching + header so it cannot be mistaken for
+    // a saved checkbox or incorrectly numbered.
+    if(!filtered){const addHead=document.createElement('span');addHead.className='dbt-attempt-add-head';addHead.textContent='+';addHead.title='Add another checkbox';addHead.setAttribute('aria-label','Add another checkbox');sub.appendChild(addHead);}
     th.appendChild(sub);
   });
   boxes.forEach(box=>{
@@ -904,6 +908,13 @@ style.textContent+=`
 #tracker .cell-box>.dbt-week-portion-restored{display:block!important;position:absolute!important;left:50%!important;bottom:1px!important;top:auto!important;transform:translateX(-50%)!important;width:34px!important;height:15px!important;min-width:34px!important;z-index:5!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;color:#c9b46f!important;background:#15120b!important;border-color:rgba(242,199,102,.24)!important}
 #tracker .cell-box>.dbt-week-portion-restored.has-part{background:#2a2110!important;color:#ffe397!important;border-color:rgba(242,199,102,.52)!important}
 #tracker .cell-box>.dbt-week-portion-restored:hover{border-color:#e8d28f!important}
+`;
+style.textContent+=`
+/* Distinguish the add control from numbered checkbox attempts. */
+#tracker .dbt-attempt-head{position:relative!important;padding-right:22px!important;box-sizing:border-box!important}
+#tracker .dbt-attempt-add-head{position:absolute!important;right:2px!important;top:50%!important;transform:translateY(-50%)!important;width:16px!important;height:16px!important;display:grid!important;place-items:center!important;border:1px dashed rgba(150,165,185,.42)!important;border-radius:4px!important;color:#aeb8c6!important;font-size:13px!important;font-weight:600!important;line-height:1!important;cursor:default!important}
+#tracker .tracker-table .cell-box.dbt-attempt-compact .check-stack>.add-check{position:absolute!important;right:2px!important;top:50%!important;left:auto!important;transform:translateY(-50%)!important;width:16px!important;height:16px!important;min-width:16px!important;display:grid!important;place-items:center!important;border:1px dashed rgba(150,165,185,.42)!important;border-radius:4px!important;background:transparent!important;color:#c4cedb!important;font-size:13px!important;font-weight:600!important;line-height:1!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;padding:0!important}
+#tracker .tracker-table .cell-box.dbt-attempt-compact .check-stack>.add-check:hover{border-color:#b7c6d8!important;color:#fff!important;background:rgba(255,255,255,.06)!important}
 `;
 document.head.appendChild(style);
 addLaunch();
