@@ -9,11 +9,14 @@ const currentColumnActive=trackerFieldHighlightActive;
 // highlights remain supported unless the user explicitly selects cell-only mode.
 function validDate(d){return typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&Number.isFinite(Date.parse(d+'T00:00:00'))}
 function storedDates(c){return [...new Set([...(Array.isArray(c?.highlightDates)?c.highlightDates:[]),c?.chapterHighlightUntil].filter(validDate))].sort()}
+function columnDatesFor(f){
+ const dates=Array.isArray(f?.columnHighlightDates)?f.columnHighlightDates.filter(validDate):[];
+ if(f?.highlightScope!=='individual'&&validDate(f?.highlightUntil))dates.push(f.highlightUntil);
+ return [...new Set(dates)].sort();
+}
 function legacyDatesFor(f,c){
  if(c?.highlightExcluded===true)return [];
- const own=storedDates(c);
- if(own.length)return own;
- return f?.highlightScope!=='individual'&&validDate(f?.highlightUntil)?[f.highlightUntil]:[];
+ return [...new Set([...columnDatesFor(f),...storedDates(c)])].sort();
 }
 // Explicit attempt dates are stored on the existing stable checkbox records.
 // Legacy cell-level dates are materialized only when the user edits an attempt date.
@@ -93,7 +96,7 @@ function highlightFilterDate(){
 }
 function matchesHighlightDate(f,c,date=''){
  const dates=datesFor(f,c),today=trackerLocalDateKey();
- return date?date>=today&&dates.some(d=>d>=today&&d<=date):dates.some(d=>d>=today);
+ return date?date>=today&&dates.includes(date):dates.some(d=>d>=today);
 }
 function activeHighlightDates(){
  const dates=new Set(),today=trackerLocalDateKey();
@@ -119,7 +122,7 @@ function highlightLegendHtml(selected='',newTab=false){
  const label=d=>short(d)+(yearNeeded?' '+d.slice(0,4):'');
  return '<nav class="dbt-highlight-legend" aria-label="Highlighted dates">'+
    (newTab?'<span class="dbt-highlight-legend-label">Highlighted dates</span>':'<a class="dbt-highlight-legend-link'+(!selected?' active':'')+'" href="'+highlightedUrl()+'"'+(!selected?' aria-current="page"':'')+'>All dates</a>')+
-   options.map(d=>'<a class="dbt-highlight-legend-link'+(d===selected?' active':'')+'" href="'+esc(highlightedUrl(d))+'"'+attrs+(d===selected?' aria-current="page"':'')+' title="Show highlighted cells through '+esc(d)+'"><i class="dbt-highlight-legend-swatch" style="--dbt-legend-color:hsl('+hue(d)+' 88% 65%)" aria-hidden="true"></i><span>'+esc(label(d))+'</span></a>').join('')+
+   options.map(d=>'<a class="dbt-highlight-legend-link'+(d===selected?' active':'')+'" href="'+esc(highlightedUrl(d))+'"'+attrs+(d===selected?' aria-current="page"':'')+' title="Open highlighted cells for '+esc(d)+'"><i class="dbt-highlight-legend-swatch" style="--dbt-legend-color:hsl('+hue(d)+' 88% 65%)" aria-hidden="true"></i><span>'+esc(label(d))+'</span></a>').join('')+
  '</nav>';
 }
 function renderMainHighlightLegend(){
@@ -133,35 +136,43 @@ function renderMainHighlightLegend(){
  if(!host){host=document.createElement('div');host.id='dbtMainHighlightLegend';wrap.before(host);}
  host.innerHTML=html;
 }
-function addDateToColumn(s,f,date){
-  if(!validDate(date))return 0;
-  let count=0;
-  for(const ch of s.chapters||[]){
-    const cell=trackerGetCell(s.id,ch.id,f.id);
-    const before=datesFor(f,cell);
-    if(before.includes(date))continue;
-    // Explicit whole-column action targets every existing chapter, including
-    // excluded cells. Preserve every saved and previously effective date.
-    putDates(cell,[...before,...storedDates(cell),date]);count++;
-  }
-  if(count)trackerSave('Added highlight date to column '+f.name);
-  return count;
+function addDatesToColumn(s,f,dates){
+ const desired=[...new Set(dates.filter(validDate))].sort();
+ const before=columnDatesFor(f);
+ const added=desired.filter(d=>!before.includes(d));
+ if(!added.length)return 0;
+ f.columnHighlightDates=[...new Set([...before,...added])].sort();
+ let changed=0;
+ for(const ch of s.chapters||[]){
+  const cell=trackerGetCell(s.id,ch.id,f.id);
+  if(cell.highlightExcluded===true){cell.highlightExcluded=false;cell.updatedAt=new Date().toISOString();}
+  changed++;
+ }
+ trackerSave('Updated highlight dates for column '+f.name);
+ return changed;
 }
 function openColumnDate(anchor,s,f){
-  trackerShowCellPopover(anchor,
-    '<div class="cell-pop-title">'+esc(s.name)+' · '+esc(f.name)+'</div>'+
-    '<div class="dbt-date-pop-body"><label class="dbt-date-pop-label">Date <input id="dbtColumnHighlightInput" type="date" value="'+esc(trackerLocalDateKey())+'"></label>'+
-    '<div class="dbt-date-pop-actions"><button type="button" class="cell-pop-btn" id="dbtColumnHighlightCancel">Cancel</button>'+
-    '<button type="button" class="cell-pop-btn primary" id="dbtColumnHighlightApply">Add to all '+s.chapters.length+' chapters</button></div></div>');
-  const input=trackerCellPopover.querySelector('#dbtColumnHighlightInput');
-  trackerCellPopover.querySelector('#dbtColumnHighlightCancel').onclick=()=>trackerCloseCellPopover();
-  trackerCellPopover.querySelector('#dbtColumnHighlightApply').onclick=()=>{
-    const date=input.value;
-    if(!validDate(date)){trackerToastMsg('Choose a valid date');input.focus();return}
-    trackerCloseCellPopover();
-    const n=addDateToColumn(s,f,date);
-    trackerToastMsg(n?'Added '+short(date)+' to '+n+' cells':'All cells already have '+short(date));
-  };
+ let draft=columnDatesFor(f).filter(d=>!validDate(f.highlightUntil)||d!==f.highlightUntil);
+ trackerShowCellPopover(anchor,
+  '<div class="cell-pop-title">'+esc(s.name)+' · '+esc(f.name)+'</div>'+
+  '<div class="dbt-date-pop-body"><div class="dbt-date-pop-default">Dates apply to every chapter in this column</div><div id="dbtColumnDatesList"></div>'+
+  '<label class="dbt-date-pop-label">Add date <input id="dbtColumnHighlightInput" type="date" value="'+esc(trackerLocalDateKey())+'"></label>'+
+  '<div class="dbt-date-pop-actions dbt-date-pop-actions-wrap"><button type="button" class="cell-pop-btn" id="dbtColumnDateAdd">+ Add date</button><button type="button" class="cell-pop-btn" id="dbtColumnHighlightCancel">Cancel</button><button type="button" class="cell-pop-btn primary" id="dbtColumnHighlightApply">Save dates</button></div></div>');
+ const input=trackerCellPopover.querySelector('#dbtColumnHighlightInput'),list=trackerCellPopover.querySelector('#dbtColumnDatesList');
+ function redraw(){
+  list.innerHTML=draft.length?draft.map(d=>'<div class="dbt-date-entry"><span>'+esc(short(d))+'</span><button type="button" class="cell-pop-btn" data-column-remove="'+esc(d)+'" aria-label="Remove '+esc(d)+'">×</button></div>').join(''):'<div class="dbt-date-pop-default">No extra dates selected</div>';
+  list.querySelectorAll('[data-column-remove]').forEach(b=>b.onclick=()=>{draft=draft.filter(d=>d!==b.dataset.columnRemove);redraw()});
+ }
+ trackerCellPopover.querySelector('#dbtColumnDateAdd').onclick=()=>{
+  const d=input.value;if(!validDate(d)){trackerToastMsg('Choose a valid date');input.focus();return;}
+  if(!draft.includes(d))draft.push(d);draft.sort();redraw();
+ };
+ trackerCellPopover.querySelector('#dbtColumnHighlightCancel').onclick=()=>trackerCloseCellPopover();
+ trackerCellPopover.querySelector('#dbtColumnHighlightApply').onclick=()=>{
+  const n=addDatesToColumn(s,f,draft);trackerCloseCellPopover();
+  trackerToastMsg(n?'Saved '+draft.length+' highlight dates for '+f.name:'No new dates to save');
+ };
+ redraw();
 }
 function bindColumnDateButtons(root,s){
   if(!root||!s)return;
@@ -183,7 +194,7 @@ function bindColumnDateButtons(root,s){
 
 window.dbtHighlightDates=Object.freeze({
  datesFor, setAttemptDate, attemptDateState, matches:matchesHighlightDate, filterDate:highlightFilterDate,
- activeDates:activeHighlightDates, url:highlightedUrl, legendHtml:highlightLegendHtml, addDateToColumn, bindColumnDateButtons
+ activeDates:activeHighlightDates, url:highlightedUrl, legendHtml:highlightLegendHtml, addDatesToColumn, bindColumnDateButtons
 });
 
 trackerTaskHighlightDate=function(f,c){return datesFor(f,c).at(-1)||''};
