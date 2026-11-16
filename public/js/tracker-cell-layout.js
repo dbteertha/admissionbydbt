@@ -141,8 +141,10 @@ function addDatesToColumn(s,f,dates){
  const before=columnDatesFor(f);
  const prior=Array.isArray(f.columnHighlightDates)?[...f.columnHighlightDates]:[];
  const legacy=f.highlightScope!=='individual'&&validDate(f.highlightUntil)?f.highlightUntil:'';
+ const removeLegacy=!!legacy&&!desired.includes(legacy);
  const next=desired.filter(d=>d!==legacy);
- if(JSON.stringify(prior.sort())===JSON.stringify(next)&&desired.every(d=>before.includes(d)))return 0;
+ if(JSON.stringify(prior.sort())===JSON.stringify(next)&&desired.every(d=>before.includes(d))&&!removeLegacy)return 0;
+ if(removeLegacy)f.highlightUntil='';
  f.columnHighlightDates=next;
  let changed=0;
  for(const ch of s.chapters||[]){
