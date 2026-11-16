@@ -196,10 +196,16 @@ function bindColumnDateButtons(root,s){
         const id=el.dataset.editField||el.dataset.selectField||el.dataset.hiSelectColumn;
         if(id&&byId.has(String(id)))ids.add(String(id));
       });
-      // A merged heading may expose only its anchor control. Add a separate
-      // calendar for every real field covered by its colspan, including member 2.
-      visible.slice(fieldIndex,fieldIndex+span).forEach(f=>ids.add(String(f.id)));
-      fieldIndex+=span;
+      // Prefer explicit field IDs so custom column ordering cannot attach a
+      // calendar to the wrong field. For a merged header, expand from its anchor.
+      if(ids.size){
+        const anchorIndex=visible.findIndex(f=>String(f.id)===[...ids][0]);
+        if(anchorIndex>=0&&span>1)visible.slice(anchorIndex,anchorIndex+span).forEach(f=>ids.add(String(f.id)));
+        fieldIndex=Math.max(fieldIndex,anchorIndex>=0?anchorIndex+span:fieldIndex+span);
+      }else{
+        visible.slice(fieldIndex,fieldIndex+span).forEach(f=>ids.add(String(f.id)));
+        fieldIndex+=span;
+      }
       if(!ids.size)return;
       head.classList.add('dbt-column-date-head');
       head.querySelectorAll('.field-until-badge').forEach(el=>el.remove());
