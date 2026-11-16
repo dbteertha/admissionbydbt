@@ -180,19 +180,40 @@ function openColumnDate(anchor,s,f){
 }
 function bindColumnDateButtons(root,s){
   if(!root||!s)return;
-  root.querySelectorAll('thead .field-head').forEach(head=>{
-    const edit=head.querySelector('[data-edit-field]');
-    const selector=head.querySelector('[data-hi-select-column]');
-    const id=edit?.dataset.editField||selector?.dataset.hiSelectColumn;
-    const f=trackerVisibleFields(s).find(x=>x.id===id);
-    if(!f||head.querySelector('.dbt-column-calendar'))return;
-    head.classList.add('dbt-column-date-head');
-    head.querySelectorAll('.field-until-badge').forEach(el=>el.remove());
-    const b=document.createElement('button');b.type='button';b.className='dbt-column-calendar';
-    b.textContent='📅';b.title='Add highlight date to all '+f.name+' cells';
-    b.setAttribute('aria-label',b.title);
-    b.onclick=e=>{e.preventDefault();e.stopPropagation();openColumnDate(b,s,f)};
-    head.appendChild(b);
+  const visible=trackerVisibleFields(s)||[];
+  const byId=new Map(visible.map(f=>[String(f.id),f]));
+  const headerRows=root.querySelectorAll('thead tr');
+  headerRows.forEach(row=>{
+    const headers=[...row.children];
+    // The first header is the chapter-name column. Every following header
+    // represents one or more underlying tracker fields.
+    let fieldIndex=0;
+    headers.slice(1).forEach(th=>{
+      const head=th.querySelector('.field-head')||th;
+      const span=Math.max(1,Number(th.colSpan)||1);
+      const ids=new Set();
+      head.querySelectorAll('[data-edit-field],[data-select-field],[data-hi-select-column]').forEach(el=>{
+        const id=el.dataset.editField||el.dataset.selectField||el.dataset.hiSelectColumn;
+        if(id&&byId.has(String(id)))ids.add(String(id));
+      });
+      // A merged heading may expose only its anchor control. Add a separate
+      // calendar for every real field covered by its colspan, including member 2.
+      visible.slice(fieldIndex,fieldIndex+span).forEach(f=>ids.add(String(f.id)));
+      fieldIndex+=span;
+      if(!ids.size)return;
+      head.classList.add('dbt-column-date-head');
+      head.querySelectorAll('.field-until-badge').forEach(el=>el.remove());
+      ids.forEach(id=>{
+        const f=byId.get(id);
+        if(!f||[...head.querySelectorAll('.dbt-column-calendar')].some(el=>el.dataset.dbtColumnCalendarFor===id))return;
+        const b=document.createElement('button');b.type='button';b.className='dbt-column-calendar';
+        b.dataset.dbtColumnCalendarFor=id;
+        b.textContent='📅';b.title='Add highlight dates to all '+f.name+' cells';
+        b.setAttribute('aria-label',b.title);
+        b.onclick=e=>{e.preventDefault();e.stopPropagation();openColumnDate(b,s,f)};
+        head.appendChild(b);
+      });
+    });
   });
 }
 
