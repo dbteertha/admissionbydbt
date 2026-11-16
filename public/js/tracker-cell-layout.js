@@ -139,9 +139,11 @@ function renderMainHighlightLegend(){
 function addDatesToColumn(s,f,dates){
  const desired=[...new Set(dates.filter(validDate))].sort();
  const before=columnDatesFor(f);
- const added=desired.filter(d=>!before.includes(d));
- if(!added.length)return 0;
- f.columnHighlightDates=[...new Set([...before,...added])].sort();
+ const prior=Array.isArray(f.columnHighlightDates)?[...f.columnHighlightDates]:[];
+ const legacy=f.highlightScope!=='individual'&&validDate(f.highlightUntil)?f.highlightUntil:'';
+ const next=desired.filter(d=>d!==legacy);
+ if(JSON.stringify(prior.sort())===JSON.stringify(next)&&desired.every(d=>before.includes(d)))return 0;
+ f.columnHighlightDates=next;
  let changed=0;
  for(const ch of s.chapters||[]){
   const cell=trackerGetCell(s.id,ch.id,f.id);
@@ -152,7 +154,7 @@ function addDatesToColumn(s,f,dates){
  return changed;
 }
 function openColumnDate(anchor,s,f){
- let draft=columnDatesFor(f).filter(d=>!validDate(f.highlightUntil)||d!==f.highlightUntil);
+ let draft=columnDatesFor(f);
  trackerShowCellPopover(anchor,
   '<div class="cell-pop-title">'+esc(s.name)+' · '+esc(f.name)+'</div>'+
   '<div class="dbt-date-pop-body"><div class="dbt-date-pop-default">Dates apply to every chapter in this column</div><div id="dbtColumnDatesList"></div>'+
