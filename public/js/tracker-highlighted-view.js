@@ -105,7 +105,7 @@ function renderHighlighted(){
     highlightedSubjectId=subjects[0]?.id||'';
   const current=subjects.find(s=>s.id===highlightedSubjectId);
   let html='<div class="dbt-hi-toolbar-row">'+highlightedWeekTimerHtml()+'<div class="week-simple-head dbt-hi-top">'+
-    '<div class="week-simple-title"><b>Highlighted'+(date?' · '+esc(shortDate(date)):'')+'</b><em><strong>'+refs.length+'</strong></em></div>'+
+    '<div class="week-simple-title"><b>Highlighted'+(date?' through '+esc(shortDate(date)):'')+'</b><em><strong>'+refs.length+'</strong></em></div>'+
     '<div class="week-simple-actions">'+
       '<button type="button" class="week-pdf-btn dbt-hi-select-all" id="dbtHighlightedSelectAll">Select all</button><button type="button" class="week-pdf-btn" id="dbtHighlightedViewPdf">PDF Studio</button>'+
       '<button type="button" class="week-pdf-btn dbt-highlighted-weekly-btn" id="dbtHighlightedViewWeekly">Open This Week</button>'+

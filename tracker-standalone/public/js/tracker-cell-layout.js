@@ -93,7 +93,7 @@ function highlightFilterDate(){
 }
 function matchesHighlightDate(f,c,date=''){
  const dates=datesFor(f,c),today=trackerLocalDateKey();
- return date?date>=today&&dates.includes(date):dates.some(d=>d>=today);
+ return date?date>=today&&dates.some(d=>d>=today&&d<=date):dates.some(d=>d>=today);
 }
 function activeHighlightDates(){
  const dates=new Set(),today=trackerLocalDateKey();
@@ -119,7 +119,7 @@ function highlightLegendHtml(selected='',newTab=false){
  const label=d=>short(d)+(yearNeeded?' '+d.slice(0,4):'');
  return '<nav class="dbt-highlight-legend" aria-label="Highlighted dates">'+
    (newTab?'<span class="dbt-highlight-legend-label">Highlighted dates</span>':'<a class="dbt-highlight-legend-link'+(!selected?' active':'')+'" href="'+highlightedUrl()+'"'+(!selected?' aria-current="page"':'')+'>All dates</a>')+
-   options.map(d=>'<a class="dbt-highlight-legend-link'+(d===selected?' active':'')+'" href="'+esc(highlightedUrl(d))+'"'+attrs+(d===selected?' aria-current="page"':'')+' title="Open highlighted cells for '+esc(d)+'"><i class="dbt-highlight-legend-swatch" style="--dbt-legend-color:hsl('+hue(d)+' 88% 65%)" aria-hidden="true"></i><span>'+esc(label(d))+'</span></a>').join('')+
+   options.map(d=>'<a class="dbt-highlight-legend-link'+(d===selected?' active':'')+'" href="'+esc(highlightedUrl(d))+'"'+attrs+(d===selected?' aria-current="page"':'')+' title="Show highlighted cells through '+esc(d)+'"><i class="dbt-highlight-legend-swatch" style="--dbt-legend-color:hsl('+hue(d)+' 88% 65%)" aria-hidden="true"></i><span>'+esc(label(d))+'</span></a>').join('')+
  '</nav>';
 }
 function renderMainHighlightLegend(){
