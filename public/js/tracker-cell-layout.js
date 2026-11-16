@@ -57,7 +57,7 @@ function datesFor(f,c){
  if(c?.attemptHighlightMode===true){
   if(c.highlightExcluded===true)return [];
   const state=attemptDateState(f,c);
-  return [...new Set([...state.dates,...state.pending].filter(validDate))].sort();
+  return [...new Set([...columnDatesFor(f),...state.dates,...state.pending].filter(validDate))].sort();
  }
  return legacyDatesFor(f,c);
 }
