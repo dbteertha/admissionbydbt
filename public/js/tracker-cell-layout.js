@@ -205,7 +205,7 @@ function bindColumnDateButtons(root,s){
       head.querySelectorAll('.field-until-badge').forEach(el=>el.remove());
       ids.forEach(id=>{
         const f=byId.get(id);
-        if(!f||head.querySelector('[data-dbt-column-calendar-for="'+CSS.escape(id)+'"]'))return;
+        if(!f||[...head.querySelectorAll('.dbt-column-calendar')].some(el=>el.dataset.dbtColumnCalendarFor===id))return;
         const b=document.createElement('button');b.type='button';b.className='dbt-column-calendar';
         b.dataset.dbtColumnCalendarFor=id;
         b.textContent='📅';b.title='Add highlight dates to all '+f.name+' cells';
