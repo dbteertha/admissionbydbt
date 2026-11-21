@@ -652,11 +652,20 @@ bindTrackerCells=function(root){
       e.preventDefault();e.stopPropagation();if(part.disabled||!refs.length)return;
       const values=['','1','1/2','1/3','2/3','1/4','2/4','3/4'];
       const current=typeof r.cell.weeklyPart==='string'?r.cell.weeklyPart:'';
-      trackerShowCellPopover(part,'<div class="cell-pop-title">Weekly part · '+(refs.length===1?esc(r.ch.name)+' • '+esc(r.f.name):refs.length+' selected cells')+'</div><div class="week-part-grid">'+values.map(v=>'<button type="button" class="week-part-option '+(current===v?'active':'')+'" data-week-part-value="'+esc(v)+'">'+esc(v||'None')+'</button>').join('')+'</div>');
+      trackerShowCellPopover(part,'<div class="cell-pop-title">Weekly note · '+(refs.length===1?esc(r.ch.name)+' • '+esc(r.f.name):refs.length+' selected cells')+'</div><div class="week-part-grid">'+values.map(v=>'<button type="button" class="week-part-option '+(current===v?'active':'')+'" data-week-part-value="'+esc(v)+'">'+esc(v||'None')+'</button>').join('')+'</div><label class="dbt-week-text-label">Custom text <input id="dbtCustomWeeklyPart" type="text" maxlength="120" placeholder="e.g. Revise formulas" value="'+esc(current)+'"></label><div class="dbt-week-text-actions"><button type="button" class="cell-pop-btn primary" id="dbtSaveCustomWeeklyPart">Save text</button></div>');
+      const applyValue=value=>{
+        const stamp=new Date().toISOString();
+        refs.forEach(x=>{x.cell.weeklyPart=value;x.cell.updatedAt=stamp;});
+        trackerCloseCellPopover();trackerSave('Weekly note changed for selected cells');
+      };
       trackerCellPopover.querySelectorAll('[data-week-part-value]').forEach(b=>b.onclick=ev=>{
-        ev.stopPropagation();const value=b.dataset.weekPartValue||'',stamp=new Date().toISOString();
-        refs.forEach(x=>{x.cell.weeklyPart=value;x.cell.updatedAt=stamp;});trackerCloseCellPopover();trackerSave('Weekly part changed for selected cells');
+        ev.stopPropagation();applyValue(b.dataset.weekPartValue||'');
       });
+      const custom=trackerCellPopover.querySelector('#dbtCustomWeeklyPart');
+      const saveCustom=()=>applyValue(custom.value.trim().slice(0,120));
+      trackerCellPopover.querySelector('#dbtSaveCustomWeeklyPart').onclick=ev=>{ev.stopPropagation();saveCustom()};
+      custom.onkeydown=ev=>{if(ev.key==='Enter'){ev.preventDefault();ev.stopPropagation();saveCustom();}};
+
     };}
   });
   return result;
@@ -954,6 +963,12 @@ body.tracker-week-page #tracker .tracker-table .cell-box.dbt-attempt-compact .ch
 body.tracker-week-page #tracker .tracker-table .cell-box.dbt-attempt-compact .check-stack>.dbt-date-pending,
 body.tracker-week-page #tracker .week-task-control .cell-box .check-stack>.add-check,
 body.tracker-week-page #tracker .week-task-control .cell-box .check-stack>.dbt-date-pending{display:none!important}
+`;
+style.textContent+=`
+#tracker .dbt-week-text-label{display:flex;flex-direction:column;gap:5px;margin-top:9px;font-size:11px;color:#b9c5d5}
+#tracker .dbt-week-text-label input{width:100%;box-sizing:border-box;border:1px solid #40516a;border-radius:6px;background:#101720;color:#fff;font-size:12px;padding:8px}
+#tracker .dbt-week-text-actions{display:flex;justify-content:flex-end;margin-top:7px}
+#tracker .cell-box>.dbt-week-portion-restored{width:max-content!important;min-width:34px!important;max-width:min(90%,120px)!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;font-size:9px!important}
 `;
 document.head.appendChild(style);
 addLaunch();
